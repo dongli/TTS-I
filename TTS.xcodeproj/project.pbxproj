@@ -1,0 +1,983 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
+		556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
+		5598FACA13D3DA9F00BC1AC4 /* tts_driver_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */; };
+		5598FACB13D3DA9F00BC1AC4 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */; };
+		5598FACC13D3DA9F00BC1AC4 /* FlowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */; };
+		5598FACD13D3DA9F00BC1AC4 /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
+		5598FACE13D3DA9F00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+		5598FACF13D3DA9F00BC1AC4 /* MeshManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */; };
+		5598FAD013D3DA9F00BC1AC4 /* PolarRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */; };
+		5598FAD113D3DA9F00BC1AC4 /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
+		5598FAD213D3DA9F00BC1AC4 /* ParcelManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8B13D3DA9F00BC1AC4 /* ParcelManager.cpp */; };
+		5598FAD313D3DA9F00BC1AC4 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
+		5598FAD413D3DA9F00BC1AC4 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
+		5598FAD513D3DA9F00BC1AC4 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
+		5598FAD613D3DA9F00BC1AC4 /* PolygonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */; };
+		5598FAD713D3DA9F00BC1AC4 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
+		5598FADC13D3DA9F00BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
+		5598FADD13D3DA9F00BC1AC4 /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
+		5598FADE13D3DA9F00BC1AC4 /* MovingVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */; };
+		5598FADF13D3DA9F00BC1AC4 /* SolidRotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */; };
+		5598FAE013D3DA9F00BC1AC4 /* StaticVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */; };
+		5598FAE113D3DA9F00BC1AC4 /* TTS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */; };
+		5598FAE413D3DA9F00BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
+		5598FAE513D3DB1900BC1AC4 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */; };
+		5598FAE713D3DB1900BC1AC4 /* FlowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */; };
+		5598FAE913D3DB1900BC1AC4 /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
+		5598FAEB13D3DB1900BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+		5598FAED13D3DB1900BC1AC4 /* MeshManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */; };
+		5598FAEF13D3DB1900BC1AC4 /* PolarRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */; };
+		5598FAF113D3DB1900BC1AC4 /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
+		5598FAF313D3DB5700BC1AC4 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
+		5598FAF413D3DB5700BC1AC4 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
+		5598FAF513D3DB5700BC1AC4 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
+		5598FAF613D3DB5700BC1AC4 /* PolygonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */; };
+		5598FAF713D3DB5700BC1AC4 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
+		5598FAF813D3DB5700BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
+		5598FAF913D3DB5700BC1AC4 /* MovingVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */; };
+		5598FAFA13D3DB5700BC1AC4 /* SolidRotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */; };
+		5598FAFB13D3DB5700BC1AC4 /* StaticVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */; };
+		5598FAFC13D3DB5700BC1AC4 /* unit_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAB513D3DA9F00BC1AC4 /* unit_test_main.cpp */; };
+		5598FAFD13D3DB5700BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
+		5598FAFE13D3DB7D00BC1AC4 /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
+		5598FAFF13D3DC0F00BC1AC4 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
+		5598FB0013D3DC0F00BC1AC4 /* DelaunayTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */; };
+		5598FB0113D3DC0F00BC1AC4 /* DelaunayVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */; };
+		5598FB0213D3DC0F00BC1AC4 /* FakeVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */; };
+		5598FB0313D3DC0F00BC1AC4 /* PointManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */; };
+		5598FB0413D3DC0F00BC1AC4 /* PointTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */; };
+		5598FB0513D3DC0F00BC1AC4 /* Topology.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */; };
+		5598FB0613D3DC0F00BC1AC4 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
+		5598FB0713D3DC0F00BC1AC4 /* CocircularDTGroups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */; };
+		5598FB0813D3DC0F00BC1AC4 /* preprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */; };
+		5598FB0913D3DC2700BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
+		5598FB0A13D3DC3600BC1AC4 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
+		5598FB0B13D3DC3600BC1AC4 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
+		5598FB0C13D3DC3600BC1AC4 /* PolygonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */; };
+		5598FB0D13D3DC3600BC1AC4 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
+		5598FB0E13D3DC4300BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
+		5598FB0F13D3DC4F00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+		5598FB1013D3DC6100BC1AC4 /* generate_RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9B13D3DA9F00BC1AC4 /* generate_RLLMesh.cpp */; };
+		5598FB1113D3DC7800BC1AC4 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
+		5598FB1213D3DC7800BC1AC4 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
+		5598FB1313D3DC7800BC1AC4 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
+		5598FB1413D3DC7800BC1AC4 /* PolygonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */; };
+		5598FB1513D3DC7800BC1AC4 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
+		5598FB1613D3DC7800BC1AC4 /* generate_square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9C13D3DA9F00BC1AC4 /* generate_square.cpp */; };
+		5598FB1713D3DC8200BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
+		5598FB1813D3DC8F00BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
+		5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		557D139213BB048700BFDCEF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		559975D113BACB530075D5FB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		559975F013BACBF20075D5FB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		55B025F913B96EC300322B59 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		55B0269A13BA23E100322B59 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointCounter.cpp; sourceTree = "<group>"; };
+		556E49BF13D54DCF00AE4150 /* PointCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCounter.h; sourceTree = "<group>"; };
+		5591DF9513DE4F4600BD88A5 /* handleSmallEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = handleSmallEdge.h; sourceTree = "<group>"; };
+		5591DF9613DE4F4600BD88A5 /* handleWrongAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = handleWrongAngle.h; sourceTree = "<group>"; };
+		5591DF9713DE4F4600BD88A5 /* mergeEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mergeEdge.h; sourceTree = "<group>"; };
+		5591DF9813DE4F4600BD88A5 /* splitEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = splitEdge.h; sourceTree = "<group>"; };
+		5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelaunayDriver.cpp; sourceTree = "<group>"; };
+		5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelaunayDriver.h; sourceTree = "<group>"; };
+		5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelaunayTriangle.cpp; sourceTree = "<group>"; };
+		5598FA6D13D3DA9F00BC1AC4 /* DelaunayTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelaunayTriangle.h; sourceTree = "<group>"; };
+		5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelaunayVertex.cpp; sourceTree = "<group>"; };
+		5598FA6F13D3DA9F00BC1AC4 /* DelaunayVertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelaunayVertex.h; sourceTree = "<group>"; };
+		5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FakeVertices.cpp; sourceTree = "<group>"; };
+		5598FA7113D3DA9F00BC1AC4 /* FakeVertices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeVertices.h; sourceTree = "<group>"; };
+		5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointManager.cpp; sourceTree = "<group>"; };
+		5598FA7313D3DA9F00BC1AC4 /* PointManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointManager.h; sourceTree = "<group>"; };
+		5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointTriangle.cpp; sourceTree = "<group>"; };
+		5598FA7513D3DA9F00BC1AC4 /* PointTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointTriangle.h; sourceTree = "<group>"; };
+		5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Topology.cpp; sourceTree = "<group>"; };
+		5598FA7713D3DA9F00BC1AC4 /* Topology.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Topology.h; sourceTree = "<group>"; };
+		5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tts_driver_demo.cpp; sourceTree = "<group>"; };
+		5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
+		5598FA7C13D3DA9F00BC1AC4 /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Field.h; sourceTree = "<group>"; };
+		5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlowManager.cpp; sourceTree = "<group>"; };
+		5598FA7E13D3DA9F00BC1AC4 /* FlowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowManager.h; sourceTree = "<group>"; };
+		5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Layers.cpp; sourceTree = "<group>"; };
+		5598FA8013D3DA9F00BC1AC4 /* Layers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Layers.h; sourceTree = "<group>"; };
+		5598FA8113D3DA9F00BC1AC4 /* Location.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Location.cpp; sourceTree = "<group>"; };
+		5598FA8213D3DA9F00BC1AC4 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshManager.cpp; sourceTree = "<group>"; };
+		5598FA8413D3DA9F00BC1AC4 /* MeshManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshManager.h; sourceTree = "<group>"; };
+		5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolarRing.cpp; sourceTree = "<group>"; };
+		5598FA8613D3DA9F00BC1AC4 /* PolarRing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolarRing.h; sourceTree = "<group>"; };
+		5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RLLMesh.cpp; sourceTree = "<group>"; };
+		5598FA8813D3DA9F00BC1AC4 /* RLLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLLMesh.h; sourceTree = "<group>"; };
+		5598FA8A13D3DA9F00BC1AC4 /* Parcel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parcel.h; sourceTree = "<group>"; };
+		5598FA8B13D3DA9F00BC1AC4 /* ParcelManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParcelManager.cpp; sourceTree = "<group>"; };
+		5598FA8C13D3DA9F00BC1AC4 /* ParcelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParcelManager.h; sourceTree = "<group>"; };
+		5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Edge.cpp; sourceTree = "<group>"; };
+		5598FA8F13D3DA9F00BC1AC4 /* Edge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Edge.h; sourceTree = "<group>"; };
+		5598FA9013D3DA9F00BC1AC4 /* Point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Point.cpp; sourceTree = "<group>"; };
+		5598FA9113D3DA9F00BC1AC4 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
+		5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Polygon.cpp; sourceTree = "<group>"; };
+		5598FA9313D3DA9F00BC1AC4 /* Polygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Polygon.h; sourceTree = "<group>"; };
+		5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonManager.cpp; sourceTree = "<group>"; };
+		5598FA9513D3DA9F00BC1AC4 /* PolygonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonManager.h; sourceTree = "<group>"; };
+		5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vertex.cpp; sourceTree = "<group>"; };
+		5598FA9713D3DA9F00BC1AC4 /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
+		5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CocircularDTGroups.cpp; sourceTree = "<group>"; };
+		5598FA9A13D3DA9F00BC1AC4 /* CocircularDTGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocircularDTGroups.h; sourceTree = "<group>"; };
+		5598FA9B13D3DA9F00BC1AC4 /* generate_RLLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate_RLLMesh.cpp; sourceTree = "<group>"; };
+		5598FA9C13D3DA9F00BC1AC4 /* generate_square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate_square.cpp; sourceTree = "<group>"; };
+		5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = preprocess.cpp; sourceTree = "<group>"; };
+		5598FA9E13D3DA9F00BC1AC4 /* process_cocircularDT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = process_cocircularDT.h; sourceTree = "<group>"; };
+		5598FAA013D3DA9F00BC1AC4 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
+		5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
+		5598FAA213D3DA9F00BC1AC4 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
+		5598FAA313D3DA9F00BC1AC4 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
+		5598FAA513D3DA9F00BC1AC4 /* Velocity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Velocity.h; sourceTree = "<group>"; };
+		5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovingVortices.cpp; sourceTree = "<group>"; };
+		5598FAA813D3DA9F00BC1AC4 /* MovingVortices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovingVortices.h; sourceTree = "<group>"; };
+		5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolidRotation.cpp; sourceTree = "<group>"; };
+		5598FAAA13D3DA9F00BC1AC4 /* SolidRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolidRotation.h; sourceTree = "<group>"; };
+		5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticVortices.cpp; sourceTree = "<group>"; };
+		5598FAAC13D3DA9F00BC1AC4 /* StaticVortices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticVortices.h; sourceTree = "<group>"; };
+		5598FAAD13D3DA9F00BC1AC4 /* TestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCase.h; sourceTree = "<group>"; };
+		5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTS.cpp; sourceTree = "<group>"; };
+		5598FAB013D3DA9F00BC1AC4 /* TTS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTS.h; sourceTree = "<group>"; };
+		5598FAB213D3DA9F00BC1AC4 /* unit_test_field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_field.h; sourceTree = "<group>"; };
+		5598FAB313D3DA9F00BC1AC4 /* unit_test_fixtures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_fixtures.h; sourceTree = "<group>"; };
+		5598FAB413D3DA9F00BC1AC4 /* unit_test_flow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_flow.h; sourceTree = "<group>"; };
+		5598FAB513D3DA9F00BC1AC4 /* unit_test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unit_test_main.cpp; sourceTree = "<group>"; };
+		5598FAB613D3DA9F00BC1AC4 /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_mesh.h; sourceTree = "<group>"; };
+		5598FAB713D3DA9F00BC1AC4 /* unit_test_polygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_polygon.h; sourceTree = "<group>"; };
+		5598FAB813D3DA9F00BC1AC4 /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_sphere.h; sourceTree = "<group>"; };
+		5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_testcase.h; sourceTree = "<group>"; };
+		5598FABB13D3DA9F00BC1AC4 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		5598FABC13D3DA9F00BC1AC4 /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = List.cpp; sourceTree = "<group>"; };
+		5598FABD13D3DA9F00BC1AC4 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
+		5598FABE13D3DA9F00BC1AC4 /* MultiTimeLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiTimeLevel.h; sourceTree = "<group>"; };
+		5598FABF13D3DA9F00BC1AC4 /* RandomNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomNumber.h; sourceTree = "<group>"; };
+		5598FAC013D3DA9F00BC1AC4 /* ReportMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportMacros.h; sourceTree = "<group>"; };
+		5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeManager.cpp; sourceTree = "<group>"; };
+		5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
+		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
+		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
+		55A4D1CC13D52ECF00DCC5AB /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
+		55A4D1CE13D52ECF00DCC5AB /* generate_RLLMesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_RLLMesh; sourceTree = BUILT_PRODUCTS_DIR; };
+		55A4D1D013D52ECF00DCC5AB /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		557D139113BB048700BFDCEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		559975D013BACB530075D5FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		559975EF13BACBF20075D5FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55B025F813B96EC300322B59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55B0269913BA23E100322B59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5598FA6813D3DA9F00BC1AC4 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5598FA6913D3DA9F00BC1AC4 /* Delaunay */,
+				5598FA7813D3DA9F00BC1AC4 /* Demos */,
+				5598FA7A13D3DA9F00BC1AC4 /* Mesh */,
+				5598FA8913D3DA9F00BC1AC4 /* Parcel */,
+				5598FA8D13D3DA9F00BC1AC4 /* Polygon */,
+				5598FA9813D3DA9F00BC1AC4 /* Preprocess */,
+				5598FA9F13D3DA9F00BC1AC4 /* Sphere */,
+				5598FAA613D3DA9F00BC1AC4 /* TestCases */,
+				5598FAAE13D3DA9F00BC1AC4 /* TTS */,
+				5598FAB113D3DA9F00BC1AC4 /* UnitTests */,
+				5598FABA13D3DA9F00BC1AC4 /* Utils */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		5598FA6913D3DA9F00BC1AC4 /* Delaunay */ = {
+			isa = PBXGroup;
+			children = (
+				5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */,
+				5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */,
+				5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */,
+				5598FA6D13D3DA9F00BC1AC4 /* DelaunayTriangle.h */,
+				5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */,
+				5598FA6F13D3DA9F00BC1AC4 /* DelaunayVertex.h */,
+				5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */,
+				5598FA7113D3DA9F00BC1AC4 /* FakeVertices.h */,
+				5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */,
+				5598FA7313D3DA9F00BC1AC4 /* PointManager.h */,
+				5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */,
+				5598FA7513D3DA9F00BC1AC4 /* PointTriangle.h */,
+				5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */,
+				5598FA7713D3DA9F00BC1AC4 /* Topology.h */,
+			);
+			path = Delaunay;
+			sourceTree = "<group>";
+		};
+		5598FA7813D3DA9F00BC1AC4 /* Demos */ = {
+			isa = PBXGroup;
+			children = (
+				5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */,
+			);
+			path = Demos;
+			sourceTree = "<group>";
+		};
+		5598FA7A13D3DA9F00BC1AC4 /* Mesh */ = {
+			isa = PBXGroup;
+			children = (
+				556E49BE13D54DCF00AE4150 /* PointCounter.cpp */,
+				556E49BF13D54DCF00AE4150 /* PointCounter.h */,
+				5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */,
+				5598FA7C13D3DA9F00BC1AC4 /* Field.h */,
+				5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */,
+				5598FA7E13D3DA9F00BC1AC4 /* FlowManager.h */,
+				5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */,
+				5598FA8013D3DA9F00BC1AC4 /* Layers.h */,
+				5598FA8113D3DA9F00BC1AC4 /* Location.cpp */,
+				5598FA8213D3DA9F00BC1AC4 /* Location.h */,
+				5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */,
+				5598FA8413D3DA9F00BC1AC4 /* MeshManager.h */,
+				5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */,
+				5598FA8613D3DA9F00BC1AC4 /* PolarRing.h */,
+				5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */,
+				5598FA8813D3DA9F00BC1AC4 /* RLLMesh.h */,
+			);
+			path = Mesh;
+			sourceTree = "<group>";
+		};
+		5598FA8913D3DA9F00BC1AC4 /* Parcel */ = {
+			isa = PBXGroup;
+			children = (
+				5598FA8A13D3DA9F00BC1AC4 /* Parcel.h */,
+				5598FA8B13D3DA9F00BC1AC4 /* ParcelManager.cpp */,
+				5598FA8C13D3DA9F00BC1AC4 /* ParcelManager.h */,
+			);
+			path = Parcel;
+			sourceTree = "<group>";
+		};
+		5598FA8D13D3DA9F00BC1AC4 /* Polygon */ = {
+			isa = PBXGroup;
+			children = (
+				5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */,
+				5598FA8F13D3DA9F00BC1AC4 /* Edge.h */,
+				5598FA9013D3DA9F00BC1AC4 /* Point.cpp */,
+				5598FA9113D3DA9F00BC1AC4 /* Point.h */,
+				5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */,
+				5598FA9313D3DA9F00BC1AC4 /* Polygon.h */,
+				5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */,
+				5598FA9513D3DA9F00BC1AC4 /* PolygonManager.h */,
+				5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */,
+				5598FA9713D3DA9F00BC1AC4 /* Vertex.h */,
+			);
+			path = Polygon;
+			sourceTree = "<group>";
+		};
+		5598FA9813D3DA9F00BC1AC4 /* Preprocess */ = {
+			isa = PBXGroup;
+			children = (
+				5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */,
+				5598FA9A13D3DA9F00BC1AC4 /* CocircularDTGroups.h */,
+				5598FA9B13D3DA9F00BC1AC4 /* generate_RLLMesh.cpp */,
+				5598FA9C13D3DA9F00BC1AC4 /* generate_square.cpp */,
+				5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */,
+				5598FA9E13D3DA9F00BC1AC4 /* process_cocircularDT.h */,
+			);
+			path = Preprocess;
+			sourceTree = "<group>";
+		};
+		5598FA9F13D3DA9F00BC1AC4 /* Sphere */ = {
+			isa = PBXGroup;
+			children = (
+				5598FAA013D3DA9F00BC1AC4 /* Coordinate.h */,
+				5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */,
+				5598FAA213D3DA9F00BC1AC4 /* Sphere.h */,
+				5598FAA313D3DA9F00BC1AC4 /* Vector.h */,
+				5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */,
+				5598FAA513D3DA9F00BC1AC4 /* Velocity.h */,
+			);
+			path = Sphere;
+			sourceTree = "<group>";
+		};
+		5598FAA613D3DA9F00BC1AC4 /* TestCases */ = {
+			isa = PBXGroup;
+			children = (
+				5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */,
+				5598FAA813D3DA9F00BC1AC4 /* MovingVortices.h */,
+				5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */,
+				5598FAAA13D3DA9F00BC1AC4 /* SolidRotation.h */,
+				5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */,
+				5598FAAC13D3DA9F00BC1AC4 /* StaticVortices.h */,
+				5598FAAD13D3DA9F00BC1AC4 /* TestCase.h */,
+			);
+			path = TestCases;
+			sourceTree = "<group>";
+		};
+		5598FAAE13D3DA9F00BC1AC4 /* TTS */ = {
+			isa = PBXGroup;
+			children = (
+				5591DF9513DE4F4600BD88A5 /* handleSmallEdge.h */,
+				5591DF9613DE4F4600BD88A5 /* handleWrongAngle.h */,
+				5591DF9713DE4F4600BD88A5 /* mergeEdge.h */,
+				5591DF9813DE4F4600BD88A5 /* splitEdge.h */,
+				5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */,
+				5598FAB013D3DA9F00BC1AC4 /* TTS.h */,
+			);
+			path = TTS;
+			sourceTree = "<group>";
+		};
+		5598FAB113D3DA9F00BC1AC4 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				5598FAB213D3DA9F00BC1AC4 /* unit_test_field.h */,
+				5598FAB313D3DA9F00BC1AC4 /* unit_test_fixtures.h */,
+				5598FAB413D3DA9F00BC1AC4 /* unit_test_flow.h */,
+				5598FAB513D3DA9F00BC1AC4 /* unit_test_main.cpp */,
+				5598FAB613D3DA9F00BC1AC4 /* unit_test_mesh.h */,
+				5598FAB713D3DA9F00BC1AC4 /* unit_test_polygon.h */,
+				5598FAB813D3DA9F00BC1AC4 /* unit_test_sphere.h */,
+				5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		5598FABA13D3DA9F00BC1AC4 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5598FABB13D3DA9F00BC1AC4 /* Constants.h */,
+				5598FABC13D3DA9F00BC1AC4 /* List.cpp */,
+				5598FABD13D3DA9F00BC1AC4 /* List.h */,
+				5598FABE13D3DA9F00BC1AC4 /* MultiTimeLevel.h */,
+				5598FABF13D3DA9F00BC1AC4 /* RandomNumber.h */,
+				5598FAC013D3DA9F00BC1AC4 /* ReportMacros.h */,
+				5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */,
+				5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		55B025EE13B96EB400322B59 = {
+			isa = PBXGroup;
+			children = (
+				5598FA6813D3DA9F00BC1AC4 /* Sources */,
+				55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */,
+				55A4D1CA13D52ECF00DCC5AB /* unit_test_main */,
+				55A4D1CC13D52ECF00DCC5AB /* preprocess */,
+				55A4D1CE13D52ECF00DCC5AB /* generate_RLLMesh */,
+				55A4D1D013D52ECF00DCC5AB /* generate_square */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		557D139313BB048700BFDCEF /* generate_square */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 557D139A13BB048700BFDCEF /* Build configuration list for PBXNativeTarget "generate_square" */;
+			buildPhases = (
+				557D139013BB048700BFDCEF /* Sources */,
+				557D139113BB048700BFDCEF /* Frameworks */,
+				557D139213BB048700BFDCEF /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = generate_square;
+			productName = generate_square;
+			productReference = 55A4D1D013D52ECF00DCC5AB /* generate_square */;
+			productType = "com.apple.product-type.tool";
+		};
+		559975D213BACB530075D5FB /* preprocess */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 559975DB13BACB540075D5FB /* Build configuration list for PBXNativeTarget "preprocess" */;
+			buildPhases = (
+				559975CF13BACB530075D5FB /* Sources */,
+				559975D013BACB530075D5FB /* Frameworks */,
+				559975D113BACB530075D5FB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = preprocess;
+			productName = preprocess;
+			productReference = 55A4D1CC13D52ECF00DCC5AB /* preprocess */;
+			productType = "com.apple.product-type.tool";
+		};
+		559975F113BACBF20075D5FB /* generate_RLLMesh */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 559975F813BACBF20075D5FB /* Build configuration list for PBXNativeTarget "generate_RLLMesh" */;
+			buildPhases = (
+				559975EE13BACBF20075D5FB /* Sources */,
+				559975EF13BACBF20075D5FB /* Frameworks */,
+				559975F013BACBF20075D5FB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = generate_RLLMesh;
+			productName = generate_RLLMesh;
+			productReference = 55A4D1CE13D52ECF00DCC5AB /* generate_RLLMesh */;
+			productType = "com.apple.product-type.tool";
+		};
+		55B025FA13B96EC300322B59 /* tts_driver_demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55B0260213B96EC300322B59 /* Build configuration list for PBXNativeTarget "tts_driver_demo" */;
+			buildPhases = (
+				55B025F713B96EC300322B59 /* Sources */,
+				55B025F813B96EC300322B59 /* Frameworks */,
+				55B025F913B96EC300322B59 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tts_driver_demo;
+			productName = tts_driver_demo;
+			productReference = 55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */;
+			productType = "com.apple.product-type.tool";
+		};
+		55B0269B13BA23E100322B59 /* unit_test_main */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55B026A213BA23E100322B59 /* Build configuration list for PBXNativeTarget "unit_test_main" */;
+			buildPhases = (
+				55B0269813BA23E100322B59 /* Sources */,
+				55B0269913BA23E100322B59 /* Frameworks */,
+				55B0269A13BA23E100322B59 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = unit_test_main;
+			productName = unit_test_main;
+			productReference = 55A4D1CA13D52ECF00DCC5AB /* unit_test_main */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55B025F013B96EB400322B59 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 55B025F313B96EB400322B59 /* Build configuration list for PBXProject "TTS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 55B025EE13B96EB400322B59;
+			productRefGroup = 55B025EE13B96EB400322B59;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55B025FA13B96EC300322B59 /* tts_driver_demo */,
+				55B0269B13BA23E100322B59 /* unit_test_main */,
+				559975D213BACB530075D5FB /* preprocess */,
+				559975F113BACBF20075D5FB /* generate_RLLMesh */,
+				557D139313BB048700BFDCEF /* generate_square */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		557D139013BB048700BFDCEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */,
+				5598FB1813D3DC8F00BC1AC4 /* Sphere.cpp in Sources */,
+				5598FB1713D3DC8200BC1AC4 /* TimeManager.cpp in Sources */,
+				5598FB1113D3DC7800BC1AC4 /* Edge.cpp in Sources */,
+				5598FB1213D3DC7800BC1AC4 /* Point.cpp in Sources */,
+				5598FB1313D3DC7800BC1AC4 /* Polygon.cpp in Sources */,
+				5598FB1413D3DC7800BC1AC4 /* PolygonManager.cpp in Sources */,
+				5598FB1513D3DC7800BC1AC4 /* Vertex.cpp in Sources */,
+				5598FB1613D3DC7800BC1AC4 /* generate_square.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		559975CF13BACB530075D5FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5598FB0F13D3DC4F00BC1AC4 /* Location.cpp in Sources */,
+				5598FB0E13D3DC4300BC1AC4 /* TimeManager.cpp in Sources */,
+				5598FB0A13D3DC3600BC1AC4 /* Edge.cpp in Sources */,
+				5598FB0B13D3DC3600BC1AC4 /* Polygon.cpp in Sources */,
+				5598FB0C13D3DC3600BC1AC4 /* PolygonManager.cpp in Sources */,
+				5598FB0D13D3DC3600BC1AC4 /* Vertex.cpp in Sources */,
+				5598FB0913D3DC2700BC1AC4 /* Sphere.cpp in Sources */,
+				5598FAFF13D3DC0F00BC1AC4 /* DelaunayDriver.cpp in Sources */,
+				5598FB0013D3DC0F00BC1AC4 /* DelaunayTriangle.cpp in Sources */,
+				5598FB0113D3DC0F00BC1AC4 /* DelaunayVertex.cpp in Sources */,
+				5598FB0213D3DC0F00BC1AC4 /* FakeVertices.cpp in Sources */,
+				5598FB0313D3DC0F00BC1AC4 /* PointManager.cpp in Sources */,
+				5598FB0413D3DC0F00BC1AC4 /* PointTriangle.cpp in Sources */,
+				5598FB0513D3DC0F00BC1AC4 /* Topology.cpp in Sources */,
+				5598FB0613D3DC0F00BC1AC4 /* Point.cpp in Sources */,
+				5598FB0713D3DC0F00BC1AC4 /* CocircularDTGroups.cpp in Sources */,
+				5598FB0813D3DC0F00BC1AC4 /* preprocess.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		559975EE13BACBF20075D5FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5598FB1013D3DC6100BC1AC4 /* generate_RLLMesh.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55B025F713B96EC300322B59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5598FACA13D3DA9F00BC1AC4 /* tts_driver_demo.cpp in Sources */,
+				5598FACB13D3DA9F00BC1AC4 /* Field.cpp in Sources */,
+				5598FACC13D3DA9F00BC1AC4 /* FlowManager.cpp in Sources */,
+				5598FACD13D3DA9F00BC1AC4 /* Layers.cpp in Sources */,
+				5598FACE13D3DA9F00BC1AC4 /* Location.cpp in Sources */,
+				5598FACF13D3DA9F00BC1AC4 /* MeshManager.cpp in Sources */,
+				5598FAD013D3DA9F00BC1AC4 /* PolarRing.cpp in Sources */,
+				5598FAD113D3DA9F00BC1AC4 /* RLLMesh.cpp in Sources */,
+				5598FAD213D3DA9F00BC1AC4 /* ParcelManager.cpp in Sources */,
+				5598FAD313D3DA9F00BC1AC4 /* Edge.cpp in Sources */,
+				5598FAD413D3DA9F00BC1AC4 /* Point.cpp in Sources */,
+				5598FAD513D3DA9F00BC1AC4 /* Polygon.cpp in Sources */,
+				5598FAD613D3DA9F00BC1AC4 /* PolygonManager.cpp in Sources */,
+				5598FAD713D3DA9F00BC1AC4 /* Vertex.cpp in Sources */,
+				5598FADC13D3DA9F00BC1AC4 /* Sphere.cpp in Sources */,
+				5598FADD13D3DA9F00BC1AC4 /* Velocity.cpp in Sources */,
+				5598FADE13D3DA9F00BC1AC4 /* MovingVortices.cpp in Sources */,
+				5598FADF13D3DA9F00BC1AC4 /* SolidRotation.cpp in Sources */,
+				5598FAE013D3DA9F00BC1AC4 /* StaticVortices.cpp in Sources */,
+				5598FAE113D3DA9F00BC1AC4 /* TTS.cpp in Sources */,
+				5598FAE413D3DA9F00BC1AC4 /* TimeManager.cpp in Sources */,
+				556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55B0269813BA23E100322B59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */,
+				5598FAFE13D3DB7D00BC1AC4 /* Velocity.cpp in Sources */,
+				5598FAF313D3DB5700BC1AC4 /* Edge.cpp in Sources */,
+				5598FAF413D3DB5700BC1AC4 /* Point.cpp in Sources */,
+				5598FAF513D3DB5700BC1AC4 /* Polygon.cpp in Sources */,
+				5598FAF613D3DB5700BC1AC4 /* PolygonManager.cpp in Sources */,
+				5598FAF713D3DB5700BC1AC4 /* Vertex.cpp in Sources */,
+				5598FAF813D3DB5700BC1AC4 /* Sphere.cpp in Sources */,
+				5598FAF913D3DB5700BC1AC4 /* MovingVortices.cpp in Sources */,
+				5598FAFA13D3DB5700BC1AC4 /* SolidRotation.cpp in Sources */,
+				5598FAFB13D3DB5700BC1AC4 /* StaticVortices.cpp in Sources */,
+				5598FAFC13D3DB5700BC1AC4 /* unit_test_main.cpp in Sources */,
+				5598FAFD13D3DB5700BC1AC4 /* TimeManager.cpp in Sources */,
+				5598FAE513D3DB1900BC1AC4 /* Field.cpp in Sources */,
+				5598FAE713D3DB1900BC1AC4 /* FlowManager.cpp in Sources */,
+				5598FAE913D3DB1900BC1AC4 /* Layers.cpp in Sources */,
+				5598FAEB13D3DB1900BC1AC4 /* Location.cpp in Sources */,
+				5598FAED13D3DB1900BC1AC4 /* MeshManager.cpp in Sources */,
+				5598FAEF13D3DB1900BC1AC4 /* PolarRing.cpp in Sources */,
+				5598FAF113D3DB1900BC1AC4 /* RLLMesh.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		557D139B13BB048700BFDCEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		557D139C13BB048700BFDCEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		559975D913BACB530075D5FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		559975DA13BACB530075D5FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		559975F913BACBF20075D5FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		559975FA13BACBF20075D5FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		55B025F513B96EB400322B59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lnetcdf",
+					"-lnetcdf_c++",
+				);
+			};
+			name = Debug;
+		};
+		55B025F613B96EB400322B59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lnetcdf",
+					"-lnetcdf_c++",
+				);
+			};
+			name = Release;
+		};
+		55B0260313B96EC300322B59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		55B0260413B96EC300322B59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		55B026A313BA23E100322B59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					UNIT_TEST,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lnetcdf",
+					"-lnetcdf_c++",
+					"-lboost_unit_test_framework-mt",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		55B026A413BA23E100322B59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"-lnetcdf",
+					"-lnetcdf_c++",
+					"-lboost_unit_test_framework-mt",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		557D139A13BB048700BFDCEF /* Build configuration list for PBXNativeTarget "generate_square" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				557D139B13BB048700BFDCEF /* Debug */,
+				557D139C13BB048700BFDCEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		559975DB13BACB540075D5FB /* Build configuration list for PBXNativeTarget "preprocess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				559975D913BACB530075D5FB /* Debug */,
+				559975DA13BACB530075D5FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		559975F813BACBF20075D5FB /* Build configuration list for PBXNativeTarget "generate_RLLMesh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				559975F913BACBF20075D5FB /* Debug */,
+				559975FA13BACBF20075D5FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55B025F313B96EB400322B59 /* Build configuration list for PBXProject "TTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B025F513B96EB400322B59 /* Debug */,
+				55B025F613B96EB400322B59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55B0260213B96EC300322B59 /* Build configuration list for PBXNativeTarget "tts_driver_demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B0260313B96EC300322B59 /* Debug */,
+				55B0260413B96EC300322B59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55B026A213BA23E100322B59 /* Build configuration list for PBXNativeTarget "unit_test_main" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B026A313BA23E100322B59 /* Debug */,
+				55B026A413BA23E100322B59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55B025F013B96EB400322B59 /* Project object */;
+}

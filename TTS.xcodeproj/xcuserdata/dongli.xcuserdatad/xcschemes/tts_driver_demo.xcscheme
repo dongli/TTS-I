@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   version = "1.8">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "55B025FA13B96EC300322B59"
+               BuildableName = "tts_driver_demo"
+               BlueprintName = "tts_driver_demo"
+               ReferencedContainer = "container:TTS.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Debug">
+      <Testables>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      displayScaleIsEnabled = "NO"
+      displayScale = "1.00"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "YES"
+      customWorkingDirectory = "/Users/dongli/Works/TTS/Run"
+      buildConfiguration = "Debug">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "55B025FA13B96EC300322B59"
+            BuildableName = "tts_driver_demo"
+            BlueprintName = "tts_driver_demo"
+            ReferencedContainer = "container:TTS.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "square.nc"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "tts_test00543.nc"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "polygons_128x60.nc"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "polygons_2562.nc"
+            isEnabled = "NO">
+         </CommandLineArgument>
+      </CommandLineArguments>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </LaunchAction>
+   <ProfileAction
+      displayScaleIsEnabled = "NO"
+      displayScale = "1.00"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Time Profiler.tracetemplate"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "55B025FA13B96EC300322B59"
+            BuildableName = "tts_driver_demo"
+            BlueprintName = "tts_driver_demo"
+            ReferencedContainer = "container:TTS.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

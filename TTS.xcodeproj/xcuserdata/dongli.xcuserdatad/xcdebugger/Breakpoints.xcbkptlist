@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "1.0">
+   <FileBreakpoints>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "compare/Sources/UnitTests/unit_test_polygon.h"
+         timestampString = "331008585.348357"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "52"
+         endingLineNumber = "52"
+         landmarkName = "BOOST_AUTO_TEST_CASE(TestPoint_Test)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Mesh/Field.cpp"
+         timestampString = "332221133.919194"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "94"
+         endingLineNumber = "94"
+         landmarkName = "Field::interp(const Coordinate &amp;x, const Location &amp;loc, TimeLevel timeLevel)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Polygon/PolygonManager.cpp"
+         timestampString = "333534507.365453"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
+         landmarkName = "PolygonManager::construct(const string &amp;fileName)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Polygon/Polygon.cpp"
+         timestampString = "332328752.309857"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "49"
+         endingLineNumber = "49"
+         landmarkName = "Polygon::calcArea()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "290"
+         endingLineNumber = "290">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "506"
+         endingLineNumber = "506">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "638"
+         endingLineNumber = "638">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "655"
+         endingLineNumber = "655">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "590"
+         endingLineNumber = "590">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Polygon/Vertex.cpp"
+         timestampString = "332990216.085126"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
+         landmarkName = "Vertex::dislinkEdge(Edge *edge)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "361"
+         endingLineNumber = "361">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "762"
+         endingLineNumber = "762">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Polygon/Vertex.cpp"
+         timestampString = "332989595.698431"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "24"
+         endingLineNumber = "24"
+         landmarkName = "Vertex::linkEdge(Edge *edge)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "324"
+         endingLineNumber = "324">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/TTS.cpp"
+         timestampString = "333623481.793002"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "478"
+         endingLineNumber = "478">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/handleSmallEdge.h"
+         timestampString = "333600417.084959"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "10"
+         endingLineNumber = "10"
+         landmarkName = "TTS::handleSmallEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *edge)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Polygon/Edge.cpp"
+         timestampString = "333549841.665188"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "288"
+         endingLineNumber = "288"
+         landmarkName = "EdgePointer::calcAngle()"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Sound">
+               <ActionContent
+                  soundName = "Submarine">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/mergeEdge.h"
+         timestampString = "333622608.769661"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "14"
+         endingLineNumber = "14"
+         landmarkName = "TTS::mergeEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/handleWrongAngle.h"
+         timestampString = "333644093.212024"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "12"
+         endingLineNumber = "12"
+         landmarkName = "TTS::handleWrongAngle(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p edgePointer-&gt;getAngle(OldTimeLevel)*Rad2Deg">
+               </ActionContent>
+            </BreakpointActionProxy>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p edgePointer-&gt;getAngle(NewTimeLevel)*Rad2Deg">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Polygon/Edge.cpp"
+         timestampString = "333625549.946504"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "294"
+         endingLineNumber = "294"
+         landmarkName = "EdgePointer::calcAngle()"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Sound">
+               <ActionContent
+                  soundName = "Sosumi">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/splitEdge.h"
+         timestampString = "333644033.198573"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
+         landmarkName = "TTS::splitEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *edge)"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.Sound">
+               <ActionContent
+                  soundName = "Pop">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/splitEdge.h"
+         timestampString = "333707164.322857"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "69"
+         endingLineNumber = "69"
+         landmarkName = "TTS::splitEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *edge)"
+         landmarkType = "5">
+      </FileBreakpoint>
+   </FileBreakpoints>
+</Bucket>

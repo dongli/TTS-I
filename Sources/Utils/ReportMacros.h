@@ -1,0 +1,50 @@
+/*
+ *  ReportMacros.h
+ *
+ *  Created by DONG Li on 11-2-20.
+ *  Copyright 2011 LASG/IAP. All rights reserved.
+ *
+ */
+
+#ifndef _ReportMacros_h_
+#define _ReportMacros_h_
+
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+#define REPORT_ERROR(MESSAGE) \
+{ \
+    cout << "[Error]: " << __FILE__ << ":" << __LINE__ << ": " << \
+            MESSAGE << endl; \
+    exit(1); \
+}
+
+#define REPORT_WARNING(MESSAGE) \
+{ \
+    cout << "[Warning]: " << __FILE__ << ":" << __LINE__ << ": " << \
+            MESSAGE << endl; \
+}
+
+#define REPORT_DEBUG \
+{ \
+    cout << "[Debug]: " << __FILE__ << ":" << __LINE__ << endl; \
+}
+
+#define NOTICE(CALLER, MESSAGE) \
+{ \
+    cout << "[Notice]: " << CALLER << ": " << MESSAGE << endl; \
+}
+
+#define REPORT_ONLINE(CLASS) \
+{ \
+    cout << "[Notice]: " << CLASS << " is online." << endl; \
+}
+
+#define REPORT_OFFLINE(CLASS) \
+{ \
+    cout << "[Notice]: " << CLASS << " is offline." << endl; \
+}
+
+#endif
