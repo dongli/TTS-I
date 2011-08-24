@@ -21,6 +21,7 @@ public:
     virtual ~ListElement();
 
     virtual void reinit();
+    virtual void clean();
 
     void setID(int ID);
     virtual int getID() const;
@@ -37,7 +38,7 @@ template <class T>
 class List
 {
 public:
-    List(int initPoolSize = 10, int incrementSize = 10);
+    List(int initPoolSize = 10, int incrementSize = 1);
     virtual ~List();
 
     void setName(char const *);

@@ -55,7 +55,7 @@ void FlowManager::update(double *u, double *v)
     // Note:
     //   (1) The multi-dimensional u and v have been represesnted as
     //       one dimensional array here. The order of storage should
-    //       be considered carefully;
+    //       be considered carefully (first latitude grids, then longitude);
     //   (2) The first-step-setting can affect the restart.
     int l;
     if (! isInitialized) {
@@ -99,6 +99,15 @@ void FlowManager::getVelocity(const Coordinate &x, const Location &loc,
 {
     if (loc.inPolarCap) {
         velocity = prv.interp(x, loc, timeLevel);
+        if (type == Velocity::LonLatSpace) {
+            double sign = loc.pole == Location::NorthPole ? 1.0 : -1.0;
+            double sinLon = sin(x.getLon());
+            double cosLon = cos(x.getLon());
+            double sinLat = sin(x.getLat());
+            double sinLat2 = sinLat*sinLat;
+            velocity.u = sign*(-sinLon*velocity.ut+cosLon*velocity.vt)*sinLat;
+            velocity.v = sign*(-cosLon*velocity.ut-sinLon*velocity.vt)*sinLat2;
+        }
     } else {
         velocity.u = u.interp(x, loc, timeLevel);
         velocity.v = v.interp(x, loc, timeLevel);
@@ -174,8 +183,8 @@ void FlowManager::output(const string &fileName) const
         vVar->add_att("units", v.unit.c_str());
     } else {
         timeVar = file->get_var("time");
-        uVar = file->get_var("u");
-        vVar = file->get_var("v");
+        uVar = file->get_var(u.long_name.c_str());
+        vVar = file->get_var(v.long_name.c_str());
     }
 
     double seconds = TimeManager::getSeconds();

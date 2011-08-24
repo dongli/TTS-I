@@ -1,62 +1,62 @@
 bool TTS::mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
                     PolygonManager &polygonManager, Polygon *polygon)
 {
-    static const double angleCheck = 20.0/Rad2Deg;
+    static const double smallAngle = 20.0/Rad2Deg;
     bool isMerged = false;
+    
+#ifdef TEST_NEW_FEATURE
+    resetTasks();
+#endif
 
     EdgePointer *edgePointer = polygon->edgePointers.front();
-    for (int i = 0; i < polygon->edgePointers.size(); ++i) {
+    EdgePointer *endEdgePointer = polygon->edgePointers.back();
+    EdgePointer *nextEdgePointer;
+    while (edgePointer != NULL && edgePointer != endEdgePointer) {
+        nextEdgePointer = edgePointer->next;
         Edge *edge1 = edgePointer->prev->edge; // to be deleted if necessary
         Edge *edge2 = edgePointer->edge;
-        double a0 = angleThreshold(edge1, edge2)*0.95;
+        double a0 = angleThreshold(edge1, edge2)*0.2;
         if (fabs(edgePointer->getAngle(OldTimeLevel)-PI) < a0 &&
             fabs(edgePointer->getAngle(NewTimeLevel)-PI) < a0) {
             isMerged = true;
-#ifdef DEBUG_MERGEEDGE
-            cout << fabs(edgePointer->getAngle(OldTimeLevel)-PI)*Rad2Deg << endl;
-            cout << fabs(edgePointer->getAngle(NewTimeLevel)-PI)*Rad2Deg << endl;
-            cout << a0*Rad2Deg << endl;
-            edgePointer->dump();
-            edgePointer->prev->dump();
-#endif
             // -----------------------------------------------------------------
             Vertex *vertex1, *vertex2, *vertex3;  // vertex2 is to be deleted
             vertex1 = edgePointer->prev->getEndPoint(FirstPoint);
             vertex2 = edgePointer->getEndPoint(FirstPoint);
             vertex3 = edgePointer->getEndPoint(SecondPoint);
-#ifdef DEBUG_MERGEEDGE
-            vertex2->dump();
-#endif
             // Note: If the vertex is connected by more than two edges, that is
             //       a joint, then do not merge the edges.
             if (vertex2->isJoint())
                 return false;
-#ifdef DEBUG_MERGEEDGE
-            cout << "vertex 1: " << vertex1->getID() << endl;
-            cout << "vertex 2: " << vertex2->getID() << endl;
-            cout << "vertex 3: " << vertex3->getID() << endl;
-#endif
             // -----------------------------------------------------------------
             EdgePointer *oldEdgePointer1, *oldEdgePointer2;
             if (vertex2 == edge2->getEndPoint(FirstPoint)) {
-                oldEdgePointer1 = edge2->getEdgePointer(EdgeLeft);
-                oldEdgePointer2 = edge2->getEdgePointer(EdgeRight);
+                oldEdgePointer1 = edge2->getEdgePointer(OrientLeft);
+                oldEdgePointer2 = edge2->getEdgePointer(OrientRight);
             } else {
-                oldEdgePointer1 = edge2->getEdgePointer(EdgeRight);
-                oldEdgePointer2 = edge2->getEdgePointer(EdgeLeft);
+                oldEdgePointer1 = edge2->getEdgePointer(OrientRight);
+                oldEdgePointer2 = edge2->getEdgePointer(OrientLeft);
             }            
 #ifdef DEBUG
             assert(oldEdgePointer1 == edgePointer);
 #endif
             // -----------------------------------------------------------------
-            if (oldEdgePointer1->next->getAngle() < angleCheck)
-                return false;
-            if (oldEdgePointer1->prev->getAngle() < angleCheck)
-                return false;
-            if (oldEdgePointer2->getAngle() < angleCheck)
-                return false;
-            if (oldEdgePointer2->next->next->getAngle() < angleCheck)
-                return false;
+            if (oldEdgePointer1->next->getAngle() < smallAngle) {
+                edgePointer = edgePointer->next;
+                continue;
+            }
+            if (oldEdgePointer1->prev->getAngle() < smallAngle) {
+                edgePointer = edgePointer->next;
+                continue;
+            }
+            if (oldEdgePointer2->getAngle() < smallAngle) {
+                edgePointer = edgePointer->next;
+                continue;
+            }
+            if (oldEdgePointer2->next->next->getAngle() < smallAngle) {
+                edgePointer = edgePointer->next;
+                continue;
+            }
             // -----------------------------------------------------------------
             if (oldEdgePointer1->isTangly() ||
                 oldEdgePointer2->next->isTangly()) {
@@ -66,11 +66,11 @@ bool TTS::mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             // -----------------------------------------------------------------
             Polygon *polygon1, *polygon2;
             if (vertex1 == edge1->getEndPoint(FirstPoint)) {
-                polygon1 = edge1->getPolygon(EdgeLeft);
-                polygon2 = edge1->getPolygon(EdgeRight);
+                polygon1 = edge1->getPolygon(OrientLeft);
+                polygon2 = edge1->getPolygon(OrientRight);
             } else {
-                polygon1 = edge1->getPolygon(EdgeRight);
-                polygon2 = edge1->getPolygon(EdgeLeft);
+                polygon1 = edge1->getPolygon(OrientRight);
+                polygon2 = edge1->getPolygon(OrientLeft);
             }
 #ifdef DEBUG
             assert(polygon1 == polygon);
@@ -89,34 +89,38 @@ bool TTS::mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             }
             // -----------------------------------------------------------------
             // adjust vertices
-            vertex3->dislinkEdge(edge2);
             polygonManager.vertices.remove(vertex2);
             // -----------------------------------------------------------------
             // adjust edges
             if (vertex1 == edge1->getEndPoint(FirstPoint)) {
-                changeEdgeEndPoint(edge1, SecondPoint, vertex3,
-                                   meshManager, flowManager);
-                edge1->setEdgePointer(EdgeLeft, newEdgePointer1);
+                edge1->changeEndPoint(SecondPoint, vertex3,
+                                      meshManager, flowManager);
+                edge1->setEdgePointer(OrientLeft, newEdgePointer1);
                 if (newEdgePointer2 != NULL)
-                    edge1->setEdgePointer(EdgeRight, newEdgePointer2);
+                    edge1->setEdgePointer(OrientRight, newEdgePointer2);
             } else {
-                changeEdgeEndPoint(edge1, FirstPoint, vertex3,
-                                   meshManager, flowManager);
-                edge1->setEdgePointer(EdgeRight, newEdgePointer1);
+                edge1->changeEndPoint(FirstPoint, vertex3,
+                                      meshManager, flowManager);
+                edge1->setEdgePointer(OrientRight, newEdgePointer1);
                 if (newEdgePointer2 != NULL)
-                    edge1->setEdgePointer(EdgeLeft, newEdgePointer2);
+                    edge1->setEdgePointer(OrientLeft, newEdgePointer2);
             }
+            edge2->detectAgent.handover(edge1);
             polygonManager.edges.remove(edge2);
             // -----------------------------------------------------------------
             // update the angles
+#ifdef TEST_NEW_FEATURE
+            doTask(UpdateAngle);
+#else
             newEdgePointer1->calcAngle();
             newEdgePointer1->next->calcAngle();
             if (newEdgePointer2 != NULL) {
                 newEdgePointer2->calcAngle();
                 newEdgePointer2->next->calcAngle();
             }
+#endif
         }
-        edgePointer = edgePointer->next;
+        edgePointer = nextEdgePointer;
     }
 
     return isMerged;

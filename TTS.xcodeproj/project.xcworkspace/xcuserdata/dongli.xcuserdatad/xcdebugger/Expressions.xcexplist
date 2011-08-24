@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "Sphere::project(Coordinate const&amp;, Coordinate const&amp;, Coordinate const&amp;, Coordinate&amp;, double&amp;):Sphere.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "TTS::splitPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*):splitPolygon.h">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

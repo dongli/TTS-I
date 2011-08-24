@@ -1,5 +1,4 @@
 #include "RLLMesh.h"
-#include "Constants.h"
 #include "Sphere.h"
 #include "MeshManager.h"
 
@@ -32,21 +31,19 @@ BOOST_FIXTURE_TEST_CASE(MeshManager_Test, RLLMesh2D)
             totalArea += mesh.area(i, j);
         }
     }
-    message.str("");
-    message << "\nTotal area = " <<
-        setw(30) << setprecision(22) << totalArea;
-    message << "\nTrue area  = "  <<
-        setw(30) << setprecision(22) << 4.0*PI*Sphere::radius2;
-    message << "\nDifference = " <<
-        setw(30) << setprecision(22) << totalArea-4.0*PI*Sphere::radius2;
-    BOOST_REQUIRE_MESSAGE(abs(totalArea-4.0*PI*Sphere::radius2) < EPS, message.str());
+    double trueTotalArea = 4.0*PI*Sphere::radius2;
+    double diff = totalArea-trueTotalArea;
+    sprintf(message, "\nactual total area = %30.15f"
+                     "\nexpected total area = %30.15f"
+                     "\ndifference = %30.15f",
+            totalArea, trueTotalArea, diff);
+    BOOST_REQUIRE_MESSAGE(abs(diff) < EPS, message);
 
     Point point;
     Location loc;
 
     point.setCoordinate(1.1/Rad2Deg, 88.51/Rad2Deg, 0.0);
-    meshManager.checkLocation(point.getCoordinate(), loc, 1);
-    loc.dump();
+    meshManager.checkLocation(point.getCoordinate(), loc, &point);
     BOOST_REQUIRE(loc.i[RLLMesh::Full] == 1);
     BOOST_REQUIRE(loc.j[RLLMesh::Full] == 0);
     BOOST_REQUIRE(loc.i[RLLMesh::LonHalf] == 1);
@@ -59,7 +56,7 @@ BOOST_FIXTURE_TEST_CASE(MeshManager_Test, RLLMesh2D)
     BOOST_REQUIRE(loc.j.back() == 2);
 
     point.setCoordinate(1.1/Rad2Deg, 89.1/Rad2Deg, 0.0);
-    meshManager.checkLocation(point.getCoordinate(), loc, 1);
+    meshManager.checkLocation(point.getCoordinate(), loc, &point);
     BOOST_REQUIRE(loc.i[RLLMesh::Full] == 1);
     BOOST_REQUIRE(loc.j[RLLMesh::Full] == -1);
     BOOST_REQUIRE(loc.i[RLLMesh::LonHalf] == 1);
@@ -72,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(MeshManager_Test, RLLMesh2D)
     BOOST_REQUIRE(loc.j.back() == 1);
 
     point.setCoordinate(1.1/Rad2Deg, 89.6/Rad2Deg, 0.0);
-    meshManager.checkLocation(point.getCoordinate(), loc, 1);
+    meshManager.checkLocation(point.getCoordinate(), loc, &point);
     BOOST_REQUIRE(loc.i[RLLMesh::Full] == 1);
     BOOST_REQUIRE(loc.j[RLLMesh::Full] == -1);
     BOOST_REQUIRE(loc.i[RLLMesh::LonHalf] == 1);
@@ -85,7 +82,7 @@ BOOST_FIXTURE_TEST_CASE(MeshManager_Test, RLLMesh2D)
     BOOST_REQUIRE(loc.j.back() == 0);
 
     point.setCoordinate(1.1/Rad2Deg, 88.50/Rad2Deg, 0.0);
-    meshManager.checkLocation(point.getCoordinate(), loc, 1);
+    meshManager.checkLocation(point.getCoordinate(), loc, &point);
     BOOST_REQUIRE(loc.i[RLLMesh::Full] == 1);
     BOOST_REQUIRE(loc.j[RLLMesh::Full] == 0);
     BOOST_REQUIRE(loc.i[RLLMesh::LonHalf] == 1);
@@ -98,7 +95,7 @@ BOOST_FIXTURE_TEST_CASE(MeshManager_Test, RLLMesh2D)
     BOOST_REQUIRE(loc.j.back() == 3);
 
     point.setCoordinate(1.1/Rad2Deg, 88.0/Rad2Deg, 0.0);
-    meshManager.checkLocation(point.getCoordinate(), loc, 1);
+    meshManager.checkLocation(point.getCoordinate(), loc, &point);
     BOOST_REQUIRE(loc.i[RLLMesh::Full] == 1);
     BOOST_REQUIRE(loc.j[RLLMesh::Full] == 1);
     BOOST_REQUIRE(loc.i[RLLMesh::LonHalf] == 1);

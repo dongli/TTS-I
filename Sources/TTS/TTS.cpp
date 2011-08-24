@@ -4,15 +4,17 @@
 #include "TimeManager.h"
 #include "Constants.h"
 #include "Sphere.h"
+#ifdef DEBUG
+#include "DebugTools.h"
+#endif
+#include "splitEdge.h"
+#include "mergeEdge.h"
+#include "splitPolygon.h"
+
+list<EdgePointer *> TTS::needUpdateAngles;
 
 TTS::TTS()
 {
-    A0 = 0.5/Rad2Deg;
-    A1 = 20./Rad2Deg;
-    dA = A1-A0;
-    L0 = 0.05/Rad2Deg*Sphere::radius;
-    L1 = 0.1/Rad2Deg*Sphere::radius;
-    dL = L1-L0;
     REPORT_ONLINE("TTS")
 }
 
@@ -21,27 +23,14 @@ TTS::~TTS()
     REPORT_OFFLINE("TTS")
 }
 
-inline void TTS::changeEdgeEndPoint(Edge *edge, PointOrder order, Vertex *point,
-                                    MeshManager &meshManager,
-                                    const FlowManager &flowManager) const
+void TTS::init()
 {
-    Vertex *testPoint = edge->getTestPoint();
-    testPoint->Point::reinit();
-    edge->linkEndPoint(order, point);
-    edge->calcNormVector();
-    edge->calcLength();
-#ifdef DEBUG
-    assert(!edge->getEdgePointer(EdgeLeft)->next->isWrongAngle());
-    assert(!edge->getEdgePointer(EdgeRight)->next->isWrongAngle());
-#endif
-    edge->getEdgePointer(EdgeLeft)->resetAngle();
-    edge->getEdgePointer(EdgeLeft)->next->resetAngle();
-    edge->getEdgePointer(EdgeRight)->resetAngle();
-    edge->getEdgePointer(EdgeRight)->next->resetAngle();
-    Location loc;
-    meshManager.checkLocation(testPoint->getCoordinate(), loc);
-    testPoint->setLocation(loc);
-    track(meshManager, flowManager, testPoint);
+    A0 = 0.1/Rad2Deg;
+    A1 = 60.0/Rad2Deg;
+    dA = A1-A0;
+    L0 = 0.01/Rad2Deg*Sphere::radius;
+    L1 = 1.0/Rad2Deg*Sphere::radius;
+    dL = L1-L0;
 }
 
 void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
@@ -51,15 +40,16 @@ void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
     // for short hand
     PolygonManager &polygonManager = parcelManager.polygonManager;
     Polygon *polygon;
-    char fileName[30];
+    Vertex *vertex;
+    Edge *edge;
+    //char fileName[30];
 
-    // Note: This operation is very costly! Optimize it!
     meshManager.resetPointCounter();
 
     // -------------------------------------------------------------------------
     // check the location of each vertex at the first step
     if (TimeManager::isFirstStep()) {
-        Vertex *vertex = polygonManager.vertices.front();
+        vertex = polygonManager.vertices.front();
         for (int i = 0; i < polygonManager.vertices.size(); ++i) {
             Location loc;
             meshManager.checkLocation(vertex->getCoordinate(), loc);
@@ -70,27 +60,23 @@ void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
 
     // -------------------------------------------------------------------------
     // advect vertices of each parcel (polygon)
-    Vertex *vertex = polygonManager.vertices.front();
+    vertex = polygonManager.vertices.front();
     for (int i = 0; i < polygonManager.vertices.size(); ++i) {
-        track(meshManager, flowManager, vertex, vertex->getID());
+        track(meshManager, flowManager, vertex, true);
         vertex = vertex->next;
     }
-
-    // -------------------------------------------------------------------------
-    // handle parcel-splitting and parcel-merging
-    // Note: New vertices may be added by curvature guard.
     //sprintf(fileName, "debug_counters%5.5d.nc", TimeManager::getSteps());
     //meshManager.pointCounter.output(fileName);
 
     // -------------------------------------------------------------------------
-    Edge *edge = polygonManager.edges.front();
+    edge = polygonManager.edges.front();
     for (int i = 0; i < polygonManager.edges.size(); ++i) {
         edge->calcNormVector();
         edge->calcLength();
         edge = edge->next;
     }
 
-#ifdef DEBUG_OUTPUT
+#ifdef DEBUG_BACKUP
     sprintf(fileName, "tts_test%5.5d_1.nc", TimeManager::getSteps());
     polygonManager.output(fileName);
 #endif
@@ -125,14 +111,16 @@ void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
         polygon = polygon->next;
     }
 #ifdef DEBUG
+    static const double trueTotalArea = 4.0*PI*Sphere::radius2;
+    double bias = fabs(totalArea-trueTotalArea)/trueTotalArea;
     cout << "Total area bias: " << setw(30) << setprecision(16);
-    cout << fabs(totalArea-4.0*PI*Sphere::radius2) << endl;
-    assert(fabs(totalArea-4.0*PI*Sphere::radius2) < 1.0e-6);
+    cout << bias << endl;
+    assert(bias < 1.0e-6);
 #endif
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
-                Point *point, int ID) const
+                Point *point, bool isCount)
 {
     const Coordinate &x0 = point->getCoordinate();
     const Location &loc0 = point->getLocation();
@@ -172,8 +160,8 @@ void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
     // -------------------------------------------------------------------------
     v = (v1+v2*2.0+v3*2.0+v4)/6.0;
     meshManager.move(x0, x1, v, dt, loc0);
-    if (ID != -1) {
-        meshManager.checkLocation(x1, loc1, ID);
+    if (isCount) {
+        meshManager.checkLocation(x1, loc1, point);
     } else {
         meshManager.checkLocation(x1, loc1);
     }
@@ -181,6 +169,52 @@ void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
     // -------------------------------------------------------------------------
     point->setCoordinate(x1);
     point->setLocation(loc1);
+}
+
+void TTS::resetTasks()
+{
+    needUpdateAngles.clear();
+}
+
+void TTS::recordTask(TaskType type, EdgePointer *edgePointer)
+{
+    if (type == UpdateAngle) {
+        if (find(needUpdateAngles.begin(), needUpdateAngles.end(), edgePointer)
+            == needUpdateAngles.end()) {
+            edgePointer->resetAngle();
+            needUpdateAngles.push_back(edgePointer);
+        }
+    }
+}
+
+void TTS::deleteTask(TaskType type, EdgePointer *edgePointer)
+{
+    if (type == UpdateAngle) {
+#ifdef DEBUG
+        if (find(needUpdateAngles.begin(), needUpdateAngles.end(), edgePointer)
+            == needUpdateAngles.end()) {
+            REPORT_ERROR("The edge pointer does not contained in the list.")
+        }
+#endif
+        needUpdateAngles.remove(edgePointer);
+    }
+}
+
+void TTS::doTask(TaskType type, bool debug)
+{
+    if (type == UpdateAngle) {
+        list<EdgePointer *>::iterator it = needUpdateAngles.begin();
+        for (; it != needUpdateAngles.end(); ++it) {
+#ifdef DEBUG
+            assert((*it)->isAngleSet == false);
+#endif
+            (*it)->calcAngle();
+            if (debug) {
+                (*it)->dump();
+            }
+        }
+        needUpdateAngles.clear();
+    }
 }
 
 inline double TTS::angleThreshold(Edge *edge)
@@ -207,14 +241,13 @@ inline double TTS::angleThreshold(Edge *edge1, Edge *edge2)
 void TTS::guardCurvature(MeshManager &meshManager, const FlowManager &flowManager,
                          PolygonManager &polygonManager)
 {
-    Edge *edge;
-    Polygon *polygon;
-    int numEdge;
+    Edge *edge, *nextEdge, *endEdge;
     bool flag = false;
 
     // -------------------------------------------------------------------------
-    // check the location of each edge's test point at the first step
+    // some operations at the first step
     if (TimeManager::isFirstStep()) {
+        // check the location of each edge's test point
         edge = polygonManager.edges.front();
         for (int i = 0; i < polygonManager.edges.size(); ++i) {
             Vertex *testPoint = edge->getTestPoint();
@@ -226,58 +259,55 @@ void TTS::guardCurvature(MeshManager &meshManager, const FlowManager &flowManage
     }
 
     // -------------------------------------------------------------------------
-    // advect the test point
+    // advect test points
     edge = polygonManager.edges.front();
     for (int i = 0; i < polygonManager.edges.size(); ++i) {
         track(meshManager, flowManager, edge->getTestPoint());
         edge = edge->next;
     }
 
-#ifdef DEBUG_OUTPUT
-    char fileName[30];
-    sprintf(fileName, "tts_test%5.5d_2.nc", TimeManager::getSteps());
-    polygonManager.output(fileName);
-#endif
+    // -------------------------------------------------------------------------
+    // extract the vertex-edge approaching information
+    ApproachDetector::detect(meshManager, flowManager, polygonManager);
+    DebugTools::dump_watchers();
+
+    // -------------------------------------------------------------------------
+    // split polygons
+    if (splitPolygon(meshManager, flowManager, polygonManager))
+        flag = true;
+    DebugTools::dump_watchers();
 
     // -------------------------------------------------------------------------
     // edge-splitting
-    numEdge = polygonManager.edges.size();
     edge = polygonManager.edges.front();
-    for (int i = 0; i < numEdge; ++i) {
+    endEdge = polygonManager.edges.back();
+    while (edge != endEdge->next) {
+        nextEdge = edge->next;
         splitEdge(meshManager, flowManager, polygonManager, edge);
-        edge = edge->next;
+        edge = nextEdge;
     }
-
-    numEdge = polygonManager.edges.size();
-    edge = polygonManager.edges.front();
-    for (int i = 0; i < numEdge; ++i) {
-        if(handleSmallEdge(meshManager, flowManager, polygonManager, edge))
-            flag = true;
-        edge = edge->next;
-    }
-
-#ifdef DEBUG_OUTPUT
-    sprintf(fileName, "tts_test%5.5d_3.nc", TimeManager::getSteps());
-    polygonManager.output(fileName);
-#endif
+    DebugTools::dump_watchers();
 
     // -------------------------------------------------------------------------
     // edge-merging
-    polygon = polygonManager.polygons.front();
+    Polygon *polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
         if (mergeEdge(meshManager, flowManager, polygonManager, polygon))
             flag = true;
         polygon = polygon->next;
     }
+    DebugTools::dump_watchers();
 
     // -------------------------------------------------------------------------
-    // handle wrong angle
-    polygon = polygonManager.polygons.front();
-    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-        if (handleWrongAngle(meshManager, flowManager, polygonManager, polygon))
-            flag = true;
-        polygon = polygon->next;
-    }
+    // extract the vertex-edge approaching information
+    ApproachDetector::detect(meshManager, flowManager, polygonManager);
+    DebugTools::dump_watchers();
+
+    // -------------------------------------------------------------------------
+    // split polygons
+    if (splitPolygon(meshManager, flowManager, polygonManager))
+        flag = true;
+    DebugTools::dump_watchers();
 
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
@@ -286,8 +316,3 @@ void TTS::guardCurvature(MeshManager &meshManager, const FlowManager &flowManage
         polygonManager.edges.reindex();
     }
 }
-
-#include "splitEdge.h"
-#include "handleSmallEdge.h"
-#include "mergeEdge.h"
-#include "handleWrongAngle.h"

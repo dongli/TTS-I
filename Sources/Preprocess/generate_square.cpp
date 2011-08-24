@@ -37,7 +37,7 @@ int main(void)
         edges[i] = polygonManager.edges.at(i);
         edges[i]->linkEndPoint(FirstPoint, vertices[i]);
         edges[i]->linkEndPoint(SecondPoint, vertices[j]);
-        edges[i]->linkPolygon(EdgeLeft, polygonManager.polygons.front());
+        edges[i]->linkPolygon(OrientLeft, polygonManager.polygons.front());
     }
 
     polygonManager.output("square.nc");

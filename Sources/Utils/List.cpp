@@ -24,6 +24,11 @@ void ListElement<T>::reinit()
 }
 
 template <class T>
+void ListElement<T>::clean()
+{
+}
+
+template <class T>
 void ListElement<T>::setID(int ID)
 {
     this->ID = ID;
@@ -265,6 +270,7 @@ void List<T>::remove(T *elem)
             tail->endTag = ListElement<T>::Tail;
     }
     elem->endTag = ListElement<T>::Null;
+    elem->clean();
     freeElem.push(elem);
 }
 

@@ -17,8 +17,6 @@ public:
 
     void set(const Location &loc);
 
-    bool isOnPole() const { return onPole; }
-
 	void dump() const;
 
 	std::vector<int> i, j;

@@ -13,7 +13,7 @@ MeshManager::MeshManager()
 #ifndef UNIT_TEST
     REPORT_ONLINE("MeshManager")
 #endif
-    this->PoleR = 18.0/Rad2Deg;
+    this->PoleR = 5.0/Rad2Deg;
 }
 
 MeshManager::~MeshManager()
@@ -66,7 +66,8 @@ bool MeshManager::hasLayers() const
     return layers[0].isConstructed;
 }
 
-void MeshManager::checkLocation(const Coordinate &x, Location &loc, int ID)
+void MeshManager::checkLocation(const Coordinate &x, Location &loc,
+                                Point *point)
 {
     double rlat = PI05-x.getLat();
     if (fabs(rlat) < EPS) rlat = 0.0;
@@ -283,7 +284,7 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc, int ID)
     
     // -------------------------------------------------------------------------
     // count
-    if (ID != -1) {
+    if (point != NULL) {
         static double dlon = mesh[RLLMesh::BothHalf].dlon/pointCounter.numSubLon;
         ratio = (x.getLon()-mesh[RLLMesh::BothHalf].lon(loc.i[RLLMesh::BothHalf]))/dlon;
         loc.i.back() = int(floor(ratio))+loc.i[RLLMesh::BothHalf]*pointCounter.numSubLon;
@@ -296,7 +297,7 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc, int ID)
             ratio = (mesh[RLLMesh::BothHalf].lat(loc.j[RLLMesh::BothHalf])-x.getLat())/dlat;
             loc.j.back() = int(floor(ratio))+loc.j[RLLMesh::BothHalf]*pointCounter.numSubLat+1;
         }
-        pointCounter.count(loc, ID);
+        pointCounter.count(loc, point);
     }
 }
 

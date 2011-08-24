@@ -24,6 +24,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>tts_gamil_demo.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>unit_test_main.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -33,6 +38,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>557D139313BB048700BFDCEF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5581140B13EA44E5004AF124</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5581143113EA470B004AF124</key>
 		<dict>
 			<key>primary</key>
 			<true/>

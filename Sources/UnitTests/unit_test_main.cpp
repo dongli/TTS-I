@@ -1,14 +1,14 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MAIN
 #include "ReportMacros.h"
+#include "Constants.h"
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include <sstream>
 #include <iomanip>
 
 using namespace std;
 
-ostringstream message;
+char message[255];
 
 #include "unit_test_fixtures.h"
 #include "unit_test_mesh.h"

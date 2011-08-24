@@ -40,9 +40,9 @@ void TimeManager::setClock(Second dt, Second seconds, int steps)
     isClockSet = true;
 }
 
-void TimeManager::setEndStep(int endStep)
+void TimeManager::setEndStep(int step)
 {
-    this->endStep = endStep;
+    endStep = step;
 }
 
 void TimeManager::advance()

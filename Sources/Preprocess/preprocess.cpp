@@ -74,7 +74,7 @@ int main(int argc, char **argv)
                 }
                 // use old edge
                 edge = edgePointer->edge;
-                edge->linkPolygon(EdgeRight, polygon);
+                edge->linkPolygon(OrientRight, polygon);
             } else {
                 // set vertices
                 Vertex *v1, *v2;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
                 polygonManager.edges.append(&edge);
                 edge->linkEndPoint(FirstPoint, v1);
                 edge->linkEndPoint(SecondPoint, v2);
-                edge->linkPolygon(EdgeLeft, polygon);
+                edge->linkPolygon(OrientLeft, polygon);
             }
             linkDVT = linkDVT->next;
             incidentDT = incidentDT->next;

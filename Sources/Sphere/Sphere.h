@@ -4,7 +4,7 @@
 #include "Point.h"
 
 enum OrientStatus {
-    OrientLeft = 1, OrientRight = 2, OrientOn = 0
+    OrientLeft = 0, OrientRight = 1, OrientOn = 2
 };
 
 enum InCircleStatus {
@@ -14,15 +14,28 @@ enum InCircleStatus {
 class Sphere
 {
 public:
-	Sphere();
-	virtual ~Sphere();
+	Sphere() {};
+	virtual ~Sphere() {};
+
+    static void setRadius(double radius);
 
     static double calcDistance(const Coordinate &x1, const Coordinate &x2);
+
+    static bool project(const Coordinate &x1, const Coordinate &x2,
+                        const Coordinate &x3, Coordinate &x4, double &distance);
 
     static void rotate(const Coordinate &xp, const Coordinate &xo,
                        Coordinate &xr);
     static void inverseRotate(const Coordinate &xp, Coordinate &xo,
                               const Coordinate &xr);
+
+    static void calcIntersect(const Coordinate &x1, const Coordinate &x2,
+                              const Coordinate &x3, const Coordinate &x4,
+                              Coordinate &x5, Coordinate &x6);
+    static void calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
+                                 double lon, double &lat1, double &lat2);
+    static void calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
+                                 double lat, double &lon1, double &lon2);
 
     static OrientStatus orient(const Coordinate &, const Coordinate &,
                                const Coordinate &);
@@ -34,8 +47,8 @@ public:
 
     static int inTriangle(Point *, Point *, Point *, Point *);
 
-	static const double radius;
-	static const double radius2;
+	static double radius;
+	static double radius2;
 };
 
 #endif

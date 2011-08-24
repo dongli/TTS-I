@@ -147,7 +147,7 @@ Velocity PolarRingVelocity::interp(const Coordinate &x, const Location &loc,
             velocity.v = v[loc.pole](i, loc.k).get(timeLevel);
             return velocity;
         } else {
-            double weight = 1.0/distance;
+            double weight = 1.0/distance/distance;
             weightSum += weight;
             velocity.ut += weight*ut[loc.pole](i, loc.k).get(timeLevel);
             velocity.vt += weight*vt[loc.pole](i, loc.k).get(timeLevel);
@@ -155,18 +155,5 @@ Velocity PolarRingVelocity::interp(const Coordinate &x, const Location &loc,
     }
     velocity.ut /= weightSum;
     velocity.vt /= weightSum;
-#ifndef UNIT_TEST
-    if (!loc.onPole) {
-#endif
-        double sign = loc.pole == Location::NorthPole ? 1.0 : -1.0;
-        double sinLon = sin(x.getLon());
-        double cosLon = cos(x.getLon());
-        double sinLat = sin(x.getLat());
-        double sinLat2 = sinLat*sinLat;
-        velocity.u = sign*(-sinLon*velocity.ut+cosLon*velocity.vt)*sinLat;
-        velocity.v = sign*(-cosLon*velocity.ut-sinLon*velocity.vt)*sinLat2;
-#ifndef UNIT_TEST
-    }
-#endif
     return velocity;
 }

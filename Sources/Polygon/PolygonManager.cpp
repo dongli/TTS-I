@@ -15,6 +15,9 @@ PolygonManager::PolygonManager()
 
 PolygonManager::~PolygonManager()
 {
+    vertices.destroy();
+    edges.destroy();
+    polygons.destroy();
 #ifndef UNIT_TEST
     REPORT_OFFLINE("PolygonManager")
 #endif
@@ -159,11 +162,11 @@ void PolygonManager::construct(const string &fileName)
     int counter = 0;
     for (int i = 0; i < polygons.size(); ++i) {
         for (int j = 0; j < edgeNum[i]; ++j) {
-            EdgeOrient orient;
+            OrientStatus orient;
             if (edgeOnt[counter] == 0) {
-                orient = EdgeLeft;
+                orient = OrientLeft;
             } else if (edgeOnt[counter] == 1) {
-                orient = EdgeRight;
+                orient = OrientRight;
             } else {
                 string message = "Invalid edge_ont in file "+fileName+".";
                 REPORT_ERROR(message.c_str());

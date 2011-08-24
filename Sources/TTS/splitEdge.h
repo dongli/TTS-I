@@ -2,19 +2,21 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
                     PolygonManager &polygonManager, Edge *edge)
 {
     static int level = 0;
-    static const int maxLevel = 3;
-    static const double smallAngle = 20.0/Rad2Deg;
-    static const double smallLength = 0.01/Rad2Deg;
+    static const int maxLevel = 5;
+    static const double smallAngle = 90.0/Rad2Deg;
     static Edge *edge0;
-    static Polygon *polygon1; // for EdgeLeft polygon
-    static Polygon *polygon2; // for EdgeRight polygon
-    static EdgePointer *edgePointer1; // for EdgeLeft polygon
-    static EdgePointer *edgePointer2; // for EdgeRight polygon
+    static Polygon *polygon1; // for OrientLeft polygon
+    static Polygon *polygon2; // for OrientRight polygon
+    static EdgePointer *edgePointer1; // for OrientLeft polygon
+    static EdgePointer *edgePointer2; // for OrientRight polygon
+    static EdgePointer *newEdgePointer1;
+    static EdgePointer *newEdgePointer2;
     static EdgePointer *edgePointer1_prev;
     static EdgePointer *edgePointer1_next;
     static EdgePointer *edgePointer2_prev;
     static EdgePointer *edgePointer2_next;
     static double angleCheck[4];
+    Location loc;
 
     level++;
 
@@ -25,28 +27,22 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     const Coordinate &x1 = vertex1->getCoordinate(NewTimeLevel);
     const Coordinate &x2 = testPoint->getCoordinate(NewTimeLevel);
     const Coordinate &x3 = vertex2->getCoordinate(NewTimeLevel);
-    
+
     Vector vector1 = cross(x2.getCAR(), x1.getCAR());
     Vector vector2 = cross(x3.getCAR(), x2.getCAR());
     vector1 /= norm(vector1);
     vector2 /= norm(vector2);
     double a0 = angleThreshold(edge);
-    double angle = EdgePointer::calcAngle(vector1, vector2, *(testPoint));
+    double angle = EdgePointer::calcAngle(vector1, vector2, *testPoint);
     if (fabs(angle-PI) > a0) {
-#ifdef DEBUG_SPLITEDGE
-        cout << fabs(angle-PI)*Rad2Deg << endl;
-        cout << angleThreshold(edge)*Rad2Deg << endl;
-        cout << "Level " << level << " to be splitted edge:" << endl;
-        edge->dump();
-#endif
         // ---------------------------------------------------------------------
-        // record the polygons and edge pointers
+        // record the polygons and edge pointers, and reset the tasks
         if (level == 1) {
             edge0 = edge;
-            polygon1 = edge->getPolygon(EdgeLeft);
-            polygon2 = edge->getPolygon(EdgeRight);
-            edgePointer1 = edge->getEdgePointer(EdgeLeft);
-            edgePointer2 = edge->getEdgePointer(EdgeRight);
+            polygon1 = edge->getPolygon(OrientLeft);
+            polygon2 = edge->getPolygon(OrientRight);
+            edgePointer1 = edge->getEdgePointer(OrientLeft);
+            edgePointer2 = edge->getEdgePointer(OrientRight);
             edgePointer1_prev = edgePointer1->prev;
             edgePointer1_next = edgePointer1->next;
             edgePointer2_prev = edgePointer2->prev;
@@ -55,17 +51,14 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             angleCheck[1] = edgePointer1_next->getAngle();
             angleCheck[2] = edgePointer2->getAngle();
             angleCheck[3] = edgePointer2_next->getAngle();
+#ifdef TEST_NEW_FEATURE
+            resetTasks();
+#endif
         }
 
         // ---------------------------------------------------------------------
         // several checks if the splitting is ok
         if (level > maxLevel) {
-            level--;
-            return false;
-        }
-        if (vertex1->getLocation().isOnPole() ||
-            vertex2->getLocation().isOnPole() ||
-            testPoint->getLocation().isOnPole()) {
             level--;
             return false;
         }
@@ -117,30 +110,24 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
         Vertex *newVertex;
         polygonManager.vertices.append(&newVertex);
         *newVertex = *testPoint;
-#ifdef DEBUG_SPLITEDGE
-        newVertex->dump();
-#endif
+        // count the new vertex
+        meshManager.checkLocation(newVertex->getCoordinate(), loc, newVertex);
+        newVertex->setLocation(loc);
 
         // ---------------------------------------------------------------------
         Edge edge1, edge2; // temporary edges
 
         // ---------------------------------------------------------------------
         // link end points
-        vertex1->dislinkEdge(edge);
-        vertex2->dislinkEdge(edge);
         edge1.linkEndPoint(FirstPoint, vertex1);
         edge1.linkEndPoint(SecondPoint, newVertex);
         edge2.linkEndPoint(FirstPoint, newVertex);
         edge2.linkEndPoint(SecondPoint, vertex2);
-#ifdef DEBUG_SPLITEDGE
-        newVertex->dump();
-#endif
 
         // ---------------------------------------------------------------------
         // advect new test points
         Vertex *testPoint1 = edge1.getTestPoint();
         Vertex *testPoint2 = edge2.getTestPoint();
-        Location loc;
         meshManager.checkLocation(testPoint1->getCoordinate(), loc);
         testPoint1->setLocation(loc);
         meshManager.checkLocation(testPoint2->getCoordinate(), loc);
@@ -154,56 +141,44 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             // the edge has not been splitted, add the edge into the main
             // data structure
             Edge *newEdge;
-            if (edge0 != NULL) {
-                // when this is the first split, use the old edge
-                newEdge = edge0;
-            } else {
-                polygonManager.edges.append(&newEdge);
-            }
+            polygonManager.edges.append(&newEdge);
             *newEdge = edge1;
             vertex1->dislinkEdge(&edge1);
             vertex1->linkEdge(newEdge);
             newVertex->dislinkEdge(&edge1);
             newVertex->linkEdge(newEdge);
-#ifdef DEBUG_SPLITEDGE
-            newVertex->dump();
-#endif
             newEdge->calcNormVector();
             newEdge->calcLength();
-            EdgePointer *newEdgePointer;
             // -----------------------------------------------------------------
+            EdgePointer *newEdgePointer;
             // left polygon:
             if (polygon1 != NULL) {
-                if (edge0 != NULL) {
-                    // when this is the first split, use the old edge pointer
-                    newEdgePointer = edgePointer1;
-                    newEdgePointer->resetAngle();
-                } else {
+                if (edgePointer1 != NULL) {
                     polygon1->edgePointers.insert(edgePointer1, &newEdgePointer);
+                    polygon1->edgePointers.remove(edgePointer1);
+                    edgePointer1 = NULL;
+                } else {
+                    polygon1->edgePointers.insert(newEdgePointer1, &newEdgePointer);
                 }
-                newEdge->setPolygon(EdgeLeft, polygon1);
-                newEdge->setEdgePointer(EdgeLeft, newEdgePointer);
-                edgePointer1 = newEdgePointer;
+                newEdge->setPolygon(OrientLeft, polygon1);
+                newEdge->setEdgePointer(OrientLeft, newEdgePointer);
+                newEdgePointer1 = newEdgePointer;
             }
-            // -----------------------------------------------------------------
             // right polygon:
             if (polygon2 != NULL) {
-                if (edge0 != NULL) {
-                    // when this is the first split, use the old edge pointer
-                    newEdgePointer = edgePointer2;
-                    newEdgePointer->resetAngle();
-                } else {
+                if (edgePointer2 != NULL) {
                     polygon2->edgePointers.insert(&newEdgePointer, edgePointer2);
+                    polygon2->edgePointers.remove(edgePointer2);
+                    edgePointer2 = NULL;
+                } else {
+                    polygon2->edgePointers.insert(&newEdgePointer, newEdgePointer2);
                 }
-                newEdge->setPolygon(EdgeRight, polygon2);
-                newEdge->setEdgePointer(EdgeRight, newEdgePointer);
-                edgePointer2 = newEdgePointer;
+                newEdge->setPolygon(OrientRight, polygon2);
+                newEdge->setEdgePointer(OrientRight, newEdgePointer);
+                newEdgePointer2 = newEdgePointer;
             }
-            if (edge0 != NULL) edge0 = NULL;
-#ifdef DEBUG_SPLITEDGE
-            cout << "New edge:" << endl;
-            newEdge->dump();
-#endif
+            // -----------------------------------------------------------------
+            edge0->detectAgent.handover(newEdge);
         }
         if (!splitEdge(meshManager, flowManager, polygonManager, &edge2)) {
             // the edge has not been splitted, add the edge into the main
@@ -215,37 +190,33 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             vertex2->linkEdge(newEdge);
             newVertex->dislinkEdge(&edge2);
             newVertex->linkEdge(newEdge);
-#ifdef DEBUG_SPLITEDGE
-            newVertex->dump();
-#endif
-            
             newEdge->calcNormVector();
             newEdge->calcLength();
-            EdgePointer *newEdgePointer;
             // -----------------------------------------------------------------
+            EdgePointer *newEdgePointer;
             // left polygon:
             if (polygon1 != NULL) {
-                polygon1->edgePointers.insert(edgePointer1, &newEdgePointer);
-                newEdge->setPolygon(EdgeLeft, polygon1);
-                newEdge->setEdgePointer(EdgeLeft, newEdgePointer);
-                edgePointer1 = newEdgePointer;
+                polygon1->edgePointers.insert(newEdgePointer1, &newEdgePointer);
+                newEdge->setPolygon(OrientLeft, polygon1);
+                newEdge->setEdgePointer(OrientLeft, newEdgePointer);
+                newEdgePointer1 = newEdgePointer;
             }
-            // -----------------------------------------------------------------
             // right polygon:
             if (polygon2 != NULL) {
-                polygon2->edgePointers.insert(&newEdgePointer, edgePointer2);
-                newEdge->setPolygon(EdgeRight, polygon2);
-                newEdge->setEdgePointer(EdgeRight, newEdgePointer);
-                edgePointer2 = newEdgePointer;
+                polygon2->edgePointers.insert(&newEdgePointer, newEdgePointer2);
+                newEdge->setPolygon(OrientRight, polygon2);
+                newEdge->setEdgePointer(OrientRight, newEdgePointer);
+                newEdgePointer2 = newEdgePointer;
             }
-#ifdef DEBUG_SPLITEDGE
-            cout << "New edge:" << endl;
-            newEdge->dump();
-#endif
+            // -----------------------------------------------------------------
+            edge0->detectAgent.handover(newEdge);
         }
         level--;
         if (level == 0) {
-            // update the angles
+            polygonManager.edges.remove(edge);
+#ifdef TEST_NEW_FEATURE
+            doTask(UpdateAngle);
+#else
             EdgePointer *edgePointer;
             edgePointer = edgePointer1_prev->next;
             do {
@@ -257,8 +228,6 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
                 edgePointer->calcAngle();
                 edgePointer = edgePointer->next;
             } while (edgePointer != edgePointer2_next->next);
-#ifdef DEBUG_SPLITEDGE
-            cout << "************** quit splitEdge" << endl;
 #endif
         }
         return true;

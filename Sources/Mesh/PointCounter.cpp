@@ -5,10 +5,16 @@
 
 PointCounter::PointCounter()
 {
+#ifndef UNIT_TEST
+    REPORT_ONLINE("PointCounter")
+#endif
 }
 
 PointCounter::~PointCounter()
 {
+#ifndef UNIT_TEST
+    REPORT_OFFLINE("PointCounter")
+#endif
 }
 
 void PointCounter::construct(const Array<double, 1> &lon,
@@ -37,10 +43,10 @@ void PointCounter::construct(const Array<double, 1> &lon,
     latBnds(latBnds.size()-1) = -PI05;
     // -------------------------------------------------------------------------
     counters.resize(lonBnds.size()-1, latBnds.size()-1, 1);
-    pointIDs.resize(lonBnds.size()-1, latBnds.size()-1, 1);
-    for (int i = 0; i < pointIDs.extent(0); ++i)
-        for (int j = 0; j < pointIDs.extent(1); ++j)
-            pointIDs(i, j, 0).resize(10);
+    points.resize(lonBnds.size()-1, latBnds.size()-1, 1);
+    for (int i = 0; i < points.extent(0); ++i)
+        for (int j = 0; j < points.extent(1); ++j)
+            points(i, j, 0).resize(10);
     reset();
 }
 
@@ -49,12 +55,12 @@ void PointCounter::reset()
     counters = 0;
 }
 
-void PointCounter::count(const Location &loc, int ID)
+void PointCounter::count(const Location &loc, Point *point)
 {
     int l = counters(loc.i.back(), loc.j.back(), loc.k)++;
-    if (pointIDs(loc.i.back(), loc.j.back(), loc.k).size() <= l)
-        pointIDs(loc.i.back(), loc.j.back(), loc.k).resizeAndPreserve(l+10);
-    pointIDs(loc.i.back(), loc.j.back(), loc.k)(l) = ID;
+    if (points(loc.i.back(), loc.j.back(), loc.k).size() <= l)
+        points(loc.i.back(), loc.j.back(), loc.k).resizeAndPreserve(l+10);
+    points(loc.i.back(), loc.j.back(), loc.k)(l) = point;
 }
 
 void PointCounter::output(const string &fileName) const

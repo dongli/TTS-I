@@ -23,7 +23,7 @@ public:
     static Second getSeconds() { return clock.seconds; }
     static Second getTimeStep() { return clock.dt; }
     static int getSteps() { return clock.steps; }
-    void setEndStep(int);
+    static void setEndStep(int);
     static void advance();
 
 protected:

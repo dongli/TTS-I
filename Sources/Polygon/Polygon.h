@@ -4,6 +4,8 @@
 #include "List.h"
 #include "Edge.h"
 
+class PolygonManager;
+
 class Polygon : public ListElement<Polygon>
 {
 public:
@@ -17,7 +19,10 @@ public:
         return area.get(timeLevel);
     }
 
-    void dump() const;
+    static void handleLinePolygon(PolygonManager &, Polygon *);
+    static void handlePointPolygon(PolygonManager &, Polygon *);
+
+    void dump(const string &fileName = "") const;
 
     List<EdgePointer> edgePointers;
 

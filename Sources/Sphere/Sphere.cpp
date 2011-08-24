@@ -3,8 +3,14 @@
 #include "Constants.h"
 #include <cmath>
 
-const double Sphere::radius = 1.0;
-const double Sphere::radius2 = radius*radius;
+double Sphere::radius = 1.0;
+double Sphere::radius2 = radius*radius;
+
+void Sphere::setRadius(double r)
+{
+    radius = r;
+    radius2 = r*r;
+}
 
 double Sphere::calcDistance(const Coordinate &x1, const Coordinate &x2)
 {
@@ -12,6 +18,59 @@ double Sphere::calcDistance(const Coordinate &x1, const Coordinate &x2)
     double tmp1 = sin(x1.getLat())*sin(x2.getLat());
     double tmp2 = cos(x1.getLat())*cos(x2.getLat())*cos(dlon);
     return radius*acos(tmp1+tmp2);
+}
+
+bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
+                     const Coordinate &x3, Coordinate &x4, double &distance)
+{
+    Coordinate x1r, x2r, x3r, x4r, xpr, xp;
+    double lon;
+    // find the rotating north pole that make arc x1->x2 equator
+    rotate(x1, x2, x2r);
+    xpr.set(x2r.getLon()-PI05, 0.0);
+    inverseRotate(x1, xp, xpr);
+    // rotate according to rotating north pole
+    rotate(xp, x1, x1r);
+    rotate(xp, x2, x2r);
+    rotate(xp, x3, x3r);
+    if (fabs(x3r.getLat()-PI05) < EPS) {
+        REPORT_ERROR("Ambiguous point!")
+    }
+    if (x1r.getLon() < x2r.getLon()) {
+        if (x3r.getLon() >= x2r.getLon() || x3r.getLon() <= x1r.getLon()) {
+            distance = fabs(x3r.getLat())*Sphere::radius;
+            x4r.set(x3r.getLon(), 0.0);
+            inverseRotate(xp, x4, x4r);
+            return true;
+        }
+        lon = x3r.getLon()-PI;
+        if (lon < 0.0)
+            lon += PI2;
+        if (lon >= x2r.getLon() || lon <= x1r.getLon()) {
+            distance = (PI-fabs(x3r.getLat()))*Sphere::radius;
+            x4r.set(lon, 0.0);
+            inverseRotate(xp, x4, x4r);
+            return true;
+        }
+    } else {
+        if (x3r.getLon() >= x2r.getLon() && x3r.getLon() <= x1r.getLon()) {
+            distance = fabs(x3r.getLat())*Sphere::radius;
+            x4r.set(x3r.getLon(), 0.0);
+            inverseRotate(xp, x4, x4r);
+            return true;
+        }
+        lon = x3r.getLon()-PI;
+        if (lon < 0.0)
+            lon += PI2;
+        if (lon >= x2r.getLon() && lon <= x1r.getLon()) {
+            distance = (PI-fabs(x3r.getLat()))*Sphere::radius;
+            x4r.set(lon, 0.0);
+            inverseRotate(xp, x4, x4r);
+            return true;
+        }
+    }
+    distance = -999;
+    return false;
 }
 
 void Sphere::rotate(const Coordinate &xp, const Coordinate &xo, Coordinate &xr)
@@ -54,13 +113,12 @@ void Sphere::inverseRotate(const Coordinate &xp, Coordinate &xo,
     double cosLatR = cos(xr.getLat());
     double sinLatR = sin(xr.getLat());
 
-    static const double eps = 1.0e-15;
-
     double tmp1, tmp2, tmp3;
 
     tmp1 = cosLatR*sinLonR;
     tmp2 = sinLatR*cosLatP+cosLatR*cosLonR*sinLatP;
 #ifdef DEBUG
+    static const double eps = 1.0e-15;
     if (fabs(tmp2) < eps) {
         //REPORT_WARNING("tmp2 is near zero!")
         tmp2 = 0.0;
@@ -82,16 +140,94 @@ void Sphere::inverseRotate(const Coordinate &xp, Coordinate &xo,
     xo.set(lon, lat, xr.getLev());
 }
 
-OrientStatus Sphere::orient(const Coordinate &X1, const Coordinate &X2,
-                            const Coordinate &X3)
+void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
+                           const Coordinate &x3, const Coordinate &x4,
+                           Coordinate &x5, Coordinate &x6)
 {
-    double det;
-    static double eps = 1.0e-16;
+    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
+    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
+    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
+    double d =  x3.getY()*x4.getZ()-x3.getZ()*x4.getY();
+    double e = -x3.getX()*x4.getZ()+x3.getZ()*x4.getX();
+    double f =  x3.getX()*x4.getY()-x3.getY()*x4.getX();
 
-    det = X3.getX()*(X1.getY()*X2.getZ()-X1.getZ()*X2.getY())-
-          X3.getY()*(X1.getX()*X2.getZ()-X1.getZ()*X2.getX())+
-          X3.getZ()*(X1.getX()*X2.getY()-X1.getY()*X2.getX());
-    
+    double h = (d*c-f*a)/(e*a-d*b);
+    double g = -(b*h+c)/a;
+    double z = sqrt(radius2/(g*g+h*h+1.0));
+    double x = g*z;
+    double y = h*z;
+
+    double lat1 = asin(z/radius);
+    double lat2 = -lat1;
+    double lon1 = atan2(y, x);
+    double lon2 = -lon1;
+
+    if (lon1 < 0.0) lon1 += PI2;
+    if (lon1 > PI2) lon1 -= PI2;
+    if (lon2 < 0.0) lon2 += PI2;
+    if (lon2 > PI2) lon2 -= PI2;
+
+    x5.set(lon1, lat1);
+    x6.set(lon2, lat2);
+}
+
+void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
+                              double lon, double &lat1, double &lat2)
+{
+    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
+    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
+    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
+
+    Coordinate tmp;
+
+    tmp.set(lon, 0.0);
+
+    double d = -tmp.getY();
+    double e =  tmp.getX();
+    double f =  0.0;
+
+    double h = (d*c-f*a)/(e*a-d*b);
+    double g = -(b*h+c)/a;
+    double z = sqrt(radius2/(g*g+h*h+1.0));
+
+    lat1 = asin(z/radius);
+    lat2 = -lat1;
+}
+
+void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
+                              double lat, double &lon1, double &lon2)
+{
+    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
+    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
+    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
+
+    double z = radius*sin(lat);
+    double z2 = z*z;
+    double a2 = a*a;
+    double a2_plus_b2 = a2+b*b;
+    double d = b*c*z/a2_plus_b2;
+    double e = sqrt((radius2-z2)*a2/a2_plus_b2-c*c*z2/a2_plus_b2+d*d);
+
+    double y1 = -d+e;
+    double y2 = -d-e;
+
+    lon1 = atan2(y1, (-b*y1-c*z)/a);
+    lon2 = atan2(y2, (-b*y2-c*z)/a);
+    if (lon1 < 0.0) lon1 += PI2;
+    if (lon1 > PI2) lon1 -= PI2;
+    if (lon2 < 0.0) lon2 += PI2;
+    if (lon2 > PI2) lon2 -= PI2;
+}
+
+OrientStatus Sphere::orient(const Coordinate &x1, const Coordinate &x2,
+                            const Coordinate &x3)
+{
+    static const double eps = 1.0e-16;
+
+    double det = x3.getX()*(x1.getY()*x2.getZ()-x1.getZ()*x2.getY())-
+                 x3.getY()*(x1.getX()*x2.getZ()-x1.getZ()*x2.getX())+
+                 x3.getZ()*(x1.getX()*x2.getY()-x1.getY()*x2.getX());
+
     if (det > eps) {
         return OrientLeft;
     } else if (-det > eps) {
@@ -155,9 +291,9 @@ InCircleStatus Sphere::inCircle(Point *point1, Point *point2,
     points[0] = point1;
     points[1] = point2;
     points[2] = point3;
-    
+
     double dx[3], dy[3], dz[3];
-    
+
     for (int i = 0; i < 3; ++i) {
         dx[i] = points[i]->getCoordinate().getX()-
                 point->getCoordinate().getX();
@@ -166,13 +302,13 @@ InCircleStatus Sphere::inCircle(Point *point1, Point *point2,
         dz[i] = points[i]->getCoordinate().getZ()-
                 point->getCoordinate().getZ();
     }
-    
+
     double det = dx[2]*(dy[1]*dz[0]-dy[0]*dz[1])-
                  dy[2]*(dx[1]*dz[0]-dx[0]*dz[1])+
                  dz[2]*(dx[1]*dy[0]-dx[0]*dy[1]);
 
     static double eps = 1.0e-16; // Tune it!
-    
+
     if (det > eps) {
         return InsideCircle;
     } else if (-det > eps) {
@@ -196,7 +332,7 @@ int Sphere::inTriangle(Point *vertex1, Point *vertex2,
 
     int ip1, im1, k = -1, onPlane[2], res;
     OrientStatus ret;
-    
+
     for (int i = 0; i < 3; ++i) {
         ip1 = i != 2 ? i+1 : 0;
         ret = Sphere::orient(vertices[i], vertices[ip1], point);

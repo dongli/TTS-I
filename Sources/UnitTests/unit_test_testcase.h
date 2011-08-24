@@ -111,8 +111,15 @@ BOOST_FIXTURE_TEST_CASE(SolidRotation_Test, VelocityField2D)
     file.close();
 }
 
-BOOST_FIXTURE_TEST_CASE(StaticVortices_Test, Fixture_StaticVortices)
+BOOST_FIXTURE_TEST_CASE(StaticVortices_Test, VelocityField2D)
 {
+    TimeManager timeManager;
+    SolidRotation testCase;
+
+    timeManager.setClock(1800.0);
+    testCase.calcVelocityField(flowManager);
+    flowManager.output("test_static_vortices_flow.nc");
+
     int numLon = 480, numLat = 360;
     double lon[numLon], lat[numLat];
     double dlon = PI2/numLon, dlat = PI/(numLat-1);
@@ -127,9 +134,9 @@ BOOST_FIXTURE_TEST_CASE(StaticVortices_Test, Fixture_StaticVortices)
             Coordinate x;
             Velocity velocity;
             x.set(lon[i], lat[j]);
-            velocityField.meshManager.checkLocation(x, loc);
-            velocityField.flowManager.getVelocity(x, loc, NewTimeLevel,
-                                                    velocity, Velocity::LonLatSpace);
+            meshManager.checkLocation(x, loc);
+            flowManager.getVelocity(x, loc, NewTimeLevel,
+                                    velocity, Velocity::LonLatSpace);
             u(j, i) = velocity.u;
             v(j, i) = velocity.v;
         }

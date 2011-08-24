@@ -24,7 +24,7 @@ public:
 
     const RLLMesh &getMesh(RLLMesh::MeshType type) const { return mesh[type]; }
 
-    void checkLocation(const Coordinate &x, Location &loc, int ID = -1);
+    void checkLocation(const Coordinate &x, Location &loc, Point *point = NULL);
 
     void move(const Coordinate &x0, Coordinate &x1, const Velocity &v,
               Second dt, const Location &loc) const;

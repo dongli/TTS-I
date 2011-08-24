@@ -1,11 +1,3 @@
-/*
- *  ReportMacros.h
- *
- *  Created by DONG Li on 11-2-20.
- *  Copyright 2011 LASG/IAP. All rights reserved.
- *
- */
-
 #ifndef _ReportMacros_h_
 #define _ReportMacros_h_
 
@@ -45,6 +37,11 @@ using std::endl;
 #define REPORT_OFFLINE(CLASS) \
 { \
     cout << "[Notice]: " << CLASS << " is offline." << endl; \
+}
+
+#define SEPERATOR \
+{ \
+    cout << "-------------------------------------------------------" << endl; \
 }
 
 #endif

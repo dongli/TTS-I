@@ -1,4 +1,3 @@
-#include "Constants.h"
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "MovingVortices.h"
@@ -57,48 +56,4 @@ struct VelocityField2D {
     RLLMesh2D rll;
     MeshManager meshManager;
     FlowManager flowManager;
-};
-
-struct Fixture_MovingVortices {
-    Fixture_MovingVortices() {
-        timeManager.setClock(1800.0);
-        testCase.calcVelocityField(velocityField.flowManager);
-    }
-    ~Fixture_MovingVortices() {}
-
-    void Fixture_MovingVortices_advance() {
-        timeManager.advance();
-        testCase.calcVelocityField(velocityField.flowManager);
-    }
-
-    VelocityField2D velocityField;
-    TimeManager timeManager;
-    MovingVortices testCase;
-};
-
-struct Fixture_SolidRotation {
-    Fixture_SolidRotation() {
-        timeManager.setClock(1800.0);
-        testCase.calcVelocityField(velocityField.flowManager);
-    }
-    ~Fixture_SolidRotation() {}
-    
-    void Fixture_SolidRotation_advance() {
-        timeManager.advance();
-        testCase.calcVelocityField(velocityField.flowManager);
-    }
-    
-    VelocityField2D velocityField;
-    TimeManager timeManager;
-    SolidRotation testCase;
-};
-
-struct Fixture_StaticVortices {
-    Fixture_StaticVortices() {
-        testCase.calcVelocityField(velocityField.flowManager);
-    }
-    ~Fixture_StaticVortices() {}
-
-    VelocityField2D velocityField;
-    StaticVortices testCase;
 };

@@ -2,49 +2,48 @@
 #include "Polygon.h"
 #include "Constants.h"
 #include "Sphere.h"
-
-#ifdef DEBUG
-#include "TimeManager.h"
-
-inline void catchEdge(Edge *edge)
-{
-    if (edge->getEndPoint(FirstPoint) == NULL ||
-        edge->getEndPoint(SecondPoint) == NULL)
-        return;
-    if (edge->getEndPoint(FirstPoint)->getID() == 3235 &&
-        edge->getEndPoint(SecondPoint)->getID() == 36465)
-        REPORT_DEBUG
-    if (edge->getPolygon(EdgeLeft) == NULL ||
-        edge->getPolygon(EdgeRight) == NULL)    
-        return;
-    if (edge->getEndPoint(FirstPoint)->getID() == 3235 &&
-        edge->getEndPoint(SecondPoint)->getID() == 36465 &&
-        edge->getPolygon(EdgeLeft)->getID() == 3235 &&
-        edge->getPolygon(EdgeRight)->getID() == 3363)
-        REPORT_DEBUG
-}
+#ifdef TTS_ONLINE
+#include "TTS.h"
 #endif
 
 Edge::Edge()
 {
+#ifdef TTS_ONLINE
+    detectAgent.checkin(this);
+#endif
     normVector.init();
     reinit();
 }
 
 Edge::~Edge()
 {
-    delete testPoint;
 }
 
 void Edge::reinit()
 {
-    testPoint = new Vertex;
     for (int i = 0; i < 2; ++i) {
         endPoints[i] = NULL;
         polygons[i] = NULL;
         edgePointers[i] = NULL;
     }
     isNormVectorSet = false;
+#ifdef TTS_ONLINE
+    detectAgent.reinit();
+#endif
+}
+
+void Edge::clean()
+{
+    for (int i = 0; i < 2; ++i) {
+        if (endPoints[i] != NULL) {
+            endPoints[i]->dislinkEdge(this);
+        } else {
+            REPORT_WARNING("End point is not created yet!")
+        }
+    }
+#ifdef TTS_ONLINE
+    detectAgent.clean();
+#endif
 }
 
 void Edge::linkEndPoint(PointOrder order, Vertex *point)
@@ -67,11 +66,39 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point)
         double dlat = (PI05-xr.getLat())*0.5;
         xr.set(xr.getLon(), PI05-dlat);
         Sphere::inverseRotate(x1, xo, xr);
-        testPoint->setCoordinate(xo, NewTimeLevel);
+        testPoint.setCoordinate(xo, NewTimeLevel);
     }
 }
 
-void Edge::linkPolygon(EdgeOrient orient, Polygon *polygon)
+#ifdef TTS_ONLINE
+void Edge::changeEndPoint(PointOrder order, Vertex *point,
+                          MeshManager &meshManager,
+                          const FlowManager &flowManager)
+{
+    Vertex *testPoint = getTestPoint();
+    testPoint->Point::reinit();
+    linkEndPoint(order, point);
+    calcNormVector();
+    calcLength();
+#ifdef TEST_NEW_FEATURE
+    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientLeft));
+    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientLeft)->next);
+    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientRight));
+    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientRight)->next);
+#else
+    getEdgePointer(OrientLeft)->resetAngle();
+    getEdgePointer(OrientLeft)->next->resetAngle();
+    getEdgePointer(OrientRight)->resetAngle();
+    getEdgePointer(OrientRight)->next->resetAngle();
+#endif
+    Location loc;
+    meshManager.checkLocation(testPoint->getCoordinate(), loc);
+    testPoint->setLocation(loc);
+    TTS::track(meshManager, flowManager, testPoint);
+}
+#endif
+
+void Edge::linkPolygon(OrientStatus orient, Polygon *polygon)
 {
 #ifdef DEBUG
     assert(polygons[orient] == NULL);
@@ -85,16 +112,12 @@ void Edge::linkPolygon(EdgeOrient orient, Polygon *polygon)
     edgePointer->orient = orient;
 }
 
-void Edge::setPolygon(EdgeOrient orient, Polygon *polygon)
+void Edge::setPolygon(OrientStatus orient, Polygon *polygon)
 {
-#ifdef DEBUG
-    assert(polygons[orient] == NULL);
-    assert(edgePointers[orient] == NULL);
-#endif
     polygons[orient] = polygon;
 }
 
-void Edge::setEdgePointer(EdgeOrient orient, EdgePointer *edgePointer)
+void Edge::setEdgePointer(OrientStatus orient, EdgePointer *edgePointer)
 {
 #ifdef DEBUG
     assert(polygons[orient] != NULL);
@@ -102,8 +125,13 @@ void Edge::setEdgePointer(EdgeOrient orient, EdgePointer *edgePointer)
     edgePointers[orient] = edgePointer;
     edgePointer->edge = this;
     edgePointer->orient = orient;
+#ifdef TEST_NEW_FEATURE
+    TTS::recordTask(TTS::UpdateAngle, edgePointer);
+    TTS::recordTask(TTS::UpdateAngle, edgePointer->next);
+#else
     edgePointer->resetAngle();
     edgePointer->next->resetAngle();
+#endif
 }
 
 void Edge::calcNormVector()
@@ -149,7 +177,7 @@ Edge &Edge::operator=(const Edge &that)
             polygons[i] = that.polygons[i];
             edgePointers[i] = that.edgePointers[i];
         }
-        *testPoint = *(that.testPoint);
+        testPoint = that.testPoint;
         normVector = that.normVector;
         isNormVectorSet = that.isNormVectorSet;
     }
@@ -170,29 +198,29 @@ void Edge::dump(int indentLevel) const
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
     cout << "  Left Polygon ID:       ";
-    if (polygons[EdgeLeft] != NULL)
-        cout << polygons[EdgeLeft]->getID() << endl;
+    if (polygons[OrientLeft] != NULL)
+        cout << polygons[OrientLeft]->getID() << endl;
     else
         cout << "NONE" << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
     cout << "  Right Polygon ID:      ";
-    if (polygons[EdgeRight] != NULL)
-        cout << polygons[EdgeRight]->getID() << endl;
+    if (polygons[OrientRight] != NULL)
+        cout << polygons[OrientRight]->getID() << endl;
     else
         cout << "NONE" << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
     cout << "  Left Edge Pointer ID:  ";
-    if (edgePointers[EdgeLeft] != NULL)
-        cout << edgePointers[EdgeLeft]->getID() << endl;
+    if (edgePointers[OrientLeft] != NULL)
+        cout << edgePointers[OrientLeft]->getID() << endl;
     else
         cout << "NONE" << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
     cout << "  Right Edge Pointer ID: ";
-    if (edgePointers[EdgeRight] != NULL)
-        cout << edgePointers[EdgeRight]->getID() << endl;
+    if (edgePointers[OrientRight] != NULL)
+        cout << edgePointers[OrientRight]->getID() << endl;
     else
         cout << "NONE" << endl;
 }
@@ -215,24 +243,25 @@ void EdgePointer::reinit()
     resetAngle();
 }
 
-void EdgePointer::changeEdge(Edge *newEdge, EdgeOrient newOrient)
-{
-    edge = newEdge;
-    newEdge->setEdgePointer(newOrient, this);
-    orient = newOrient;
-    resetAngle();
-    //prev->resetAngle();
-    next->resetAngle();
-    //calcAngle();
-}
-
 Vertex *EdgePointer::getEndPoint(PointOrder order) const
 {
-    if (orient == EdgeLeft) {
+    if (orient == OrientLeft) {
         return edge->getEndPoint(order);
-    } else if (orient == EdgeRight) {
+    } else if (orient == OrientRight) {
         order = order == FirstPoint ? SecondPoint : FirstPoint;
         return edge->getEndPoint(order);
+    } else {
+        REPORT_ERROR("Unknown order.")
+    }
+}
+
+Polygon *EdgePointer::getPolygon(OrientStatus orient) const
+{
+    if (this->orient == OrientLeft) {
+        return edge->getPolygon(orient);
+    } else if (this->orient == OrientRight) {
+        orient = orient == OrientLeft ? OrientRight : OrientLeft;
+        return edge->getPolygon(orient);
     } else {
         REPORT_ERROR("Unknown orient.")
     }
@@ -259,14 +288,14 @@ double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2,
 
 Vector EdgePointer::getNormVector(TimeLevel timeLevel) const
 {
-    if (orient == EdgeLeft) {
+    if (orient == OrientLeft) {
         if (timeLevel == OldTimeLevel)
             return edge->normVector.getOld();
         else if (timeLevel == NewTimeLevel)
             return edge->normVector.getNew();
         else
             REPORT_ERROR("Unknown time level.")
-    } else if (orient == EdgeRight) {
+    } else if (orient == OrientRight) {
         if (timeLevel == OldTimeLevel)
             return -edge->normVector.getOld();
         else if (timeLevel == NewTimeLevel)
@@ -284,14 +313,24 @@ void EdgePointer::calcAngle()
         this->angle.save();
     Vertex *point = getEndPoint(FirstPoint);
     double angle = calcAngle(prev->getNormVector(), getNormVector(), *point);
-    if (angle > 359/Rad2Deg)
+    if (angle > 350/Rad2Deg) {
+        cout << "Left polygon ID: " << edge->polygons[0]->getID() << endl;
+        cout << "Right polygon ID: " << edge->polygons[1]->getID() << endl;
+        edge->polygons[0]->dump("left_polygon");
+        edge->polygons[1]->dump("right_polygon");
         REPORT_DEBUG
+    }
     this->angle.setNew(angle);
     if (!isAngleSet) {
         angle = calcAngle(prev->getNormVector(OldTimeLevel),
                           getNormVector(OldTimeLevel), *point);
-        if (angle > 359/Rad2Deg)
+        if (angle > 350/Rad2Deg) {
+            cout << "Left polygon ID: " << edge->polygons[0]->getID() << endl;
+            cout << "Right polygon ID: " << edge->polygons[1]->getID() << endl;
+            edge->polygons[0]->dump("left_polygon");
+            edge->polygons[1]->dump("right_polygon");
             REPORT_DEBUG
+        }
         this->angle.setOld(angle);
         isAngleSet = true;
     }
@@ -307,8 +346,26 @@ void EdgePointer::resetAngle()
 bool EdgePointer::isWrongAngle() const
 {
     static const double dA = 180.0/Rad2Deg;
+
     double angleDiff = angle.getNew()-angle.getOld();
     if (fabs(angleDiff) > dA) {
+#ifdef DEBUG_BACKUP
+        if (angle.getOld() > 20.0/Rad2Deg && angle.getOld() < 340.0/Rad2Deg) {
+            REPORT_WARNING("This may be not a wrong angle situation!")
+            cout << "Old angle: " << angle.getOld()*Rad2Deg << endl;
+            cout << "New angle: " << angle.getNew()*Rad2Deg << endl;
+            cout << "Edge ID: " << edge->getID() << endl;
+            cout << "First point ID: " << edge->getEndPoint(FirstPoint)->getID() << endl;
+            cout << "Second point ID: " << edge->getEndPoint(SecondPoint)->getID() << endl;
+            cout << "Left polygon ID: " << edge->getPolygon(OrientLeft)->getID() << endl;
+            cout << "Right polygon ID: " << edge->getPolygon(OrientRight)->getID() << endl;
+            cout << "Dump of the two polygons:" << endl;
+            cout << "Left:" << endl;
+            edge->getPolygon(OrientLeft)->dump();
+            cout << "Right:" << endl;
+            edge->getPolygon(OrientRight)->dump();
+        }
+#endif
         return true;
     } else {
         return false;
@@ -326,11 +383,36 @@ bool EdgePointer::isTangly() const
     return false;
 }
 
+EdgePointer &EdgePointer::operator=(const EdgePointer &that)
+{
+    if (this != &that) {
+        edge = that.edge;
+        orient = that.orient;
+        angle = that.angle;
+        isAngleSet = that.isAngleSet;
+    }
+    return *this;
+}
+
+void EdgePointer::replace(EdgePointer *oldEdgePointer)
+{
+    *this = *oldEdgePointer;
+    edge->edgePointers[oldEdgePointer->orient] = this;
+}
+
 void EdgePointer::dump(int indentLevel) const
 {
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
     cout << "Edge Pointer " << getID() << ":" << endl;
+    for (int i = 0; i < indentLevel; ++i)
+        cout << "  ";
+    cout << "  Polygon ID: ";
+    if (orient == OrientLeft) {
+        cout << edge->getPolygon(OrientLeft)->getID() << endl;
+    } else {
+        cout << edge->getPolygon(OrientRight)->getID() << endl;
+    }
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
     cout << "  Linked Edge ID:     " << edge->getID() << endl;
@@ -342,7 +424,7 @@ void EdgePointer::dump(int indentLevel) const
     cout << "    Second Point ID:  " << edge->getEndPoint(SecondPoint)->getID() << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
-    string orientStr = orient == EdgeLeft ? "Left" : "Right";
+    string orientStr = orient == OrientLeft ? "Left" : "Right";
     cout << "  Orientation:        " << orientStr << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
@@ -352,8 +434,8 @@ void EdgePointer::dump(int indentLevel) const
     cout << "  Second Point ID: " << getEndPoint(SecondPoint)->getID() << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
-    cout << "  Old Angle:       " << getAngle(OldTimeLevel) << endl;
+    cout << "  Old Angle:       " << getAngle(OldTimeLevel)*Rad2Deg << endl;
     for (int i = 0; i < indentLevel; ++i)
         cout << "  ";
-    cout << "  New Angle:       " << getAngle(NewTimeLevel) << endl;
+    cout << "  New Angle:       " << getAngle(NewTimeLevel)*Rad2Deg << endl;
 }

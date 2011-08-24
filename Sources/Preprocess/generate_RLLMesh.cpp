@@ -1,3 +1,4 @@
+#include "Constants.h"
 #include <netcdfcpp.h>
 #include <cmath>
 #include <sstream>
@@ -6,10 +7,7 @@ using namespace std;
 
 static const int numLon = 128;
 static const int numLat = 60;
-static const bool hasPoles = false;
-static const double PI = 4.0*atan(1.0);
-static const double PI05 = PI*0.5;
-static const double PI2 = PI*2.0;
+static const bool hasPoles = true;
 static const double radius = 6371.229e3;
 static const double radius2 = radius*radius;
 
