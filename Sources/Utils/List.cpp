@@ -200,6 +200,77 @@ void List<T>::insert(T** elem, T* elem1)
 }
 
 template <class T>
+void List<T>::move(T **elem, T *elem1)
+{
+    T *tmp1 = (*elem)->prev;
+    T *tmp2 = (*elem)->next;
+    if (tmp1 != NULL) {
+        tmp1->next = tmp2;
+        if ((*elem)->endTag == ListElement<T>::Tail) {
+            tmp1->endTag = ListElement<T>::Tail;
+            tail = tmp1;
+        } else
+            tmp1->endTag = ListElement<T>::Body;
+    }
+    if (tmp2 != NULL) {
+        tmp2->prev = tmp1;
+        if ((*elem)->endTag == ListElement<T>::Head) {
+            tmp2->endTag = ListElement<T>::Head;
+            head = tmp2;
+        } else
+            tmp2->endTag = ListElement<T>::Body;
+    }
+    // -------------------------------------------------------------------------
+    (*elem)->prev = elem1->prev;
+    elem1->prev = (*elem);
+    (*elem)->next = elem1;
+    if ((*elem)->prev != NULL)
+        (*elem)->prev->next = *elem;
+    if (elem1->endTag == ListElement<T>::Head) {
+        (*elem)->endTag = ListElement<T>::Head;
+        elem1->endTag = ListElement<T>::Body;
+        head = *elem;
+    } else {
+        (*elem)->endTag = ListElement<T>::Body;
+    }
+}
+
+template <class T>
+void List<T>::move(T *elem1, T **elem)
+{
+    T *tmp1 = (*elem)->prev;
+    T *tmp2 = (*elem)->next;
+    if (tmp1 != NULL) {
+        tmp1->next = tmp2;
+        if ((*elem)->endTag == ListElement<T>::Tail) {
+            tmp1->endTag = ListElement<T>::Tail;
+            tail = tmp1;
+        } else
+            tmp1->endTag = ListElement<T>::Body;
+    }
+    if (tmp2 != NULL) {
+        tmp2->prev = tmp1;
+        if ((*elem)->endTag == ListElement<T>::Head) {
+            tmp2->endTag = ListElement<T>::Head;
+            head = tmp2;
+        } else
+            tmp2->endTag = ListElement<T>::Body;
+    }
+    // -------------------------------------------------------------------------
+    (*elem)->next = elem1->next;
+    elem1->next = (*elem);
+    (*elem)->prev = elem1;
+    if ((*elem)->next != NULL)
+        (*elem)->next->prev = *elem;
+    if (elem1->endTag == ListElement<T>::Tail) {
+        (*elem)->endTag = ListElement<T>::Tail;
+        elem1->endTag = ListElement<T>::Body;
+    } else {
+        (*elem)->endTag = ListElement<T>::Body;
+    }
+}
+
+template <class T>
 void List<T>::ring()
 {
     head->prev = tail;
