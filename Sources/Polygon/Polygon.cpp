@@ -46,8 +46,10 @@ void Polygon::calcArea()
 #ifdef DEBUG
     if (area <= 0.0) {
         cout << "Polygon ID: " << getID() << endl;
+#ifdef TTS_ONLINE
         DebugTools::output_angles(this, "angles");
         DebugTools::output_lengths(this, "lengths");
+#endif
         dump("polygon");
         REPORT_ERROR("Encounter negative area.")
     }
@@ -65,8 +67,10 @@ void Polygon::calcArea()
     double ratio = fabs(this->area.getOld()-this->area.getNew())/this->area.getOld();
     if (ratio > maxRatio) {
         cout << "Polygon ID: " << getID() << endl;
+#ifdef TTS_ONLINE
         DebugTools::output_angles(this, "angles");
         DebugTools::output_lengths(this, "lengths");
+#endif
         dump("polygon");
         cout << "Old area: ";
         cout << setw(20) << setprecision(15) << this->area.getOld() << endl;

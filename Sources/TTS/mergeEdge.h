@@ -3,10 +3,8 @@ bool TTS::mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
 {
     static const double smallAngle = 20.0/Rad2Deg;
     bool isMerged = false;
-    
-#ifdef TEST_NEW_FEATURE
+
     resetTasks();
-#endif
 
     EdgePointer *edgePointer = polygon->edgePointers.front();
     EdgePointer *endEdgePointer = polygon->edgePointers.back();
@@ -109,17 +107,7 @@ bool TTS::mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             edge2->detectAgent.handover(edge1);
             polygonManager.edges.remove(edge2);
             // -----------------------------------------------------------------
-            // update the angles
-#ifdef TEST_NEW_FEATURE
             doTask(UpdateAngle);
-#else
-            newEdgePointer1->calcAngle();
-            newEdgePointer1->next->calcAngle();
-            if (newEdgePointer2 != NULL) {
-                newEdgePointer2->calcAngle();
-                newEdgePointer2->next->calcAngle();
-            }
-#endif
         }
         edgePointer = nextEdgePointer;
     }

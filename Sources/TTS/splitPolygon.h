@@ -21,10 +21,8 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
 {
     bool isSplitted = false;
     static const double smallDistance = 0.05/Rad2Deg*Sphere::radius;
-    
-#ifdef TEST_NEW_FEATURE
+
     resetTasks();
-#endif
     
     while (!ApproachingVertices::isEmpty()) {
         Vertex *vertex3 = ApproachingVertices::vertexPointers.front()->vertex;
@@ -314,9 +312,7 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
                 REPORT_DEBUG
             }
             // -------------------------------------------------------------
-#ifdef TEST_NEW_FEATURE
             doTask(UpdateAngle);
-#endif
             // -------------------------------------------------------------
             // detect the new vertex for approaching
             if (option >= 3) {

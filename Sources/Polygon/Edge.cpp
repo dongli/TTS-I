@@ -80,17 +80,10 @@ void Edge::changeEndPoint(PointOrder order, Vertex *point,
     linkEndPoint(order, point);
     calcNormVector();
     calcLength();
-#ifdef TEST_NEW_FEATURE
     TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientLeft));
     TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientLeft)->next);
     TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientRight));
     TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientRight)->next);
-#else
-    getEdgePointer(OrientLeft)->resetAngle();
-    getEdgePointer(OrientLeft)->next->resetAngle();
-    getEdgePointer(OrientRight)->resetAngle();
-    getEdgePointer(OrientRight)->next->resetAngle();
-#endif
     Location loc;
     meshManager.checkLocation(testPoint->getCoordinate(), loc);
     testPoint->setLocation(loc);
@@ -125,7 +118,7 @@ void Edge::setEdgePointer(OrientStatus orient, EdgePointer *edgePointer)
     edgePointers[orient] = edgePointer;
     edgePointer->edge = this;
     edgePointer->orient = orient;
-#ifdef TEST_NEW_FEATURE
+#ifdef TTS_ONLINE
     TTS::recordTask(TTS::UpdateAngle, edgePointer);
     TTS::recordTask(TTS::UpdateAngle, edgePointer->next);
 #else

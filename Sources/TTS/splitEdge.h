@@ -51,9 +51,7 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             angleCheck[1] = edgePointer1_next->getAngle();
             angleCheck[2] = edgePointer2->getAngle();
             angleCheck[3] = edgePointer2_next->getAngle();
-#ifdef TEST_NEW_FEATURE
             resetTasks();
-#endif
         }
 
         // ---------------------------------------------------------------------
@@ -214,21 +212,7 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
         level--;
         if (level == 0) {
             polygonManager.edges.remove(edge);
-#ifdef TEST_NEW_FEATURE
             doTask(UpdateAngle);
-#else
-            EdgePointer *edgePointer;
-            edgePointer = edgePointer1_prev->next;
-            do {
-                edgePointer->calcAngle();
-                edgePointer = edgePointer->next;
-            } while (edgePointer != edgePointer1_next->next);
-            edgePointer = edgePointer2_prev->next;
-            do {
-                edgePointer->calcAngle();
-                edgePointer = edgePointer->next;
-            } while (edgePointer != edgePointer2_next->next);
-#endif
         }
         return true;
     } else {
