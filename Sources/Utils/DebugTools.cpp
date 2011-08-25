@@ -68,6 +68,30 @@ void DebugTools::assert_colinear(const Coordinate &x1, const Coordinate &x2,
     assert(fabs(x2r.getLon()-x3r.getLon()) < EPS);
 }
 
+void DebugTools::assert_consistent_projection(Vertex *vertex1,
+                                              Vertex *vertex2,
+                                              Vertex *vertex3)
+{
+    TimeLevel timeLevel;
+    if (vertex3->detectAgent.isApproaching) {
+        timeLevel = OldTimeLevel;
+    } else {
+        timeLevel = NewTimeLevel;
+    }
+    const Coordinate &x1 = vertex1->getCoordinate(timeLevel);
+    const Coordinate &x2 = vertex2->getCoordinate(timeLevel);
+    const Coordinate &x3 = vertex3->detectAgent.projection;
+    Coordinate x2r, x3r;
+    Sphere::rotate(x1, x2, x2r);
+    Sphere::rotate(x1, x3, x3r);
+    if (fabs(x2r.getLon()-x3r.getLon()) > EPS) {
+        x1.dump();
+        x3.dump();
+        x2.dump();
+        REPORT_ERROR("Projection is not consistent!")
+    }
+}
+
 void DebugTools::watch_vertex(Vertex *vertex)
 {
     watcher_vertex = vertex;
@@ -111,22 +135,6 @@ void DebugTools::dump_watched_vertex()
         cout << "  End points ID: ";
         cout << watcher_vertex->detectAgent.edge->getEndPoint(FirstPoint)->getID() << " ";
         cout << watcher_vertex->detectAgent.edge->getEndPoint(SecondPoint)->getID() << endl;
-        Edge *edge = watcher_vertex->detectAgent.edge;
-        Vertex *vertex1 = edge->getEndPoint(FirstPoint);
-        Vertex *vertex2 = edge->getEndPoint(SecondPoint);
-        Coordinate x1, x2, x3;
-        x3 = watcher_vertex->detectAgent.projection;
-        if (watcher_vertex->detectAgent.isApproaching) {
-            x1 = vertex1->getCoordinate(OldTimeLevel);
-            x2 = vertex2->getCoordinate(OldTimeLevel);
-        } else {
-            x1 = vertex1->getCoordinate();
-            x2 = vertex2->getCoordinate();
-        }
-        Coordinate x2r, x3r;
-        Sphere::rotate(x1, x2, x2r);
-        Sphere::rotate(x1, x3, x3r);
-        assert(fabs(x2r.getLon()-x3r.getLon()) < EPS);
     }
 #endif
     REPORT_DEBUG

@@ -105,6 +105,7 @@ bool TTS::mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
                 if (newEdgePointer2 != NULL)
                     edge1->setEdgePointer(OrientLeft, newEdgePointer2);
             }
+            edge1->detectAgent.update();
             edge2->detectAgent.handover(edge1);
             polygonManager.edges.remove(edge2);
             // -----------------------------------------------------------------
