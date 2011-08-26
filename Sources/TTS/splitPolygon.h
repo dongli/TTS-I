@@ -25,9 +25,7 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
     resetTasks();
     
     while (!ApproachingVertices::isEmpty()) {
-        Vertex *vertex3 = ApproachingVertices::vertexPointers.front()->vertex;
-        if (TimeManager::getSteps() >= 23 && vertex3->getID() == 339732)
-            REPORT_DEBUG
+    loop_start: Vertex *vertex3 = ApproachingVertices::vertexPointers.front()->vertex;
         if (vertex3->detectAgent.isApproaching) {
             Edge *edge1 = vertex3->detectAgent.edge;
 #ifdef DEBUG
@@ -100,31 +98,7 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
             else if (vertex3->detectAgent.orient == OrientRight)
                 cout << "right" << endl;
             polygon1->dump("polygon");
-            const Coordinate &x1o = vertex1->getCoordinate(OldTimeLevel);
-            const Coordinate &x2o = vertex2->getCoordinate(OldTimeLevel);
-            const Coordinate &x1n = vertex1->getCoordinate();
-            const Coordinate &x2n = vertex2->getCoordinate();
-            const Coordinate &x3 = vertex3->detectAgent.projection;
-            Coordinate x2or, x2nr, x3or, x3nr;
-            Sphere::rotate(x1o, x2o, x2or);
-            Sphere::rotate(x1n, x2n, x2nr);
-            Sphere::rotate(x1o, x3, x3or);
-            Sphere::rotate(x1n, x3, x3nr);
-            if (vertex3->detectAgent.timeLevel == OldTimeLevel) {
-                if (fabs(x2or.getLon()-x3or.getLon()) > EPS) {
-                    vertex1->getCoordinate(OldTimeLevel).dump();
-                    vertex3->detectAgent.projection.dump();
-                    vertex2->getCoordinate(OldTimeLevel).dump();
-                    REPORT_ERROR("Invalid projection!")
-                }
-            } else {
-                if (fabs(x2nr.getLon()-x3nr.getLon()) > EPS) {
-                    vertex1->getCoordinate().dump();
-                    vertex3->detectAgent.projection.dump();
-                    vertex2->getCoordinate().dump();
-                    REPORT_ERROR("Invalid projection!")
-                }   
-            }
+            DebugTools::assert_consistent_projection(vertex1, vertex2, vertex3);
             REPORT_DEBUG
 #endif
             isSplitted = true;
@@ -143,9 +117,6 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
             } else {
                 option = 4;
             }
-            // -------------------------------------------------------------
-            ApproachingVertices::remove(vertex3);
-            ApproachDetector::AgentPairs::unpair(vertex3, edge1);
             // -----------------------------------------------------------------
             Vertex testVertex;
             Location loc;
@@ -175,8 +146,12 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
                                                     vertexPointer->vertex->getCoordinate());
                         }
                         if (orient != vertexPointer->vertex->detectAgent.orient) {
-                            REPORT_ERROR("Edge-crossing has occurred!")
-                            
+                            if (vertexPointer->vertex->detectAgent.isApproaching) {
+                                ApproachingVertices::jumpFirst(vertexPointer->vertex);
+                                goto loop_start;
+                            } else {
+                                REPORT_ERROR("Edge-crossing has occurred!")
+                            }
                         }
                         n++;
                         vertexPointer = vertexPointer->next;
@@ -188,6 +163,9 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
                     linkedEdge = linkedEdge->next;
                 }
             }
+            // -------------------------------------------------------------
+            ApproachingVertices::remove(vertex3);
+            ApproachDetector::AgentPairs::unpair(vertex3, edge1);
             // -----------------------------------------------------------------
             // create a new polygon
             Polygon *polygon3;
@@ -208,6 +186,7 @@ bool TTS::splitPolygon(MeshManager &meshManager, const FlowManager &flowManager,
                 EdgePointer *edgePointer;
                 polygon3->edgePointers.append(&edgePointer);
                 edgePointer->replace(edgePointer3);
+                edgePointer3->edge->detectAgent.changeEdgePointer();
                 edgePointer->edge->setPolygon(edgePointer->orient, polygon3);
                 edgePointer3 = edgePointer3->next;
                 polygon1->edgePointers.remove(edgePointer3->prev);

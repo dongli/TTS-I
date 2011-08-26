@@ -68,7 +68,7 @@
    </LaunchAction>
    <ProfileAction
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Time Profiler.tracetemplate"
+      savedToolIdentifier = ""
       useCustomWorkingDirectory = "YES"
       customWorkingDirectory = "/Users/dongli/Works/TTS/Run"
       buildConfiguration = "Debug">

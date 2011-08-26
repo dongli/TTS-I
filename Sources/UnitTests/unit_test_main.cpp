@@ -11,6 +11,7 @@ using namespace std;
 char message[255];
 
 #include "unit_test_fixtures.h"
+#include "unit_test_memory.h"
 #include "unit_test_list.h"
 #include "unit_test_mesh.h"
 #include "unit_test_field.h"

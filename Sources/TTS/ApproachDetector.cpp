@@ -31,8 +31,7 @@ void VertexAgent::reinit()
 {
     assert(isApproaching == false);
     edge = NULL;
-    timeLevel = OldTimeLevel;
-    distance = -999.0;
+    distance = -999.0;;
 }
 
 void VertexAgent::clean()
@@ -53,6 +52,7 @@ EdgeAgent::EdgeAgent()
 
 EdgeAgent::~EdgeAgent()
 {
+    vertexPointers.destroy();
 }
 
 void EdgeAgent::checkin(Edge *edge)
@@ -62,6 +62,7 @@ void EdgeAgent::checkin(Edge *edge)
 
 void EdgeAgent::reinit()
 {
+    vertexPointers.recycle();
 }
 
 void EdgeAgent::clean()
@@ -98,19 +99,23 @@ void EdgeAgent::handover(Edge *edge)
 {
     if (edge == host)
         return;
+    // -------------------------------------------------------------------------
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
     Vertex *vertex2 = edge->getEndPoint(SecondPoint);
     const Coordinate &x1n = vertex1->getCoordinate();
     const Coordinate &x2n = vertex2->getCoordinate();
+    // -------------------------------------------------------------------------
     VertexPointer *vertexPointer = vertexPointers.front();
     VertexPointer *nextVertexPointer;
     while (vertexPointer != NULL) {
         nextVertexPointer = vertexPointer->next;
         Vertex *vertex3 = vertexPointer->vertex;
+        // ---------------------------------------------------------------------
         if (vertex3 == vertex1 || vertex3 == vertex2) {
             vertexPointer = vertexPointer->next;
             continue;
         }
+        // ---------------------------------------------------------------------
         const Coordinate &x3n = vertex3->getCoordinate();
         Coordinate x4n;
         double distn;
@@ -131,6 +136,11 @@ void EdgeAgent::handover(Edge *edge)
                         ApproachingVertices::remove(vertex3);
                     AgentPairs::unpair(vertex3, host);
                     if (isApproaching(disto, distn)) {
+#ifdef DEBUG
+                        char message[100];
+                        sprintf(message, "[Approaching Event]: Paired vertex %d is handed over.", vertex3->getID());
+                        REPORT_WARNING(message);
+#endif
                         AgentPairs::pair(vertex3, edge, x4o, disto, oriento);
                         ApproachingVertices::record(vertex3);
                         // explain the following line!
@@ -154,6 +164,7 @@ void EdgeAgent::update()
     Vertex *vertex2 = host->getEndPoint(SecondPoint);
     const Coordinate &x1n = vertex1->getCoordinate();
     const Coordinate &x2n = vertex2->getCoordinate();
+    // -------------------------------------------------------------------------
     VertexPointer *vertexPointer = vertexPointers.front();
     VertexPointer *nextVertexPointer;
     while (vertexPointer != NULL) {
@@ -185,8 +196,14 @@ void EdgeAgent::update()
                     if (isApproaching(disto, distn)) {
                         vertex3->detectAgent.projection = x4o;
                         vertex3->detectAgent.distance = disto;
-                        if (!vertex3->detectAgent.isApproaching)
+                        if (!vertex3->detectAgent.isApproaching) {
+#ifdef DEBUG
+                            char message[100];
+                            sprintf(message, "[Approaching Event]: Paired vertex %d is updated.", vertex3->getID());
+                            REPORT_WARNING(message);
+#endif
                             ApproachingVertices::record(vertex3);
+                        }
                         vertex3->detectAgent.edgePointer =
                         host->getEdgePointer(orientn);
                     } else {
@@ -196,10 +213,20 @@ void EdgeAgent::update()
                 }
             } else {
                 AgentPairs::unpair(vertex3, host);
-                REPORT_DEBUG
+                //REPORT_DEBUG
             }
         }
         vertexPointer = nextVertexPointer;
+    }
+}
+
+void EdgeAgent::changeEdgePointer()
+{
+    VertexPointer *vertexPointer = vertexPointers.front();
+    for (int i = 0; i < vertexPointers.size(); ++i) {
+        vertexPointer->vertex->detectAgent.edgePointer =
+        host->getEdgePointer(vertexPointer->vertex->detectAgent.orient);
+        vertexPointer = vertexPointer->next;
     }
 }
 
@@ -209,7 +236,7 @@ void AgentPairs::pair(Vertex *vertex, Edge *edge,
                       const Coordinate &projection,
                       double distance, OrientStatus orient)
 {
-    /*if (vertex->getID() == 339732) {
+    /*if (vertex->getID() == 55176) {
         DebugTools::watch_vertex(vertex);
         cout << "***** Vertex " << vertex->getID() << " is paired with edge ";
         cout << edge->getID() << "." << endl;
@@ -228,7 +255,7 @@ void AgentPairs::pair(Vertex *vertex, Edge *edge,
 
 void AgentPairs::unpair(Vertex *vertex, Edge *edge)
 {
-    /*if (vertex->getID() == 339732) {
+    /*if (vertex->getID() == 55176) {
         cout << "***** Vertex " << vertex->getID() << " is unpaired with edge ";
         cout << edge->getID() << "." << endl;
         REPORT_DEBUG
@@ -250,6 +277,19 @@ ApproachingVertices::ApproachingVertices()
 
 ApproachingVertices::~ApproachingVertices()
 {
+}
+
+void ApproachingVertices::jumpFirst(Vertex *vertex)
+{
+    VertexPointer *vertexPointer = vertexPointers.front();
+    for (int i = 0; i < vertexPointers.size(); ++i) {
+        if (vertexPointer->vertex == vertex) {
+            vertexPointers.move(&vertexPointer, vertexPointers.front());
+            return;
+        }
+        vertexPointer = vertexPointer->next;
+    }
+    REPORT_ERROR("Unfound vertex in approaching vertex list!")
 }
 
 void ApproachingVertices::record(Vertex *vertex)
@@ -365,39 +405,42 @@ double ApproachDetector::approachTrendThreshold(double distance)
     }
 }
 
-inline void projectOnOldEdge(Vertex *vertex1, Vertex *vertex2, Vertex *vertex3,
-                             Coordinate &x4, double &distance)
+inline void projectOnOldEdge(Vertex *vertex3, Edge *edge,
+                             Coordinate &projection, double &distance)
 {
-    const Coordinate &x1o = vertex1->getCoordinate(OldTimeLevel);
-    const Coordinate &x2o = vertex2->getCoordinate(OldTimeLevel);
+    const Coordinate &x1o = edge->getEndPoint(FirstPoint)->getCoordinate(OldTimeLevel);
+    const Coordinate &x2o = edge->getEndPoint(SecondPoint)->getCoordinate(OldTimeLevel);
     const Coordinate &x3o = vertex3->getCoordinate(OldTimeLevel);
-    if (!Sphere::project(x1o, x2o, x3o, x4, distance)) {
+    if (!Sphere::project(x1o, x2o, x3o, projection, distance)) {
         REPORT_ERROR("Vertex is not projected onto the edge at old time step!")
     }
 }
 
-inline void handleSmallAngle(Edge *edge1, Vertex *vertex3,
-                             EdgePointer *edgePointer1,
-                             EdgePointer *edgePointer2, Polygon *polygon)
+inline bool isSmallAngle(EdgePointer *edgePointer1, Vertex *vertex3,
+                         Vertex **vertex4)
 {
-    static const double smallAngle = 5.0/Rad2Deg;
-    if (edgePointer1->getAngle() < smallAngle ||
-        edgePointer1->next->getAngle() < smallAngle) {
-        VertexPointer *vertexPointer = edge1->detectAgent.vertexPointers.front();
-        for (int i = 0; i < edge1->detectAgent.vertexPointers.size(); ++i) {
+    static const double smallAngle = 10.0/Rad2Deg;
+    if ((edgePointer1->getAngle() < smallAngle &&
+         edgePointer1->prev->getEndPoint(FirstPoint) == vertex3) ||
+        (edgePointer1->next->getAngle() < smallAngle &&
+         edgePointer1->next->getEndPoint(SecondPoint) == vertex3)) {
+        VertexPointer *vertexPointer = edgePointer1->edge->detectAgent.vertexPointers.front();
+        for (int i = 0; i < edgePointer1->edge->detectAgent.vertexPointers.size(); ++i) {
             if (vertexPointer->vertex->detectAgent.isApproaching &&
                 vertex3->detectAgent.orient != vertexPointer->vertex->detectAgent.orient) {
-                polygon->dump("polygon");
-                vertex3->detectAgent.timeLevel = NewTimeLevel;
-                ApproachingVertices::dump();
-                ApproachingVertices::record(vertex3, vertexPointer->vertex);
-                vertex3->detectAgent.edgePointer = edgePointer2;
-                ApproachingVertices::dump();
-                return;
+                *vertex4 = vertexPointer->vertex;
+                char message[100];
+                sprintf(message, "Vertex %d may cause vertex %d to cross edge %d.",
+                        vertex3->getID(), vertexPointer->vertex->getID(),
+                        edgePointer1->edge->getID());
+                REPORT_WARNING(message)
+                return true;
             }
             vertexPointer = vertexPointer->next;
         }
     }
+    *vertex4 = NULL;
+    return false;
 }
 
 inline void ApproachDetector::detect(MeshManager &meshManager,
@@ -406,10 +449,10 @@ inline void ApproachDetector::detect(MeshManager &meshManager,
 {
     static const double smallDistance = 0.02/Rad2Deg*Sphere::radius;
 
-    if (TimeManager::getSteps() >= 24 && polygon->getID() == 7529) {
+    /*if (TimeManager::getSteps() == 22 && polygon->getID() == 7711) {
         polygon->dump("polygon");
         REPORT_DEBUG
-    }
+    }*/
 
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     for (int j = 0; j < polygon->edgePointers.size(); ++j) {
@@ -437,6 +480,7 @@ inline void ApproachDetector::detect(MeshManager &meshManager,
         EdgePointer *edgePointer2 = edgePointer1->next;
         for (int k = 0; k < polygon->edgePointers.size()-2; ++k) {
             Vertex *vertex3 = edgePointer2->getEndPoint(SecondPoint);
+            Vertex *vertex4;
             if (vertex3->detectAgent.isApproaching) {
                 if (vertex3->detectAgent.edgePointer == edgePointer1) {
                     vertex3->detectAgent.edgePointer = edgePointer2;
@@ -448,7 +492,7 @@ inline void ApproachDetector::detect(MeshManager &meshManager,
             // *** filter 1
             if ((loc.i[4] >= I1 && loc.i[4] <= I2) &&
                 (loc.j[4] >= J1 && loc.j[4] <= J2)) {
-                const Coordinate &x3 = vertex3->getCoordinate(NewTimeLevel);
+                const Coordinate &x3 = vertex3->getCoordinate();
                 Coordinate x4;
                 double distance;
                 // *** filter 2
@@ -462,59 +506,121 @@ inline void ApproachDetector::detect(MeshManager &meshManager,
                         } else {
                             orient = Sphere::orient(x2, x1, x3);
                         }
+                        // -----------------------------------------------------
                         if (vertex3->detectAgent.edge == NULL) {
                             // vertex3 is not recorded as an approaching vertex
                             // to any edge
-                            if (distance <= smallDistance) {
+                            if (isSmallAngle(edgePointer1, vertex3, &vertex4)) {
                                 // *** APPROACHING
-                                // vertex3 is very close to edge1, need to be
-                                // handled in the coming splitPolygon procedure
-                                // so calculate the old projection
-                                projectOnOldEdge(vertex1, vertex2, vertex3, x4, distance);
+#ifdef DEBUG
+                                char message[100];
+                                sprintf(message, "[Approaching Event]: Solo vertex %d encounter small angle.", vertex3->getID());
+                                REPORT_WARNING(message)
+#endif
+                                projectOnOldEdge(vertex3, edge1, x4, distance);
                                 AgentPairs::pair(vertex3, edge1, x4, distance, orient);
-                                ApproachingVertices::record(vertex3);
                                 vertex3->detectAgent.edgePointer = edgePointer2;
+                                ApproachingVertices::record(vertex3, vertex4);
+                            } else if (distance <= smallDistance) {
+                                // *** APPROACHING
+#ifdef DEBUG
+                                char message[100];
+                                sprintf(message, "[Approaching Event]: Solo vertex %d encounter small distance.", vertex3->getID());
+                                REPORT_WARNING(message)
+#endif
+                                projectOnOldEdge(vertex3, edge1, x4, distance);
+                                AgentPairs::pair(vertex3, edge1, x4, distance, orient);
+                                vertex3->detectAgent.edgePointer = edgePointer2;
+                                ApproachingVertices::record(vertex3);
                             } else {
                                 // *** NOT APPROACHING
-                                // record vertex3 as an approaching vertex to edge3
                                 AgentPairs::pair(vertex3, edge1, x4, distance, orient);
-                                handleSmallAngle(edge1, vertex3, edgePointer1, edgePointer2, polygon);
                             }
+                        // -----------------------------------------------------
                         } else {
                             if (vertex3->detectAgent.edge == edge1) {
                                 if (orient != vertex3->detectAgent.orient) {
-                                    REPORT_ERROR("Vertex-edge crossing has occured!")
-                                }
-                                if (isApproaching(vertex3->detectAgent.distance, distance)) {
-                                    // *** APPROACHING
-                                    //projectOnOldEdge(vertex1, vertex2, vertex3, x4, distance);
-                                    //assert(vertex3->detectAgent.projection == x4);
-                                    //vertex3->detectAgent.projection = x4;
-                                    //vertex3->detectAgent.distance = distance;
-                                    ApproachingVertices::record(vertex3);
-                                    vertex3->detectAgent.edgePointer = edgePointer2;
+                                    if (distance < 100.0) {
+                                        // *** APPROACHING
+                                        // vertex3 is nearly on edge1, so even
+                                        // it crosses edge1, make it as an
+                                        // approaching vertex of edge1
+#ifdef DEBUG
+                                        char message[100];
+                                        sprintf(message, "[Approaching Event]: Paired crossing vertex %d encounter very small distance.", vertex3->getID());
+                                        REPORT_WARNING(message)
+#endif
+                                        projectOnOldEdge(vertex3, edge1, x4, distance);
+                                        vertex3->detectAgent.projection = x4;
+                                        vertex3->detectAgent.distance = distance;
+                                        vertex3->detectAgent.edgePointer = edgePointer2;
+                                        ApproachingVertices::record(vertex3);
+                                    } else {
+                                        polygon->dump("polygon");
+                                        REPORT_ERROR("Vertex-edge crossing has occured!")
+                                    }
                                 } else {
-                                    // *** NOT APPROACHING
-                                    // update the information for next step
-                                    vertex3->detectAgent.projection = x4;
-                                    vertex3->detectAgent.distance = distance;
-                                    handleSmallAngle(edge1, vertex3, edgePointer1, edgePointer2, polygon);
+                                    if (isSmallAngle(edgePointer1, vertex3, &vertex4)) {
+                                        // *** APPROACHING
+#ifdef DEBUG
+                                        char message[100];
+                                        sprintf(message, "[Approaching Event]: Paired vertex %d encounter small angle.", vertex3->getID());
+                                        REPORT_WARNING(message)
+#endif
+                                        vertex3->detectAgent.edgePointer = edgePointer2;
+                                        ApproachingVertices::record(vertex3, vertex4);
+#ifdef DEBUG
+                                        DebugTools::assert_consistent_projection(vertex1, vertex2, vertex3);
+#endif
+                                    } else if (isApproaching(vertex3->detectAgent.distance, distance)) {
+                                        // *** APPROACHING
+#ifdef DEBUG
+                                        char message[100];
+                                        sprintf(message, "[Approaching Event]: Paired vertex %d is approaching its paired edge.", vertex3->getID());
+                                        REPORT_WARNING(message)
+#endif
+                                        vertex3->detectAgent.edgePointer = edgePointer2;
+                                        ApproachingVertices::record(vertex3);
+#ifdef DEBUG
+                                        DebugTools::assert_consistent_projection(vertex1, vertex2, vertex3);
+#endif
+                                    } else {
+                                        // *** NOT APPROACHING
+                                        // update the information for next step
+                                        vertex3->detectAgent.projection = x4;
+                                        vertex3->detectAgent.distance = distance;
+                                    }
                                 }
                             } else {
                                 // vertex3 is moving away from old edge and
                                 // moving toward to edge1
                                 if (distance < vertex3->detectAgent.distance) {
                                     AgentPairs::unpair(vertex3, vertex3->detectAgent.edge);
-                                    if (distance <= smallDistance) {
+                                    if (isSmallAngle(edgePointer1, vertex3, &vertex4)) {
                                         // *** APPROACHING
-                                        projectOnOldEdge(vertex1, vertex2, vertex3, x4, distance);
+#ifdef DEBUG
+                                        char message[100];
+                                        sprintf(message, "[Approaching Event]: Paired vertex %d is moving away its paired edge and ecounter small angle.", vertex3->getID());
+                                        REPORT_WARNING(message)
+#endif
+                                        projectOnOldEdge(vertex3, edge1, x4, distance);
                                         AgentPairs::pair(vertex3, edge1, x4, distance, orient);
-                                        ApproachingVertices::record(vertex3);
                                         vertex3->detectAgent.edgePointer = edgePointer2;
+                                        ApproachingVertices::record(vertex3, vertex4);
+                                    } else if (distance <= smallDistance) {
+                                        // *** APPROACHING
+#ifdef DEBUG
+                                        char message[100];
+                                        sprintf(message, "[Approaching Event]: Paired vertex %d is moving away its paired edge and ecounter small distance.", vertex3->getID());
+                                        REPORT_WARNING(message)
+#endif
+                                        projectOnOldEdge(vertex3, edge1, x4, distance);
+                                        AgentPairs::pair(vertex3, edge1, x4, distance, orient);
+                                        vertex3->detectAgent.edgePointer = edgePointer2;
+                                        ApproachingVertices::record(vertex3);
                                     } else {
                                         // *** NOT APPROACHING
                                         AgentPairs::pair(vertex3, edge1, x4, distance, orient);
-                                        handleSmallAngle(edge1, vertex3, edgePointer1, edgePointer2, polygon);
                                     }
                                 }
                             }

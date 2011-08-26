@@ -265,17 +265,18 @@ void TTS::guardCurvature(MeshManager &meshManager, const FlowManager &flowManage
         track(meshManager, flowManager, edge->getTestPoint());
         edge = edge->next;
     }
+    DebugTools::dump_watchers();
 
     // -------------------------------------------------------------------------
     // extract the vertex-edge approaching information
-    ApproachDetector::detect(meshManager, flowManager, polygonManager);
+    /*ApproachDetector::detect(meshManager, flowManager, polygonManager);
     DebugTools::dump_watchers();
 
     // -------------------------------------------------------------------------
     // split polygons
     if (splitPolygon(meshManager, flowManager, polygonManager))
         flag = true;
-    DebugTools::dump_watchers();
+    DebugTools::dump_watchers();*/
 
     // -------------------------------------------------------------------------
     // edge-splitting
@@ -311,8 +312,8 @@ void TTS::guardCurvature(MeshManager &meshManager, const FlowManager &flowManage
 
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
-    if (flag) {
+    /*if (flag) {
         polygonManager.vertices.reindex();
         polygonManager.edges.reindex();
-    }
+    }*/
 }

@@ -27,7 +27,6 @@ namespace ApproachDetector
         void clean();
 
         Edge *edge;
-        TimeLevel timeLevel;
         Coordinate projection;
         double distance;
         OrientStatus orient;
@@ -56,6 +55,7 @@ namespace ApproachDetector
         void remove(Vertex *);
         void handover(Edge *);
         void update();
+        void changeEdgePointer();
 
         List<VertexPointer> vertexPointers;
 
@@ -79,6 +79,7 @@ namespace ApproachDetector
         ApproachingVertices();
         virtual ~ApproachingVertices();
 
+        static void jumpFirst(Vertex *);
         static void record(Vertex *);
         static void record(Vertex *, Vertex *);
         static void remove(Vertex *);

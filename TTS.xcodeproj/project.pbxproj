@@ -165,6 +165,7 @@
 		55003BB013EEA84B00E66388 /* splitPolygon.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = splitPolygon.h; sourceTree = "<group>"; };
 		5566C5EB13EC0D010044E352 /* generate_RLLMesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_RLLMesh; sourceTree = BUILT_PRODUCTS_DIR; };
 		5566C5ED13EC0D010044E352 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
+		556B4F7D140646BE002E8FB6 /* unit_test_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_list.h; sourceTree = "<group>"; };
 		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointCounter.cpp; sourceTree = "<group>"; };
 		556E49BF13D54DCF00AE4150 /* PointCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCounter.h; sourceTree = "<group>"; };
 		5581140413EA4432004AF124 /* tts_gamil_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tts_gamil_demo.cpp; sourceTree = "<group>"; };
@@ -258,6 +259,7 @@
 		55A4D1CC13D52ECF00DCC5AB /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAMILReader.h; sourceTree = "<group>"; };
 		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
+		55D637BE1407390D00CC0983 /* unit_test_memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_memory.h; sourceTree = "<group>"; };
 		55DA3E2413F621B600C565F7 /* ApproachDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ApproachDetector.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		55DA3E2513F621B600C565F7 /* ApproachDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproachDetector.h; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
@@ -487,6 +489,8 @@
 				5598FAB713D3DA9F00BC1AC4 /* unit_test_polygon.h */,
 				5598FAB813D3DA9F00BC1AC4 /* unit_test_sphere.h */,
 				5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */,
+				556B4F7D140646BE002E8FB6 /* unit_test_list.h */,
+				55D637BE1407390D00CC0983 /* unit_test_memory.h */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -844,7 +848,6 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					TEST_NEW_FEATURE,
 					TTS_ONLINE,
 					DEBUG,
 					"$(inherited)",
@@ -871,10 +874,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					TEST_NEW_FEATURE,
-					TTS_ONLINE,
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = TTS_ONLINE;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
