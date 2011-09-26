@@ -46,7 +46,7 @@ void DelaunayDriver::linkPoint(const PointManager &pointManager)
     }
 }
 
-void DelaunayDriver::construct()
+void DelaunayDriver::init()
 {
     int idx[3];
     

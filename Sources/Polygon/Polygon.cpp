@@ -5,9 +5,9 @@
 #include "PolygonManager.h"
 #ifdef TTS_ONLINE
 #include "TTS.h"
-#endif
 #ifdef DEBUG
 #include "DebugTools.h"
+#endif
 #endif
 #include <fstream>
 
@@ -87,10 +87,10 @@ void Polygon::handleLinePolygon(PolygonManager &polygonManager, Polygon *polygon
 {
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     EdgePointer *edgePointer2 = polygon->edgePointers.back();
-    EdgePointer *edgePointer3;
-    polygonManager.polygons.remove(polygon);
+    EdgePointer *edgePointer3, *edgePointer4;
     Edge *edge1 = edgePointer1->edge;
     Edge *edge2 = edgePointer2->edge;
+    polygonManager.polygons.remove(polygon);
 #ifdef DEBUG
     assert(((edge1->getEndPoint(FirstPoint) ==
              edge2->getEndPoint(FirstPoint)) &&
@@ -101,22 +101,56 @@ void Polygon::handleLinePolygon(PolygonManager &polygonManager, Polygon *polygon
             (edge1->getEndPoint(SecondPoint) ==
              edge2->getEndPoint(FirstPoint))));
 #endif
-    if (edgePointer2->orient == OrientLeft) {
-        edgePointer3 = edge2->getEdgePointer(OrientRight);
+    if (edgePointer1->orient == OrientLeft) {
+        edgePointer3 = edge1->getEdgePointer(OrientRight);
     } else {
-        edgePointer3 = edge2->getEdgePointer(OrientLeft);
+        edgePointer3 = edge1->getEdgePointer(OrientLeft);
     }
-    Polygon *polygon2 = edge2->getPolygon(edgePointer3->orient);
-    edge1->setPolygon(edgePointer1->orient, polygon2);
-    edge1->setEdgePointer(edgePointer1->orient, edgePointer3);
+    if (edgePointer2->orient == OrientLeft) {
+        edgePointer4 = edge2->getEdgePointer(OrientRight);
+    } else {
+        edgePointer4 = edge2->getEdgePointer(OrientLeft);
+    }
+    Polygon *polygon1 = edge1->getPolygon(edgePointer3->orient);
+    Polygon *polygon2 = edge2->getPolygon(edgePointer4->orient);
+    if (polygon1 == polygon2) {
 #ifdef TTS_ONLINE
-    edge2->detectAgent.handover(edge1);
+        TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
+        TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
+        TTS::deleteTask(TTS::UpdateAngle, edgePointer3);
+        TTS::deleteTask(TTS::UpdateAngle, edgePointer4);
 #endif
-    polygonManager.edges.remove(edge2);
+#ifdef DEBUG
+        assert(edgePointer3->next == edgePointer4 ||
+               edgePointer4->next == edgePointer3);
+#endif
+        Vertex *vertex;
+        if (edgePointer3->next == edgePointer4) {
+            vertex = edgePointer4->getEndPoint(FirstPoint);
 #ifdef TTS_ONLINE
-    TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
-    TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
+            TTS::recordTask(TTS::UpdateAngle, edgePointer4->next);
 #endif
+        } else if (edgePointer4->next == edgePointer3) {
+            vertex = edgePointer3->getEndPoint(FirstPoint);
+#ifdef TTS_ONLINE
+            TTS::recordTask(TTS::UpdateAngle, edgePointer3->next);
+#endif
+        }
+        polygon1->edgePointers.remove(edgePointer3);
+        polygon1->edgePointers.remove(edgePointer4);
+        polygonManager.edges.remove(edge1);
+        polygonManager.edges.remove(edge2);
+        polygonManager.vertices.remove(vertex);
+    } else {
+        edge1->setPolygon(edgePointer1->orient, polygon2);
+        edge1->setEdgePointer(edgePointer1->orient, edgePointer4);
+#ifdef TTS_ONLINE
+        edge2->detectAgent.handoverVertices(edge1);
+        TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
+        TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
+#endif
+        polygonManager.edges.remove(edge2);
+    }
 }
 
 void Polygon::handlePointPolygon(PolygonManager &polygonManager, Polygon *polygon)
@@ -155,9 +189,19 @@ void Polygon::dump(const string &fileName) const
     } else {
         output = &std::cout;
     }
+    // vertices
     EdgePointer *edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
         const Coordinate &x = edgePointer->getEndPoint(FirstPoint)->getCoordinate();
+        *output << setw(30) << setprecision(20) << x.getLon();
+        *output << setw(30) << setprecision(20) << x.getLat();
+        *output << endl;
+        edgePointer = edgePointer->next;
+    }
+    // test points
+    edgePointer = edgePointers.front();
+    for (int i = 0; i < edgePointers.size(); ++i) {
+        const Coordinate &x = edgePointer->edge->getTestPoint()->getCoordinate();
         *output << setw(30) << setprecision(20) << x.getLon();
         *output << setw(30) << setprecision(20) << x.getLat();
         *output << endl;

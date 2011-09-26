@@ -1,8 +1,19 @@
-bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
-                    PolygonManager &polygonManager, Edge *edge)
+#ifndef splitEdge_h
+#define splitEdge_h
+
+#include "CurvatureGuard.h"
+#include "MeshManager.h"
+#include "FlowManager.h"
+#include "PolygonManager.h"
+#ifdef DEBUG
+#include "DebugTools.h"
+#endif
+
+inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
+                      PolygonManager &polygonManager, Edge *edge)
 {
     static int level = 0;
-    static const int maxLevel = 5;
+    static const int maxLevel = 3;
     static const double smallAngle = 90.0/Rad2Deg;
     static Edge *edge0;
     static Polygon *polygon1; // for OrientLeft polygon
@@ -18,6 +29,9 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     static double angleCheck[4];
     Location loc;
 
+    /*if (TimeManager::getSteps() == 30 && edge->getID() == 14788) {
+        REPORT_DEBUG
+    }*/
     level++;
 
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
@@ -32,7 +46,7 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     Vector vector2 = cross(x3.getCAR(), x2.getCAR());
     vector1 /= norm(vector1);
     vector2 /= norm(vector2);
-    double a0 = angleThreshold(edge);
+    double a0 = CurvatureGuard::angleThreshold(edge);
     double angle = EdgePointer::calcAngle(vector1, vector2, *testPoint);
     if (fabs(angle-PI) > a0) {
         // ---------------------------------------------------------------------
@@ -51,7 +65,7 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             angleCheck[1] = edgePointer1_next->getAngle();
             angleCheck[2] = edgePointer2->getAngle();
             angleCheck[3] = edgePointer2_next->getAngle();
-            resetTasks();
+            TTS::resetTasks();
         }
 
         // ---------------------------------------------------------------------
@@ -130,8 +144,8 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
         testPoint1->setLocation(loc);
         meshManager.checkLocation(testPoint2->getCoordinate(), loc);
         testPoint2->setLocation(loc);
-        track(meshManager, flowManager, testPoint1);
-        track(meshManager, flowManager, testPoint2);
+        TTS::track(meshManager, flowManager, testPoint1);
+        TTS::track(meshManager, flowManager, testPoint2);
 
         // ---------------------------------------------------------------------
         // check in next level
@@ -141,9 +155,9 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             Edge *newEdge;
             polygonManager.edges.append(&newEdge);
             *newEdge = edge1;
-            vertex1->dislinkEdge(&edge1);
+            //vertex1->unlinkEdge(&edge1);
             vertex1->linkEdge(newEdge);
-            newVertex->dislinkEdge(&edge1);
+            //newVertex->unlinkEdge(&edge1);
             newVertex->linkEdge(newEdge);
             newEdge->calcNormVector();
             newEdge->calcLength();
@@ -176,7 +190,7 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
                 newEdgePointer2 = newEdgePointer;
             }
             // -----------------------------------------------------------------
-            edge0->detectAgent.handover(newEdge);
+            edge0->detectAgent.handoverVertices(newEdge);
         }
         if (!splitEdge(meshManager, flowManager, polygonManager, &edge2)) {
             // the edge has not been splitted, add the edge into the main
@@ -184,9 +198,9 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             Edge *newEdge;
             polygonManager.edges.append(&newEdge);
             *newEdge = edge2;
-            vertex2->dislinkEdge(&edge2);
+            //vertex2->unlinkEdge(&edge2);
             vertex2->linkEdge(newEdge);
-            newVertex->dislinkEdge(&edge2);
+            //newVertex->unlinkEdge(&edge2);
             newVertex->linkEdge(newEdge);
             newEdge->calcNormVector();
             newEdge->calcLength();
@@ -207,12 +221,12 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
                 newEdgePointer2 = newEdgePointer;
             }
             // -----------------------------------------------------------------
-            edge0->detectAgent.handover(newEdge);
+            edge0->detectAgent.handoverVertices(newEdge);
         }
         level--;
         if (level == 0) {
             polygonManager.edges.remove(edge);
-            doTask(UpdateAngle);
+            TTS::doTask(TTS::UpdateAngle);
         }
         return true;
     } else {
@@ -220,3 +234,22 @@ bool TTS::splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
         return false;
     }
 }
+
+bool CurvatureGuard::splitEdge(MeshManager &meshManager,
+                               const FlowManager &flowManager,
+                               PolygonManager &polygonManager)
+{
+    bool isSplit = false;
+    Edge *edge = polygonManager.edges.front();
+    Edge *endEdge = polygonManager.edges.back();
+    Edge *nextEdge;
+    while (edge != endEdge->next) {
+        nextEdge = edge->next;
+        if (splitEdge(meshManager, flowManager, polygonManager, edge))
+            isSplit = true;
+        edge = nextEdge;
+    }
+    return isSplit;
+}
+
+#endif

@@ -19,8 +19,8 @@ public:
     Field();
     virtual ~Field();
 
-    void construct(const RLLMesh &mesh);
-    void construct(const RLLMesh &mesh, const Layers &layers);
+    void init(const RLLMesh &mesh);
+    void init(const RLLMesh &mesh, const Layers &layers);
 
     double interp(const Coordinate &, const Location &, TimeLevel) const;
 

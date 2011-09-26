@@ -14,7 +14,7 @@ public:
     PolygonManager();
     virtual ~PolygonManager();
 
-    void construct(const string &fileName);
+    void init(const string &fileName);
 
     void output(const string &fileName);
 

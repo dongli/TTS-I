@@ -23,7 +23,7 @@ public:
     void clean();
 
     void linkEdge(Edge *);
-    void dislinkEdge(Edge *);
+    void unlinkEdge(Edge *);
 #ifdef TTS_ONLINE
     void handoverEdges(Vertex *, MeshManager &, const FlowManager &,
                        PolygonManager &);
@@ -33,24 +33,13 @@ public:
 
     Vertex &operator=(const Vertex &);
 
-    void dump(int indentLevel = 0) const;
+    void dump(int indentLevel = 0);
 
 #ifdef TTS_ONLINE
     ApproachDetector::VertexAgent detectAgent;
 #endif
 
 	List<EdgePointer> linkedEdges;
-};
-
-class VertexPointer : public ListElement<VertexPointer>
-{
-public:
-    VertexPointer();
-    virtual ~VertexPointer();
-
-    void reinit();
-
-    Vertex *vertex;
 };
 
 #endif

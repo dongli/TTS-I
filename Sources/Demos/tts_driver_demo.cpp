@@ -6,6 +6,7 @@
 #include "SolidRotation.h"
 #include "MovingVortices.h"
 #include "StaticVortices.h"
+#include "Deformation.h"
 #include "TTS.h"
 
 int main(int argc, char **argv)
@@ -13,18 +14,19 @@ int main(int argc, char **argv)
     TimeManager timeManager;
     MeshManager meshManager;
     FlowManager flowManager;
-    ParcelManager parcelManager;
+    TracerManager tracerManager;
     //SolidRotation testCase;
-    MovingVortices testCase;
+    //MovingVortices testCase;
     //StaticVortices testCase;
+    Deformation testCase;
     TTS tts;
 
     // -------------------------------------------------------------------------
-    timeManager.setClock(1800.0);
-    timeManager.setEndStep(1152);
-    
+    timeManager.setClock(5.0/120);
+    timeManager.setEndStep(120);
+
     // -------------------------------------------------------------------------
-    parcelManager.construct(argv[1]);
+    tracerManager.init(argv[1]);
 
     // -------------------------------------------------------------------------
     int numLon = 128, numLat = 60;
@@ -36,19 +38,19 @@ int main(int argc, char **argv)
     for (int j = 0; j < numLat; ++j)
         lat[j] = PI05-(j+1)*dlat;
 
-    meshManager.construct(numLon, numLat, lon, lat);
-    flowManager.construct(meshManager);
+    meshManager.init(numLon, numLat, lon, lat);
+    flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
     //flowManager.output("flow.nc");
 
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
-        tts.advect(meshManager, flowManager, parcelManager);
+        tts.advect(meshManager, flowManager, tracerManager);
         timeManager.advance();
         testCase.calcVelocityField(flowManager);
         char fileName[30];
         sprintf(fileName, "tts_test%5.5d.nc", timeManager.getSteps());
-        parcelManager.output(fileName);
+        tracerManager.output(fileName);
         //flowManager.output("flow.nc");
     }
 }

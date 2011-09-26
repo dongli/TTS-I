@@ -21,7 +21,7 @@ FlowManager::~FlowManager()
 #endif
 }
 
-void FlowManager::construct(const MeshManager &meshManager)
+void FlowManager::init(const MeshManager &meshManager)
 {
     u.name = "u";
     u.long_name = "Zonal velocity";
@@ -32,19 +32,19 @@ void FlowManager::construct(const MeshManager &meshManager)
     v.unit = "m s-1";
 
     if (meshManager.hasLayers()) {
-        u.construct(meshManager.mesh[RLLMesh::LonHalf],
+        u.init(meshManager.mesh[RLLMesh::LonHalf],
                     meshManager.layers[Layers::Full]);
-        v.construct(meshManager.mesh[RLLMesh::LatHalf],
+        v.init(meshManager.mesh[RLLMesh::LatHalf],
                     meshManager.layers[Layers::Full]);
 
         w.name = "w";
         w.long_name = "Vertical velocity";
         w.unit = "Unknown";
-        w.construct(meshManager.mesh[RLLMesh::Full],
+        w.init(meshManager.mesh[RLLMesh::Full],
                     meshManager.layers[Layers::Half]);
     } else {
-        u.construct(meshManager.mesh[RLLMesh::LonHalf]);
-        v.construct(meshManager.mesh[RLLMesh::LatHalf]);
+        u.init(meshManager.mesh[RLLMesh::LonHalf]);
+        v.init(meshManager.mesh[RLLMesh::LatHalf]);
     }
     prv.linkVelocityField(u, v);
 }
@@ -58,7 +58,7 @@ void FlowManager::update(double *u, double *v)
     //       be considered carefully (first latitude grids, then longitude);
     //   (2) The first-step-setting can affect the restart.
     int l;
-    if (! isInitialized) {
+    if (!isInitialized) {
         l = -1;
         for (int i = 1; i < this->u.mesh->getNumLon()-1; ++i)
             for (int j = 0; j < this->u.mesh->getNumLat(); ++j)
@@ -132,7 +132,9 @@ void FlowManager::output(const string &fileName) const
     struct stat statInfo;
     int ret = stat(fileName.c_str(), &statInfo);
 
-    if (ret != 0) {
+    NcError ncError(NcError::silent_nonfatal);
+
+    if (ret != 0 || TimeManager::isFirstStep()) {
         file = new NcFile(fileName.c_str(), NcFile::Replace);
     } else {
         file = new NcFile(fileName.c_str(), NcFile::Write);
@@ -144,14 +146,12 @@ void FlowManager::output(const string &fileName) const
         REPORT_ERROR(message)
     }
 
-    NcError ncError(NcError::silent_nonfatal);
-
     int numLon = v.mesh->getNumLon()-1;
     int numLat = u.mesh->getNumLat();
 
     NcVar *timeVar, *uVar, *vVar;
 
-    if (ret != 0) {
+    if (ret != 0 || TimeManager::isFirstStep()) {
         NcDim *timeDim = file->add_dim("time");
         NcDim *lonDim = file->add_dim("lon", numLon);
         NcDim *latDim = file->add_dim("lat", numLat);
@@ -183,8 +183,8 @@ void FlowManager::output(const string &fileName) const
         vVar->add_att("units", v.unit.c_str());
     } else {
         timeVar = file->get_var("time");
-        uVar = file->get_var(u.long_name.c_str());
-        vVar = file->get_var(v.long_name.c_str());
+        uVar = file->get_var(u.name.c_str());
+        vVar = file->get_var(v.name.c_str());
     }
 
     double seconds = TimeManager::getSeconds();
@@ -196,7 +196,7 @@ void FlowManager::output(const string &fileName) const
     for (int j = 0; j < numLat; ++j)
         for (int i = 0; i < numLon; ++i) {
             uu[j][i] = (u.values(i, j).getNew()+u.values(i+1, j).getNew())*0.5;
-            vv[j][i] = (v.values(i, j).getNew()+v.values(i+1, j).getNew())*0.5;
+            vv[j][i] = (v.values(i, j).getNew()+v.values(i, j+1).getNew())*0.5;
         }
     uVar->put_rec(&uu[0][0], record);
     vVar->put_rec(&vv[0][0], record);

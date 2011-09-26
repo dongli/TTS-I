@@ -49,6 +49,7 @@ begin
     res@gsnMaximize             = True
     res@mpGreatCircleLinesOn    = True
     res@mpFillOn                = False
+    ;res@mpCenterLonF            = 180.0
     if (projection .eq. "NH") then
         if (.not. isatt(projection, "min_lat")) then
             system("echo [Error]: setup_map: projection@min_lat should be defined for NH projection.")
@@ -131,7 +132,7 @@ begin
     res@gsnDraw                 = False
     res@gsnFrame                = False
     res@vcRefAnnoOrthogonalPosF = -1.0
-    res@vcRefMagnitudeF         = 10.0
+    res@vcRefMagnitudeF         = 0.5
     res@vcRefLengthF            = 0.045
     res@vcGlyphStyle            = "CurlyVector"
     res@vcMinDistanceF          = 0.017

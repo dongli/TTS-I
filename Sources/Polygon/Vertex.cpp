@@ -5,6 +5,7 @@
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "PolygonManager.h"
+#include "TimeManager.h"
 #endif
 
 Vertex::Vertex()
@@ -17,13 +18,13 @@ Vertex::Vertex()
 
 Vertex::~Vertex()
 {
+    clean();
     linkedEdges.destroy();
 }
 
 void Vertex::reinit()
 {
     Point::reinit();
-    linkedEdges.recycle();
 #ifdef TTS_ONLINE
     detectAgent.reinit();
 #endif
@@ -31,6 +32,19 @@ void Vertex::reinit()
 
 void Vertex::clean()
 {
+    //if (TimeManager::getSteps() >= 45 && getID() == 185239)
+    //    REPORT_DEBUG
+    EdgePointer *linkedEdge = linkedEdges.front();
+    for (int i = 0; i < linkedEdges.size(); ++i) {
+        if (linkedEdge->edge->getEndPoint(FirstPoint) == this)
+            linkedEdge->edge->linkEndPoint(FirstPoint, NULL);
+        else if (linkedEdge->edge->getEndPoint(SecondPoint) == this)
+            linkedEdge->edge->linkEndPoint(SecondPoint, NULL);
+        else
+            REPORT_ERROR("Unlinked edge!")
+        linkedEdge = linkedEdge->next;
+    }
+    linkedEdges.recycle();
 #ifdef TTS_ONLINE
     detectAgent.clean();
 #endif
@@ -38,25 +52,29 @@ void Vertex::clean()
 
 void Vertex::linkEdge(Edge *edge)
 {
+    //if (TimeManager::getSteps() >= 45 && getID() == 185239)
+    //    REPORT_DEBUG
     linkedEdges.append();
     linkedEdges.back()->edge = edge;
 }
 
-void Vertex::dislinkEdge(Edge *edge)
+void Vertex::unlinkEdge(Edge *edge)
 {
-    EdgePointer *edgePointer = linkedEdges.front();
+    //if (TimeManager::getSteps() >= 45 && getID() == 185239)
+    //    REPORT_DEBUG
+    EdgePointer *linkedEdge = linkedEdges.front();
     for (int i = 0; i < linkedEdges.size(); ++i) {
-        if (edgePointer->edge == edge) {
-            linkedEdges.remove(edgePointer);
+        if (linkedEdge->edge == edge) {
+            linkedEdges.remove(linkedEdge);
             return;
         }
-        edgePointer = edgePointer->next;
+        linkedEdge = linkedEdge->next;
     }
-    cout << "The linked edges by vertex " << getID() << "  " << this << endl;
-    edgePointer = linkedEdges.front();
+    cout << "The linked edges of vertex " << getID() << "  " << this << endl;
+    linkedEdge = linkedEdges.front();
     for (int i = 0; i < linkedEdges.size(); ++i) {
-        cout << i << ": " << edgePointer->edge->getID() << endl;
-        edgePointer = edgePointer->next;
+        cout << i << ": " << linkedEdge->edge->getID() << endl;
+        linkedEdge = linkedEdge->next;
     }
     cout << "The wanted edge is " << edge->getID() << endl;
     REPORT_ERROR("Edge is not linked with vertex.")
@@ -67,30 +85,30 @@ void Vertex::handoverEdges(Vertex *newVertex, MeshManager &meshManager,
                            const FlowManager &flowManager,
                            PolygonManager &polygonManager)
 {
-    EdgePointer *edgePointer = linkedEdges.front();
-    for (int i = 0; i < linkedEdges.size(); ++i) {
-        if (edgePointer->edge->getEndPoint(FirstPoint) == this) {
-            edgePointer->edge->changeEndPoint(FirstPoint, newVertex,
+    EdgePointer *linkedEdge = linkedEdges.front();
+    while (linkedEdge != NULL) {
+        if (linkedEdge->edge->getEndPoint(FirstPoint) == this) {
+            linkedEdge->edge->changeEndPoint(FirstPoint, newVertex,
                                               meshManager, flowManager);
         } else {
-            edgePointer->edge->changeEndPoint(SecondPoint, newVertex,
+            linkedEdge->edge->changeEndPoint(SecondPoint, newVertex,
                                               meshManager, flowManager);
         }
-        if (edgePointer->edge->getEndPoint(FirstPoint) ==
-            edgePointer->edge->getEndPoint(SecondPoint) &&
-            edgePointer->edge->detectAgent.vertexPointers.size() != 0) {
-            EdgePointer *linkedEdge = newVertex->linkedEdges.front();
+        if (linkedEdge->edge->getEndPoint(FirstPoint) ==
+            linkedEdge->edge->getEndPoint(SecondPoint) &&
+            linkedEdge->edge->detectAgent.vertices.size() != 0) {
+            EdgePointer *linkedEdge1 = newVertex->linkedEdges.front();
             for (int j = 0; j < newVertex->linkedEdges.size(); ++j) {
-                edgePointer->edge->detectAgent.handover(linkedEdge->edge);
-                linkedEdge = linkedEdge->next;
+                linkedEdge->edge->detectAgent.handoverVertices(linkedEdge1->edge);
+                linkedEdge1 = linkedEdge1->next;
             }
-            if (edgePointer->edge->detectAgent.vertexPointers.size() != 0) {
-                edgePointer->edge->detectAgent.clean();
+            if (linkedEdge->edge->detectAgent.vertices.size() != 0) {
+                linkedEdge->edge->detectAgent.clean();
                 REPORT_DEBUG
             }
         }
-        edgePointer->edge->detectAgent.update();
-        edgePointer = edgePointer->next;
+        linkedEdge->edge->detectAgent.updateVertexProjections();
+        linkedEdge = linkedEdge->next;
     }
 }
 #endif
@@ -103,38 +121,25 @@ Vertex &Vertex::operator=(const Vertex &that)
     return *this;
 }
 
-void Vertex::dump(int indentLevel) const
+void Vertex::dump(int indentLevel)
 {
     cout << "Vertex " << getID() << ":" << endl;
     Point::dump(indentLevel+1);
-    EdgePointer *edgePointer = linkedEdges.front();
+    EdgePointer *linkedEdge = linkedEdges.front();
     for (int i = 0; i < linkedEdges.size(); ++i) {
         cout << "  Linked edge " << i << ":" << endl;
-        cout << "    ID:              " << edgePointer->edge->getID() << endl;
+        cout << "    ID:              " << linkedEdge->edge->getID() << endl;
         cout << "    First point ID:  " <<
-        edgePointer->edge->getEndPoint(FirstPoint)->getID() << endl;
+        linkedEdge->edge->getEndPoint(FirstPoint)->getID() << endl;
         cout << "    Second point ID: " <<
-        edgePointer->edge->getEndPoint(SecondPoint)->getID() << endl;
+        linkedEdge->edge->getEndPoint(SecondPoint)->getID() << endl;
         cout << "    Left polygon ID: " <<
-        edgePointer->edge->getPolygon(OrientLeft)->getID() << endl;
+        linkedEdge->edge->getPolygon(OrientLeft)->getID() << endl;
         cout << "    Right polygon ID: " <<
-        edgePointer->edge->getPolygon(OrientRight)->getID() << endl;
-        edgePointer = edgePointer->next;
+        linkedEdge->edge->getPolygon(OrientRight)->getID() << endl;
+        linkedEdge = linkedEdge->next;
     }
-}
-
-// -----------------------------------------------------------------------------
-
-VertexPointer::VertexPointer()
-{
-    reinit();
-}
-
-VertexPointer::~VertexPointer()
-{
-}
-
-void VertexPointer::reinit()
-{
-    vertex = NULL;
+#ifdef TTS_ONLINE
+    detectAgent.dump();
+#endif
 }

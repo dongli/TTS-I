@@ -16,7 +16,7 @@ public:
 	Layers(LayerType type, int numLev, double *lev);
 	virtual ~Layers();
 
-    void construct(LayerType type, int numLev, double *lev);
+    void init(LayerType type, int numLev, double *lev);
 
     int getNumLev() const { return static_cast<int>(lev.size()); }
 

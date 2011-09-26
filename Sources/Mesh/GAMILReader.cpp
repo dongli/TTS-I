@@ -18,7 +18,7 @@ GAMILReader::~GAMILReader()
     REPORT_OFFLINE("GAMILReader")
 }
 
-void GAMILReader::construct(const string &dir, const string &filePattern)
+void GAMILReader::init(const string &dir, const string &filePattern)
 {
     SystemCalls::getFiles(dir, filePattern, fileNames);
 
@@ -38,14 +38,24 @@ void GAMILReader::construct(const string &dir, const string &filePattern)
     TimeManager::setEndStep(fileNames.size()-1);
     file.close();
 
-    meshManager.construct(numLon, numLat, lon.data(), lat.data());
-    flowManager.construct(meshManager);
+    meshManager.init(numLon, numLat, lon.data(), lat.data());
+    flowManager.init(meshManager);
 }
 
 void GAMILReader::getVelocityField()
 {
     cout << "reading " << fileNames[TimeManager::getSteps()] << endl;
+
+    NcError ncError(NcError::silent_nonfatal);
+ 
     NcFile file(fileNames[TimeManager::getSteps()].c_str(), NcFile::ReadOnly);
+
+    if (!file.is_valid()) {
+        ostringstream message;
+        message << "Failed to open file " << fileNames[TimeManager::getSteps()];
+        REPORT_ERROR(message.str())
+    }
+
     int numLon = file.get_dim("lon_full")->size();
     int numLat = file.get_dim("lat_full")->size();
     int numLonHalf = file.get_dim("lon_half")->size();

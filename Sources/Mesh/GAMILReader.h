@@ -10,7 +10,7 @@ public:
     GAMILReader();
     virtual ~GAMILReader();
 
-    void construct(const string &dir, const string &filePattern);
+    void init(const string &dir, const string &filePattern);
 
     void getVelocityField();
 

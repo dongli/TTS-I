@@ -1,21 +1,18 @@
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MAIN
-#include "ReportMacros.h"
-#include "Constants.h"
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 #include <iomanip>
+#include <netcdfcpp.h>
+
+#include "ReportMacros.h"
+#include "Constants.h"
+#include "unit_test_fixtures.h"
+#include "unit_test_testcase.h"
+#include "unit_test_tracers.h"
 
 using namespace std;
 
-char message[255];
-
-#include "unit_test_fixtures.h"
-#include "unit_test_memory.h"
-#include "unit_test_list.h"
-#include "unit_test_mesh.h"
-#include "unit_test_field.h"
-#include "unit_test_flow.h"
-#include "unit_test_sphere.h"
-#include "unit_test_testcase.h"
-#include "unit_test_polygon.h"
+// main entrance of unit tests
+int main(void)
+{
+    test_TestCase<Deformation>(5.0/600.0, 1);
+    test_tracers();
+}

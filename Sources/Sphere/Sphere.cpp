@@ -69,7 +69,7 @@ bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
             return true;
         }
     }
-    distance = -999;
+    distance = UndefinedDistance;
     return false;
 }
 
@@ -95,7 +95,11 @@ void Sphere::rotate(const Coordinate &xp, const Coordinate &xo, Coordinate &xr)
     tmp3 = tmp1+tmp2;
 #ifdef DEBUG
     if (tmp3 < -1.0 || tmp3 > 1.0) {
-        REPORT_ERROR("tmp3 is out of range [-1, 1]!")
+        if (fabs(tmp3)-1.0 < EPS) {
+            REPORT_WARNING("tmp3 is out of range [-1, 1]!")
+            tmp3 = fmin(1.0, fmax(-1.0, tmp3));
+        } else
+            REPORT_ERROR("tmp3 is out of range [-1, 1]!")
     }
 #endif
     double lat = asin(tmp3);

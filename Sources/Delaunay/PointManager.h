@@ -20,7 +20,7 @@ public:
     PointManager();
     virtual ~PointManager();
     
-    void construct(int numPoint, double *lon, double *lat);
+    void init(int numPoint, double *lon, double *lat);
     
     List<PointPointer> points;
 };

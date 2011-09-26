@@ -15,7 +15,7 @@ public:
 	FlowManager ();
 	virtual ~FlowManager ();
 
-    void construct(const MeshManager &meshManager);
+    void init(const MeshManager &meshManager);
 
     void update(double *u, double *v);
 

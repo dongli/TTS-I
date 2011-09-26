@@ -34,9 +34,9 @@ int main(int argc, char **argv)
     NOTICE("preprocess", "Triangulating point data.")
     PointManager pointManager;
     DelaunayDriver driver;
-    pointManager.construct(numPoint, lon, lat);
+    pointManager.init(numPoint, lon, lat);
     driver.linkPoint(pointManager);
-    driver.construct();
+    driver.init();
     driver.calcircum();
     driver.output("delaunay");
 

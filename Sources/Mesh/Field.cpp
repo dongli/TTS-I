@@ -12,7 +12,7 @@ Field::~Field()
 {
 }
 
-void Field::construct(const RLLMesh &mesh)
+void Field::init(const RLLMesh &mesh)
 {
     this->mesh = &mesh;
     values.resize(mesh.getNumLon(), mesh.getNumLat(), 1);
@@ -35,7 +35,7 @@ void Field::construct(const RLLMesh &mesh)
     }
 }
 
-void Field::construct(const RLLMesh &mesh, const Layers &layers)
+void Field::init(const RLLMesh &mesh, const Layers &layers)
 {
     this->mesh = &mesh;
     this->layers = &layers;

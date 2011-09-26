@@ -19,7 +19,7 @@ public:
 
     void linkPoint(const PointManager &);
 
-    void construct();
+    void init();
 
     void calcircum();
 

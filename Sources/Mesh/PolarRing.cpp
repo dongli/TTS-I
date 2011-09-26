@@ -53,7 +53,7 @@ void PolarRingVelocity::linkVelocityField(const Field &u, const Field &v)
 
 void PolarRingVelocity::update()
 {
-    if (! isInitialized) {
+    if (!isInitialized) {
         for (int j = 0; j < 2; ++j) {
             int l = j == 0 ? 0 : uField->mesh->getNumLat()-1;
             for (int i = 0; i < u[j].extent(0); ++i)
@@ -124,7 +124,6 @@ void PolarRingVelocity::update()
                     vt[j](i, k).setNew(tmp1+tmp2);
                 }
         }
-
     }
 }
 

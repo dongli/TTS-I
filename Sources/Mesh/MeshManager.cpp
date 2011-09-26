@@ -13,7 +13,7 @@ MeshManager::MeshManager()
 #ifndef UNIT_TEST
     REPORT_ONLINE("MeshManager")
 #endif
-    this->PoleR = 5.0/Rad2Deg;
+    this->PoleR = 10.0/Rad2Deg;
 }
 
 MeshManager::~MeshManager()
@@ -28,35 +28,34 @@ void MeshManager::setPoleR(double PoleR)
     this->PoleR = PoleR;
 }
 
-void MeshManager::construct(int numLon, int numLat, 
-                            double *lon, double *lat)
+void MeshManager::init(int numLon, int numLat, double *lon, double *lat)
 {
     // Note: Assume the input "lon", "lat" and "lev" are the axis
     //       coordinate of full mesh and full layers.
     // -------------------------------------------------------------------------
-    mesh[RLLMesh::Full].construct(RLLMesh::Full, numLon, numLat, lon, lat);
-    mesh[RLLMesh::LonHalf].construct(RLLMesh::LonHalf, numLon, numLat, lon, lat);
-    mesh[RLLMesh::LatHalf].construct(RLLMesh::LatHalf, numLon, numLat, lon, lat);
-    mesh[RLLMesh::BothHalf].construct(RLLMesh::BothHalf, numLon, numLat, lon, lat);
+    mesh[RLLMesh::Full].init(RLLMesh::Full, numLon, numLat, lon, lat);
+    mesh[RLLMesh::LonHalf].init(RLLMesh::LonHalf, numLon, numLat, lon, lat);
+    mesh[RLLMesh::LatHalf].init(RLLMesh::LatHalf, numLon, numLat, lon, lat);
+    mesh[RLLMesh::BothHalf].init(RLLMesh::BothHalf, numLon, numLat, lon, lat);
 
     // -------------------------------------------------------------------------
-    pointCounter.construct(mesh[RLLMesh::BothHalf].lon, mesh[RLLMesh::BothHalf].lat, 2, 2);
+    pointCounter.init(mesh[RLLMesh::BothHalf].lon, mesh[RLLMesh::BothHalf].lat, 2, 2);
 }
 
-void MeshManager::construct(int numLon, int numLat, int numLev,
-                            double *lon, double *lat, double *lev)
+void MeshManager::init(int numLon, int numLat, int numLev,
+                       double *lon, double *lat, double *lev)
 {
     // Note: Assume the input "lon", "lat" and "lev" are the axis
     //       coordinate of full mesh and full layers.
     // -------------------------------------------------------------------------
-    mesh[RLLMesh::Full].construct(RLLMesh::Full, numLon, numLat, lon, lat);
-    mesh[RLLMesh::LonHalf].construct(RLLMesh::LonHalf, numLon, numLat, lon, lat);
-    mesh[RLLMesh::LatHalf].construct(RLLMesh::LatHalf, numLon, numLat, lon, lat);
-    mesh[RLLMesh::BothHalf].construct(RLLMesh::BothHalf, numLon, numLat, lon, lat);
+    mesh[RLLMesh::Full].init(RLLMesh::Full, numLon, numLat, lon, lat);
+    mesh[RLLMesh::LonHalf].init(RLLMesh::LonHalf, numLon, numLat, lon, lat);
+    mesh[RLLMesh::LatHalf].init(RLLMesh::LatHalf, numLon, numLat, lon, lat);
+    mesh[RLLMesh::BothHalf].init(RLLMesh::BothHalf, numLon, numLat, lon, lat);
 
     // -------------------------------------------------------------------------
-    layers[Layers::Full].construct(Layers::Full, numLev, lev);
-    layers[Layers::Half].construct(Layers::Half, numLev, lev);
+    layers[Layers::Full].init(Layers::Full, numLev, lev);
+    layers[Layers::Half].init(Layers::Half, numLev, lev);
 
     // -------------------------------------------------------------------------
 }
@@ -284,6 +283,8 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
     
     // -------------------------------------------------------------------------
     // count
+    // Todo: This part is duplicate with "countPoint" functionally, try to
+    //       merge them.
     if (point != NULL) {
         static double dlon = mesh[RLLMesh::BothHalf].dlon/pointCounter.numSubLon;
         ratio = (x.getLon()-mesh[RLLMesh::BothHalf].lon(loc.i[RLLMesh::BothHalf]))/dlon;
@@ -299,6 +300,26 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
         }
         pointCounter.count(loc, point);
     }
+}
+
+void MeshManager::countPoint(Point *point)
+{
+    static double dlon = mesh[RLLMesh::BothHalf].dlon/pointCounter.numSubLon;
+    const Coordinate &x = point->getCoordinate();
+    Location loc = point->getLocation();
+    double ratio = (x.getLon()-mesh[RLLMesh::BothHalf].lon(loc.i[RLLMesh::BothHalf]))/dlon;
+    loc.i.back() = int(floor(ratio))+loc.i[RLLMesh::BothHalf]*pointCounter.numSubLon;
+    if (loc.j[RLLMesh::BothHalf] == -1) {
+        loc.j.back() = 0;
+    } else if (loc.j[RLLMesh::BothHalf] == mesh[RLLMesh::BothHalf].getNumLat()-1) {
+        loc.j.back() = pointCounter.counters.extent(1)-1;
+    } else {
+        double dlat = mesh[RLLMesh::BothHalf].dlat(loc.j[RLLMesh::BothHalf])/pointCounter.numSubLat;
+        ratio = (mesh[RLLMesh::BothHalf].lat(loc.j[RLLMesh::BothHalf])-x.getLat())/dlat;
+        loc.j.back() = int(floor(ratio))+loc.j[RLLMesh::BothHalf]*pointCounter.numSubLat+1;
+    }
+    pointCounter.count(loc, point);
+    point->setLocation(loc);
 }
 
 void MeshManager::move(const Coordinate &x0, Coordinate &x1, const Velocity &v,

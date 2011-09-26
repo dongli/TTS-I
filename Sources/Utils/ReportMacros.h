@@ -2,9 +2,11 @@
 #define _ReportMacros_h_
 
 #include <iostream>
+#include <sstream>
 
 using std::cout;
 using std::endl;
+using std::ostringstream;
 
 #define REPORT_ERROR(MESSAGE) \
 { \

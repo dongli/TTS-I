@@ -19,15 +19,15 @@ RLLMesh::RLLMesh(MeshType type, int numLon, int numLat,
                  double *lon, double *lat)
 {
     isConstructed = false;
-    construct(type, numLon, numLat, lon, lat);
+    init(type, numLon, numLat, lon, lat);
 }
 
 RLLMesh::~RLLMesh()
 {
 }
 
-void RLLMesh::construct(MeshType type, int numLon, int numLat,
-                        double *lon, double *lat)
+void RLLMesh::init(MeshType type, int numLon, int numLat,
+                   double *lon, double *lat)
 {
     if (isConstructed) {
         REPORT_ERROR("RLL mesh has already been created.")

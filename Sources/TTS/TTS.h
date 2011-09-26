@@ -3,10 +3,8 @@
 
 #include "MeshManager.h"
 #include "FlowManager.h"
-#include "ParcelManager.h"
+#include "TracerManager.h"
 #include <list>
-
-using std::list;
 
 class TTS
 {
@@ -14,8 +12,7 @@ public:
     TTS();
     virtual ~TTS();
 
-    void init();
-    void advect(MeshManager &, const FlowManager &, ParcelManager &);
+    void advect(MeshManager &, const FlowManager &, TracerManager &);
 
     static void track(MeshManager &, const FlowManager &, Point *,
                       bool isCount = false);
@@ -27,21 +24,10 @@ public:
     static void recordTask(TaskType, EdgePointer *);
     static void deleteTask(TaskType, EdgePointer *);
     static void doTask(TaskType, bool debug = false);
+    static void dumpTask(TaskType);
 
 private:
-    double angleThreshold(Edge *edge);
-    double angleThreshold(Edge *edge1, Edge *edge2);
-
-    void guardCurvature(MeshManager &, const FlowManager &, PolygonManager &);
-    bool splitEdge(MeshManager &, const FlowManager &, PolygonManager &, Edge *);
-    bool mergeEdge(MeshManager &, const FlowManager &, PolygonManager &, Polygon *);
-    bool handleWrongAngle(MeshManager &, const FlowManager &, PolygonManager &, Polygon *);
-    bool splitPolygon(MeshManager &, const FlowManager &, PolygonManager &);
-
-    double A0, A1, dA;
-    double L0, L1, dL;
-
-    static list<EdgePointer *> needUpdateAngles;
+    static std::list<EdgePointer *> needUpdateAngles;
 };
 
 #endif

@@ -409,6 +409,9 @@ void List<T>::destroy()
     numElem = 0;
     // Destroy the free elements
     while (!freeElem.empty()) {
+        //! \note Reinitialize the element in freeElem queue to ensure the
+        //!       deletion of it will not interfere with other objects.
+        freeElem.front()->reinit();
         delete freeElem.front();
         freeElem.pop();
     }

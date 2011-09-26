@@ -16,7 +16,7 @@ public:
     RLLMesh(MeshType type, int numLon, int numLat, double *lon, double *lat);
     virtual ~RLLMesh();
 
-    void construct(MeshType type, int numLon, int numLat, double *lon, double *lat);
+    void init(MeshType type, int numLon, int numLat, double *lon, double *lat);
 
     int getNumLon() const { return static_cast<int>(lon.size()); }
     int getNumLat() const { return static_cast<int>(lat.size()); }

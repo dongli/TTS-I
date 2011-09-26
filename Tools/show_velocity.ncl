@@ -6,20 +6,22 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 
 begin
 
-    f = addfile("debug_gamil.suv.nc", "r")
+    file_name = "test_flow.nc"
+
+    f = addfile(file_name, "r")
 
     plot_type = "vector"
 
-    wks = gsn_open_wks("newpdf", "velocity_field")
+    wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+file_name))
 
-    projection = "SH"
+    projection = "NH"
     projection@min_lat = 80.0
     projection@max_lat = -80.0
 
     res_map = setup_map(projection)
 
     if (plot_type .eq. "vector") then
-        do k = 0, 24;0, dimsizes(f->time)-1
+        do k = 0, 0;0, dimsizes(f->time)-1
             system("echo plotting time "+f->time(k))
             map = gsn_csm_map(wks, res_map)
             plot = show_velocity_vector(wks, f->u(k,:,:), f->v(k,:,:))

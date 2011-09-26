@@ -3,8 +3,11 @@
 
 #include "TimeManager.h"
 #include "PolygonManager.h"
+#include "ApproachDetector.h"
 #include <string>
 #include <fstream>
+
+using namespace ApproachDetector;
 
 class DebugTools
 {
@@ -18,7 +21,9 @@ public:
     static void assert_colinear(const Coordinate &x1, const Coordinate &x2,
                                 const Coordinate &x3);
 
-    static void assert_consistent_projection(Vertex *, Vertex *, Vertex *);
+#ifdef TTS_ONLINE
+    static void assert_consistent_projection(Projection *projection);
+#endif
 
     static void watch_vertex(Vertex *);
     static void watch_edge(Edge *);

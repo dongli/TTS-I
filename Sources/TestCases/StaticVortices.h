@@ -2,7 +2,6 @@
 #define _StaticVortices_h_
 
 #include "TestCase.h"
-#include "Coordinate.h"
 
 class StaticVortices : public TestCase
 {

@@ -17,9 +17,8 @@ PointCounter::~PointCounter()
 #endif
 }
 
-void PointCounter::construct(const Array<double, 1> &lon,
-                             const Array<double, 1> &lat,
-                             int numSubLon, int numSubLat)
+void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat,
+                        int numSubLon, int numSubLat)
 {
     // -------------------------------------------------------------------------
     // bounds of grid boxes for counting points

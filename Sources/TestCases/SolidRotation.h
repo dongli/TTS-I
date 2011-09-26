@@ -1,8 +1,7 @@
-#ifndef _SolidRotation_h_
-#define _SolidRotation_h_
+#ifndef SolidRotation_h
+#define SolidRotation_h
 
 #include "TestCase.h"
-#include "Coordinate.h"
 
 class SolidRotation : public TestCase
 {

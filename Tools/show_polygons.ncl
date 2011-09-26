@@ -7,25 +7,26 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     is_plot_polygons = True
-    is_plot_vertices = True
+    is_plot_vertices = False
     is_plot_vertex_number = False
     is_plot_polygon_area = False
-    is_plot_testpoint = True
+    is_plot_testpoint = False
     is_plot_point_counters = False
     projection = "CE"
+    projection@min_lat = 80.0
     projection@max_lat = -80.0
 
-    line_width = 0.1
-    point_size = 0.001
+    line_width = 1.0
+    point_size = 0.0005
 
-    polygon_file_names = systemfunc("ls tts_test00025.nc")
+    polygon_file_names = systemfunc("ls tts_test00120.nc")
     counter_file_names = systemfunc("ls debug_counters*.nc 2> /dev/null")
 
     res_map = setup_map(projection)
 
     if (is_plot_polygons .or. is_plot_vertices .or. is_plot_point_counters) then
         do i = 0, dimsizes(polygon_file_names)-1
-            wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+polygon_file_names(i)))
+            wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+polygon_file_names(i))+"_"+projection)
 
             system("echo '-----------------------------------------'")
             if (is_plot_point_counters) then

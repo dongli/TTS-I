@@ -9,14 +9,14 @@ Layers::Layers()
 Layers::Layers(LayerType type, int numLev, double *lev)
 {
     isConstructed = false;
-    construct(type, numLev, lev);
+    init(type, numLev, lev);
 }
 
 Layers::~Layers()
 {
 }
 
-void Layers::construct(LayerType type, int numLev, double *lev)
+void Layers::init(LayerType type, int numLev, double *lev)
 {
     if (isConstructed) {
         REPORT_ERROR("Layers has been constructed.")

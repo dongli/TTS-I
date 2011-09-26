@@ -15,9 +15,8 @@ public:
     PointCounter();
     virtual ~PointCounter();
 
-    void construct(const Array<double, 1> &lon,
-                   const Array<double, 1> &lat,
-                   int numSubLon, int numSubLat);
+    void init(const Array<double, 1> &lon, const Array<double, 1> &lat,
+              int numSubLon, int numSubLat);
 
     void reset();
 

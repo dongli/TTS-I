@@ -17,6 +17,7 @@ Edge::Edge()
 
 Edge::~Edge()
 {
+    clean();
 }
 
 void Edge::reinit()
@@ -34,13 +35,9 @@ void Edge::reinit()
 
 void Edge::clean()
 {
-    for (int i = 0; i < 2; ++i) {
-        if (endPoints[i] != NULL) {
-            endPoints[i]->dislinkEdge(this);
-        } else {
-            REPORT_WARNING("End point is not created yet!")
-        }
-    }
+    for (int i = 0; i < 2; ++i)
+        if (endPoints[i] != NULL)
+            endPoints[i]->unlinkEdge(this);
 #ifdef TTS_ONLINE
     detectAgent.clean();
 #endif
@@ -50,7 +47,8 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point)
 {
     isNormVectorSet = false;
     endPoints[order] = point;
-    point->linkEdge(this);
+    if (point != NULL)
+        point->linkEdge(this);
 
     // -------------------------------------------------------------------------
     // set test point
@@ -77,6 +75,8 @@ void Edge::changeEndPoint(PointOrder order, Vertex *point,
 {
     Vertex *testPoint = getTestPoint();
     testPoint->Point::reinit();
+    if (endPoints[order] != NULL)
+        endPoints[order]->unlinkEdge(this);
     linkEndPoint(order, point);
     calcNormVector();
     calcLength();
@@ -306,7 +306,7 @@ void EdgePointer::calcAngle()
         this->angle.save();
     Vertex *point = getEndPoint(FirstPoint);
     double angle = calcAngle(prev->getNormVector(), getNormVector(), *point);
-    if (angle > 350/Rad2Deg) {
+    if (angle > 359/Rad2Deg) {
         cout << "Left polygon ID: " << edge->polygons[0]->getID() << endl;
         cout << "Right polygon ID: " << edge->polygons[1]->getID() << endl;
         edge->polygons[0]->dump("left_polygon");
@@ -317,7 +317,7 @@ void EdgePointer::calcAngle()
     if (!isAngleSet) {
         angle = calcAngle(prev->getNormVector(OldTimeLevel),
                           getNormVector(OldTimeLevel), *point);
-        if (angle > 350/Rad2Deg) {
+        if (angle > 359/Rad2Deg) {
             cout << "Left polygon ID: " << edge->polygons[0]->getID() << endl;
             cout << "Right polygon ID: " << edge->polygons[1]->getID() << endl;
             edge->polygons[0]->dump("left_polygon");

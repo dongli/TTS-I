@@ -2,7 +2,7 @@
 #define _MultiTimeLevel_h_
 
 enum TimeLevel {
-    NewTimeLevel, HalfTimeLevel, OldTimeLevel
+    NewTimeLevel = 0, OldTimeLevel = 1, HalfTimeLevel
 };
 
 template <typename T, int TIMELEVEL>

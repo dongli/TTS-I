@@ -13,7 +13,7 @@ PointManager::~PointManager()
     }
 }
 
-void PointManager::construct(int numPoint, double *lon, double *lat)
+void PointManager::init(int numPoint, double *lon, double *lat)
 {
     points.create(numPoint);
     points.setName("Points");

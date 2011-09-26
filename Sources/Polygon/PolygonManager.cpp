@@ -23,7 +23,7 @@ PolygonManager::~PolygonManager()
 #endif
 }
 
-void PolygonManager::construct(const string &fileName)
+void PolygonManager::init(const string &fileName)
 {
     NcFile file(fileName.c_str(), NcFile::ReadOnly);
     if (!file.is_valid()) {

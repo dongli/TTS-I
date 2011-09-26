@@ -68,29 +68,29 @@ void DebugTools::assert_colinear(const Coordinate &x1, const Coordinate &x2,
     assert(fabs(x2r.getLon()-x3r.getLon()) < EPS);
 }
 
-void DebugTools::assert_consistent_projection(Vertex *vertex1,
-                                              Vertex *vertex2,
-                                              Vertex *vertex3)
+#ifdef TTS_ONLINE
+void DebugTools::assert_consistent_projection(Projection *projection)
 {
     TimeLevel timeLevel;
-    if (vertex3->detectAgent.isApproaching) {
+    if (projection->isApproaching()) {
         timeLevel = OldTimeLevel;
     } else {
         timeLevel = NewTimeLevel;
     }
+    Vertex *vertex1 = projection->getEdge()->getEndPoint(FirstPoint);
+    Vertex *vertex2 = projection->getEdge()->getEndPoint(SecondPoint);
     const Coordinate &x1 = vertex1->getCoordinate(timeLevel);
     const Coordinate &x2 = vertex2->getCoordinate(timeLevel);
-    const Coordinate &x3 = vertex3->detectAgent.projection;
+    const Coordinate &x3 = projection->getCoordinate(timeLevel);
     Coordinate x2r, x3r;
     Sphere::rotate(x1, x2, x2r);
     Sphere::rotate(x1, x3, x3r);
     if (fabs(x2r.getLon()-x3r.getLon()) > EPS) {
-        x1.dump();
-        x3.dump();
-        x2.dump();
+        projection->getVertex()->detectAgent.dump();
         REPORT_ERROR("Projection is not consistent!")
     }
 }
+#endif
 
 void DebugTools::watch_vertex(Vertex *vertex)
 {
@@ -123,20 +123,7 @@ void DebugTools::dump_watched_vertex()
     cout << "Watched vertex ID: " << watcher_vertex->getID() << endl;
     cout << "Coordinate:" << endl;
     watcher_vertex->getCoordinate().dump();
-#ifdef TTS_ONLINE
-    cout << "Detector:" << endl;
-    if (watcher_vertex->detectAgent.edge != NULL) {
-        cout << "  Obstacle edge ID: " << watcher_vertex->detectAgent.edge->getID() << endl;
-        cout << "  Approaching?: ";
-        if (watcher_vertex->detectAgent.isApproaching)
-            cout << "yes" << endl;
-        else
-            cout << "no" << endl;
-        cout << "  End points ID: ";
-        cout << watcher_vertex->detectAgent.edge->getEndPoint(FirstPoint)->getID() << " ";
-        cout << watcher_vertex->detectAgent.edge->getEndPoint(SecondPoint)->getID() << endl;
-    }
-#endif
+    watcher_vertex->dump();
     REPORT_DEBUG
 }
 
@@ -147,8 +134,11 @@ void DebugTools::dump_watched_edge()
     }
     cout << "Watched edge ID: " << watcher_edge->getID() << endl;
     cout << "  End points ID: ";
-    cout << watcher_edge->getEndPoint(FirstPoint)->getID() << " ";
+    cout << watcher_edge->getEndPoint(FirstPoint)->getID() << "  ";
     cout << watcher_edge->getEndPoint(SecondPoint)->getID() << endl;
+    cout << "  Edge pointers: ";
+    cout << watcher_edge->getEdgePointer(OrientLeft) << "  ";
+    cout << watcher_edge->getEdgePointer(OrientRight) << endl;
     REPORT_DEBUG
 }
 
@@ -157,7 +147,7 @@ void DebugTools::dump_watched_polygon()
     if (watcher_polygon == NULL) {
         return;
     }
-    watcher_polygon->dump("polygon");
+    watcher_polygon->dump("watched_polygon");
     REPORT_DEBUG
 }
 
