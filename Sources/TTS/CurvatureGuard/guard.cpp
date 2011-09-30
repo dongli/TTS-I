@@ -57,9 +57,6 @@ void CurvatureGuard::guard(MeshManager &meshManager,
 
     // -------------------------------------------------------------------------
     ApproachDetector::detect(meshManager, flowManager, polygonManager);
-#ifdef DEBUG
-    DebugTools::dump_watchers();
-#endif
 
     // -------------------------------------------------------------------------
     if (splitPolygon(meshManager, flowManager, polygonManager)) flag = true;

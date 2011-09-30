@@ -1,20 +1,18 @@
 #include "PointCounter.h"
 #include "ReportMacros.h"
 #include "Constants.h"
+#include "Location.h"
+#include "Point.h"
 #include <netcdfcpp.h>
 
 PointCounter::PointCounter()
 {
-#ifndef UNIT_TEST
     REPORT_ONLINE("PointCounter")
-#endif
 }
 
 PointCounter::~PointCounter()
 {
-#ifndef UNIT_TEST
     REPORT_OFFLINE("PointCounter")
-#endif
 }
 
 void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat,
@@ -41,6 +39,7 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     latBnds(latBnds.size()-2) = lat(lat.size()-1);
     latBnds(latBnds.size()-1) = -PI05;
     // -------------------------------------------------------------------------
+    //! \todo Add the vertical codes.
     counters.resize(lonBnds.size()-1, latBnds.size()-1, 1);
     points.resize(lonBnds.size()-1, latBnds.size()-1, 1);
     for (int i = 0; i < points.extent(0); ++i)

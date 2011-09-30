@@ -35,6 +35,7 @@ public:
 
 private:
     friend class FlowManager;
+    friend class MeshAdaptor;
     friend class TTS;
 
     double PoleR;

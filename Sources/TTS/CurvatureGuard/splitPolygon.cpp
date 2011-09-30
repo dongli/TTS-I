@@ -118,7 +118,8 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         polygon1->dump("polygon");
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
-        REPORT_DEBUG
+        if (TimeManager::getSteps() == 37 && vertex3->getID() == 651612)
+            REPORT_DEBUG
 #endif
         isSplit = true;
         // ---------------------------------------------------------------------
@@ -154,7 +155,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // ---------------------------------------------------------------------
         if (option != 3) {
             if (detect1(vertex3, testVertex, edge1) != NoCross)
-                continue;
+                option = 3;
             if (detect2(testVertex, edge1, polygon2) == Cross) {
                 testVertex->setCoordinate
                 (projection->getCoordinate(NewTimeLevel), NewTimeLevel);

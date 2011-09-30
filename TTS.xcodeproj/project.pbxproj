@@ -35,6 +35,8 @@
 		5581144E13EA474C004AF124 /* TTS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */; };
 		5581144F13EA474C004AF124 /* SystemCalls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581142A13EA4631004AF124 /* SystemCalls.cpp */; };
 		5581145013EA474C004AF124 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
+		558803AA1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */; };
+		558803AB1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */; };
 		558A48D914093757000B7E48 /* AgentPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CD14093757000B7E48 /* AgentPair.cpp */; };
 		558A48DA14093757000B7E48 /* ApproachDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CF14093757000B7E48 /* ApproachDetector.cpp */; };
 		558A48DB14093757000B7E48 /* ApproachingVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D114093757000B7E48 /* ApproachingVertices.cpp */; };
@@ -204,6 +206,8 @@
 		5581142A13EA4631004AF124 /* SystemCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCalls.cpp; sourceTree = "<group>"; };
 		5581142B13EA4631004AF124 /* SystemCalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemCalls.h; sourceTree = "<group>"; };
 		5581143213EA470B004AF124 /* tts_gamil_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_gamil_demo; sourceTree = BUILT_PRODUCTS_DIR; };
+		558803A81435A675008F4C84 /* MeshAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshAdaptor.h; sourceTree = "<group>"; };
+		558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshAdaptor.cpp; sourceTree = "<group>"; };
 		558A48CD14093757000B7E48 /* AgentPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AgentPair.cpp; sourceTree = "<group>"; };
 		558A48CE14093757000B7E48 /* AgentPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentPair.h; sourceTree = "<group>"; };
 		558A48CF14093757000B7E48 /* ApproachDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ApproachDetector.cpp; sourceTree = "<group>"; };
@@ -382,6 +386,15 @@
 			name = Executables;
 			sourceTree = "<group>";
 		};
+		558803A61435A645008F4C84 /* MeshAdaptor */ = {
+			isa = PBXGroup;
+			children = (
+				558803A81435A675008F4C84 /* MeshAdaptor.h */,
+				558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */,
+			);
+			path = MeshAdaptor;
+			sourceTree = "<group>";
+		};
 		558A48CC14093757000B7E48 /* ApproachDetector */ = {
 			isa = PBXGroup;
 			children = (
@@ -536,6 +549,7 @@
 		5598FAAE13D3DA9F00BC1AC4 /* TTS */ = {
 			isa = PBXGroup;
 			children = (
+				558803A61435A645008F4C84 /* MeshAdaptor */,
 				552EEE2C1421C0DB001E8352 /* CurvatureGuard */,
 				553FED94141767F500B1C14F /* PotentialCrossDetector */,
 				558A48CC14093757000B7E48 /* ApproachDetector */,
@@ -780,6 +794,7 @@
 				55C1E3D3142C5EE400D83018 /* Parcel.cpp in Sources */,
 				55C1E3D5142C5EE400D83018 /* Tracer.cpp in Sources */,
 				55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */,
+				558803AB1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -853,6 +868,7 @@
 				55C1E3D2142C5EE400D83018 /* Parcel.cpp in Sources */,
 				55C1E3D4142C5EE400D83018 /* Tracer.cpp in Sources */,
 				55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */,
+				558803AA1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

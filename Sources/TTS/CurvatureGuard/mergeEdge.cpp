@@ -24,7 +24,7 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
         nextEdgePointer = edgePointer->next;
         Edge *edge1 = edgePointer->prev->edge; // to be deleted if necessary
         Edge *edge2 = edgePointer->edge;
-        double a0 = CurvatureGuard::angleThreshold(edge1, edge2)*0.5;
+        double a0 = CurvatureGuard::angleThreshold(edge1, edge2)*0.2;
         if (fabs(edgePointer->getAngle(OldTimeLevel)-PI) < a0 &&
             fabs(edgePointer->getAngle(NewTimeLevel)-PI) < a0) {
             isMerged = true;

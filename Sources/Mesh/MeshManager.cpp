@@ -10,17 +10,13 @@ using std::min;
 
 MeshManager::MeshManager()
 {
-#ifndef UNIT_TEST
     REPORT_ONLINE("MeshManager")
-#endif
     this->PoleR = 10.0/Rad2Deg;
 }
 
 MeshManager::~MeshManager()
 {
-#ifndef UNIT_TEST
     REPORT_OFFLINE("MeshManager")
-#endif
 }
 
 void MeshManager::setPoleR(double PoleR)

@@ -8,8 +8,8 @@
 using namespace ApproachDetector;
 
 //#define TRACK_PAIRS
-#define PAIR_VERTEX_ID 12032
-//#define PAIR_EDGE_ID 267041
+#define PAIR_VERTEX_ID 51628
+#define PAIR_EDGE_ID 691316
 
 void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
 {

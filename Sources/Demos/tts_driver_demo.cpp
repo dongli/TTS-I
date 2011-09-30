@@ -8,11 +8,13 @@
 #include "StaticVortices.h"
 #include "Deformation.h"
 #include "TTS.h"
+#include "MeshAdaptor.h"
 
 int main(int argc, char **argv)
 {
     TimeManager timeManager;
     MeshManager meshManager;
+    MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
     //SolidRotation testCase;
@@ -39,13 +41,14 @@ int main(int argc, char **argv)
         lat[j] = PI05-(j+1)*dlat;
 
     meshManager.init(numLon, numLat, lon, lat);
+    meshAdaptor.init(meshManager);
     flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
     //flowManager.output("flow.nc");
 
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
-        tts.advect(meshManager, flowManager, tracerManager);
+        tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         timeManager.advance();
         testCase.calcVelocityField(flowManager);
         char fileName[30];

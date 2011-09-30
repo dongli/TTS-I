@@ -1,13 +1,14 @@
 #ifndef _PointCounter_h_
 #define _PointCounter_h_
 
-#include "Location.h"
-#include "Point.h"
 #include <blitz/array.h>
 #include <string>
 
 using blitz::Array;
 using std::string;
+
+class Location;
+class Point;
 
 class PointCounter
 {

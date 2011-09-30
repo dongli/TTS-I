@@ -42,9 +42,10 @@ Status PotentialCrossDetector::detect1(Vertex *vertex3, Vertex *testVertex,
         for (it = edge->detectAgent.vertices.begin();
              it != edge->detectAgent.vertices.end(); ++it) {
             Projection *projection = (*it)->detectAgent.getProjection(edge);
-            if ((projection != NULL && projection->isApproaching()) ||
-                (*it == edge1->getEndPoint(FirstPoint) ||
-                 *it == edge1->getEndPoint(SecondPoint))) {
+            // Note: Here we check all the approaching vertices.
+            //if ((projection != NULL && projection->isApproaching()) ||
+            //    (*it == edge1->getEndPoint(FirstPoint) ||
+            //     *it == edge1->getEndPoint(SecondPoint))) {
                 OrientStatus orient;
                 orient = Sphere::orient(vertex1->getCoordinate(),
                                         vertex2->getCoordinate(),
@@ -56,20 +57,15 @@ Status PotentialCrossDetector::detect1(Vertex *vertex3, Vertex *testVertex,
                         deadLoopPair.edge1 = edge1;
                         deadLoopPair.edge2 = edge;
                         REPORT_WARNING("Dead loop has occurred!")
-                        // Test: Ignore the dead loop
-                        ApproachingVertices::vertices.remove(vertex3);
-                        ApproachingVertices::vertices.remove(*it);
                         return DeadLoop;
                     }
                     prevVertex1 = vertex3;
                     prevVertex2 = *it;
                     if (projection->isApproaching())
                         ApproachingVertices::jumpVertex(vertex3, *it);
-                    else
-                        ApproachingVertices::removeVertex(vertex3);
                     return Cross;
                 }
-            }
+            //}
         }
         linkedEdge = linkedEdge->next;
     }

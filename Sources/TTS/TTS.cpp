@@ -21,7 +21,9 @@ TTS::~TTS()
     REPORT_OFFLINE("TTS")
 }
 
-void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
+void TTS::advect(MeshManager &meshManager,
+                 MeshAdaptor &meshAdaptor,
+                 const FlowManager &flowManager,
                  TracerManager &tracerManager)
 {
     // -------------------------------------------------------------------------
@@ -30,7 +32,6 @@ void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
     Polygon *polygon;
     Vertex *vertex;
     Edge *edge;
-    //char fileName[30];
 
     meshManager.resetPointCounter();
 
@@ -53,6 +54,7 @@ void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
         track(meshManager, flowManager, vertex, true);
         vertex = vertex->next;
     }
+    //char fileName[30];
     //sprintf(fileName, "debug_counters%5.5d.nc", TimeManager::getSteps());
     //meshManager.pointCounter.output(fileName);
 
@@ -104,6 +106,11 @@ void TTS::advect(MeshManager &meshManager, const FlowManager &flowManager,
     cout << "Total polygon number: " << setw(10);
     cout << polygonManager.polygons.size() << endl;
 #endif
+
+    // -------------------------------------------------------------------------
+    // adapt the quantities carried by parcels (polygons)
+    // onto the background fixed mesh
+    meshAdaptor.remap(polygonManager, meshManager);
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
