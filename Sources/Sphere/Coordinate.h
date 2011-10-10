@@ -27,13 +27,13 @@ public:
         car(2) = sin(lat);
     }
 
-    const TinyVector<double, 3> &getSPH() const { return sph; }
+    const Vector &getSPH() const { return sph; }
 	double getLon() const { return sph(0); }
 	double getLat() const { return sph(1); }
 	double getLev() const { return sph(2); }
 
     double getX() const { return car(0); }
-    const TinyVector<double, 3> &getCAR() const { return car; }
+    const Vector &getCAR() const { return car; }
     double getY() const { return car(1); }
     double getZ() const { return car(2); }
 

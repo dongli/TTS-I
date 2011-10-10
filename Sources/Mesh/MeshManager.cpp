@@ -284,7 +284,10 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
     if (point != NULL) {
         static double dlon = mesh[RLLMesh::BothHalf].dlon/pointCounter.numSubLon;
         ratio = (x.getLon()-mesh[RLLMesh::BothHalf].lon(loc.i[RLLMesh::BothHalf]))/dlon;
-        loc.i.back() = int(floor(ratio))+loc.i[RLLMesh::BothHalf]*pointCounter.numSubLon;
+        if (loc.i[3] == mesh[RLLMesh::BothHalf].getNumLon()-2)
+            loc.i.back() = int(floor(ratio));
+        else
+            loc.i.back() = int(floor(ratio))+loc.i[RLLMesh::BothHalf]*pointCounter.numSubLon;
         if (loc.j[RLLMesh::BothHalf] == -1) {
             loc.j.back() = 0;
         } else if (loc.j[RLLMesh::BothHalf] == mesh[RLLMesh::BothHalf].getNumLat()-1) {
@@ -304,7 +307,10 @@ void MeshManager::countPoint(Point *point)
     const Coordinate &x = point->getCoordinate();
     Location loc = point->getLocation();
     double ratio = (x.getLon()-mesh[RLLMesh::BothHalf].lon(loc.i[RLLMesh::BothHalf]))/dlon;
-    loc.i.back() = int(floor(ratio))+loc.i[RLLMesh::BothHalf]*pointCounter.numSubLon;
+    if (loc.i[3] == mesh[RLLMesh::BothHalf].getNumLon()-2)
+        loc.i.back() = int(floor(ratio));
+    else
+        loc.i.back() = int(floor(ratio))+loc.i[RLLMesh::BothHalf]*pointCounter.numSubLon;
     if (loc.j[RLLMesh::BothHalf] == -1) {
         loc.j.back() = 0;
     } else if (loc.j[RLLMesh::BothHalf] == mesh[RLLMesh::BothHalf].getNumLat()-1) {
