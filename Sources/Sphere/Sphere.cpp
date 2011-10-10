@@ -175,8 +175,8 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
     x6.set(lon2, lat2);
 }
 
-void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
-                              double lon, double &lat1, double &lat2)
+inline void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
+                                     double lon, double &lat1, double &lat2)
 {
     double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
     double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
@@ -198,8 +198,17 @@ void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
     lat2 = -lat1;
 }
 
-void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
-                              double lat, double &lon1, double &lon2)
+void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
+                              double lon, Coordinate &x3, Coordinate &x4)
+{
+    double lat1, lat2;
+    calcIntersectLat(x1, x2, lon, lat1, lat2);
+    x3.set(lon, lat1);
+    x4.set(lon, lat2);
+}
+
+inline void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
+                                     double lat, double &lon1, double &lon2)
 {
     double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
     double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
@@ -221,6 +230,15 @@ void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
     if (lon1 > PI2) lon1 -= PI2;
     if (lon2 < 0.0) lon2 += PI2;
     if (lon2 > PI2) lon2 -= PI2;
+}
+
+void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
+                              double lat, Coordinate &x3, Coordinate &x4)
+{
+    double lon1, lon2;
+    calcIntersectLon(x1, x2, lat, lon1, lon2);
+    x3.set(lon1, lat);
+    x4.set(lon2, lat);
 }
 
 OrientStatus Sphere::orient(const Coordinate &x1, const Coordinate &x2,

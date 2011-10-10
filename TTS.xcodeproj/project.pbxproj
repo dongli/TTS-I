@@ -303,6 +303,7 @@
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
 		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
+		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_sphere.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -566,6 +567,7 @@
 				5598FAB313D3DA9F00BC1AC4 /* unit_test_fixtures.h */,
 				5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */,
 				55C1E3CA142C557D00D83018 /* unit_test_tracers.h */,
+				55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";

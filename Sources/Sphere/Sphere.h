@@ -34,8 +34,12 @@ public:
                               Coordinate &x5, Coordinate &x6);
     static void calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
                                  double lon, double &lat1, double &lat2);
+    static void calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
+                                 double lon, Coordinate &x3, Coordinate &x4);
     static void calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
                                  double lat, double &lon1, double &lon2);
+    static void calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
+                                 double lat, Coordinate &x3, Coordinate &x4);
 
     static OrientStatus orient(const Coordinate &, const Coordinate &,
                                const Coordinate &);
