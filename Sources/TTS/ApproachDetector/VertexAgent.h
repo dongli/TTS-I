@@ -46,6 +46,8 @@ namespace ApproachDetector
         //! \return The corresponding projection.
         Projection *getActiveProjection();
 
+        double getShortestDistance();
+
         void dump();
 
     private:

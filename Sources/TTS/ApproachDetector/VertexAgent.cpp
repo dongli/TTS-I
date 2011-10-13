@@ -90,6 +90,19 @@ Projection *VertexAgent::getActiveProjection()
     return activeProjection;
 }
 
+double VertexAgent::getShortestDistance()
+{
+    double distance = UndefinedDistance;
+    std::list<Projection>::iterator it = projections.begin();
+    for (; it != projections.end(); ++it) {
+        if ((*it).getDistance(NewTimeLevel) < distance ||
+            distance == UndefinedDistance) {
+            distance = (*it).getDistance(NewTimeLevel);
+        }
+    }
+    return distance;
+}
+
 void VertexAgent::dump()
 {
     cout << "Paired edge projections of vertex ";

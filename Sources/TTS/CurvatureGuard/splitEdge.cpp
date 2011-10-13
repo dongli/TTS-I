@@ -29,9 +29,8 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     static double angleCheck[4];
     Location loc;
 
-    /*if (TimeManager::getSteps() == 30 && edge->getID() == 14788) {
-        REPORT_DEBUG
-    }*/
+//    if (TimeManager::getSteps() >= 25 && edge->getID() == 955733)
+//        REPORT_DEBUG;
     level++;
 
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
@@ -48,6 +47,19 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     vector2 /= norm(vector2);
     double a0 = CurvatureGuard::angleThreshold(edge);
     double angle = EdgePointer::calcAngle(vector1, vector2, *testPoint);
+
+    // -------------------------------------------------------------------------
+    // adjust the angle threshold "a0"
+    // Note: When one or both of the end points is or are approaching to other
+    //       edges, the angle threshold should be decreased to make the edge
+    //       more easily split.
+    double d1 = vertex1->detectAgent.getShortestDistance();
+    double d2 = vertex2->detectAgent.getShortestDistance();
+    if ((d1 != UndefinedDistance && d1 < 5000.0) ||
+        (d2 != UndefinedDistance && d2 < 5000.0)) {
+        a0 *= 0.5;
+    }
+
     if (fabs(angle-PI) > a0) {
         // ---------------------------------------------------------------------
         // record the polygons and edge pointers, and reset the tasks
