@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
-        tts.advect(gamilReader.meshManager,
+        tts.advect(gamilReader.meshManager, gamilReader.meshAdaptor,
                    gamilReader.flowManager, tracerManager);
         timeManager.advance();
         gamilReader.getVelocityField();

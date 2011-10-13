@@ -20,6 +20,14 @@ public:
     //! \return none.
     void init(const MeshManager &meshManager);
 
+    //! \brief Adapt PolygonManager and MeshManager for each other.
+    //!        The overlapping areas are calculated.
+    //! \param polygonManager The source polygons.
+    //! \param meshManager The target mesh.
+    //! \return none.
+    void adapt(const PolygonManager &polygonManager,
+               const MeshManager &meshManager);
+
     //! \brief Remap the quantities associated with polygons to fixed mesh.
     //! \param polygonManager The source polygons.
     //! \param meshManager The target mesh.

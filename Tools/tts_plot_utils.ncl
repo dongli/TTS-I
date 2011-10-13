@@ -49,7 +49,12 @@ begin
     res@gsnMaximize             = True
     res@mpGreatCircleLinesOn    = True
     res@mpFillOn                = False
-    ;res@mpCenterLonF            = 180.0
+    if (isatt(projection, "center_lon")) then
+        res@mpCenterLonF    = projection@center_lon
+    end if
+    if (isatt(projection, "center_lat")) then
+        res@mpCenterLatF    = projection@center_lat
+    end if
     if (projection .eq. "NH") then
         if (.not. isatt(projection, "min_lat")) then
             system("echo [Error]: setup_map: projection@min_lat should be defined for NH projection.")

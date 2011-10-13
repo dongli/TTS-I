@@ -39,6 +39,7 @@ void GAMILReader::init(const string &dir, const string &filePattern)
     file.close();
 
     meshManager.init(numLon, numLat, lon.data(), lat.data());
+    meshAdaptor.init(meshManager);
     flowManager.init(meshManager);
 }
 

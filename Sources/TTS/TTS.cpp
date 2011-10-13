@@ -110,7 +110,7 @@ void TTS::advect(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     // adapt the quantities carried by parcels (polygons)
     // onto the background fixed mesh
-    meshAdaptor.remap(polygonManager, meshManager);
+    meshAdaptor.adapt(polygonManager, meshManager);
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,

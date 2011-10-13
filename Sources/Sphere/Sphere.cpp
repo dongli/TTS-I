@@ -164,7 +164,7 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
     double lat1 = asin(z/radius);
     double lat2 = -lat1;
     double lon1 = atan2(y, x);
-    double lon2 = -lon1;
+    double lon2 = lon1-PI;
 
     if (lon1 < 0.0) lon1 += PI2;
     if (lon1 > PI2) lon1 -= PI2;
@@ -175,36 +175,13 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
     x6.set(lon2, lat2);
 }
 
-inline void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
-                                     double lon, double &lat1, double &lat2)
-{
-    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
-    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
-    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
-
-    Coordinate tmp;
-
-    tmp.set(lon, 0.0);
-
-    double d = -tmp.getY();
-    double e =  tmp.getX();
-    double f =  0.0;
-
-    double h = (d*c-f*a)/(e*a-d*b);
-    double g = -(b*h+c)/a;
-    double z = sqrt(radius2/(g*g+h*h+1.0));
-
-    lat1 = asin(z/radius);
-    lat2 = -lat1;
-}
-
 void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
                               double lon, Coordinate &x3, Coordinate &x4)
 {
-    double lat1, lat2;
-    calcIntersectLat(x1, x2, lon, lat1, lat2);
-    x3.set(lon, lat1);
-    x4.set(lon, lat2);
+    Coordinate x5, x6;
+    x5.set(lon, x1.getLat());
+    x6.set(lon, x2.getLat());
+    calcIntersect(x1, x2, x5, x6, x3, x4);
 }
 
 inline void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
@@ -256,6 +233,25 @@ OrientStatus Sphere::orient(const Coordinate &x1, const Coordinate &x2,
         return OrientRight;
     } else {
         return OrientOn;
+    }
+}
+
+bool Sphere::is_lon_between(double lon1, double lon2, double lon)
+{
+    if (lon1 < 0) lon1 += PI2;
+    if (lon1 > PI2) lon1 -= PI2;
+    if (lon2 < 0) lon2 += PI2;
+    if (lon2 > PI2) lon2 -= PI2;
+    if (lon1 < lon2) {
+        if (lon >= lon1 && lon < lon2)
+            return true;
+        else
+            return false;
+    } else {
+        if ((lon >= lon1 && lon < PI2) || (lon >= 0.0 && lon < lon2))
+            return true;
+        else
+            return false;
     }
 }
 

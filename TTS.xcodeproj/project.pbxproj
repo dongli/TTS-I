@@ -186,6 +186,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		550496411445D34B00383027 /* mergePolygon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergePolygon.cpp; sourceTree = "<group>"; };
 		550A94A214271B4500D97A06 /* Deformation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Deformation.cpp; sourceTree = "<group>"; };
 		550A94A314271B4500D97A06 /* Deformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deformation.h; sourceTree = "<group>"; };
 		552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergeEdge.cpp; sourceTree = "<group>"; };
@@ -360,6 +361,7 @@
 				552EEE2E1421C0DB001E8352 /* splitEdge.cpp */,
 				552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */,
 				552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */,
+				550496411445D34B00383027 /* mergePolygon.cpp */,
 				552EEE311421CE86001E8352 /* guard.cpp */,
 				552EEE301421C0F6001E8352 /* CurvatureGuard.h */,
 			);

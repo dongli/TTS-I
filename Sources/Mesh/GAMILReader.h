@@ -2,6 +2,7 @@
 #define _GAMILReader_h_
 
 #include "MeshManager.h"
+#include "MeshAdaptor.h"
 #include "FlowManager.h"
 
 class GAMILReader
@@ -19,6 +20,7 @@ public:
 #endif
 
     MeshManager meshManager;
+    MeshAdaptor meshAdaptor;
     FlowManager flowManager;
 
 private:

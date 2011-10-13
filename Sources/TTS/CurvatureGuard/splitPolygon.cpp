@@ -296,6 +296,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         } else
             vertex3->detectAgent.clean();
         // ---------------------------------------------------------------------
+        // handle degenerate polygons
         if (polygon1->edgePointers.size() == 1) {
             Polygon::handlePointPolygon(polygonManager, polygon1);
             polygon1 = NULL;

@@ -23,11 +23,12 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     this->numSubLon = numSubLon;
     this->numSubLat = numSubLat;
     lonBnds.resize((lon.size()-2)*numSubLon+1);
-    for (int i = 0; i < lon.size(); ++i) {
+    for (int i = 0; i < lon.size()-2; ++i) {
         double dlon = (lon(i+1)-lon(i))/numSubLon;
         for (int k = 0; k < numSubLon; ++k)
             lonBnds(i*numSubLon+k) = lon(i)+k*dlon;
     }
+    lonBnds(lonBnds.size()-1) = lon(lon.size()-2);
     latBnds.resize((lat.size()-1)*numSubLat+1+2);
     latBnds(0) = PI05;
     for (int j = 0; j < lat.size()-1; ++j) {

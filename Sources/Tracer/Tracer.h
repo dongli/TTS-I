@@ -7,6 +7,8 @@ using std::string;
 
 #include "List.h"
 #include "Parcel.h"
+#include "Field.h"
+#include "MeshManager.h"
 #include "PolygonManager.h"
 
 class Tracer : public ListElement<Tracer>
