@@ -85,7 +85,8 @@ public:
     Polygon *getPolygon(OrientStatus orient) const;
 
     Vector getNormVector(TimeLevel timeLevel = NewTimeLevel) const;
-
+    
+    static double calcAngle(const Vector &, const Vector &, const Coordinate &);
     static double calcAngle(const Vector &, const Vector &, const Vertex &);
 
     void calcAngle();

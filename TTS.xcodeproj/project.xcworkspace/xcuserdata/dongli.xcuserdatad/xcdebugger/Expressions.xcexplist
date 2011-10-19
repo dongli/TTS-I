@@ -3,7 +3,52 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "MeshAdaptor::recordOverlapArea(double, int, int, Polygon*, double):MeshAdaptor.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "totalArea">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MeshAdaptor::adapt(PolygonManager const&amp;, MeshManager const&amp;):MeshAdaptor.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "J0">
+            </PersistentString>
+            <PersistentString
+               value = "area">
+            </PersistentString>
+            <PersistentString
+               value = "I0">
+            </PersistentString>
+            <PersistentString
+               value = "totalArea">
+            </PersistentString>
+            <PersistentString
+               value = "to0">
+            </PersistentString>
+            <PersistentString
+               value = "diffArea">
+            </PersistentString>
+            <PersistentString
+               value = "from0">
+            </PersistentString>
+            <PersistentString
+               value = "maxDiffArea">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Sphere::project(Coordinate const&amp;, Coordinate const&amp;, Coordinate const&amp;, Coordinate&amp;, double&amp;):Sphere.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "calcOverlapArea(int, int, Bnd, Bnd, double, double, double, double, Coordinate const&amp;, EdgePointer*, Coordinate const&amp;, EdgePointer*):MeshAdaptor.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "area">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "TTS::splitPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*):splitPolygon.h">

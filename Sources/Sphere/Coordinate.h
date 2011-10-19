@@ -14,6 +14,9 @@ class Coordinate
 {
 public:
 	Coordinate() {}
+    Coordinate(double lon, double lat, double lev = 0.0) {
+        set(lon, lat, lev);
+    }
 	virtual ~Coordinate() {}
 
 	void set(double lon, double lat, double lev = 0.0) {

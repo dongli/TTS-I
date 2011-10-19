@@ -3,6 +3,8 @@
 #include "Constants.h"
 #include "Location.h"
 #include "Point.h"
+#include "Sphere.h"
+
 #include <netcdfcpp.h>
 
 PointCounter::PointCounter()
@@ -19,7 +21,7 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
                         int numSubLon, int numSubLat)
 {
     // -------------------------------------------------------------------------
-    // bounds of grid boxes for counting points
+    // bounds of cells for counting points
     this->numSubLon = numSubLon;
     this->numSubLat = numSubLat;
     lonBnds.resize((lon.size()-2)*numSubLon+1);
@@ -38,6 +40,31 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     }
     latBnds(latBnds.size()-2) = lat(lat.size()-1);
     latBnds(latBnds.size()-1) = -PI05;
+#ifdef OUTPUT_POINT_COUNTER_MESH
+    NcFile file("point_counter_mesh.nc", NcFile::Replace);
+    if (!file.is_valid())
+        REPORT_ERROR("Failed to create point_counter_mesh.nc!");
+    NcDim *lonDim = file.add_dim("lon", lonBnds.size());
+    NcDim *latDim = file.add_dim("lat", latBnds.size());
+    NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
+    NcVar *latVar = file.add_var("lat", ncDouble, latDim);
+    double lonTmp[lonBnds.size()], latTmp[latBnds.size()];
+    for (int i = 0; i < lonBnds.size(); ++i)
+        lonTmp[i] = lonBnds(i)*Rad2Deg;
+    for (int j = 0; j < latBnds.size(); ++j)
+        latTmp[j] = latBnds(j)*Rad2Deg;
+    lonVar->put(lonTmp, lonBnds.size());
+    latVar->put(latTmp, latBnds.size());
+    file.close();
+#endif
+    // -------------------------------------------------------------------------
+    // area of cells
+    cellAreas.resize(lonBnds.size()-1, latBnds.size()-1);
+    for (int i = 0; i < cellAreas.extent(0); ++i)
+        for (int j = 0; j < cellAreas.extent(1); ++j) {
+            cellAreas(i, j) = Sphere::radius2*(lonBnds(i+1)-lonBnds(i))*
+            (sin(latBnds(j))-sin(latBnds(j+1)));
+        }
     // -------------------------------------------------------------------------
     //! \todo Add the vertical codes.
     counters.resize(lonBnds.size()-1, latBnds.size()-1, 1);

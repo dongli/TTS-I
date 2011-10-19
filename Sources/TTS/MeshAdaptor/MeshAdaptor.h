@@ -1,13 +1,20 @@
 #ifndef MeshAdaptor_h
 #define MeshAdaptor_h
 
+#include "Vector.h"
+#include "Coordinate.h"
+
 #include <blitz/array.h>
 #include <string>
+#include <list>
 
 using blitz::Array;
+using std::list;
 
 class PolygonManager;
 class MeshManager;
+class Polygon;
+class EdgePointer;
 
 class MeshAdaptor
 {
@@ -35,9 +42,35 @@ public:
     void remap(const PolygonManager &polygonManager,
                const MeshManager &meshManager);
 
-private:
+private:    
+    enum Bnd {
+        WestBnd, SouthBnd, EastBnd, NorthBnd, NullBnd
+    };
+
+    double calcCorrectArea(const Coordinate &x1, const Coordinate &x2,
+                           const Vector &normVector, int signFlag);
+
+    double calcOverlapArea(int I, int J, Bnd from, Bnd to, int &bndDiff,
+                           double lonBnd1, double lonBnd2,
+                           double latBnd1, double latBnd2,
+                           const Coordinate &x0, EdgePointer *edgePointer0,
+                           const Coordinate &x1, EdgePointer *edgePointer1);
+
+    void recordOverlapArea(double cellArea, int I, int J,
+                           Bnd from, Bnd to, int bndDiff,
+                           Polygon *polygon, double area, double &totalArea);
+    void recordOverlapArea(double cellArea, int I, int J,
+                           Polygon *polygon, double area, double &totalArea);
+
     // store the remapping coefficients
-    Array<Array<double, 1>, 3> overlapAreas;
+    typedef struct {
+        Polygon *polygon;
+        double area;
+        int numPart = 0;
+        Bnd from[10], to[10];
+        int bndDiff[10];
+    } OverlapPolygon;
+    Array<list<OverlapPolygon>, 3> overlapPolygons;
 };
 
 #endif

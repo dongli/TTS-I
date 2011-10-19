@@ -1,3 +1,5 @@
+Rad2Deg = 45.0/atan(1.0)
+
 function calc_polygon_center_lon(lon)
 begin
 
@@ -48,6 +50,7 @@ begin
     res@gsnFrame                = False
     res@gsnMaximize             = True
     res@mpGreatCircleLinesOn    = True
+    res@mpGridAndLimbOn         = False
     res@mpFillOn                = False
     if (isatt(projection, "center_lon")) then
         res@mpCenterLonF    = projection@center_lon
@@ -349,5 +352,50 @@ begin
     delete(lat_bnds)
 
     return plot
+
+end
+
+procedure plot_lon_lat_mesh(wks, map, lon, lat, \
+    min_lon, max_lon, min_lat, max_lat)
+local res, num_lon, num_lat
+begin
+
+    res                         = True
+    res@mpGreatCircleLinesOn    = False
+    res@gsLineThicknessF        = 1.0
+
+    num_lon = dimsizes(lon)
+    num_lat = dimsizes(lat)
+
+    system("echo min_lon: "+min_lon)
+    system("echo max_lon: "+max_lon)
+    system("echo min_lat: "+min_lat)
+    system("echo max_lat: "+max_lat)
+
+    if (max_lon .gt. 360.0) then
+        max_lon = max_lon-360.0
+    end if
+    if (min_lon .lt. 0.0) then
+        min_lon = min_lon+360.0
+    end if
+
+    do i = 0, num_lon-2
+        do j = 0, num_lat-2
+            if (lat(j) .lt. min_lat .or. lat(j) .gt. max_lat) then
+                continue
+            end if
+            if (min_lon .lt. max_lon) then
+                if (lon(i) .lt. min_lon .or. lon(i) .gt. max_lon) then
+                    continue
+                end if
+            else
+                if (lon(i) .lt. min_lon .and. lon(i) .gt. max_lon) then
+                    continue
+                end if
+            end if
+            gsn_polyline(wks, map, (/lon(i),lon(i),lon(i+1),lon(i+1)/), \
+                (/lat(j),lat(j+1),lat(j+1),lat(j)/), res)
+        end do
+    end do
 
 end

@@ -27,6 +27,7 @@ public:
 
     int numSubLon, numSubLat;
     Array<double, 1> lonBnds, latBnds;
+    Array<double, 2> cellAreas;
     Array<int, 3> counters;
     Array<Array<Point *, 1>, 3> points;
 };

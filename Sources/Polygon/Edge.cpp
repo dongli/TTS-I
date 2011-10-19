@@ -261,22 +261,28 @@ Polygon *EdgePointer::getPolygon(OrientStatus orient) const
 }
 
 double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2,
-                              const Vertex &vertex)
+                              const Coordinate &x)
 {
     double angle;
-
+    
     // -------------------------------------------------------------------------
     double tmp = dot(vector1, vector2);
     tmp = fmax(-1.0, fmin(1.0, tmp));
     angle = acos(-tmp);
-
+    
     // -------------------------------------------------------------------------
     // handle obtuse angle
     Vector judge = cross(vector1, vector2);
-    if (dot(vertex.getCoordinate().getCAR(), judge) < 0.0)
+    if (dot(x.getCAR(), judge) < 0.0)
         angle = PI2-angle;
-
+    
     return angle;
+}
+
+double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2,
+                              const Vertex &vertex)
+{
+    return calcAngle(vector1, vector2, vertex.getCoordinate());
 }
 
 Vector EdgePointer::getNormVector(TimeLevel timeLevel) const
