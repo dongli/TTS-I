@@ -649,44 +649,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340707451.231013"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "836"
-         endingLineNumber = "836"
-         landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340707451.231013"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "657"
-         endingLineNumber = "657"
-         landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340708417.709214"
+         timestampString = "340787250.434052"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "913"
-         endingLineNumber = "913"
+         startingLineNumber = "923"
+         endingLineNumber = "923"
          landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -696,11 +668,25 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340708417.709214"
+         timestampString = "340787250.434052"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "954"
-         endingLineNumber = "954"
+         startingLineNumber = "744"
+         endingLineNumber = "744"
+         landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
+         timestampString = "340787250.434052"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1041"
+         endingLineNumber = "1041"
          landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -738,11 +724,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340707451.231013"
+         timestampString = "340787250.434052"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "567"
-         endingLineNumber = "567"
+         startingLineNumber = "655"
+         endingLineNumber = "655"
          landmarkName = "MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to, int &amp;bndDiff, double lonBnd1, double lonBnd2, double latBnd1, double latBnd2, const Coordinate &amp;x0, EdgePointer *edgePointer0, const Coordinate &amp;x1, EdgePointer *edgePointer1)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -752,26 +738,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340707451.231013"
+         timestampString = "340787250.434052"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "867"
-         endingLineNumber = "867"
-         landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "340707451.231013"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "870"
-         endingLineNumber = "870"
-         landmarkName = "MeshAdaptor::adapt(const PolygonManager &amp;polygonManager, const MeshManager &amp;meshManager)"
+         startingLineNumber = "417"
+         endingLineNumber = "417"
+         landmarkName = "MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to, int &amp;bndDiff, double lonBnd1, double lonBnd2, double latBnd1, double latBnd2, const Coordinate &amp;x0, EdgePointer *edgePointer0, const Coordinate &amp;x1, EdgePointer *edgePointer1)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -52,10 +52,10 @@ begin
     res@mpGreatCircleLinesOn    = True
     res@mpGridAndLimbOn         = False
     res@mpFillOn                = False
-    if (isatt(projection, "center_lon")) then
+    if (projection .ne. "CE" .and. isatt(projection, "center_lon")) then
         res@mpCenterLonF    = projection@center_lon
     end if
-    if (isatt(projection, "center_lat")) then
+    if (projection .ne. "CE" .and. isatt(projection, "center_lat")) then
         res@mpCenterLatF    = projection@center_lat
     end if
     if (projection .eq. "NH") then

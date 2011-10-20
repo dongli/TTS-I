@@ -255,6 +255,14 @@ bool Sphere::is_lon_between(double lon1, double lon2, double lon)
     }
 }
 
+double Sphere::diff_lon(double lon1, double lon2)
+{
+    double dlon;
+    if (lon1 > lon2) lon1 -= PI2;
+    dlon = lon2-lon1;
+    return dlon;
+}
+
 OrientStatus Sphere::orient(Point *endPoint1, Point *endPoint2, Point *point)
 {
     double det;

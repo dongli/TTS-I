@@ -66,7 +66,7 @@ private:
     typedef struct {
         Polygon *polygon;
         double area;
-        int numPart = 0;
+        int numEdgeCross = 0;
         Bnd from[10], to[10];
         int bndDiff[10];
     } OverlapPolygon;

@@ -206,7 +206,7 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             REPORT_ERROR("Unknown boundary difference!");
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // get the number of polygon edges
     EdgePointer *edgePointer = edgePointer0;
     while (edgePointer != edgePointer1) {
@@ -214,7 +214,7 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         edgePointer = edgePointer->next;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // get the normal vector of the cell edges
     normVectors = new Vector[numCellEdge];
     x = new Coordinate[numCellEdge-1];
@@ -390,7 +390,7 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
     } else
         normVectors[0] = norm_cross(x0.getCAR(), x1.getCAR());
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // get or calculate the internal angles
     numEdge = numCellEdge+numPolygonEdge;
     angles = new double[numEdge];
@@ -410,7 +410,95 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
     }
     angles[i] = EdgePointer::calcAngle(normVectors[j], normVector0, x0);
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // numerical tolerance
+    const double smallAngle = 1.0/Rad2Deg;
+    double smallDlat, smallDlon;
+    bool isSkinny = true;
+    double angle0 = angles[numPolygonEdge-1];
+    double angle1 = angles[numEdge-1];
+    switch (bndDiff) {
+        case 0:
+            if ((angle0 > smallAngle && PI2-angle0 > smallAngle) &&
+                (angle1 > smallAngle && PI2-angle1 > smallAngle))
+                isSkinny = false;
+            break;
+        case 1:
+            smallDlat = 1.0e-1/Rad2Deg;
+            smallDlon = 1.0e-3/Sphere::radius/cos((latBnd1+latBnd2)*0.5);
+            switch (from) {
+                case EastBnd:
+                    if (x0.getLat()-latBnd2 > smallDlat &&
+                        Sphere::diff_lon(x1.getLon(), lonBnd2) > smallDlon)
+                        isSkinny = false;
+                    break;
+                case WestBnd:
+                    if (latBnd1-x0.getLat() > smallDlat &&
+                        Sphere::diff_lon(lonBnd1, x1.getLon()) > smallDlon)
+                        isSkinny = false;
+                    break;
+                case NorthBnd:
+                    if (Sphere::diff_lon(x0.getLon(), lonBnd2) > smallDlon &&
+                        latBnd1-x1.getLat() > smallDlat)
+                        isSkinny = false;
+                    break;
+                case SouthBnd:
+                    if (Sphere::diff_lon(lonBnd1, x0.getLon()) > smallDlon &&
+                        x1.getLat()-latBnd2 > smallDlat)
+                        isSkinny = false;
+                    break;
+                default:
+                    REPORT_ERROR("Unknown boundary!");
+            }
+            if ((angle0 > smallAngle && PI2-angle0 > smallAngle) &&
+                (angle1 > smallAngle && PI2-angle1 > smallAngle))
+                isSkinny = false;
+            break;
+        case 2:
+            smallDlat = 1.0e-3/Rad2Deg;
+            smallDlon = 1.0e-5/Sphere::radius/cos((latBnd1+latBnd2)*0.5);
+            if (fabs(PI05-angle0) > smallAngle &&
+                fabs(PI05-angle1) > smallAngle) {
+                isSkinny = false;
+                break;
+            }
+            switch (from) {
+                case EastBnd:
+                    if (x0.getLat()-latBnd2 > smallDlat ||
+                        x1.getLat()-latBnd2 > smallDlat)
+                        isSkinny = false;
+                    break;
+                case WestBnd:
+                    if (latBnd1-x0.getLat() > smallDlat ||
+                        latBnd1-x1.getLat() > smallDlat)
+                        isSkinny = false;
+                    break;
+                case NorthBnd:
+                    if (Sphere::diff_lon(x0.getLon(), lonBnd2) > smallDlon ||
+                        Sphere::diff_lon(x1.getLon(), lonBnd2) > smallDlon)
+                        isSkinny = false;
+                    break;
+                case SouthBnd:
+                    if (Sphere::diff_lon(lonBnd1, x0.getLon()) > smallDlon ||
+                        Sphere::diff_lon(lonBnd1, x1.getLon()) > smallDlon)
+                        isSkinny = false;
+                    break;
+                default:
+                    REPORT_ERROR("Unknown boundary!");
+            }
+            break;
+        case -1:
+            isSkinny = false;
+            break;
+        case 4:
+            isSkinny = false;
+            break;
+        default:
+            REPORT_ERROR("Unknown boundary difference!");
+    }
+    if (isSkinny) return 0.0;
+
+    // -------------------------------------------------------------------------
     // calculate the area of overlapping polygon (assuming all great circle
     // arc edges)
     excess = 0.0;
@@ -419,7 +507,7 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
     excess -= (numEdge-2)*PI;
     area = excess*Sphere::radius2;
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // correct the area if some edges are latitudinal lines
     switch (bndDiff) {
         case 0:
@@ -585,11 +673,12 @@ void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
             else
                 (*it).area += area;
             totalArea += (*it).area;
-            (*it).from[(*it).numPart] = from;
-            (*it).to[(*it).numPart] = to;
-            (*it).bndDiff[(*it).numPart] = bndDiff;
-            if (++(*it).numPart > 10)
-                REPORT_ERROR("numPart has exceeded 10!");
+            (*it).from[(*it).numEdgeCross] = from;
+            (*it).to[(*it).numEdgeCross] = to;
+            (*it).bndDiff[(*it).numEdgeCross] = bndDiff;
+            if (++(*it).numEdgeCross > 10)
+                REPORT_ERROR("Cell has been crossed by "
+                             "polygon edges more than 10 times!");
             return;
         }
     }
@@ -599,7 +688,7 @@ void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
     op.from[0] = from;
     op.to[0] = to;
     op.bndDiff[0] = bndDiff;
-    op.numPart = 1;
+    op.numEdgeCross = 1;
     ops.push_back(op);
     totalArea += area;
 }
@@ -641,7 +730,7 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
     int numLon = pointCounter.counters.extent(0);
     int numLat = pointCounter.counters.extent(1);
 
-    double totalArea, diffArea, maxDiffArea = 0.0;
+    double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
 
     // reset
@@ -652,8 +741,7 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
     // calculate the overlap area between polygon and mesh
     Polygon *polygon = polygonManager.polygons.front();
     for (int m = 0; m < polygonManager.polygons.size(); ++m) {
-        //if (TimeManager::getSteps() == 20 && polygon->getID() == 162)
-        if (TimeManager::getSteps() == 28 && polygon->getID() == 1821)
+        if (TimeManager::getSteps() == 0 && polygon->getID() == 8)
             REPORT_DEBUG;
         // record the previous edge and intersection
         EdgePointer *edgePointer0 = NULL; Coordinate x0;
@@ -664,7 +752,7 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
         // record the previous cell index
         int I0, J0;
         // reset
-        totalArea = 0.0;
+        totalArea = 0.0; realArea = polygon->getArea(NewTimeLevel);
         bndCellIdx.clear();
         // internal variables
         int I, J, bndDiff;
@@ -873,6 +961,7 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
             list<int>::const_iterator itIdxJ2 = itIdxJ1;
             for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
                 if (*itIdxJ1-*itIdxJ2 != 1) {
+                    // *********************************************************
                     // check for concave polygon
                     list<OverlapPolygon>::const_iterator itOp = 
                     overlapPolygons(i, *itIdxJ2, 0).begin();
@@ -880,25 +969,29 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                         if ((*itOp).polygon == polygon)
                             break;
                     bool isConcave = false;
-                    for (int k = 0; k < (*itOp).numPart; ++k) {
+                    // actually only the first "from" and "to" directions are
+                    // be used because the polygon edges are counterclockwisely
+                    // recorded
+                    for (int k = 0; k < (*itOp).numEdgeCross; ++k) {
                         Bnd from = (*itOp).from[k], to = (*itOp).to[k];
                         int bndDiff = (*itOp).bndDiff[k];
                         if (from == NorthBnd) {
                             if (to == NorthBnd || to == WestBnd)
-                                continue;
+                                break;
                         } else if (from == EastBnd) {
                             if (to == NorthBnd || to == WestBnd)
-                                continue;
+                                break;
                             if (to == EastBnd && bndDiff == 4)
-                                continue;
+                                break;
                         } else if (from == WestBnd) {
                             if (to == WestBnd && bndDiff == 4)
-                                continue;
+                                break;
                         }
                         isConcave = true;
                         break;
                     }
                     if (isConcave) continue;
+                    // *********************************************************
                     for (int j = *itIdxJ2+1; j < *itIdxJ1; ++j) {
                         recordOverlapArea(pointCounter.cellAreas(i, j), i, j,
                                           polygon, pointCounter.cellAreas(i, j),
@@ -910,10 +1003,10 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
         }
         // ---------------------------------------------------------------------
         // check the area difference
-        diffArea = fabs(totalArea-polygon->getArea(NewTimeLevel));
+        diffArea = fabs(totalArea-realArea)/realArea;
         // ---------------------------------------------------------------------
         // check if pole has been included
-        if (diffArea > 1.0e-12) {
+        if (diffArea > 0.005) {
             // Note: Here we assume that if the boundary cells cover the whole
             //       zonal range, then the pole has been included
             if (bndCellIdx.size() == numLon) {
@@ -944,10 +1037,10 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                             break;
                     }
                 }
-                diffArea = fabs(totalArea-polygon->getArea(NewTimeLevel));
+                diffArea = fabs(totalArea-realArea);
             }
         }
-        if (diffArea > 1.0e-12) {
+        if (diffArea > 0.005) {
             ostringstream message;
             message << "Failed to calculate overlap area for polygon ";
             message << polygon->getID() << "!" << endl;
@@ -957,6 +1050,6 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
         polygon = polygon->next;
     }
 #ifdef DEBUG
-    cout << "Maximum area difference: " << maxDiffArea << endl;
+    cout << "Maximum area difference: " << maxDiffArea*100 << "%" << endl;
 #endif
 }

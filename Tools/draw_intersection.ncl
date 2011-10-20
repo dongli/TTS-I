@@ -8,8 +8,8 @@ begin
 
     projection = "ST"
     projection@max_lat = -85.0
-    projection@angle = 1.5
-    line_width = 1.0
+    projection@angle = 2.5
+    line_width = 0.5
     point_size = 0.01
 
     if (.not. isdefined("file_name")) then
@@ -71,15 +71,11 @@ begin
 
     ; --------------------------------------------------------------------------
     ; draw point counter mesh
-    min_lon = 0.0d0
-    max_lon = 360.0d0
-    min_lat = -90.0d0
-    max_lat = -80.0d0
     f = addfile("point_counter_mesh.nc", "r")
-    min_lon = projection@center_lon-80.0
-    max_lon = projection@center_lon+80.0
-    min_lat = projection@center_lat-5.0
-    max_lat = projection@center_lat+5.0
+    min_lon = projection@center_lon-50.0
+    max_lon = projection@center_lon+50.0
+    min_lat = projection@center_lat-10.0
+    max_lat = projection@center_lat+10.0
     if (projection .eq. "SH") then
         max_lat = projection@max_lat
     end if

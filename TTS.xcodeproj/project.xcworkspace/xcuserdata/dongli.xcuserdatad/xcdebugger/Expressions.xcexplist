@@ -3,14 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "MeshAdaptor::recordOverlapArea(double, int, int, Polygon*, double):MeshAdaptor.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "totalArea">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "MeshAdaptor::adapt(PolygonManager const&amp;, MeshManager const&amp;):MeshAdaptor.cpp">
          <PersistentStrings>
             <PersistentString
@@ -36,6 +28,17 @@
             </PersistentString>
             <PersistentString
                value = "maxDiffArea">
+            </PersistentString>
+            <PersistentString
+               value = "polygon-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MeshAdaptor::recordOverlapArea(double, int, int, Polygon*, double):MeshAdaptor.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "totalArea">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
