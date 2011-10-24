@@ -1,20 +1,18 @@
 #ifndef MeshAdaptor_h
 #define MeshAdaptor_h
 
-#include "Vector.h"
-#include "Coordinate.h"
-
 #include <blitz/array.h>
 #include <string>
 #include <list>
 
 using blitz::Array;
+using std::string;
 using std::list;
 
-class PolygonManager;
-class MeshManager;
-class Polygon;
-class EdgePointer;
+#include "Vector.h"
+#include "Coordinate.h"
+#include "Field.h"
+#include "TracerManager.h"
 
 class MeshAdaptor
 {
@@ -32,15 +30,13 @@ public:
     //! \param polygonManager The source polygons.
     //! \param meshManager The target mesh.
     //! \return none.
-    void adapt(const PolygonManager &polygonManager,
+    void adapt(const TracerManager &tracerManager,
                const MeshManager &meshManager);
 
-    //! \brief Remap the quantities associated with polygons to fixed mesh.
-    //! \param polygonManager The source polygons.
-    //! \param meshManager The target mesh.
-    //! \return none.
-    void remap(const PolygonManager &polygonManager,
-               const MeshManager &meshManager);
+    //! \brief Remap the quantities associated with fixed mesh to tracer.
+    void remap(const string &tracerName, const Field &q,
+               TracerManager &tracerManager);
+    void remap(const string &tracerName, TracerManager &tracerManager);
 
 private:    
     enum Bnd {
@@ -56,21 +52,20 @@ private:
                            const Coordinate &x0, EdgePointer *edgePointer0,
                            const Coordinate &x1, EdgePointer *edgePointer1);
 
-    void recordOverlapArea(double cellArea, int I, int J,
-                           Bnd from, Bnd to, int bndDiff,
-                           Polygon *polygon, double area, double &totalArea);
-    void recordOverlapArea(double cellArea, int I, int J,
-                           Polygon *polygon, double area, double &totalArea);
-
-    // store the remapping coefficients
     typedef struct {
         Polygon *polygon;
-        double area;
-        int numEdgeCross = 0;
-        Bnd from[10], to[10];
-        int bndDiff[10];
-    } OverlapPolygon;
-    Array<list<OverlapPolygon>, 3> overlapPolygons;
+        double area, totalArea;
+    } OverlapArea;
+
+    void recordOverlapArea(double cellArea, int I, int J,
+                           Bnd from, Bnd to, int bndDiff,
+                           Polygon *polygon, double area, double &totalArea,
+                           list<OverlapArea *> &overlapAreas);
+    void recordOverlapArea(double cellArea, int I, int J,
+                           Polygon *polygon, double area, double &totalArea,
+                           list<OverlapArea *> &overlapAreas);
+
+    Array<list<OverlapArea>, 3> overlapAreaList;
 };
 
 #endif

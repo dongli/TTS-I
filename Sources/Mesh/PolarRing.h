@@ -14,7 +14,7 @@ class PolarRingVelocity
 public:
     PolarRingVelocity();
     virtual ~PolarRingVelocity();
-    
+
     void linkVelocityField(const Field &u, const Field &v);
 
     int getNumLon() const { return u[0].extent(0); }

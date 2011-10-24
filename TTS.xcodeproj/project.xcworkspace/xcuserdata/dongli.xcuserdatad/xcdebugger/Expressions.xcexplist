@@ -3,6 +3,41 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Field::init(RLLMesh const&amp;):Field.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "blitz::MemoryBlock&lt;Point*&gt;::removeReference():memblock.h">
+      </ContextState>
+      <ContextState
+         contextName = "MeshAdaptor::remap(std::string const&amp;, TracerManager&amp;):MeshAdaptor.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshAdaptor::adapt(TracerManager const&amp;, MeshManager const&amp;):MeshAdaptor.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "J0">
+            </PersistentString>
+            <PersistentString
+               value = "area">
+            </PersistentString>
+            <PersistentString
+               value = "I0">
+            </PersistentString>
+            <PersistentString
+               value = "totalArea">
+            </PersistentString>
+            <PersistentString
+               value = "to0">
+            </PersistentString>
+            <PersistentString
+               value = "from0">
+            </PersistentString>
+            <PersistentString
+               value = "polygon-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "MeshAdaptor::adapt(PolygonManager const&amp;, MeshManager const&amp;):MeshAdaptor.cpp">
          <PersistentStrings>
             <PersistentString
@@ -35,12 +70,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MeshAdaptor::recordOverlapArea(double, int, int, Polygon*, double):MeshAdaptor.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "totalArea">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "PointCounter::count(Location const&amp;, Point*):PointCounter.cpp">
       </ContextState>
       <ContextState
          contextName = "Sphere::project(Coordinate const&amp;, Coordinate const&amp;, Coordinate const&amp;, Coordinate&amp;, double&amp;):Sphere.cpp">
@@ -55,6 +85,23 @@
       </ContextState>
       <ContextState
          contextName = "TTS::splitPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*):splitPolygon.h">
+      </ContextState>
+      <ContextState
+         contextName = "MeshAdaptor::recordOverlapArea(double, int, int, Polygon*, double):MeshAdaptor.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "totalArea">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MultiTimeLevel&lt;double, 2&gt;::setNew(double const&amp;):MultiTimeLevel.h">
+      </ContextState>
+      <ContextState
+         contextName = "PointCounter::reset():PointCounter.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshAdaptor::calcOverlapArea(int, int, MeshAdaptor::Bnd, MeshAdaptor::Bnd, int&amp;, double, double, double, double, Coordinate const&amp;, EdgePointer*, Coordinate const&amp;, EdgePointer*):MeshAdaptor.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

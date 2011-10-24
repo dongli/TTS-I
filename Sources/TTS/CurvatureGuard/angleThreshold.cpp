@@ -14,10 +14,10 @@
 
 inline double CurvatureGuard::angleThreshold(Edge *edge)
 {
-    static double A0 = 0.05/Rad2Deg;
-    static double A1 = 60.0/Rad2Deg;
-    static double L0 = 0.001/Rad2Deg*Sphere::radius;
-    static double L1 = 1.0/Rad2Deg*Sphere::radius;
+    static double A0 = 1.0/Rad2Deg;
+    static double A1 = 120.0/Rad2Deg;
+    static double L0 = 0.01/Rad2Deg*Sphere::radius;
+    static double L1 = 10.0/Rad2Deg*Sphere::radius;
     static double dA = A1-A0;
     static double dL = L1-L0;
     

@@ -19,4 +19,12 @@ inline Vector norm_cross(const Vector &vector1, const Vector &vector2)
     return ans;
 }
 
+inline Vector operator-(const Vector &vector1, const Vector &vector2)
+{
+    Vector ans;
+    for (int i = 0; i < 3; ++i)
+        ans(i) = vector1(i)-vector2(i);
+    return ans;
+}
+
 #endif

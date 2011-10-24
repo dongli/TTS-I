@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		550A94A414271B4500D97A06 /* Deformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550A94A214271B4500D97A06 /* Deformation.cpp */; };
-		5534794B1429CD2F00FCC94C /* unit_test_testcase.h in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */; };
 		5534794D1429CF6800FCC94C /* unit_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5534794C1429CF6800FCC94C /* unit_test_main.cpp */; };
-		5534794E142A187000FCC94C /* Deformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550A94A214271B4500D97A06 /* Deformation.cpp */; };
 		553FED97141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		553FED98141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
@@ -109,15 +107,8 @@
 		5598FB1713D3DC8200BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
 		5598FB1813D3DC8F00BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
 		5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
-		55C1E3D2142C5EE400D83018 /* Parcel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3CC142C5EE400D83018 /* Parcel.cpp */; };
-		55C1E3D3142C5EE400D83018 /* Parcel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3CC142C5EE400D83018 /* Parcel.cpp */; };
-		55C1E3D4142C5EE400D83018 /* Tracer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3CE142C5EE400D83018 /* Tracer.cpp */; };
-		55C1E3D5142C5EE400D83018 /* Tracer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3CE142C5EE400D83018 /* Tracer.cpp */; };
 		55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
-		55C1E3D8142C639E00D83018 /* Parcel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3CC142C5EE400D83018 /* Parcel.cpp */; };
-		55C1E3D9142C639E00D83018 /* Tracer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3CE142C5EE400D83018 /* Tracer.cpp */; };
-		55C1E3DA142C639E00D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55D3C79814104A5100B2B4D4 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		55D3C79914104A5100B2B4D4 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
 		55D3C79A14104A5100B2B4D4 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
@@ -198,9 +189,10 @@
 		5534794C1429CF6800FCC94C /* unit_test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unit_test_main.cpp; sourceTree = "<group>"; };
 		553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PotentialCrossDetector.cpp; sourceTree = "<group>"; };
 		553FED96141767F500B1C14F /* PotentialCrossDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PotentialCrossDetector.h; sourceTree = "<group>"; };
+		5541E1CF14506D1400279AED /* Tracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracer.h; sourceTree = "<group>"; };
 		5566C5EB13EC0D010044E352 /* generate_RLLMesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_RLLMesh; sourceTree = BUILT_PRODUCTS_DIR; };
 		5566C5ED13EC0D010044E352 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
-		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointCounter.cpp; sourceTree = "<group>"; };
+		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PointCounter.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		556E49BF13D54DCF00AE4150 /* PointCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCounter.h; sourceTree = "<group>"; };
 		5581140413EA4432004AF124 /* tts_gamil_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tts_gamil_demo.cpp; sourceTree = "<group>"; };
 		5581140713EA4463004AF124 /* GAMILReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GAMILReader.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -296,10 +288,6 @@
 		55A4D1CC13D52ECF00DCC5AB /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55C1E3CA142C557D00D83018 /* unit_test_tracers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_tracers.h; sourceTree = "<group>"; };
-		55C1E3CC142C5EE400D83018 /* Parcel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parcel.cpp; sourceTree = "<group>"; };
-		55C1E3CD142C5EE400D83018 /* Parcel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parcel.h; sourceTree = "<group>"; };
-		55C1E3CE142C5EE400D83018 /* Tracer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tracer.cpp; sourceTree = "<group>"; };
-		55C1E3CF142C5EE400D83018 /* Tracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracer.h; sourceTree = "<group>"; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
 		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
@@ -424,10 +412,10 @@
 				5598FA6913D3DA9F00BC1AC4 /* Delaunay */,
 				5598FA7813D3DA9F00BC1AC4 /* Demos */,
 				5598FA7A13D3DA9F00BC1AC4 /* Mesh */,
-				5598FA8D13D3DA9F00BC1AC4 /* Polygon */,
 				5598FA9813D3DA9F00BC1AC4 /* Preprocess */,
 				5598FA9F13D3DA9F00BC1AC4 /* Sphere */,
 				5598FAA613D3DA9F00BC1AC4 /* TestCases */,
+				5598FA8D13D3DA9F00BC1AC4 /* Polygon */,
 				55C1E3CB142C5EE400D83018 /* Tracer */,
 				5598FAAE13D3DA9F00BC1AC4 /* TTS */,
 				5598FAB113D3DA9F00BC1AC4 /* UnitTests */,
@@ -606,10 +594,7 @@
 		55C1E3CB142C5EE400D83018 /* Tracer */ = {
 			isa = PBXGroup;
 			children = (
-				55C1E3CD142C5EE400D83018 /* Parcel.h */,
-				55C1E3CC142C5EE400D83018 /* Parcel.cpp */,
-				55C1E3CF142C5EE400D83018 /* Tracer.h */,
-				55C1E3CE142C5EE400D83018 /* Tracer.cpp */,
+				5541E1CF14506D1400279AED /* Tracer.h */,
 				55C1E3D1142C5EE400D83018 /* TracerManager.h */,
 				55C1E3D0142C5EE400D83018 /* TracerManager.cpp */,
 			);
@@ -797,8 +782,6 @@
 				558A48DD14093757000B7E48 /* Projection.cpp in Sources */,
 				558A48DE14093757000B7E48 /* VertexAgent.cpp in Sources */,
 				553FED98141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */,
-				55C1E3D3142C5EE400D83018 /* Parcel.cpp in Sources */,
-				55C1E3D5142C5EE400D83018 /* Tracer.cpp in Sources */,
 				55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */,
 				558803AB1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
 			);
@@ -871,8 +854,6 @@
 				55DA3E2A13F6A34800C565F7 /* DebugTools.cpp in Sources */,
 				553FED97141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */,
 				550A94A414271B4500D97A06 /* Deformation.cpp in Sources */,
-				55C1E3D2142C5EE400D83018 /* Parcel.cpp in Sources */,
-				55C1E3D4142C5EE400D83018 /* Tracer.cpp in Sources */,
 				55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */,
 				558803AA1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
 			);
@@ -882,11 +863,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55C1E3D8142C639E00D83018 /* Parcel.cpp in Sources */,
-				55C1E3D9142C639E00D83018 /* Tracer.cpp in Sources */,
-				55C1E3DA142C639E00D83018 /* TracerManager.cpp in Sources */,
-				5534794E142A187000FCC94C /* Deformation.cpp in Sources */,
-				5534794B1429CD2F00FCC94C /* unit_test_testcase.h in Sources */,
 				556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */,
 				5598FAFE13D3DB7D00BC1AC4 /* Velocity.cpp in Sources */,
 				5598FAF313D3DB5700BC1AC4 /* Edge.cpp in Sources */,

@@ -1,10 +1,7 @@
 #include "PointCounter.h"
 #include "ReportMacros.h"
 #include "Constants.h"
-#include "Location.h"
-#include "Point.h"
 #include "Sphere.h"
-
 #include <netcdfcpp.h>
 
 PointCounter::PointCounter()
@@ -20,55 +17,53 @@ PointCounter::~PointCounter()
 void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat,
                         int numSubLon, int numSubLat)
 {
+    this->numSubLon = numSubLon; this->numSubLat = numSubLat;
     // -------------------------------------------------------------------------
     // bounds of cells for counting points
-    this->numSubLon = numSubLon;
-    this->numSubLat = numSubLat;
-    lonBnds.resize((lon.size()-2)*numSubLon+1);
+    int numLon = (lon.size()-2)*numSubLon;
+    int numLat = (lat.size()-1)*numSubLat+1+2;
+    double lonBnds[numLon], latBnds[numLat];
     for (int i = 0; i < lon.size()-2; ++i) {
         double dlon = (lon(i+1)-lon(i))/numSubLon;
         for (int k = 0; k < numSubLon; ++k)
-            lonBnds(i*numSubLon+k) = lon(i)+k*dlon;
+            lonBnds[i*numSubLon+k] = lon(i)+k*dlon;
     }
-    lonBnds(lonBnds.size()-1) = lon(lon.size()-2);
-    latBnds.resize((lat.size()-1)*numSubLat+1+2);
-    latBnds(0) = PI05;
+    // Note: Point counter mesh includes poles.
+    latBnds[0] = PI05;
     for (int j = 0; j < lat.size()-1; ++j) {
         double dlat = (lat(j)-lat(j+1))/numSubLat;
         for (int k = 0; k < numSubLat; ++k)
-            latBnds(1+j*numSubLat+k) = lat(j)-k*dlat;
+            latBnds[1+j*numSubLat+k] = lat(j)-k*dlat;
     }
-    latBnds(latBnds.size()-2) = lat(lat.size()-1);
-    latBnds(latBnds.size()-1) = -PI05;
-#ifdef OUTPUT_POINT_COUNTER_MESH
-    NcFile file("point_counter_mesh.nc", NcFile::Replace);
-    if (!file.is_valid())
-        REPORT_ERROR("Failed to create point_counter_mesh.nc!");
-    NcDim *lonDim = file.add_dim("lon", lonBnds.size());
-    NcDim *latDim = file.add_dim("lat", latBnds.size());
-    NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
-    NcVar *latVar = file.add_var("lat", ncDouble, latDim);
-    double lonTmp[lonBnds.size()], latTmp[latBnds.size()];
-    for (int i = 0; i < lonBnds.size(); ++i)
-        lonTmp[i] = lonBnds(i)*Rad2Deg;
-    for (int j = 0; j < latBnds.size(); ++j)
-        latTmp[j] = latBnds(j)*Rad2Deg;
-    lonVar->put(lonTmp, lonBnds.size());
-    latVar->put(latTmp, latBnds.size());
-    file.close();
+    latBnds[numLat-2] = lat(lat.size()-1);
+    latBnds[numLat-1] = -PI05;
+    MeshSpec meshSpec;
+    meshSpec.type = Full;
+    meshSpec.isWithPoles = true;
+    meshSpec.isAreaFit = false;
+    mesh[0].init(meshSpec, numLon, numLat, lonBnds, latBnds);
+#ifndef OUTPUT_POINT_COUNTER_MESH
+    mesh[0].output("point_counter_bound_mesh.nc");
 #endif
     // -------------------------------------------------------------------------
-    // area of cells
-    cellAreas.resize(lonBnds.size()-1, latBnds.size()-1);
-    for (int i = 0; i < cellAreas.extent(0); ++i)
-        for (int j = 0; j < cellAreas.extent(1); ++j) {
-            cellAreas(i, j) = Sphere::radius2*(lonBnds(i+1)-lonBnds(i))*
-            (sin(latBnds(j))-sin(latBnds(j+1)));
-        }
+    // centers of cells
+    numLon = mesh[0].lon.size()-1, numLat = mesh[0].lat.size()-1;
+    double lonCnts[numLon], latCnts[numLat];
+    for (int i = 0; i < numLon; ++i)
+        lonCnts[i] = (mesh[0].lon(i)+mesh[0].lon(i+1))*0.5;
+    for (int j = 0; j < numLat; ++j)
+        latCnts[j] = (mesh[0].lat(j)+mesh[0].lat(j+1))*0.5;
+    meshSpec.type = Full;
+    meshSpec.isWithPoles = false;
+    meshSpec.isAreaFit = true;
+    mesh[1].init(meshSpec, numLon, numLat, lonCnts, latCnts);
+#ifndef OUTPUT_POINT_COUNTER_MESH
+    mesh[1].output("point_counter_center_mesh.nc");
+#endif
     // -------------------------------------------------------------------------
     //! \todo Add the vertical codes.
-    counters.resize(lonBnds.size()-1, latBnds.size()-1, 1);
-    points.resize(lonBnds.size()-1, latBnds.size()-1, 1);
+    counters.resize(mesh[1].getNumLon()-1, mesh[1].getNumLat(), 1);
+    points.resize(counters.shape());
     for (int i = 0; i < points.extent(0); ++i)
         for (int j = 0; j < points.extent(1); ++j)
             points(i, j, 0).resize(10);
@@ -110,18 +105,19 @@ void PointCounter::output(const string &fileName) const
     latBndsVar->add_att("long_name", "latitude bounds");
     latBndsVar->add_att("units", "degree_north");
 
-    double lonBnds[this->lonBnds.size()-1][2], latBnds[this->latBnds.size()-1][2];
-    for (int i = 0; i < this->lonBnds.size()-1; ++i) {
-        lonBnds[i][0] = this->lonBnds(i)*Rad2Deg;
-        lonBnds[i][1] = this->lonBnds(i+1)*Rad2Deg;
+    int numLonBnds = mesh[0].getNumLon()-2, numLatBnds = mesh[0].getNumLat()-1;
+    double lonBnds[numLonBnds][2], latBnds[numLatBnds][2];
+    for (int i = 0; i < numLonBnds; ++i) {
+        lonBnds[i][0] = mesh[0].lon(i)*Rad2Deg;
+        lonBnds[i][1] = mesh[0].lon(i+1)*Rad2Deg;
     }
-    for (int j = 0; j < this->latBnds.size()-1; ++j) {
-        latBnds[j][0] = this->latBnds(j)*Rad2Deg;
-        latBnds[j][1] = this->latBnds(j+1)*Rad2Deg;
+    for (int j = 0; j < numLatBnds; ++j) {
+        latBnds[j][0] = mesh[0].lat(j)*Rad2Deg;
+        latBnds[j][1] = mesh[0].lat(j+1)*Rad2Deg;
     }
 
-    lonBndsVar->put(&lonBnds[0][0], this->lonBnds.size()-1, 2);
-    latBndsVar->put(&latBnds[0][0], this->latBnds.size()-1, 2);
+    lonBndsVar->put(&lonBnds[0][0], numLonBnds, 2);
+    latBndsVar->put(&latBnds[0][0], numLatBnds, 2);
 
     NcVar *countersVar = file.add_var("counters", ncInt, numLatDim, numLonDim);
 

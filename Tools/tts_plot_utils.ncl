@@ -1,5 +1,32 @@
 Rad2Deg = 45.0/atan(1.0)
 
+procedure set_default(res, att_name, default)
+begin
+
+    if (.not. isatt(res, att_name)) then
+        res@$att_name$ = default
+    end if
+
+end
+
+procedure notice(message)
+begin
+
+    system("echo [Notice]: "+message)
+
+end
+
+function ask(question)
+local ans
+begin
+
+    system("echo [Question]: "+question)
+    ans = systemfunc("read -e -p ' > ' ans && echo $ans")
+
+    return ans
+
+end
+
 function calc_polygon_center_lon(lon)
 begin
 
@@ -38,6 +65,29 @@ begin
     end if
 
     return center_lon
+
+end
+
+procedure setup_contour(res)
+begin
+
+    set_default(res, "gsnFrame", False)
+    set_default(res, "gsnMaximize", True)
+    set_default(res, "gsnAddCyclic", False)
+    set_default(res, "cnFillOn", True)
+    set_default(res, "cnLinesOn", False)
+    set_default(res, "gsnSpreadColors", True)
+    set_default(res, "mpCenterLonF", 180.0)
+
+end
+
+procedure set_contour_range(res, min_value, max_value, stride)
+begin
+
+    res@cnLevelSelectionMode    = "ManualLevels"
+    res@cnMinLevelValF          = min_value
+    res@cnMaxLevelValF          = max_value
+    res@cnLevelSpacingF         = stride
 
 end
 
@@ -362,7 +412,7 @@ begin
 
     res                         = True
     res@mpGreatCircleLinesOn    = False
-    res@gsLineThicknessF        = 1.0
+    res@gsLineThicknessF        = 0.1
 
     num_lon = dimsizes(lon)
     num_lat = dimsizes(lat)

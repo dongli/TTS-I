@@ -7,8 +7,9 @@
 using blitz::Array;
 using std::string;
 
-class Location;
-class Point;
+#include "Location.h"
+#include "Point.h"
+#include "RLLMesh.h"
 
 class PointCounter
 {
@@ -25,9 +26,12 @@ public:
 
     void output(const string &fileName) const;
 
+    enum MeshType {
+        Bound = 0, Center = 1
+    };
+
     int numSubLon, numSubLat;
-    Array<double, 1> lonBnds, latBnds;
-    Array<double, 2> cellAreas;
+    RLLMesh mesh[2];
     Array<int, 3> counters;
     Array<Array<Point *, 1>, 3> points;
 };

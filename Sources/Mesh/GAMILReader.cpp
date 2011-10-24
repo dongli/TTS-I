@@ -48,7 +48,7 @@ void GAMILReader::getVelocityField()
     cout << "reading " << fileNames[TimeManager::getSteps()] << endl;
 
     NcError ncError(NcError::silent_nonfatal);
- 
+
     NcFile file(fileNames[TimeManager::getSteps()].c_str(), NcFile::ReadOnly);
 
     if (!file.is_valid()) {
@@ -114,7 +114,7 @@ void GAMILReader::checkVelocityField()
 
     struct stat statInfo;
     int ret = stat(fileName.c_str(), &statInfo);
-    
+
     if (ret != 0) {
         file = new NcFile(fileName.c_str(), NcFile::Replace);
     } else {
@@ -126,20 +126,20 @@ void GAMILReader::checkVelocityField()
         sprintf(message, "Failed to open file %s.", fileName.c_str());
         REPORT_ERROR(message)
     }
-    
+
     NcError ncError(NcError::silent_nonfatal);
-    
+
     NcVar *timeVar, *uVar, *vVar;
-    
+
     if (ret != 0) {
         NcDim *timeDim = file->add_dim("time");
         NcDim *lonDim = file->add_dim("lon", numLon);
         NcDim *latDim = file->add_dim("lat", numLat);
-        
+
         timeVar = file->add_var("time", ncDouble, timeDim);
         NcVar *lonVar = file->add_var("lon", ncDouble, lonDim);
         NcVar *latVar = file->add_var("lat", ncDouble, latDim);
-        
+
         lonVar->add_att("long_name", "longitude");
         lonVar->add_att("units", "degree_east");
         latVar->add_att("long_name", "latitude");
@@ -147,7 +147,7 @@ void GAMILReader::checkVelocityField()
 
         lonVar->put(lon, numLon);
         latVar->put(lat, numLat);
-        
+
         uVar = file->add_var("u", ncDouble, timeDim, latDim, lonDim);
         vVar = file->add_var("v", ncDouble, timeDim, latDim, lonDim);
     } else {
@@ -155,16 +155,16 @@ void GAMILReader::checkVelocityField()
         uVar = file->get_var("u");
         vVar = file->get_var("v");
     }
-    
+
     double seconds = TimeManager::getSeconds();
     int record = TimeManager::getSteps();
     timeVar->put_rec(&seconds, record);
 
     uVar->put_rec(&u[0][0], record);
     vVar->put_rec(&v[0][0], record);
-    
+
     file->close();
-    
+
     delete file;
 }
 #endif

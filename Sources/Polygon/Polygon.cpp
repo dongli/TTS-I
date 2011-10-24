@@ -193,6 +193,7 @@ void Polygon::dump(const string &fileName) const
     EdgePointer *edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
         const Coordinate &x = edgePointer->getEndPoint(FirstPoint)->getCoordinate();
+        *output << setw(5) << 0;
         *output << setw(30) << setprecision(20) << x.getLon();
         *output << setw(30) << setprecision(20) << x.getLat();
         *output << endl;
@@ -202,6 +203,7 @@ void Polygon::dump(const string &fileName) const
     edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
         const Coordinate &x = edgePointer->edge->getTestPoint()->getCoordinate();
+        *output << setw(5) << 1;
         *output << setw(30) << setprecision(20) << x.getLon();
         *output << setw(30) << setprecision(20) << x.getLat();
         *output << endl;

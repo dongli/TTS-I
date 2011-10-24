@@ -55,11 +55,11 @@ void ApproachDetector::detect(MeshManager &meshManager,
                               const FlowManager &flowManager,
                               Polygon *polygon)
 {
-    if (TimeManager::getSteps() >= 51 && polygon->getID() == 7458) {
-        DebugTools::watch_polygon(polygon);
-        polygon->dump("polygon");
-        REPORT_DEBUG
-    }
+//    if (TimeManager::getSteps() >= 51 && polygon->getID() == 7458) {
+//        DebugTools::watch_polygon(polygon);
+//        polygon->dump("polygon");
+//        REPORT_DEBUG
+//    }
     Projection p;
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     for (int i = 0; i < polygon->edgePointers.size(); ++i) {

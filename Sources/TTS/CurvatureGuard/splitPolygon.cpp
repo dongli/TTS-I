@@ -118,8 +118,8 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         polygon1->dump("polygon");
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
-        if (TimeManager::getSteps() == 37 && vertex3->getID() == 651612)
-            REPORT_DEBUG
+//        if (TimeManager::getSteps() == 37 && vertex3->getID() == 651612)
+//            REPORT_DEBUG
 #endif
         isSplit = true;
         // ---------------------------------------------------------------------

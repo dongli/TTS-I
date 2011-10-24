@@ -32,19 +32,19 @@ void FlowManager::init(const MeshManager &meshManager)
     v.unit = "m s-1";
 
     if (meshManager.hasLayers()) {
-        u.init(meshManager.mesh[RLLMesh::LonHalf],
+        u.init(meshManager.mesh[LonHalf],
                     meshManager.layers[Layers::Full]);
-        v.init(meshManager.mesh[RLLMesh::LatHalf],
+        v.init(meshManager.mesh[LatHalf],
                     meshManager.layers[Layers::Full]);
 
         w.name = "w";
         w.long_name = "Vertical velocity";
         w.unit = "Unknown";
-        w.init(meshManager.mesh[RLLMesh::Full],
+        w.init(meshManager.mesh[Full],
                     meshManager.layers[Layers::Half]);
     } else {
-        u.init(meshManager.mesh[RLLMesh::LonHalf]);
-        v.init(meshManager.mesh[RLLMesh::LatHalf]);
+        u.init(meshManager.mesh[LonHalf]);
+        v.init(meshManager.mesh[LatHalf]);
     }
     prv.linkVelocityField(u, v);
 }

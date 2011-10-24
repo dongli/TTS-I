@@ -15,11 +15,11 @@ begin
     projection = "CE"
     projection@min_lat = 80.0
     projection@max_lat = -80.0
-
     line_width = 1.0
-    point_size = 0.0005
+    point_size = 0.005
 
-    polygon_file_names = systemfunc("ls tts_test00120.nc")
+    file_name_pattern = ask("Input the polygon file name pattern:")
+    polygon_file_names = systemfunc("ls "+file_name_pattern)
     counter_file_names = systemfunc("ls debug_counters*.nc 2> /dev/null")
 
     res_map = setup_map(projection)

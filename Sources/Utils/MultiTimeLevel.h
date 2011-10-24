@@ -97,6 +97,24 @@ public:
         return *this;
     }
 
+    MultiTimeLevel<T, TIMELEVEL>
+    &operator=(const T &value) {
+        this->setNew(value);
+        return *this;
+    }
+
+    MultiTimeLevel<T, TIMELEVEL>
+    &operator+=(const T &value) {
+        *(this->value[NewTimeLevel]) += value;
+        return *this;
+    }
+
+    MultiTimeLevel<T, TIMELEVEL>
+    &operator/=(const T &value) {
+        *(this->value[NewTimeLevel]) /= value;
+        return *this;
+    }
+
     friend bool operator==(const MultiTimeLevel<T, TIMELEVEL> &a,
                            const MultiTimeLevel<T, TIMELEVEL> &b) {
         bool res = true;

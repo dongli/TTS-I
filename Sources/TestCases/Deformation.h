@@ -18,7 +18,7 @@ public:
 
     void calcVelocityField(FlowManager &);
 
-    void calcInitCond(TracerManager &);
+    void calcInitCond(MeshManager &, MeshAdaptor &, TracerManager &);
 
 private:
     SubCaseID subCaseID;

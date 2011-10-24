@@ -47,20 +47,29 @@ void PolygonManager::init(const string &fileName)
 
     NcDim *numVertexDim = file.get_dim("num_total_vertex");
     if (numVertexDim == NULL) {
-        REPORT_ERROR(string("Failed to find \"num_total_vertex\" dimension in file "+fileName+"."))
+        Message message;
+        message << "Failed to find \"num_total_vertex\" dimension in file \"";
+        message << fileName << "\"!";
+        REPORT_ERROR(message.str());
     }
     NcDim *numEdgeDim = file.get_dim("num_total_edge");
     if (numEdgeDim == NULL) {
-        REPORT_ERROR(string("Failed to find \"num_total_edge\" dimension in file "+fileName+"."))
+        Message message;
+        message << "Failed to find \"num_total_edge\" dimension in file \"";
+        message << fileName << "\"!";
+        REPORT_ERROR(message.str());
     }
     NcDim *numPolygonDim = file.get_dim("num_total_polygon");
     if (numPolygonDim == NULL) {
-        REPORT_ERROR(string("Failed to find \"num_total_polygon\" dimension in file "+fileName+"."))
+        Message message;
+        message << "Failed to find \"num_total_polygon\" dimension in file \"";
+        message << fileName << "\"!";
+        REPORT_ERROR(message.str());
     }
 
-    int numVertex = numVertexDim->size();
-    int numEdge = numEdgeDim->size();
-    int numPolygon = numPolygonDim->size();
+    int numVertex = static_cast<int>(numVertexDim->size());
+    int numEdge = static_cast<int>(numEdgeDim->size());
+    int numPolygon = static_cast<int>(numPolygonDim->size());
 
     // -------------------------------------------------------------------------
     // vertices part
@@ -153,7 +162,7 @@ void PolygonManager::init(const string &fileName)
     polygons.create(numPolygon);
     int edgeNum[numPolygon];
     file.get_var("edge_num")->get(edgeNum, numPolygon);
-    int numEdgeIdx = file.get_dim("num_edge_idx")->size();
+    int numEdgeIdx = static_cast<int>(file.get_dim("num_edge_idx")->size());
     int *edgeIdx = new int[numEdgeIdx];
     int *edgeOnt = new int[numEdgeIdx];
     file.get_var("edge_idx")->get(edgeIdx, numEdgeIdx);
@@ -181,6 +190,7 @@ void PolygonManager::init(const string &fileName)
             edgePointer->calcAngle();
             edgePointer = edgePointer->next;
         }
+        polygon->calcArea();
         polygon = polygon->next;
     }
     delete [] edgeIdx;

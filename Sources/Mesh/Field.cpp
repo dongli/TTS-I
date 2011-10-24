@@ -16,14 +16,14 @@ void Field::init(const RLLMesh &mesh)
 {
     this->mesh = &mesh;
     values.resize(mesh.getNumLon(), mesh.getNumLat(), 1);
-    if (mesh.type == RLLMesh::Full || mesh.type == RLLMesh::LatHalf) {
+    if (mesh.spec.type == Full || mesh.spec.type == LatHalf) {
         for (int i = 0; i < mesh.getNumLon()-1; ++i)
             for (int j = 0; j < mesh.getNumLat(); ++j)
                 values(i, j, 0).init();
         // zonal periodic boundary condition
         for (int j = 0; j < mesh.getNumLat(); ++j)
             values(mesh.getNumLon()-1, j, 0).mirror(values(0, j, 0));
-    } else if (mesh.type == RLLMesh::LonHalf) {
+    } else if (mesh.spec.type == LonHalf) {
         for (int i = 1; i < mesh.getNumLon()-1; ++i)
             for (int j = 0; j < mesh.getNumLat(); ++j)
                 values(i, j, 0).init();
@@ -40,7 +40,7 @@ void Field::init(const RLLMesh &mesh, const Layers &layers)
     this->mesh = &mesh;
     this->layers = &layers;
     values.resize(mesh.getNumLon(), mesh.getNumLat(), layers.getNumLev());
-    if (mesh.type == RLLMesh::Full || mesh.type == RLLMesh::LatHalf) {
+    if (mesh.spec.type == Full || mesh.spec.type == LatHalf) {
         for (int k = 0; k < layers.getNumLev(); ++k) {
             for (int i = 0; i < mesh.getNumLon()-1; ++i)
                 for (int j = 0; j < mesh.getNumLat(); ++j)
@@ -49,7 +49,7 @@ void Field::init(const RLLMesh &mesh, const Layers &layers)
             for (int j = 0; j < mesh.getNumLat(); ++j)
                 values(mesh.getNumLon()-1, j, k).mirror(values(0, j, k));
         }
-    } else if (mesh.type == RLLMesh::LonHalf) {
+    } else if (mesh.spec.type == LonHalf) {
         for (int k = 0; k < layers.getNumLev(); ++k) {
             for (int i = 1; i < mesh.getNumLon()-1; ++i)
                 for (int j = 0; j < mesh.getNumLat(); ++j)
@@ -67,13 +67,13 @@ double Field::interp(const Coordinate &x, const Location &loc,
                      TimeLevel timeLevel) const
 {
 #ifdef DEBUG
-    assert(loc.i[mesh->type] != LOCATION_UNSET_INDEX);
+    assert(loc.i[mesh->spec.type] != LOCATION_UNSET_INDEX);
 #endif
     // bilinear interpolation
     int i1, i2, i3, i4, j1, j2, j3, j4;
-    i1 = loc.i[mesh->type];
+    i1 = loc.i[mesh->spec.type];
     i2 = i1+1; i3 = i1; i4 = i2;
-    j1 = loc.j[mesh->type];
+    j1 = loc.j[mesh->spec.type];
     j2 = j1; j3 = j1+1; j4 = j3;
     double lon, lat;
     double f1, f2, f3, f4;

@@ -22,7 +22,9 @@ public:
 
     bool hasLayers() const;
 
-    const RLLMesh &getMesh(RLLMesh::MeshType type) const { return mesh[type]; }
+    const RLLMesh &getMesh(MeshType type) const { return mesh[type]; }
+    const RLLMesh &getMesh(PointCounter::MeshType type) const {
+        return pointCounter.mesh[type]; }
     const Layers &getLayers(Layers::LayerType type) const { return layers[type]; }
 
     void checkLocation(const Coordinate &x, Location &loc, Point *point = NULL);

@@ -7,7 +7,9 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
-    projection@angle = 0.5
+    projection@angle = 2.0
+    projection@min_lat = 80.0
+    projection@max_lat = -80.0
     line_width = 1.0
     point_size = 0.01
 
@@ -16,26 +18,49 @@ begin
         file_name = systemfunc("read -e -p ' > ' ans; echo $ans")
     end if
 
-    Rad2Deg = 45.0/atan(1.0)
+    content = readAsciiTable(file_name, 3, "double", 0)
+    
+    dims =  dimsizes(content)
 
-    content = asciiread(file_name, -1, "double")
-    num_vertex = dimsizes(content)/4
-    ; vertices
+    ; --------------------------------------------------------------------------
+    ; get polygon vertices
+    num_vertex = 0
+    do i = 0, dims(0)-1
+        if (content(i,0) .eq. 0) then
+            num_vertex = num_vertex+1
+        end if
+    end do
     vertex_lon = new(num_vertex+1, double)
     vertex_lat = new(num_vertex+1, double)
-    vertex_lon(0:num_vertex-1) = content(0:dimsizes(content)/2-1:2)*Rad2Deg
-    vertex_lat(0:num_vertex-1) = content(1:dimsizes(content)/2-1:2)*Rad2Deg
+    j = 0
+    do i = 0, dims(0)-1
+        if (content(i,0) .eq. 0) then
+            vertex_lon(j) = content(i,1)*Rad2Deg
+            vertex_lat(j) = content(i,2)*Rad2Deg
+            j = j+1
+        end if
+    end do
     vertex_lon(num_vertex) = vertex_lon(0)
     vertex_lat(num_vertex) = vertex_lat(0)
-    ; test points
-    testpoint_lon = new(num_vertex+1, double)
-    testpoint_lat = new(num_vertex+1, double)
-    testpoint_lon(0:num_vertex-1) = \
-        content(dimsizes(content)/2:dimsizes(content)-1:2)*Rad2Deg
-    testpoint_lat(0:num_vertex-1) = \
-        content(dimsizes(content)/2+1:dimsizes(content)-1:2)*Rad2Deg
-    testpoint_lon(num_vertex) = testpoint_lon(0)
-    testpoint_lat(num_vertex) = testpoint_lat(0)
+
+    print(vertex_lon)
+    print(vertex_lat)
+
+    ; --------------------------------------------------------------------------
+    ; get test points
+    num_testpoint = dims(0)-num_vertex
+    if (num_testpoint .ne. 0) then
+        testpoint_lon = new(num_testpoint, double)
+        testpoint_lat = new(num_testpoint, double)
+        j = 0
+        do i = 0, dims(0)-1
+            if (content(i,0) .eq. 1) then
+                testpoint_lon(j) = content(i,1)*Rad2Deg
+                testpoint_lat(j) = content(i,2)*Rad2Deg
+                j = j+1
+            end if
+        end do
+    end if
 
     allpoint_lon = new(2*num_vertex+1, double)
     allpoint_lat = new(2*num_vertex+1, double)
@@ -47,13 +72,17 @@ begin
     allpoint_lon(2*num_vertex) = allpoint_lon(0)
     allpoint_lat(2*num_vertex) = allpoint_lat(0)
 
-    wks = gsn_open_wks("pdf", file_name)
+    ; --------------------------------------------------------------------------
+    wks = gsn_open_wks("newpdf", file_name)
 
+    projection@center_lon = calc_polygon_center_lon(vertex_lon)
+    projection@center_lat = avg(vertex_lat)
     res_map = setup_map(projection)
-    res_map@mpCenterLonF = calc_polygon_center_lon(vertex_lon)
-    res_map@mpCenterLatF = avg(vertex_lat)
     map = gsn_csm_map(wks, res_map)
 
+    draw(map)
+
+    ; --------------------------------------------------------------------------
     res_line                        = True
     res_line@gsLineThicknessF       = line_width
     res_point                       = True

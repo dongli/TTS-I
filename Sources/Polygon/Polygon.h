@@ -1,8 +1,15 @@
 #ifndef _Polygon_h_
 #define _Polygon_h_
 
+#include <vector>
+
+using std::vector;
+
 #include "List.h"
 #include "Edge.h"
+#ifdef TTS_ONLINE
+#include "Tracer.h"
+#endif
 
 class PolygonManager;
 
@@ -25,6 +32,9 @@ public:
     void dump(const string &fileName = "") const;
 
     List<EdgePointer> edgePointers;
+#ifdef TTS_ONLINE
+    vector<Tracer> tracers;
+#endif
 
 private:
     bool isAreaSet;

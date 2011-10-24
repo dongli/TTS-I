@@ -179,8 +179,8 @@ void Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
                               double lon, Coordinate &x3, Coordinate &x4)
 {
     Coordinate x5, x6;
-    x5.set(lon, x1.getLat());
-    x6.set(lon, x2.getLat());
+    x5.set(lon, 0.0);
+    x6.set(lon, PI05);
     calcIntersect(x1, x2, x5, x6, x3, x4);
 }
 
@@ -253,6 +253,45 @@ bool Sphere::is_lon_between(double lon1, double lon2, double lon)
         else
             return false;
     }
+}
+
+bool Sphere::is_lon_gt(double lon1, double lon2)
+{
+    double dlon = lon1-lon2;
+    if (dlon > 0.0) {
+        if (PI2-dlon > dlon)
+            return true;
+        else
+            return false;
+    } else
+        if (PI2+dlon < -dlon)
+            return true;
+        else
+            return false;
+}
+
+bool Sphere::is_lon_lt(double lon1, double lon2)
+{
+    double dlon = lon1-lon2;
+    if (dlon > 0.0) {
+        if (PI2-dlon > dlon)
+            return false;
+        else
+            return true;
+    } else
+        if (PI2+dlon < -dlon)
+            return false;
+        else
+            return true;
+}
+
+bool Sphere::is_lon_eq(double lon1, double lon2)
+{
+    if (fabs(lon1-lon2) < EPS)
+        return true;
+    else if (fabs(PI2-fabs(lon1-lon2)) < EPS)
+        return true;
+    return false;
 }
 
 double Sphere::diff_lon(double lon1, double lon2)

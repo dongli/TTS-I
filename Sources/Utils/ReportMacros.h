@@ -8,6 +8,8 @@ using std::cout;
 using std::endl;
 using std::ostringstream;
 
+typedef ostringstream Message;
+
 #define REPORT_ERROR(MESSAGE) \
 { \
     cout << "[Error]: " << __FILE__ << ":" << __LINE__ << ": " << \

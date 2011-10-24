@@ -1,6 +1,4 @@
 #include "MeshAdaptor.h"
-#include "PolygonManager.h"
-#include "MeshManager.h"
 #include "ReportMacros.h"
 #include "Sphere.h"
 
@@ -28,7 +26,7 @@ void MeshAdaptor::init(const MeshManager &meshManager)
 {
     const PointCounter &pointCounter = meshManager.pointCounter;
 
-    overlapPolygons.resize(pointCounter.points.shape());
+    overlapAreaList.resize(pointCounter.points.shape());
 }
 
 inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
@@ -157,15 +155,23 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         bndDiff -= 4;
     else if (bndDiff == 0) {
         // Note: When "from" is equal with "to", we can not judge the direction
-        //       of the edge from them, so use a test point to dig this out.
-        // x4 is the coordinate of the test point
-        Coordinate x3, x4;
-        x3 = edgePointer0->getEndPoint(SecondPoint)->getCoordinate(NewTimeLevel);
-        if (from == EastBnd || from == WestBnd)
-            x4.set(x0.getLon(), (x0.getLat()+x1.getLat())*0.5);
-        else if (from == NorthBnd || from == SouthBnd)
-            x4.set((x0.getLon()+x1.getLon())*0.5, x0.getLat());
-        if (Sphere::orient(x0, x3, x4) == OrientRight) bndDiff = 4;
+        //       of the edge from them
+        switch (from) {
+            case EastBnd:
+                if (x0.getLat() < x1.getLat()) bndDiff = 4;
+                break;
+            case WestBnd:
+                if (x0.getLat() > x1.getLat()) bndDiff = 4;
+                break;
+            case NorthBnd:
+                if (Sphere::is_lon_gt(x0.getLon(), x1.getLon())) bndDiff = 4;
+                break;
+            case SouthBnd:
+                if (Sphere::is_lon_gt(x1.getLon(), x0.getLon())) bndDiff = 4;
+                break;
+            default:
+                REPORT_ERROR("Unknown boundary!");
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -413,90 +419,10 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
     // -------------------------------------------------------------------------
     // numerical tolerance
     const double smallAngle = 1.0/Rad2Deg;
-    double smallDlat, smallDlon;
-    bool isSkinny = true;
-    double angle0 = angles[numPolygonEdge-1];
-    double angle1 = angles[numEdge-1];
-    switch (bndDiff) {
-        case 0:
-            if ((angle0 > smallAngle && PI2-angle0 > smallAngle) &&
-                (angle1 > smallAngle && PI2-angle1 > smallAngle))
-                isSkinny = false;
-            break;
-        case 1:
-            smallDlat = 1.0e-1/Rad2Deg;
-            smallDlon = 1.0e-3/Sphere::radius/cos((latBnd1+latBnd2)*0.5);
-            switch (from) {
-                case EastBnd:
-                    if (x0.getLat()-latBnd2 > smallDlat &&
-                        Sphere::diff_lon(x1.getLon(), lonBnd2) > smallDlon)
-                        isSkinny = false;
-                    break;
-                case WestBnd:
-                    if (latBnd1-x0.getLat() > smallDlat &&
-                        Sphere::diff_lon(lonBnd1, x1.getLon()) > smallDlon)
-                        isSkinny = false;
-                    break;
-                case NorthBnd:
-                    if (Sphere::diff_lon(x0.getLon(), lonBnd2) > smallDlon &&
-                        latBnd1-x1.getLat() > smallDlat)
-                        isSkinny = false;
-                    break;
-                case SouthBnd:
-                    if (Sphere::diff_lon(lonBnd1, x0.getLon()) > smallDlon &&
-                        x1.getLat()-latBnd2 > smallDlat)
-                        isSkinny = false;
-                    break;
-                default:
-                    REPORT_ERROR("Unknown boundary!");
-            }
-            if ((angle0 > smallAngle && PI2-angle0 > smallAngle) &&
-                (angle1 > smallAngle && PI2-angle1 > smallAngle))
-                isSkinny = false;
-            break;
-        case 2:
-            smallDlat = 1.0e-3/Rad2Deg;
-            smallDlon = 1.0e-5/Sphere::radius/cos((latBnd1+latBnd2)*0.5);
-            if (fabs(PI05-angle0) > smallAngle &&
-                fabs(PI05-angle1) > smallAngle) {
-                isSkinny = false;
-                break;
-            }
-            switch (from) {
-                case EastBnd:
-                    if (x0.getLat()-latBnd2 > smallDlat ||
-                        x1.getLat()-latBnd2 > smallDlat)
-                        isSkinny = false;
-                    break;
-                case WestBnd:
-                    if (latBnd1-x0.getLat() > smallDlat ||
-                        latBnd1-x1.getLat() > smallDlat)
-                        isSkinny = false;
-                    break;
-                case NorthBnd:
-                    if (Sphere::diff_lon(x0.getLon(), lonBnd2) > smallDlon ||
-                        Sphere::diff_lon(x1.getLon(), lonBnd2) > smallDlon)
-                        isSkinny = false;
-                    break;
-                case SouthBnd:
-                    if (Sphere::diff_lon(lonBnd1, x0.getLon()) > smallDlon ||
-                        Sphere::diff_lon(lonBnd1, x1.getLon()) > smallDlon)
-                        isSkinny = false;
-                    break;
-                default:
-                    REPORT_ERROR("Unknown boundary!");
-            }
-            break;
-        case -1:
-            isSkinny = false;
-            break;
-        case 4:
-            isSkinny = false;
-            break;
-        default:
-            REPORT_ERROR("Unknown boundary difference!");
+    if (PI2-angles[numPolygonEdge-1] < smallAngle ||
+        PI2-angles[numEdge-1] < smallAngle) {
+        return 0.0;
     }
-    if (isSkinny) return 0.0;
 
     // -------------------------------------------------------------------------
     // calculate the area of overlapping polygon (assuming all great circle
@@ -659,12 +585,12 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
 void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
                                     Bnd from, Bnd to, int bndDiff,
                                     Polygon *polygon,
-                                    double area, double &totalArea)
+                                    double area, double &totalArea,
+                                    list<OverlapArea *> &overlapAreas)
 {
-    list<OverlapPolygon> &ops = overlapPolygons(I, J, 0);
     // check multiply entried cell
-    list<OverlapPolygon>::iterator it = ops.begin();
-    for (; it != ops.end(); ++it) {
+    list<OverlapArea>::iterator it = overlapAreaList(I, J, 0).begin();
+    for (; it != overlapAreaList(I, J, 0).end(); ++it) {
         if ((*it).polygon == polygon) {
             totalArea -= (*it).area;
             double testArea = (*it).area+area-cellArea;
@@ -673,34 +599,25 @@ void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
             else
                 (*it).area += area;
             totalArea += (*it).area;
-            (*it).from[(*it).numEdgeCross] = from;
-            (*it).to[(*it).numEdgeCross] = to;
-            (*it).bndDiff[(*it).numEdgeCross] = bndDiff;
-            if (++(*it).numEdgeCross > 10)
-                REPORT_ERROR("Cell has been crossed by "
-                             "polygon edges more than 10 times!");
             return;
         }
     }
-    OverlapPolygon op;
-    op.polygon = polygon;
-    op.area = area;
-    op.from[0] = from;
-    op.to[0] = to;
-    op.bndDiff[0] = bndDiff;
-    op.numEdgeCross = 1;
-    ops.push_back(op);
+    OverlapArea overlapArea;
+    overlapArea.polygon = polygon;
+    overlapArea.area = area;
+    overlapAreaList(I, J, 0).push_back(overlapArea);
     totalArea += area;
+    overlapAreas.push_back(&overlapAreaList(I, J, 0).back());
 }
 
 void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
                                     Polygon *polygon,
-                                    double area, double &totalArea)
+                                    double area, double &totalArea,
+                                    list<OverlapArea *> &overlapAreas)
 {
-    list<OverlapPolygon> &ops = overlapPolygons(I, J, 0);
     // check multiply entried cell
-    list<OverlapPolygon>::iterator it = ops.begin();
-    for (; it != ops.end(); ++it) {
+    list<OverlapArea>::iterator it = overlapAreaList(I, J, 0).begin();
+    for (; it != overlapAreaList(I, J, 0).end(); ++it) {
         if ((*it).polygon == polygon) {
             totalArea -= (*it).area;
             double testArea = (*it).area+area-cellArea;
@@ -712,37 +629,137 @@ void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
             return;
         }
     }
-    OverlapPolygon op;
-    op.polygon = polygon;
-    op.area = area;
-    ops.push_back(op);
+    OverlapArea overlapArea;
+    overlapArea.polygon = polygon;
+    overlapArea.area = area;
+    overlapAreaList(I, J, 0).push_back(overlapArea);
     totalArea += area;
+    overlapAreas.push_back(&overlapAreaList(I, J, 0).back());
 }
 
-#define DEBUG_INTERSECTION
+inline bool isCellCovered(int numCellLon, int numCellLat,
+                          Array<int, 2> &coverMask,
+                          int i0, int j0, int i, int j)
+{
+    // mask meanings:
+    //  0 - cell is not covered by polygon
+    //  1 - cell is partially covered by polygon
+    //  2 - cell is fully covered by polygon
+    // -1 - cell is potentially fully covered by polygon
+    // -------------------------------------------------------------------------
+    if (coverMask(i, j) > 0)
+        return true;
+    else if (coverMask(i, j)== 0)
+        return false;
+    // -------------------------------------------------------------------------
+    int ii, jj;
+    // check left cells
+    for (ii = i-1; ii >= 0; --ii)
+        if (coverMask(ii, j) > 0)
+            break;
+        else if (coverMask(ii, j) == 0)
+            goto return_not_covered;
+        else if (coverMask(ii, j) == -1 && ii == i0 && j == j0)
+            break;
+    if (ii == -1)
+        goto return_not_covered;
+    // check right cells
+    for (ii = i+1; ii < numCellLon; ++ii)
+        if (coverMask(ii, j) > 0)
+            break;
+        else if (coverMask(ii, j) == 0)
+            goto return_not_covered;
+        else if (coverMask(ii, j) == -1)
+            if (!isCellCovered(numCellLon, numCellLat, coverMask, i, j, ii, j))
+                goto return_not_covered;
+            else
+                break;
+    if (ii == numCellLon)
+        goto return_not_covered;
+    // check left-top cells
+    for (ii = i-1, jj = j-1; ii >= 0 && jj >= 0; --ii, --jj)
+        if (coverMask(ii, jj) > 0)
+            break;
+        else if (coverMask(ii, jj) == 0)
+            goto return_not_covered;
+        else if (coverMask(ii, jj) == -1 && ii == i0 && jj == j0)
+            break;
+    if (ii == -1 || jj == -1)
+        goto return_not_covered;
+    // check right-bottom cells
+    for (ii = i+1, jj = j+1; ii < numCellLon && jj < numCellLat; ++ii, ++jj)
+        if (coverMask(ii, jj) > 0)
+            break;
+        else if (coverMask(ii, jj) == 0)
+            goto return_not_covered;
+        else if (coverMask(ii, jj) == -1)
+            if (!isCellCovered(numCellLon, numCellLat, coverMask, i, j, ii, jj))
+                goto return_not_covered;
+            else
+                break;
+    if (ii == numCellLon || jj == numCellLat)
+        goto return_not_covered;
+    // check left-bottom cells
+    for (ii = i-1, jj = j+1; ii >= 0 && jj < numCellLat; --ii, ++jj)
+        if (coverMask(ii, jj) > 0)
+            break;
+        else if (coverMask(ii, jj) == 0)
+            goto return_not_covered;
+        else if (coverMask(ii, jj) == -1 && ii == i0 && jj == j0)
+            break;
+    if (ii == -1 || jj == numCellLat)
+        goto return_not_covered;
+    // check right-top cells
+    for (ii = i+1, jj = j-1; ii < numCellLon && j >= 0; ++ii, --jj)
+        if (coverMask(ii, jj) > 0)
+            break;
+        else if (coverMask(ii, jj) == 0)
+            goto return_not_covered;
+        else if (coverMask(ii, jj) == -1)
+            if (!isCellCovered(numCellLon, numCellLat, coverMask, i, j, ii, jj))
+                goto return_not_covered;
+            else
+                break;
+    if (ii == numCellLon || jj == -1)
+        goto return_not_covered;
+    // -------------------------------------------------------------------------
+    coverMask(i, j) = 2;
+    return true;
+return_not_covered:
+    coverMask(i, j) = 0;
+    return false;
+}
 
-void MeshAdaptor::adapt(const PolygonManager &polygonManager,
+//#define DEBUG_INTERSECTION
+
+void MeshAdaptor::adapt(const TracerManager &tracerManager,
                         const MeshManager &meshManager)
 {
     NOTICE("MeshAdaptor::adapt", "running ...");
-    const PointCounter &pointCounter = meshManager.pointCounter;
+    const RLLMesh &mesh = meshManager.getMesh(PointCounter::Bound);
 
-    int numLon = pointCounter.counters.extent(0);
-    int numLat = pointCounter.counters.extent(1);
+    int numLon = mesh.getNumLon()-1;
+    int numLat = mesh.getNumLat()-1;
 
+    const double areaDiffThreshold = 1.0e-6;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
+    list<OverlapArea *> overlapAreas;
 
     // reset
-    for (int i = 0; i < overlapPolygons.extent(0); ++i)
-        for (int j = 0; j < overlapPolygons.extent(1); ++j)
-            overlapPolygons(i, j, 0).clear();
+    for (int i = 0; i < overlapAreaList.extent(0); ++i)
+        for (int j = 0; j < overlapAreaList.extent(1); ++j)
+            overlapAreaList(i, j, 0).clear();
 
     // calculate the overlap area between polygon and mesh
-    Polygon *polygon = polygonManager.polygons.front();
-    for (int m = 0; m < polygonManager.polygons.size(); ++m) {
-        if (TimeManager::getSteps() == 0 && polygon->getID() == 8)
-            REPORT_DEBUG;
+    Polygon *polygon = tracerManager.polygonManager.polygons.front();
+    for (int m = 0; m < tracerManager.polygonManager.polygons.size(); ++m) {
+        bool debug = false;
+//        if (TimeManager::getSteps() == 10 && polygon->getID() == 8316) {
+//            polygon->dump("polygon");
+//            REPORT_DEBUG;
+//            debug = true;
+//        }
         // record the previous edge and intersection
         EdgePointer *edgePointer0 = NULL; Coordinate x0;
         // record the starting edge and intersection
@@ -754,8 +771,9 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
         // reset
         totalArea = 0.0; realArea = polygon->getArea(NewTimeLevel);
         bndCellIdx.clear();
+        overlapAreas.clear();
         // internal variables
-        int I, J, bndDiff;
+        int I, J, I1, I2, J1, J2, bndDiff;
         double lonBnd1, lonBnd2, latBnd1, latBnd2;
         Coordinate *x;
         // ---------------------------------------------------------------------
@@ -774,17 +792,17 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
             file << setw(30) << setprecision(15) << x1.getLon();
             file << setw(30) << setprecision(15) << x1.getLat() << endl;
 #endif
-            int I1 = vertex1->getLocation().i[4];
-            int J1 = vertex1->getLocation().j[4];
-            int I2 = vertex2->getLocation().i[4];
-            int J2 = vertex2->getLocation().j[4];
+            I1 = vertex1->getLocation().i[4];
+            J1 = vertex1->getLocation().j[4];
+            I2 = vertex2->getLocation().i[4];
+            J2 = vertex2->getLocation().j[4];
             // start from the cell where the first point is at
             I = I1, J = J1, I0 = I1, J0 = J1;
             while (true) {
-                lonBnd1 = pointCounter.lonBnds(I);
-                lonBnd2 = pointCounter.lonBnds(I+1);
-                latBnd1 = pointCounter.latBnds(J);
-                latBnd2 = pointCounter.latBnds(J+1);
+                lonBnd1 = mesh.lon(I);
+                lonBnd2 = mesh.lon(I+1);
+                latBnd1 = mesh.lat(J);
+                latBnd2 = mesh.lat(J+1);
                 // check if get into the cell where the second point is
                 if (I == I2 && J == J2) break;
                 // record boundary cell indices
@@ -796,7 +814,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                 // western boundary
                 if (from != WestBnd || edgePointer != edgePointer0) {
                     Sphere::calcIntersectLat(x1, x2, lonBnd1, x3, x4);
-                    if (x3.getLat() >= latBnd2 && x3.getLat() < latBnd1) {
+                    if (Sphere::is_lon_eq(x3.getLon(), lonBnd1) &&
+                        (x3.getLat() >= latBnd2 && x3.getLat() < latBnd1)) {
                         if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x3.getCAR());
                             tmp2 = cross(x3.getCAR(), x2.getCAR());
@@ -809,7 +828,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                             }
                         }
                     }
-                    if (x4.getLat() >= latBnd2 && x4.getLat() < latBnd1) {
+                    if (Sphere::is_lon_eq(x4.getLon(), lonBnd1) &&
+                        (x4.getLat() >= latBnd2 && x4.getLat() < latBnd1)) {
                         if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x4.getCAR());
                             tmp2 = cross(x4.getCAR(), x2.getCAR());
@@ -826,7 +846,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                 // eastern boundary
                 if (from != EastBnd || edgePointer != edgePointer0) {
                     Sphere::calcIntersectLat(x1, x2, lonBnd2, x3, x4);
-                    if (x3.getLat() >= latBnd2 && x3.getLat() < latBnd1) {
+                    if (Sphere::is_lon_eq(x3.getLon(), lonBnd2) &&
+                        (x3.getLat() >= latBnd2 && x3.getLat() < latBnd1)) {
                         if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x3.getCAR());
                             tmp2 = cross(x3.getCAR(), x2.getCAR());
@@ -839,7 +860,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                             }
                         }
                     }
-                    if (x4.getLat() >= latBnd2 && x4.getLat() < latBnd1) {
+                    if (Sphere::is_lon_eq(x4.getLon(), lonBnd2) &&
+                        (x4.getLat() >= latBnd2 && x4.getLat() < latBnd1)) {
                         if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x4.getCAR());
                             tmp2 = cross(x4.getCAR(), x2.getCAR());
@@ -856,7 +878,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                 // northern boundary
                 if ((from != NorthBnd && J > 0) || edgePointer != edgePointer0) {
                     Sphere::calcIntersectLon(x1, x2, latBnd1, x3, x4);
-                    if (Sphere::is_lon_between(lonBnd1, lonBnd2, x3.getLon())) {
+                    if (fabs(x3.getLat()-latBnd1) < EPS &&
+                        Sphere::is_lon_between(lonBnd1, lonBnd2, x3.getLon())) {
                         if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x3.getCAR());
                             tmp2 = cross(x3.getCAR(), x2.getCAR());
@@ -869,7 +892,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                             }
                         }
                     }
-                    if (Sphere::is_lon_between(lonBnd1, lonBnd2, x4.getLon())) {
+                    if (fabs(x4.getLat()-latBnd1) < EPS &&
+                        Sphere::is_lon_between(lonBnd1, lonBnd2, x4.getLon())) {
                         if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x4.getCAR());
                             tmp2 = cross(x4.getCAR(), x2.getCAR());
@@ -886,7 +910,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                 // southern boundary
                 if ((from != SouthBnd && J < numLat) || edgePointer != edgePointer0) {
                     Sphere::calcIntersectLon(x1, x2, latBnd2, x3, x4);
-                    if (Sphere::is_lon_between(lonBnd1, lonBnd2, x3.getLon())) {
+                    if (fabs(x3.getLat()-latBnd2) < EPS &&
+                        Sphere::is_lon_between(lonBnd1, lonBnd2, x3.getLon())) {
                         if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x3.getCAR());
                             tmp2 = cross(x3.getCAR(), x2.getCAR());
@@ -899,7 +924,8 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                             }
                         }
                     }
-                    if (Sphere::is_lon_between(lonBnd1, lonBnd2, x4.getLon())) {
+                    if (fabs(x4.getLat()-latBnd2) < EPS &&
+                        Sphere::is_lon_between(lonBnd1, lonBnd2, x4.getLon())) {
                         if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
                             tmp1 = cross(x1.getCAR(), x4.getCAR());
                             tmp2 = cross(x4.getCAR(), x2.getCAR());
@@ -926,9 +952,9 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                                                   latBnd1, latBnd2,
                                                   x0, edgePointer0,
                                                   *x, edgePointer);
-                    recordOverlapArea(pointCounter.cellAreas(I0, J0),
-                                      I0, J0, from0, to0, bndDiff,
-                                      polygon, area, totalArea);
+                    recordOverlapArea(mesh.area(I0, J0), I0, J0,
+                                      from0, to0, bndDiff,
+                                      polygon, area, totalArea, overlapAreas);
                 }
                 // record the starting edge and intersection
                 if (edgePointer00 == NULL) {
@@ -942,71 +968,147 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
 #ifdef DEBUG_INTERSECTION
         file.close();
 #endif
-#ifdef DEBUG
-        assert(edgePointer00 != NULL);
-#endif
-        double area = calcOverlapArea(I, J, from, to00, bndDiff,
-                                      lonBnd1, lonBnd2, latBnd1, latBnd2,
-                                      x0, edgePointer0, x00, edgePointer00);
-        recordOverlapArea(pointCounter.cellAreas(I, J), I, J,
-                          from, to00, bndDiff, polygon, area, totalArea);
+        if (edgePointer00 != NULL) {
+            double area = calcOverlapArea(I, J, from, to00, bndDiff,
+                                          lonBnd1, lonBnd2, latBnd1, latBnd2,
+                                          x0, edgePointer0, x00, edgePointer00);
+            recordOverlapArea(mesh.area(I, J), I, J, from, to00, bndDiff,
+                              polygon, area, totalArea, overlapAreas);
+        } else
+            recordOverlapArea(mesh.area(I, J), I, J, polygon,
+                              polygon->getArea(NewTimeLevel),
+                              totalArea, overlapAreas);
+        // ---------------------------------------------------------------------
+        // check the area difference
+        diffArea = fabs(totalArea-realArea)/realArea;
         // ---------------------------------------------------------------------
         // handle the cells that are fully covered by the polygon
-        map<int, list<int> >::iterator itIdxIJ = bndCellIdx.begin();
-        for (; itIdxIJ != bndCellIdx.end(); ++itIdxIJ) {
-            int i = (*itIdxIJ).first;
-            (*itIdxIJ).second.sort();
-            (*itIdxIJ).second.unique();
-            list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
-            list<int>::const_iterator itIdxJ2 = itIdxJ1;
-            for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
-                if (*itIdxJ1-*itIdxJ2 != 1) {
-                    // *********************************************************
-                    // check for concave polygon
-                    list<OverlapPolygon>::const_iterator itOp = 
-                    overlapPolygons(i, *itIdxJ2, 0).begin();
-                    for (; itOp != overlapPolygons(i, *itIdxJ2, 0).end(); ++itOp)
-                        if ((*itOp).polygon == polygon)
-                            break;
-                    bool isConcave = false;
-                    // actually only the first "from" and "to" directions are
-                    // be used because the polygon edges are counterclockwisely
-                    // recorded
-                    for (int k = 0; k < (*itOp).numEdgeCross; ++k) {
-                        Bnd from = (*itOp).from[k], to = (*itOp).to[k];
-                        int bndDiff = (*itOp).bndDiff[k];
-                        if (from == NorthBnd) {
-                            if (to == NorthBnd || to == WestBnd)
-                                break;
-                        } else if (from == EastBnd) {
-                            if (to == NorthBnd || to == WestBnd)
-                                break;
-                            if (to == EastBnd && bndDiff == 4)
-                                break;
-                        } else if (from == WestBnd) {
-                            if (to == WestBnd && bndDiff == 4)
-                                break;
+        if (diffArea > areaDiffThreshold) {
+            // 1. get the cell range in which the cells should be checked
+            int numCellLon = static_cast<int>(bndCellIdx.size()), numCellLat = 0;
+            // reference index
+            J0 = -1; J1 = -1;
+            // Note: The following complicated codes are due to the zonal periodic
+            //       boundary condition, please forgive me!
+            map<int, list<int> >::iterator itIdxIJ1 = bndCellIdx.begin();
+            map<int, list<int> >::iterator itIdxIJ2 = bndCellIdx.end();
+            map<int, list<int> >::iterator itIdxIJ3 = bndCellIdx.end();
+            map<int, list<int> >::iterator itIdxIJ4 = bndCellIdx.end();
+            map<int, list<int> >::iterator itIdxIJ  = bndCellIdx.begin();
+            map<int, list<int> >::iterator itIdxIJ0 = bndCellIdx.begin();
+            for (++itIdxIJ0; itIdxIJ != bndCellIdx.end(); ++itIdxIJ, ++itIdxIJ0) {
+                if (itIdxIJ0 != bndCellIdx.end() &&
+                    (*itIdxIJ).first+1 != (*itIdxIJ0).first) {
+                    itIdxIJ2 = itIdxIJ0;
+                    itIdxIJ3 = itIdxIJ0;
+                }
+                (*itIdxIJ).second.sort();
+                (*itIdxIJ).second.unique();
+                if (J0 == -1)
+                    J0 = (*itIdxIJ).second.front();
+                else if (J0 > (*itIdxIJ).second.front())
+                    J0 = (*itIdxIJ).second.front();
+                if (J1 == -1)
+                    J1 = (*itIdxIJ).second.back();
+                else if (J1 < (*itIdxIJ).second.back())
+                    J1 = (*itIdxIJ).second.back();
+            }
+            numCellLat = J1-J0+1;
+            // 3. set the first guess cover mask
+            Array<int, 2> coverMask(numCellLon, numCellLat);
+            coverMask = 0;
+            int idxI[numCellLon], idxJ[numCellLat];
+            int i, j;
+            // second part if the polygon crosses lon = 0 meridinal line
+            for (i = 0, itIdxIJ = itIdxIJ3; itIdxIJ != itIdxIJ4; ++itIdxIJ, ++i) {
+                idxI[i] = (*itIdxIJ).first;
+                j = (*itIdxIJ).second.front()-J0;
+                list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
+                idxJ[j] = *itIdxJ1;
+                coverMask(i, j++) = 1;
+                list<int>::const_iterator itIdxJ2 = itIdxJ1;
+                for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
+                    if (*itIdxJ1-*itIdxJ2 != 1) {
+                        for (J = *itIdxJ2+1; J < *itIdxJ1; ++J) {
+                            idxJ[j] = J;
+                            coverMask(i, j++) = -1;
                         }
-                        isConcave = true;
-                        break;
+                        idxJ[j] = J;
+                        coverMask(i, j++) = 1;
+                    } else {
+                        idxJ[j] = *itIdxJ1;
+                        coverMask(i, j++) = 1;
                     }
-                    if (isConcave) continue;
-                    // *********************************************************
-                    for (int j = *itIdxJ2+1; j < *itIdxJ1; ++j) {
-                        recordOverlapArea(pointCounter.cellAreas(i, j), i, j,
-                                          polygon, pointCounter.cellAreas(i, j),
-                                          totalArea);
+                    itIdxJ2++;
+                }
+            }
+            // first part
+            for (itIdxIJ = itIdxIJ1; itIdxIJ != itIdxIJ2; ++itIdxIJ, ++i) {
+                idxI[i] = (*itIdxIJ).first;
+                j = (*itIdxIJ).second.front()-J0;
+                list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
+                idxJ[j] = *itIdxJ1;
+                coverMask(i, j++) = 1;
+                list<int>::const_iterator itIdxJ2 = itIdxJ1;
+                for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
+                    if (*itIdxJ1-*itIdxJ2 != 1) {
+                        for (J = *itIdxJ2+1; J < *itIdxJ1; ++J) {
+                            idxJ[j] = J;
+                            coverMask(i, j++) = -1;
+                        }
+                        idxJ[j] = J;
+                        coverMask(i, j++) = 1;
+                    } else {
+                        idxJ[j] = *itIdxJ1;
+                        coverMask(i, j++) = 1;
+                    }
+                    itIdxJ2++;
+                }
+            }
+            // 4. set the cell that has been fully covered
+            if (debug) {
+                for (i = 0; i < numCellLon; ++i)
+                    cout << setw(5) << idxI[i];
+                cout << endl;
+                for (j = 0; j < numCellLat; ++j)
+                    cout << idxJ[j] << endl;
+                for (int jj = 0; jj < numCellLat; ++jj) {
+                    for (int ii = 0; ii < numCellLon; ++ii)
+                        cout << setw(3) << coverMask(ii, jj);
+                    cout << endl;
+                }
+            }
+            for (i = 0; i < numCellLon; ++i)
+                for (j = 0; j < numCellLat; ++j) {
+                    isCellCovered(numCellLon, numCellLat, coverMask, -1, -1, i, j);
+                    if (debug) {
+                        cout << i << ", " << j << ":" << endl;
+                        for (int jj = 0; jj < numCellLat; ++jj) {
+                            for (int ii = 0; ii < numCellLon; ++ii) {
+                                if (ii == i && jj == j)
+                                    cout << " *" << setw(1) << coverMask(ii, jj);
+                                else
+                                    cout << setw(3) << coverMask(ii, jj);
+                            }
+                            cout << endl;
+                        }
                     }
                 }
-                itIdxJ2++;
-            }
+            // 5. add the fully covered cells
+            for (i = 0; i < numCellLon; ++i)
+                for (j = 0; j < numCellLat; ++j)
+                    if (coverMask(i, j) == 2)
+                        recordOverlapArea(mesh.area(idxI[i], idxJ[j]),
+                                          idxI[i], idxJ[j], polygon,
+                                          mesh.area(idxI[i], idxJ[j]),
+                                          totalArea, overlapAreas);
         }
         // ---------------------------------------------------------------------
         // check the area difference
         diffArea = fabs(totalArea-realArea)/realArea;
         // ---------------------------------------------------------------------
         // check if pole has been included
-        if (diffArea > 0.005) {
+        if (diffArea > areaDiffThreshold) {
             // Note: Here we assume that if the boundary cells cover the whole
             //       zonal range, then the pole has been included
             if (bndCellIdx.size() == numLon) {
@@ -1019,28 +1121,32 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
                     switch (checkPole) {
                         case Location::NorthPole:
                             for (int j = 0; j < (*it1).second.front(); ++j) {
-                                recordOverlapArea(pointCounter.cellAreas(i, j),
-                                                  i, j, polygon,
-                                                  pointCounter.cellAreas(i, j),
-                                                  totalArea);
+                                recordOverlapArea(mesh.area(i, j), i, j, polygon,
+                                                  mesh.area(i, j),
+                                                  totalArea, overlapAreas);
                             }
                             break;
                         case Location::SouthPole:
                             for (int j = (*it1).second.back()+1; j < numLat; ++j) {
-                                recordOverlapArea(pointCounter.cellAreas(i, j),
-                                                  i, j, polygon,
-                                                  pointCounter.cellAreas(i, j),
-                                                  totalArea);
+                                recordOverlapArea(mesh.area(i, j), i, j, polygon,
+                                                  mesh.area(i, j),
+                                                  totalArea, overlapAreas);
                             }
                             break;
                         default:
                             break;
                     }
                 }
-                diffArea = fabs(totalArea-realArea);
+                diffArea = fabs(totalArea-realArea)/realArea;
             }
         }
-        if (diffArea > 0.005) {
+        // ---------------------------------------------------------------------
+        // record totalArea in each overlapArea to overcome numerical inaccuracy
+        list<OverlapArea *>::const_iterator itOaPtr = overlapAreas.begin();
+        for (; itOaPtr != overlapAreas.end(); ++itOaPtr)
+            (*itOaPtr)->totalArea = totalArea;
+        // ---------------------------------------------------------------------
+        if (diffArea > areaDiffThreshold) {
             ostringstream message;
             message << "Failed to calculate overlap area for polygon ";
             message << polygon->getID() << "!" << endl;
@@ -1052,4 +1158,80 @@ void MeshAdaptor::adapt(const PolygonManager &polygonManager,
 #ifdef DEBUG
     cout << "Maximum area difference: " << maxDiffArea*100 << "%" << endl;
 #endif
+}
+
+void MeshAdaptor::remap(const string &tracerName, const Field &q,
+                        TracerManager &tracerManager)
+{
+    int tracerId = tracerManager.getTracerId(tracerName);
+
+    // reset tracer mass
+    Polygon *polygon = tracerManager.polygonManager.polygons.front();
+    for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
+        polygon->tracers[tracerId].mass = 0.0;
+        polygon = polygon->next;
+    }
+
+    double totalCellMass = 0.0, totalPolygonMass = 0.0;
+    // accumulate tracer mass
+    for (int i = 0; i < overlapAreaList.extent(0); ++i)
+        for (int j = 0; j < overlapAreaList.extent(1); ++j) {
+            double totalArea = 0.0;
+            double cellMass = q.values(i, j).getNew()*q.mesh->area(i, j);
+            totalCellMass += cellMass;
+            list<OverlapArea>::const_iterator itOa;
+            // accumulate overlap area
+            for (itOa = overlapAreaList(i, j, 0).begin();
+                 itOa != overlapAreaList(i, j, 0).end(); ++itOa)
+                totalArea += (*itOa).area;
+            // use partition of unity to ensure exact mass conservation since
+            // there are numerical errors when calculate overlap area
+            for (itOa = overlapAreaList(i, j, 0).begin();
+                 itOa != overlapAreaList(i, j, 0).end(); ++itOa) {
+                double weight = (*itOa).area/totalArea;
+                (*itOa).polygon->tracers[tracerId].mass += cellMass*weight;
+            }
+        }
+
+    // calculate tracer density
+    polygon = tracerManager.polygonManager.polygons.front();
+    for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
+        polygon->tracers[tracerId].density
+        = polygon->tracers[tracerId].mass/polygon->getArea(NewTimeLevel);
+        totalPolygonMass += polygon->tracers[tracerId].mass;
+        polygon = polygon->next;
+    }
+
+    cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
+    cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
+    cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
+}
+
+void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
+{
+    int tracerId = tracerManager.getTracerId(tracerName);
+    Field &q = tracerManager.getTracerDensityField(tracerId);
+
+    double totalCellMass = 0.0, totalPolygonMass = 0.0;
+    for (int i = 0; i < overlapAreaList.extent(0); ++i)
+        for (int j = 0; j < overlapAreaList.extent(1); ++j) {
+            q.values(i, j, 0) = 0.0;
+            list<OverlapArea>::const_iterator itOa;
+            for (itOa = overlapAreaList(i, j, 0).begin();
+                 itOa != overlapAreaList(i, j, 0).end(); ++itOa) {
+                double weight = (*itOa).area/(*itOa).totalArea;
+                q.values(i, j, 0) += (*itOa).polygon->tracers[tracerId].mass*weight;
+            }
+            totalCellMass += q.values(i, j, 0).getNew();
+            q.values(i, j, 0) /= q.mesh->area(i, j);
+        }
+
+    Polygon *polygon = tracerManager.polygonManager.polygons.front();
+    for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
+        totalPolygonMass += polygon->tracers[tracerId].mass;
+        polygon = polygon->next;
+    }
+    cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
+    cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
+    cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
 }

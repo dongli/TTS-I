@@ -40,6 +40,9 @@ public:
                                  double lat, Coordinate &x3, Coordinate &x4);
 
     static bool is_lon_between(double lon1, double lon2, double lon);
+    static bool is_lon_gt(double lon1, double lon2);
+    static bool is_lon_lt(double lon1, double lon2);
+    static bool is_lon_eq(double lon1, double lon2);
     static double diff_lon(double lon1, double lon2);
 
     static OrientStatus orient(const Coordinate &, const Coordinate &,

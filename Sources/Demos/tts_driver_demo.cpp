@@ -17,21 +17,17 @@ int main(int argc, char **argv)
     MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
-    //SolidRotation testCase;
-    //MovingVortices testCase;
-    //StaticVortices testCase;
-    Deformation testCase;
+    Deformation testCase(Deformation::Case4, Deformation::CosineHills);
     TTS tts;
+
+    char fileName[30];
 
     // -------------------------------------------------------------------------
     timeManager.setClock(5.0/120);
     timeManager.setEndStep(120);
 
     // -------------------------------------------------------------------------
-    tracerManager.init(argv[1]);
-
-    // -------------------------------------------------------------------------
-    int numLon = 128, numLat = 60;
+    int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;
     double dlat = PI/(numLat+1);
     double lon[numLon], lat[numLat];
@@ -44,16 +40,23 @@ int main(int argc, char **argv)
     meshAdaptor.init(meshManager);
     flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
-    //flowManager.output("flow.nc");
+//    flowManager.output("flow.nc");
+
+    // -------------------------------------------------------------------------
+    tracerManager.init(argv[1]);
+
+    // -------------------------------------------------------------------------
+    testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
+    sprintf(fileName, "tts_test%5.5d.nc", timeManager.getSteps());
+    tracerManager.output(fileName);
 
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         timeManager.advance();
         testCase.calcVelocityField(flowManager);
-        char fileName[30];
         sprintf(fileName, "tts_test%5.5d.nc", timeManager.getSteps());
         tracerManager.output(fileName);
-        //flowManager.output("flow.nc");
+//        flowManager.output("flow.nc");
     }
 }
