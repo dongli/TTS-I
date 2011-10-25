@@ -17,14 +17,14 @@ int main(int argc, char **argv)
     MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
-    Deformation testCase(Deformation::Case4, Deformation::CosineHills);
+    Deformation testCase(Deformation::Case4, Deformation::SlottedCylinders);
     TTS tts;
 
     char fileName[30];
 
     // -------------------------------------------------------------------------
-    timeManager.setClock(5.0/120);
-    timeManager.setEndStep(120);
+    timeManager.setClock(5.0/600);
+    timeManager.setEndStep(600);
 
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;

@@ -389,10 +389,19 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             REPORT_ERROR("Unknown boundary difference!");
     }
     if (numCellEdge != 1) {
-        normVectors[0] = norm_cross(x[0].getCAR(), x1.getCAR());
-        for (i = 1; i < numCellEdge-1; ++i)
-            normVectors[i] = norm_cross(x[i].getCAR(), x[i-1].getCAR());
-        normVectors[i] = norm_cross(x0.getCAR(), x[i-1].getCAR());
+        if (x1.getLon() != x[0].getLon() || x1.getLat() != x[0].getLat()) {
+            normVectors[0] = norm_cross(x[0].getCAR(), x1.getCAR());
+            for (i = 1; i < numCellEdge-1; ++i)
+                normVectors[i] = norm_cross(x[i].getCAR(), x[i-1].getCAR());
+        } else {
+            numCellEdge--;
+            for (i = 0; i < numCellEdge-1; ++i)
+                normVectors[i] = norm_cross(x[i+1].getCAR(), x[i].getCAR());
+        }
+        if (x0.getLon() != x[i-1].getLon() || x0.getLat() != x[i-1].getLat())
+            normVectors[i] = norm_cross(x0.getCAR(), x[i-1].getCAR());
+        else
+            numCellEdge--;
     } else
         normVectors[0] = norm_cross(x0.getCAR(), x1.getCAR());
 
@@ -741,7 +750,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     int numLon = mesh.getNumLon()-1;
     int numLat = mesh.getNumLat()-1;
 
-    const double areaDiffThreshold = 1.0e-6;
+    const double areaDiffThreshold = 1.0e-3;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;
@@ -755,7 +764,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int m = 0; m < tracerManager.polygonManager.polygons.size(); ++m) {
         bool debug = false;
-//        if (TimeManager::getSteps() == 10 && polygon->getID() == 8316) {
+//        if (TimeManager::getSteps() == 316 && polygon->getID() == 757) {
 //            polygon->dump("polygon");
 //            REPORT_DEBUG;
 //            debug = true;
@@ -776,6 +785,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         int I, J, I1, I2, J1, J2, bndDiff;
         double lonBnd1, lonBnd2, latBnd1, latBnd2;
         Coordinate *x;
+        bool isForked = false;
         // ---------------------------------------------------------------------
         // search overlapped mesh cell along polygon edges
 #ifdef DEBUG_INTERSECTION
@@ -938,6 +948,79 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                             }
                         }
                     }
+                }
+                // -------------------------------------------------------------
+                // numerical tolerance
+                // Note: When the polygon edge (great circle arc) is so close to
+                //       the cell edge (lon/lat line) that numerical calculation
+                //       of intersection may fail, therefore we need add some
+                //       numerical tolerance.
+                double smallAngleDistance;
+                smallAngleDistance = (latBnd1-latBnd2)*0.1;
+                if (!isForked) {
+                    I0 = I; J0 = J; from0 = from;
+                    if (fabs(x0.getLon()-lonBnd1) < smallAngleDistance &&
+                        fabs(x0.getLat()-latBnd1) < smallAngleDistance) {
+                        if (from == WestBnd) {
+                            x3.set(lonBnd2, latBnd1);
+                            to0 = EastBnd;
+                            I = I+1; if (I == numLon) I = 0;
+                        } else if (from == NorthBnd) {
+                            x3.set(lonBnd1, latBnd2);
+                            to0 = SouthBnd;
+                            J = J+1;
+                        }
+                    } else if (fabs(x0.getLon()-lonBnd1) < smallAngleDistance &&
+                               fabs(x0.getLat()-latBnd2) < smallAngleDistance) {
+                        if (from == WestBnd) {
+                            x3.set(lonBnd2, latBnd2);
+                            to0 = EastBnd;
+                            I = I+1; if (I == numLon) I = 0;
+                        } else if (from == SouthBnd) {
+                            x3.set(lonBnd1, latBnd1);
+                            to0 = NorthBnd;
+                            J = J-1;
+                        }
+                    } else if (fabs(x0.getLon()-lonBnd2) < smallAngleDistance &&
+                               fabs(x0.getLat()-latBnd1) < smallAngleDistance) {
+                        if (from == EastBnd) {
+                            x3.set(lonBnd1, latBnd1);
+                            to0 = WestBnd;
+                            I = I-1; if (I == -1) I = numLon-1;
+                        } else if (from == NorthBnd) {
+                            x3.set(lonBnd2, latBnd2);
+                            to0 = SouthBnd;
+                            J = J+1;
+                        }
+                    } else if (fabs(x0.getLon()-lonBnd2) < smallAngleDistance &&
+                               fabs(x0.getLat()-latBnd2) < smallAngleDistance) {
+                        if (from == EastBnd) {
+                            x3.set(lonBnd1, latBnd2);
+                            to0 = WestBnd;
+                            I = I-1; if (I == -1) I = numLon-1;
+                        } else if (from == SouthBnd) {
+                            x3.set(lonBnd2, latBnd1);
+                            to0 = NorthBnd;
+                            J = J-1;
+                        }
+                    } else
+                        REPORT_ERROR("Can not find a path!");
+                    x = &x3; isForked = true;
+                    goto calc_overlap_area;
+                } else {
+                    if (from == EastBnd || from == WestBnd)
+                        if (x0.getLat() == latBnd1)
+                            J = J-1;
+                        else if (x0.getLat() == latBnd2)
+                            J = J+1;
+                    else if (from == NorthBnd || from == SouthBnd)
+                        if (x0.getLon() == lonBnd1) {
+                            I = I-1; if (I == -1) I = numLon-1;
+                        } else if (x0.getLon() == lonBnd2) {
+                            I = I+1; if (I == numLon) I = 0;
+                        }
+                    isForked = false;
+                    continue;
                 }
                 REPORT_ERROR("Can not find a path!");
             calc_overlap_area:

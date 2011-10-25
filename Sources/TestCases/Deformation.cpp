@@ -99,6 +99,15 @@ void Deformation::calcInitCond(MeshManager &meshManager,
     // two dual meshes
     const RLLMesh &meshCnt = meshManager.getMesh(PointCounter::Center);
     const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
+    // -------------------------------------------------------------------------
+    // background air field with constant density
+    tracerManager.registerTracer("air density", "test unit", meshManager);
+    Field qa; qa.init(meshCnt, meshBnd);
+    for (int i = 0; i < meshCnt.getNumLon()-1; ++i)
+        for (int j = 0; j < meshCnt.getNumLat(); ++j) {
+            qa.values(i, j, 0) = 1.0;
+        }
+    // -------------------------------------------------------------------------
     // evaluate the initial condition on the RLL mesh of point counter
     const int numTracer = 1;
     string tracerNames[numTracer];
@@ -195,6 +204,10 @@ void Deformation::calcInitCond(MeshManager &meshManager,
     }
     // -------------------------------------------------------------------------
     meshAdaptor.adapt(tracerManager, meshManager);
+    // -------------------------------------------------------------------------
+    // remap the air density onto the polygons
+    meshAdaptor.remap("air density", qa, tracerManager);
+    // -------------------------------------------------------------------------
     // remap the initial condition onto the polygons
     for (int i = 0; i < numTracer; ++i)
         meshAdaptor.remap(tracerNames[i], q[i], tracerManager);
@@ -203,13 +216,16 @@ void Deformation::calcInitCond(MeshManager &meshManager,
     double totalPolygonMass = 0.0;
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
-        totalPolygonMass += polygon->tracers[0].mass;
+        totalPolygonMass += polygon->tracers[1].mass;
         polygon = polygon->next;
     }
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
     cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
 #endif
+    // -------------------------------------------------------------------------
+    // remap the air density onto the mesh that is used to analyze results
+    meshAdaptor.remap("air density", tracerManager);
     // -------------------------------------------------------------------------
     // remap the initial condition onto the mesh that is used to analyze results
     for (int i = 0; i < numTracer; ++i)
