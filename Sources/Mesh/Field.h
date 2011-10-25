@@ -19,12 +19,18 @@ public:
     Field();
     virtual ~Field();
 
-    void init(const RLLMesh &mesh);
-    void init(const RLLMesh &mesh, const Layers &layers);
+    void init(const RLLMesh &meshCnt);
+    void init(const RLLMesh &meshCnt, const Layers &layers);
+    void init(const RLLMesh &meshCnt, const RLLMesh &meshBnd);
+    void init(const RLLMesh &meshCnt, const RLLMesh &meshBnd, const Layers &layers);
+
+    enum MeshType { Center = 0, Bound = 1 };
+
+    const RLLMesh &getMesh(MeshType type = Center) const { return *mesh[type]; }
 
     double interp(const Coordinate &, const Location &, TimeLevel) const;
 
-    const RLLMesh *mesh;
+    const RLLMesh *mesh[2];
     const Layers *layers;
     Array<MultiTimeLevel<double, 2>, 3> values;
 

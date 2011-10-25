@@ -12,7 +12,22 @@ end
 procedure notice(message)
 begin
 
-    system("echo [Notice]: "+message)
+    system("echo '[Notice]: "+message+"'")
+
+end
+
+procedure report_warning(message)
+begin
+
+    system("echo '[Warning]: "+message+"'")
+
+end
+
+procedure report_error(message)
+begin
+
+    system("echo '[Error]: "+message+"'")
+    exit
 
 end
 
@@ -91,44 +106,18 @@ begin
 
 end
 
-function setup_map(projection)
-local res
+procedure setup_map(projection, res)
 begin
 
-    res                         = True
-    res@gsnDraw                 = False
-    res@gsnFrame                = False
-    res@gsnMaximize             = True
-    res@mpGreatCircleLinesOn    = True
-    res@mpGridAndLimbOn         = False
-    res@mpFillOn                = False
-    if (projection .ne. "CE" .and. isatt(projection, "center_lon")) then
-        res@mpCenterLonF    = projection@center_lon
-    end if
-    if (projection .ne. "CE" .and. isatt(projection, "center_lat")) then
-        res@mpCenterLatF    = projection@center_lat
-    end if
-    if (projection .eq. "NH") then
-        if (.not. isatt(projection, "min_lat")) then
-            system("echo [Error]: setup_map: projection@min_lat should be defined for NH projection.")
-            exit
-        end if
-        res@mpMinLatF           = projection@min_lat
-        res@gsnPolar            = "NH"
-    end if
-    if (projection .eq. "SH") then
-        if (.not. isatt(projection, "max_lat")) then
-            system("echo [Error]: setup_map: projection@max_lat should be defined for SH projection.")
-            exit
-        end if
-        res@mpMaxLatF           = projection@max_lat
-        res@gsnPolar            = "SH"
-    end if
+    set_default(res, "gsnDraw", False)
+    set_default(res, "gsnFrame", False)
+    set_default(res, "gsnMaximize", True)
+    set_default(res, "mpGreatCircleLinesOn", True)
+    set_default(res, "mpGridAndLimbOn", False)
+    set_default(res, "mpFillOn", False)
+    set_default(res, "mpCenterLonF", 180.0)
+
     if (projection .eq. "ST") then
-        if (.not. isatt(projection, "angle")) then
-            system("echo [Error]: setup_map: projection@angle should be defined for ST projection.")
-            exit
-        end if
         res@mpProjection        = "satellite"
         res@mpLimitMode         = "angles"
         res@mpLeftAngleF        = projection@angle
@@ -136,8 +125,14 @@ begin
         res@mpBottomAngleF      = projection@angle
         res@mpTopAngleF         = projection@angle
     end if
-
-    return res
+    if (projection .eq. "NH") then
+        res@gsnPolar = "NH"
+        res@mpMinLatF = projection@min_lat
+    end if
+    if (projection .eq. "SH") then
+        res@gsnPolar = "SH"
+        res@mpMaxLatF = projection@max_lat
+    end if
 
 end
 

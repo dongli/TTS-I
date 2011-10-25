@@ -31,9 +31,11 @@ void TracerManager::registerTracer(const string &tracerName,
     tracerDensities.push_back(Field());
     if (meshManager.hasLayers())
         tracerDensities.back().init(meshManager.getMesh(PointCounter::Center),
+                                    meshManager.getMesh(PointCounter::Bound),
                                     meshManager.getLayers(Layers::Full));
     else
-        tracerDensities.back().init(meshManager.getMesh(PointCounter::Center));
+        tracerDensities.back().init(meshManager.getMesh(PointCounter::Center),
+                                    meshManager.getMesh(PointCounter::Bound));
 
     // -------------------------------------------------------------------------
     // set up tracer variables in polygons
@@ -91,18 +93,16 @@ void TracerManager::registerTracer(const string &fileName,
         REPORT_ERROR(message.str());
     }
     file.get_var("mass")->get(mass);
-
     // -------------------------------------------------------------------------
     // initialize tracer density on the mesh
     tracerDensities.push_back(Field());
     if (meshManager.hasLayers())
         tracerDensities.back().init(meshManager.getMesh(PointCounter::Center),
+                                    meshManager.getMesh(PointCounter::Bound),
                                     meshManager.getLayers(Layers::Full));
     else
-        tracerDensities.back().init(meshManager.getMesh(PointCounter::Center));
-    cout << tracerDensities.back().mesh->getNumLon() << endl;
-    cout << tracerDensities.back().mesh->getNumLat() << endl;
-
+        tracerDensities.back().init(meshManager.getMesh(PointCounter::Center),
+                                    meshManager.getMesh(PointCounter::Bound));
     // -------------------------------------------------------------------------
     // set up tracer variables in polygons
     int tracerId = static_cast<int>(tracerNames.size()-1);
@@ -137,10 +137,10 @@ void TracerManager::update()
 
 void TracerManager::output(const string &fileName)
 {
+    // -------------------------------------------------------------------------
     // output polygon stuffs
     polygonManager.output(fileName);
-
-    // output tracer densities on the mesh
+    // -------------------------------------------------------------------------
     NcFile file(fileName.c_str(), NcFile::Write);
     if (!file.is_valid()) {
         Message message;
@@ -148,14 +148,30 @@ void TracerManager::output(const string &fileName)
         message << fileName << "\" for appending meshed density field!";
         REPORT_ERROR(message.str());
     }
-
+    // -------------------------------------------------------------------------
+    // output tracer densities on the polygons
+    NcDim *numPolygonDim = file.get_dim("num_total_polygon");
+    double q0[polygonManager.polygons.size()];
+    for (int l = 0; l < tracerNames.size(); ++l) {
+        char varName[30];
+        sprintf(varName, "q%d", l);
+        NcVar *qVar = file.add_var(varName, ncDouble, numPolygonDim);
+        Polygon *polygon = polygonManager.polygons.front();
+        for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+            q0[i] = polygon->tracers[l].density;
+            polygon = polygon->next;
+        }
+        qVar->put(q0, polygonManager.polygons.size());
+    }
+    // -------------------------------------------------------------------------
+    // output tracer densities on the mesh
     int numLon = tracerDensities[0].values.extent(0);
     int numLat = tracerDensities[0].values.extent(1);
     double lon[numLon], lat[numLat];
     for (int i = 0; i < numLon; ++i)
-        lon[i] = tracerDensities[0].mesh->lon(i)*Rad2Deg;
+        lon[i] = tracerDensities[0].getMesh().lon(i)*Rad2Deg;
     for (int j = 0; j < numLat; ++j)
-        lat[j] = tracerDensities[0].mesh->lat(j)*Rad2Deg;
+        lat[j] = tracerDensities[0].getMesh().lat(j)*Rad2Deg;
     NcDim *lonDim = file.add_dim("lon", numLon);
     NcDim *latDim = file.add_dim("lat", numLat);
     NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
@@ -166,18 +182,18 @@ void TracerManager::output(const string &fileName)
     latVar->add_att("long_name", "latitude");
     latVar->add_att("units", "degrees_north");
     latVar->put(lat, numLat);
-    NcVar *areaVar = file.add_var("cell_area", ncDouble, latDim, lonDim);
+    NcVar *areaVar = file.add_var("area_mesh", ncDouble, latDim, lonDim);
     areaVar->add_att("long_name", "area of fixed mesh cell");
     areaVar->add_att("units", "m2");
     double area[numLat][numLon];
     for (int i = 0; i < numLon; ++i)
         for (int j = 0; j < numLat; ++j)
-            area[j][i] = tracerDensities[0].mesh->area(i, j);
+            area[j][i] = tracerDensities[0].getMesh(Field::Bound).area(i, j);
     areaVar->put(&area[0][0], numLat, numLon);
     double q[numLat][numLon];
     for (int l = 0; l < tracerNames.size(); ++l) {
         char varName[30];
-        sprintf(varName, "q%d", l);
+        sprintf(varName, "q%d_mesh", l);
         NcVar *qVar = file.add_var(varName, ncDouble, latDim, lonDim);
         qVar->add_att("long_name", tracerNames[l].c_str());
         for (int i = 0; i < numLon; ++i)
@@ -185,5 +201,6 @@ void TracerManager::output(const string &fileName)
                 q[j][i] = tracerDensities[l].values(i, j, 0).getNew();
         qVar->put(&q[0][0], numLat, numLon);
     }
+    // -------------------------------------------------------------------------
     file.close();
 }

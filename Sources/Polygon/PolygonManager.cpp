@@ -25,6 +25,7 @@ PolygonManager::~PolygonManager()
 
 void PolygonManager::init(const string &fileName)
 {
+    NOTICE("PolygonManager::init", "Reading polygons from \""+fileName+"\" ...");
     NcFile file(fileName.c_str(), NcFile::ReadOnly);
     if (!file.is_valid()) {
         REPORT_ERROR(string("Failed to open file "+fileName+"."))

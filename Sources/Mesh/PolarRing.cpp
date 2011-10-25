@@ -18,7 +18,7 @@ void PolarRingVelocity::linkVelocityField(const Field &u, const Field &v)
     this->uField = &u;
     this->vField = &v;
     int numLon, numLev;
-    numLon = v.mesh->getNumLon()-1;
+    numLon = v.getMesh().getNumLon()-1;
     if (v.layers != NULL) {
         numLev = v.layers->getNumLev();
     } else {
@@ -28,12 +28,12 @@ void PolarRingVelocity::linkVelocityField(const Field &u, const Field &v)
     sinLon.resize(numLon);
     cosLon.resize(numLon);
     for (int i = 0; i < numLon; ++i) {
-        lon[i] = v.mesh->lon(i);
+        lon[i] = v.getMesh().lon(i);
         sinLon[i] = sin(lon[i]);
         cosLon[i] = cos(lon[i]);
     }
-    lat[0] = u.mesh->lat(0);
-    lat[1] = u.mesh->lat(u.mesh->lat.size()-1);
+    lat[0] = u.getMesh().lat(0);
+    lat[1] = u.getMesh().lat(u.getMesh().lat.size()-1);
     for (int j = 0; j < 2; ++j) {
         sinLat[j] = sin(lat[j]);
         sinLat2[j] = sinLat[j]*sinLat[j];
@@ -55,7 +55,7 @@ void PolarRingVelocity::update()
 {
     if (!isInitialized) {
         for (int j = 0; j < 2; ++j) {
-            int l = j == 0 ? 0 : uField->mesh->getNumLat()-1;
+            int l = j == 0 ? 0 : uField->getMesh().getNumLat()-1;
             for (int i = 0; i < u[j].extent(0); ++i)
                 for (int k = 0; k < u[j].extent(1); ++k) {
                     u[j](i, k).setNew((uField->values(i, l, k).getNew()+
@@ -64,7 +64,7 @@ void PolarRingVelocity::update()
                 }
         }
         for (int j = 0; j < 2; ++j) {
-            int l = j == 0 ? 0 : vField->mesh->getNumLat()-2;
+            int l = j == 0 ? 0 : vField->getMesh().getNumLat()-2;
             for (int i = 0; i < v[j].extent(0); ++i)
                 for (int k = 0; k < v[j].extent(1); ++k) {
                     v[j](i, k).setNew((vField->values(i, l, k).getNew()+
@@ -91,7 +91,7 @@ void PolarRingVelocity::update()
         isInitialized = true;
     } else {
         for (int j = 0; j < 2; ++j) {
-            int l = j == 0 ? 0 : uField->mesh->getNumLat()-1;
+            int l = j == 0 ? 0 : uField->getMesh().getNumLat()-1;
             for (int i = 0; i < u[j].extent(0); ++i)
                 for (int k = 0; k < u[j].extent(1); ++k) {
                     u[j](i, k).save();
@@ -100,7 +100,7 @@ void PolarRingVelocity::update()
                 }
         }
         for (int j = 0; j < 2; ++j) {
-            int l = j == 0 ? 0 : vField->mesh->getNumLat()-2;
+            int l = j == 0 ? 0 : vField->getMesh().getNumLat()-2;
             for (int i = 0; i < v[j].extent(0); ++i)
                 for (int k = 0; k < v[j].extent(1); ++k) {
                     v[j](i, k).save();

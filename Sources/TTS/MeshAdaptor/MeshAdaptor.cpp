@@ -1120,18 +1120,16 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                     int i = (*it1).first;
                     switch (checkPole) {
                         case Location::NorthPole:
-                            for (int j = 0; j < (*it1).second.front(); ++j) {
+                            for (int j = 0; j < (*it1).second.front(); ++j)
                                 recordOverlapArea(mesh.area(i, j), i, j, polygon,
                                                   mesh.area(i, j),
                                                   totalArea, overlapAreas);
-                            }
                             break;
                         case Location::SouthPole:
-                            for (int j = (*it1).second.back()+1; j < numLat; ++j) {
+                            for (int j = (*it1).second.back()+1; j < numLat; ++j)
                                 recordOverlapArea(mesh.area(i, j), i, j, polygon,
                                                   mesh.area(i, j),
                                                   totalArea, overlapAreas);
-                            }
                             break;
                         default:
                             break;
@@ -1150,6 +1148,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
             ostringstream message;
             message << "Failed to calculate overlap area for polygon ";
             message << polygon->getID() << "!" << endl;
+            polygon->dump("polygon");
             REPORT_ERROR(message.str());
         }
         maxDiffArea = fmax(maxDiffArea, diffArea);
@@ -1163,7 +1162,9 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
 void MeshAdaptor::remap(const string &tracerName, const Field &q,
                         TracerManager &tracerManager)
 {
+    NOTICE("MeshAdaptor::remap", "Remapping "+tracerName+" onto polygons ...");
     int tracerId = tracerManager.getTracerId(tracerName);
+    const RLLMesh &mesh = q.getMesh(Field::Bound);
 
     // reset tracer mass
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
@@ -1177,7 +1178,7 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
         for (int j = 0; j < overlapAreaList.extent(1); ++j) {
             double totalArea = 0.0;
-            double cellMass = q.values(i, j).getNew()*q.mesh->area(i, j);
+            double cellMass = q.values(i, j).getNew()*mesh.area(i, j);
             totalCellMass += cellMass;
             list<OverlapArea>::const_iterator itOa;
             // accumulate overlap area
@@ -1209,8 +1210,10 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
 
 void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
 {
+    NOTICE("MeshAdaptor::remap", "Remapping "+tracerName+" onto mesh ...");
     int tracerId = tracerManager.getTracerId(tracerName);
     Field &q = tracerManager.getTracerDensityField(tracerId);
+    const RLLMesh &mesh = q.getMesh(Field::Bound);
 
     double totalCellMass = 0.0, totalPolygonMass = 0.0;
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
@@ -1223,7 +1226,7 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
                 q.values(i, j, 0) += (*itOa).polygon->tracers[tracerId].mass*weight;
             }
             totalCellMass += q.values(i, j, 0).getNew();
-            q.values(i, j, 0) /= q.mesh->area(i, j);
+            q.values(i, j, 0) /= mesh.area(i, j);
         }
 
     Polygon *polygon = tracerManager.polygonManager.polygons.front();

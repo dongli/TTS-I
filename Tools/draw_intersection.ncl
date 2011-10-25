@@ -6,11 +6,11 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 
 begin
 
-    projection = "ST"
+    projection = "CE"
     projection@angle = 0.6
     projection@min_lat = 80.0
     projection@max_lat = -85.0
-    line_width = 0.1
+    line_width = 0.5
     point_size = 0.01
 
     if (.not. isdefined("file_name")) then
@@ -65,9 +65,12 @@ begin
     ; --------------------------------------------------------------------------
     wks = gsn_open_wks("newpdf", file_name)
 
-    projection@center_lon = calc_polygon_center_lon(vertex_lon)
-    projection@center_lat = avg(vertex_lat)
-    res_map = setup_map(projection)
+    res_map = True
+    if (projection .eq. "ST") then
+        res_map@mpCenterLonF = calc_polygon_center_lon(vertex_lon)
+        res_map@mpCenterLatF = avg(vertex_lat)
+    end if
+    setup_map(projection, res_map)
     map = gsn_csm_map(wks, res_map)
 
     draw(map)
@@ -75,14 +78,22 @@ begin
     ; --------------------------------------------------------------------------
     ; draw point counter mesh
     f = addfile("point_counter_bound_mesh.nc", "r")
-    ;min_lon = 0.0d0
-    ;max_lon = 360.0d0
-    min_lon = projection@center_lon-50.0
-    max_lon = projection@center_lon+50.0
-    min_lat = projection@center_lat-25.0
-    max_lat = projection@center_lat+25.0
-    if (projection .eq. "SH") then
-        max_lat = projection@max_lat
+    if (projection .eq. "ST") then
+        min_lon = res_map@mpCenterLonF-10.0
+        max_lon = res_map@mpCenterLonF+10.0
+        min_lat = res_map@mpCenterLatF-10.0
+        max_lat = res_map@mpCenterLatF+10.0
+    else
+        min_lon = 0.0d0
+        max_lon = 360.0d0
+        min_lat = -90.0d0
+        max_lat = 90.0d0
+        if (projection .eq. "NH") then
+            min_lat = projection@min_lat
+        end if
+        if (projection .eq. "SH") then
+            max_lat = projection@max_lat
+        end if
     end if
     plot_lon_lat_mesh(wks, map, f->lon, f->lat, \
         min_lon, max_lon, min_lat, max_lat)

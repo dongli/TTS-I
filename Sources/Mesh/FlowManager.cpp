@@ -60,15 +60,15 @@ void FlowManager::update(double *u, double *v)
     int l;
     if (!isInitialized) {
         l = -1;
-        for (int i = 1; i < this->u.mesh->getNumLon()-1; ++i)
-            for (int j = 0; j < this->u.mesh->getNumLat(); ++j)
+        for (int i = 1; i < this->u.getMesh().getNumLon()-1; ++i)
+            for (int j = 0; j < this->u.getMesh().getNumLat(); ++j)
                 for (int k = 0; k < numLev; ++k) {
                     this->u.values(i, j, k).setNew(u[++l]);
                     this->u.values(i, j, k).save();
                 }
         l = -1;
-        for (int i = 0; i < this->v.mesh->getNumLon()-1; ++i)
-            for (int j = 0; j < this->v.mesh->getNumLat(); ++j)
+        for (int i = 0; i < this->v.getMesh().getNumLon()-1; ++i)
+            for (int j = 0; j < this->v.getMesh().getNumLat(); ++j)
                 for (int k = 0; k < numLev; ++k) {
                     this->v.values(i, j, k).setNew(v[++l]);
                     this->v.values(i, j, k).save();
@@ -76,15 +76,15 @@ void FlowManager::update(double *u, double *v)
         isInitialized = true;
     } else {
         l = -1;
-        for (int i = 1; i < this->u.mesh->getNumLon()-1; ++i)
-            for (int j = 0; j < this->u.mesh->getNumLat(); ++j)
+        for (int i = 1; i < this->u.getMesh().getNumLon()-1; ++i)
+            for (int j = 0; j < this->u.getMesh().getNumLat(); ++j)
                 for (int k = 0; k < numLev; ++k) {
                     this->u.values(i, j, k).save();
                     this->u.values(i, j, k).setNew(u[++l]);
                 }
         l = -1;
-        for (int i = 0; i < this->v.mesh->getNumLon()-1; ++i)
-            for (int j = 0; j < this->v.mesh->getNumLat(); ++j)
+        for (int i = 0; i < this->v.getMesh().getNumLon()-1; ++i)
+            for (int j = 0; j < this->v.getMesh().getNumLat(); ++j)
                 for (int k = 0; k < numLev; ++k) {
                     this->v.values(i, j, k).save();
                     this->v.values(i, j, k).setNew(v[++l]);
@@ -146,8 +146,8 @@ void FlowManager::output(const string &fileName) const
         REPORT_ERROR(message)
     }
 
-    int numLon = v.mesh->getNumLon()-1;
-    int numLat = u.mesh->getNumLat();
+    int numLon = v.getMesh().getNumLon()-1;
+    int numLat = u.getMesh().getNumLat();
 
     NcVar *timeVar, *uVar, *vVar;
 
@@ -168,9 +168,9 @@ void FlowManager::output(const string &fileName) const
         double lon[numLon];
         double lat[numLat];
         for (int i = 0; i < numLon; ++i)
-            lon[i] = v.mesh->lon(i)*Rad2Deg;
+            lon[i] = v.getMesh().lon(i)*Rad2Deg;
         for (int j = 0; j < numLat; ++j)
-            lat[j] = u.mesh->lat(j)*Rad2Deg;
+            lat[j] = u.getMesh().lat(j)*Rad2Deg;
         lonVar->put(lon, numLon);
         latVar->put(lat, numLat);
 
