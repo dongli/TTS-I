@@ -56,18 +56,19 @@ void test_intersection()
     cout << setw(20) << x4.getLon()*Rad2Deg;
     cout << setw(20) << x4.getLat()*Rad2Deg << endl;
     
+    cout << "{{";
     cout << x1.getX() << ",";
     cout << x1.getY() << ",";
-    cout << x1.getZ() << endl;
+    cout << x1.getZ() << "},{";
     cout << x2.getX() << ",";
     cout << x2.getY() << ",";
-    cout << x2.getZ() << endl;
+    cout << x2.getZ() << "},{";
     cout << x3.getX() << ",";
     cout << x3.getY() << ",";
-    cout << x3.getZ() << endl;
+    cout << x3.getZ() << "},{";
     cout << x4.getX() << ",";
     cout << x4.getY() << ",";
-    cout << x4.getZ() << endl;
+    cout << x4.getZ() << "}}\n";
 }
 
 #endif

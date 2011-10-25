@@ -750,7 +750,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     int numLon = mesh.getNumLon()-1;
     int numLat = mesh.getNumLat()-1;
 
-    const double areaDiffThreshold = 1.0e-3;
+    const double areaDiffThreshold = 5.0e-3;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;

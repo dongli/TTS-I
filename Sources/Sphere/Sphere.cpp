@@ -191,12 +191,14 @@ inline void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
     double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
     double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
 
-    double z = radius*sin(lat);
+//    double z = radius*sin(lat);
+    double z = sin(lat);
     double z2 = z*z;
     double a2 = a*a;
     double a2_plus_b2 = a2+b*b;
+    double a2_plus_c2 = a2+c*c;
     double d = b*c*z/a2_plus_b2;
-    double e = sqrt((radius2-z2)*a2/a2_plus_b2-c*c*z2/a2_plus_b2+d*d);
+    double e = sqrt(d*d-(a2_plus_c2*z2-a2)/a2_plus_b2);
 
     double y1 = -d+e;
     double y2 = -d-e;

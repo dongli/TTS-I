@@ -6,7 +6,7 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 
 begin
 
-    projection = "CE"
+    projection = "ST"
     projection@angle = 0.6
     projection@min_lat = 80.0
     projection@max_lat = -85.0
