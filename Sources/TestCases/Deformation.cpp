@@ -109,15 +109,21 @@ void Deformation::calcInitCond(MeshManager &meshManager,
         }
     // -------------------------------------------------------------------------
     // evaluate the initial condition on the RLL mesh of point counter
-    const int numTracer = 1;
-    string tracerNames[numTracer];
-    Field q[numTracer];
+    int numTracer;
+    if (initCondID == CosineHills)
+        numTracer = 2;
+    else
+        numTracer = 1;
+    vector<string> tracerNames;
+    tracerNames.resize(numTracer);
+    vector<Field> qt;
+    qt.resize(numTracer);
     for (int i = 0; i < numTracer; ++i) {
         char tracerName[30];
         sprintf(tracerName, "test tracer %d", i);
         tracerNames[i] = tracerName;
         tracerManager.registerTracer(tracerName, "test unit", meshManager);
-        q[i].init(meshCnt, meshBnd);
+        qt[i].init(meshCnt, meshBnd);
     }
     // -------------------------------------------------------------------------
 #ifdef DEBUG
@@ -133,10 +139,10 @@ void Deformation::calcInitCond(MeshManager &meshManager,
                     Coordinate x(meshCnt.lon(i), meshCnt.lat(j));
                     Vector d0 = x.getCAR()-c0.getCAR();
                     Vector d1 = x.getCAR()-c1.getCAR();
-                    q[0].values(i, j) = hmax*(exp(-b*dot(d0, d0))+
+                    qt[0].values(i, j) = hmax*(exp(-b*dot(d0, d0))+
                                               exp(-b*dot(d1, d1)));
 #ifdef DEBUG
-                    totalCellMass += q[0].values(i, j).getNew()*
+                    totalCellMass += qt[0].values(i, j).getNew()*
                                      meshBnd.area(i, j);
 #endif
                 }
@@ -149,13 +155,13 @@ void Deformation::calcInitCond(MeshManager &meshManager,
                     double r0 = Sphere::calcDistance(x, c0);
                     double r1 = Sphere::calcDistance(x, c1);
                     if (r0 < r)
-                        q[0].values(i, j) = b+c*hmax*0.5*(1.0+cos(PI*r0/r));
+                        qt[0].values(i, j) = b+c*hmax*0.5*(1.0+cos(PI*r0/r));
                     else if (r1 < r)
-                        q[0].values(i, j) = b+c*hmax*0.5*(1.0+cos(PI*r1/r));
+                        qt[0].values(i, j) = b+c*hmax*0.5*(1.0+cos(PI*r1/r));
                     else
-                        q[0].values(i, j) = b;
+                        qt[0].values(i, j) = b;
 #ifdef DEBUG
-                    totalCellMass += q[0].values(i, j).getNew()*
+                    totalCellMass += qt[0].values(i, j).getNew()*
                                      meshBnd.area(i, j);
 #endif
                 }
@@ -169,17 +175,17 @@ void Deformation::calcInitCond(MeshManager &meshManager,
                     double r1 = Sphere::calcDistance(x, c1);
                     if ((r0 <= r && fabs(x.getLon()-c0.getLon()) >= r/6.0) ||
                         (r1 <= r && fabs(x.getLon()-c1.getLon()) >= r/6.0))
-                        q[0].values(i, j) = c;
+                        qt[0].values(i, j) = c;
                     else if (r0 <= r && fabs(x.getLon()-c0.getLon()) < r/6.0 &&
                              x.getLat()-c0.getLat() < -5.0/12.0*r)
-                        q[0].values(i, j) = c;
+                        qt[0].values(i, j) = c;
                     else if (r1 <= r && fabs(x.getLon()-c1.getLon()) < r/6.0 &&
                              x.getLat()-c1.getLat() > 5.0/12.0*r)
-                        q[0].values(i, j) = c;
+                        qt[0].values(i, j) = c;
                     else
-                        q[0].values(i, j) = b;
+                        qt[0].values(i, j) = b;
 #ifdef DEBUG
-                    totalCellMass += q[0].values(i, j).getNew()*
+                    totalCellMass += qt[0].values(i, j).getNew()*
                                      meshBnd.area(i, j);
 #endif
                 }
@@ -190,7 +196,7 @@ void Deformation::calcInitCond(MeshManager &meshManager,
         double a = -0.8, b = 0.9;
         for (int i = 0; i < meshCnt.getNumLon()-1; ++i)
             for (int j = 0; j < meshCnt.getNumLat(); ++j) {
-                q[1].values(i, j) = a*pow(q[0].values(i, j).getNew(), 2.0)+b;
+                qt[1].values(i, j) = a*pow(qt[0].values(i, j).getNew(), 2.0)+b;
             }
     }
     // -------------------------------------------------------------------------
@@ -210,7 +216,7 @@ void Deformation::calcInitCond(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     // remap the initial condition onto the polygons
     for (int i = 0; i < numTracer; ++i)
-        meshAdaptor.remap(tracerNames[i], q[i], tracerManager);
+        meshAdaptor.remap(tracerNames[i], qt[i], tracerManager);
     // -------------------------------------------------------------------------
 #ifdef DEBUG
     double totalPolygonMass = 0.0;

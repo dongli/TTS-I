@@ -60,24 +60,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "square.nc"
+            argument = "polygons_2562.nc"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "polygons_10242.nc"
             isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "tts_test00543.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "polygons_128x60.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "polygons_2562.nc"
-            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
