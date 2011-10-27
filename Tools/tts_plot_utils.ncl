@@ -43,6 +43,7 @@ begin
 
 end
 
+; The following script is erroneous!
 function calc_polygon_center_lon(lon)
 begin
 
@@ -266,7 +267,7 @@ begin
 
 end
 
-procedure show_polyons(wks, map, vertex_lon, vertex_lat, \
+procedure show_polygons(wks, map, vertex_lon, vertex_lat, \
     first_point_idx, second_point_idx, edge_num, edge_idx, edge_ont, \
     testpoint_lon, testpoint_lat, point_size, line_width, is_plot_testpoint)
 local res, lon, lat, i, j, k, l
@@ -309,6 +310,55 @@ begin
         delete(vtxlat)
         delete(testlon)
         delete(testlat)
+    end do
+
+end
+
+procedure show_polygon_quantity(wks, map, levels, cmap, \
+    vertex_lon, vertex_lat, q)
+local res
+begin
+
+    res             = True
+    res@gsFillColor = GetFillColor(levels, cmap, q)
+
+    gsn_polygon(wks, map, vertex_lon, vertex_lat, res)
+
+end
+
+procedure show_polygon_quantities(wks, map, levels, cmap, \
+    vertex_lon, vertex_lat, first_point_idx, second_point_idx, \
+    edge_num, edge_idx, edge_ont, qs)
+begin
+
+    num_total_vertex = dimsizes(vertex_lon)
+    num_total_polygon = dimsizes(edge_num)
+    num_total_edge = dimsizes(first_point_idx)
+
+    l = 0
+    do i = 0, num_total_polygon-1
+        vtxlon = new(edge_num(i)+1, double)
+        vtxlat = new(edge_num(i)+1, double)
+        do j = 0, edge_num(i)-1
+            if (edge_ont(l) .eq. 0) then ; left
+                k = first_point_idx(edge_idx(l)-1)-1
+            else ; right
+                k = second_point_idx(edge_idx(l)-1)-1
+            end if
+            vtxlon(j) = vertex_lon(k)
+            vtxlat(j) = vertex_lat(k)
+            l = l+1
+        end do
+        vtxlon(edge_num(i)) = vtxlon(0)
+        vtxlat(edge_num(i)) = vtxlat(0)
+
+        if (max(vtxlon)-min(vtxlon) .lt. 90.0) then
+            show_polygon_quantity(wks, map, levels, cmap, \
+                vtxlon, vtxlat, qs(i))
+        end if
+
+        delete(vtxlon)
+        delete(vtxlat)
     end do
 
 end
