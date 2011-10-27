@@ -7,10 +7,11 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
-    projection@angle = 0.6
-    projection@min_lat = 80.0
-    projection@max_lat = -85.0
-    line_width = 0.5
+    projection@angle = 0.5
+    ;projection@min_lat = -62.0
+    ;projection@max_lat = -55.0
+    ;projection@center_lon = 0.0
+    line_width = 0.1
     point_size = 0.01
 
     if (.not. isdefined("file_name")) then
@@ -67,8 +68,8 @@ begin
 
     res_map = True
     if (projection .eq. "ST") then
-        res_map@mpCenterLonF = calc_polygon_center_lon(vertex_lon)
-        res_map@mpCenterLatF = avg(vertex_lat)
+        projection@center_lon = calc_polygon_center_lon(vertex_lon)
+        projection@center_lat = avg(vertex_lat)
     end if
     setup_map(projection, res_map)
     map = gsn_csm_map(wks, res_map)
@@ -88,6 +89,14 @@ begin
         max_lon = 360.0d0
         min_lat = -90.0d0
         max_lat = 90.0d0
+        if (projection .eq. "CE") then
+            if (isatt(projection, "min_lat")) then
+                min_lat = projection@min_lat
+            end if
+            if (isatt(projection, "max_lat")) then
+                max_lat = projection@max_lat
+            end if
+        end if
         if (projection .eq. "NH") then
             min_lat = projection@min_lat
         end if
@@ -100,6 +109,7 @@ begin
 
     res_line                        = True
     res_line@gsLineThicknessF       = line_width
+    res_line@mpGreatCircleLinesOn   = True
     res_point                       = True
     res_point@gsMarkerSizeF         = point_size
 

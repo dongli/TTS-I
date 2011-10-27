@@ -155,13 +155,59 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
     double e = -x3.getX()*x4.getZ()+x3.getZ()*x4.getX();
     double f =  x3.getX()*x4.getY()-x3.getY()*x4.getX();
 
-    double h = (d*c-f*a)/(e*a-d*b);
-    double g = -(b*h+c)/a;
-    double z = sqrt(radius2/(g*g+h*h+1.0));
-    double x = g*z;
-    double y = h*z;
+    double g1, g2, h1, h2;
+    int branch = -1;
+    static const double eps = 1.0e-12;
 
-    double lat1 = asin(z/radius);
+    g1 = c*e-b*f;
+    if (fabs(g1) > eps && fabs(b) > eps) {
+        g2 = b*d-a*e;
+        h1 = b*g1;
+        h2 = -c*g2-a*g1;
+        branch = 1;
+    } else {
+        g1 = c*d-a*f;
+        if (fabs(g1) > eps && fabs(c) > eps) {
+            g2 = b*f-c*e;
+            h1 = c*g1;
+            h2 = -a*g2-b*g1;
+            branch = 2;
+        } else {
+            g1 = a*e-b*d;
+            if (fabs(g1) > eps && fabs(a) > eps) {
+                g2 = c*d-a*f;
+                h1 = a*g1;
+                h2 = -b*g2-c*g1;
+                branch = 3;
+            }
+        }
+    }
+
+    double g2_over_g1 = g2/g1;
+    double h2_over_h1 = h2/h1;
+
+    double x, y, z;
+    switch (branch) {
+        case 1:
+            x = 1.0/sqrt(1.0+pow(g2_over_g1, 2.0)+pow(h2_over_h1, 2.0));
+            z = g2_over_g1*x;
+            y = h2_over_h1*x;
+            break;
+        case 2:
+            y = 1.0/sqrt(1.0+pow(g2_over_g1, 2.0)+pow(h2_over_h1, 2.0));
+            x = g2_over_g1*y;
+            z = h2_over_h1*y;
+            break;
+        case 3:
+            z = 1.0/sqrt(1.0+pow(g2_over_g1, 2.0)+pow(h2_over_h1, 2.0));
+            y = g2_over_g1*z;
+            x = h2_over_h1*z;
+            break;
+        default:
+            REPORT_ERROR("Unknown branch");
+    }
+
+    double lat1 = asin(z);
     double lat2 = -lat1;
     double lon1 = atan2(y, x);
     double lon2 = lon1-PI;
@@ -191,7 +237,6 @@ inline void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
     double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
     double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
 
-//    double z = radius*sin(lat);
     double z = sin(lat);
     double z2 = z*z;
     double a2 = a*a;

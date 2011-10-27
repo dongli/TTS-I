@@ -17,10 +17,10 @@ int main(int argc, char **argv)
     MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
-    Deformation testCase(Deformation::Case4, Deformation::SlottedCylinders);
+    Deformation testCase(Deformation::Case4, Deformation::CosineHills);
     TTS tts;
 
-    char fileName[30];
+    char fileName[30], filePattern[50] = "ch_360x180_10242_600_%3.3d.nc";
 
     // -------------------------------------------------------------------------
     timeManager.setClock(5.0/600);
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
-    sprintf(fileName, "tts_test%5.5d.nc", timeManager.getSteps());
+    sprintf(fileName, filePattern, timeManager.getSteps());
     tracerManager.output(fileName);
 
     // -------------------------------------------------------------------------
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         timeManager.advance();
         testCase.calcVelocityField(flowManager);
-        sprintf(fileName, "tts_test%5.5d.nc", timeManager.getSteps());
+        sprintf(fileName, filePattern, timeManager.getSteps());
         tracerManager.output(fileName);
 //        flowManager.output("flow.nc");
     }

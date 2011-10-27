@@ -1,4 +1,5 @@
 Rad2Deg = 45.0/atan(1.0)
+PI = 4.0*atan(1.0)
 
 procedure set_default(res, att_name, default)
 begin
@@ -116,6 +117,13 @@ begin
     set_default(res, "mpGridAndLimbOn", False)
     set_default(res, "mpFillOn", False)
     set_default(res, "mpCenterLonF", 180.0)
+
+    if (isatt(projection, "center_lon")) then
+        res@mpCenterLonF = doubletofloat(projection@center_lon)
+    end if
+    if (isatt(projection, "center_lat")) then
+        res@mpCenterLatF = doubletofloat(projection@center_lat)
+    end if
 
     if (projection .eq. "ST") then
         res@mpProjection        = "satellite"
