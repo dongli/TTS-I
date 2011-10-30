@@ -204,7 +204,9 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
             x = h2_over_h1*z;
             break;
         default:
-            REPORT_ERROR("Unknown branch");
+            x5.set(-999.0, -999.0);
+            x6.set(-999.0, -999.0);
+            return;
     }
 
     double lat1 = asin(z);
@@ -248,8 +250,14 @@ inline void Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
     double y1 = -d+e;
     double y2 = -d-e;
 
-    lon1 = atan2(y1, (-b*y1-c*z)/a);
-    lon2 = atan2(y2, (-b*y2-c*z)/a);
+    static const double eps = 1.0e-12;
+    if (fabs(a) > eps) {
+        lon1 = atan2(y1, (-b*y1-c*z)/a);
+        lon2 = atan2(y2, (-b*y2-c*z)/a);
+    } else {
+        lon1 = atan2(0.0, -b*y1-c*z);
+        lon2 = atan2(0.0, -b*y2-c*z);
+    }
     if (lon1 < 0.0) lon1 += PI2;
     if (lon1 > PI2) lon1 -= PI2;
     if (lon2 < 0.0) lon2 += PI2;

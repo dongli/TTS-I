@@ -32,8 +32,11 @@ void test_intersection()
 //    x1.set(0.32305511776974543681, -0.77990009057896714229);
 //    x2.set(0.3145368668335100093,  -0.76699899808209737184);
 
-    x1.set(5.7172288796502499508, 0.4670253141734310165);
-    x2.set(5.7087537755469419665, 0.49242785798385507734);
+//    x1.set(5.7172288796502499508, 0.4670253141734310165);
+//    x2.set(5.7087537755469419665, 0.49242785798385507734);
+
+    x1.set(0.0, 1.557702414213812725);
+    x2.set(0.0, 1.5184207034963115301);
 
     cout << "x1: ";
     cout << setw(20) << setprecision(15) << x1.getLon()*Rad2Deg;
@@ -43,12 +46,15 @@ void test_intersection()
     cout << setw(20) << x2.getLat()*Rad2Deg << endl;
 
 //    double lat = -0.77252278366962113;
-    double lat = 0.46863536821505192;
+//    double lat = 0.46863536821505192;
+    double lon = -0.024543692606170259;
     Coordinate x3, x4;
 
-    cout << "lat: " << lat*Rad2Deg << endl;
+//    cout << "lat: " << lat*Rad2Deg << endl;
+    cout << "lon: " << lon*Rad2Deg << endl;
 
-    Sphere::calcIntersectLon(x1, x2, lat, x3, x4);
+//    Sphere::calcIntersectLon(x1, x2, lat, x3, x4);
+    Sphere::calcIntersectLat(x1, x2, lon, x3, x4);
 
     cout << "x3: ";
     cout << setw(20) << x3.getLon()*Rad2Deg;

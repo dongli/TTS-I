@@ -77,7 +77,8 @@ begin
 
     projection@center_lon = calc_polygon_center_lon(vertex_lon)
     projection@center_lat = avg(vertex_lat)
-    res_map = setup_map(projection)
+    res_map = True
+    setup_map(projection, res_map)
     map = gsn_csm_map(wks, res_map)
 
     draw(map)

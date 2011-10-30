@@ -717,14 +717,14 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/Sphere/Sphere.cpp"
-         timestampString = "341380805.529246"
+         filePath = "Sources/UnitTests/unit_test_sphere.h"
+         timestampString = "341639222.916544"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "207"
-         endingLineNumber = "207"
-         landmarkName = "Sphere::calcIntersect(const Coordinate &amp;x1, const Coordinate &amp;x2, const Coordinate &amp;x3, const Coordinate &amp;x4, Coordinate &amp;x5, Coordinate &amp;x6)"
-         landmarkType = "5">
+         startingLineNumber = "57"
+         endingLineNumber = "57"
+         landmarkName = "test_intersection()"
+         landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
