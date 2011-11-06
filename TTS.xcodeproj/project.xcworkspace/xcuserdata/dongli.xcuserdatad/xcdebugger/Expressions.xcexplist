@@ -33,6 +33,9 @@
                value = "from0">
             </PersistentString>
             <PersistentString
+               value = "counter">
+            </PersistentString>
+            <PersistentString
                value = "polygon-&gt;ID">
             </PersistentString>
          </PersistentStrings>

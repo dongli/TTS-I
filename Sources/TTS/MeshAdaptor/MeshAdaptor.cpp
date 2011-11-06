@@ -763,12 +763,15 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     // calculate the overlap area between polygon and mesh
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int m = 0; m < tracerManager.polygonManager.polygons.size(); ++m) {
+#ifdef DEBUG
         bool debug = false;
-//        if (TimeManager::getSteps() == 316 && polygon->getID() == 757) {
+        int counter = 0;
+//        if (TimeManager::getSteps() == 0 && polygon->getID() == 1) {
 //            polygon->dump("polygon");
 //            REPORT_DEBUG;
 //            debug = true;
 //        }
+#endif
         // record the previous edge and intersection
         EdgePointer *edgePointer0 = NULL; Coordinate x0;
         // record the starting edge and intersection
@@ -1045,6 +1048,9 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 }
                 // record the previous edge and intersection
                 x0 = *x; edgePointer0 = edgePointer;
+#ifdef DEBUG
+                counter++;
+#endif
             }
             edgePointer = edgePointer->next;
         }
@@ -1149,6 +1155,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 }
             }
             // 4. set the cell that has been fully covered
+#ifdef DEBUG
             if (debug) {
                 for (i = 0; i < numCellLon; ++i)
                     cout << setw(5) << idxI[i];
@@ -1161,9 +1168,11 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                     cout << endl;
                 }
             }
+#endif
             for (i = 0; i < numCellLon; ++i)
                 for (j = 0; j < numCellLat; ++j) {
                     isCellCovered(numCellLon, numCellLat, coverMask, -1, -1, i, j);
+#ifdef DEBUG
                     if (debug) {
                         cout << i << ", " << j << ":" << endl;
                         for (int jj = 0; jj < numCellLat; ++jj) {
@@ -1176,6 +1185,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                             cout << endl;
                         }
                     }
+#endif
                 }
             // 5. add the fully covered cells
             for (i = 0; i < numCellLon; ++i)
@@ -1288,7 +1298,10 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
 
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
-    cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
+    double massError = totalCellMass-totalPolygonMass;
+    cout << "Mass error is " << massError << endl;
+    if (fabs(massError) > 1.0e-10)
+        REPORT_ERROR("Mass error is too large!");
 }
 
 void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
@@ -1319,5 +1332,8 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
     }
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
-    cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
+    double massError = totalCellMass-totalPolygonMass;
+    cout << "Mass error is " << massError << endl;
+    if (fabs(massError) > 1.0e-10)
+        REPORT_ERROR("Mass error is too large!");
 }

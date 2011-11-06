@@ -42,30 +42,25 @@ Status PotentialCrossDetector::detect1(Vertex *vertex3, Vertex *testVertex,
         for (it = edge->detectAgent.vertices.begin();
              it != edge->detectAgent.vertices.end(); ++it) {
             Projection *projection = (*it)->detectAgent.getProjection(edge);
-            // Note: Here we check all the approaching vertices.
-            //if ((projection != NULL && projection->isApproaching()) ||
-            //    (*it == edge1->getEndPoint(FirstPoint) ||
-            //     *it == edge1->getEndPoint(SecondPoint))) {
-                OrientStatus orient;
-                orient = Sphere::orient(vertex1->getCoordinate(),
-                                        vertex2->getCoordinate(),
-                                        (*it)->getCoordinate());
-                if (orient != projection->getOrient() && orient != OrientOn) {
-                    if (prevVertex1 == *it && prevVertex2 == vertex3) {
-                        deadLoopPair.vertex1 = vertex3;
-                        deadLoopPair.vertex2 = *it;
-                        deadLoopPair.edge1 = edge1;
-                        deadLoopPair.edge2 = edge;
-                        REPORT_WARNING("Dead loop has occurred!")
-                        return DeadLoop;
-                    }
-                    prevVertex1 = vertex3;
-                    prevVertex2 = *it;
-                    if (projection->isApproaching())
-                        ApproachingVertices::jumpVertex(vertex3, *it);
-                    return Cross;
+            OrientStatus orient;
+            orient = Sphere::orient(vertex1->getCoordinate(),
+                                    vertex2->getCoordinate(),
+                                    (*it)->getCoordinate());
+            if (orient != projection->getOrient() && orient != OrientOn) {
+                if (prevVertex1 == *it && prevVertex2 == vertex3) {
+                    deadLoopPair.vertex1 = vertex3;
+                    deadLoopPair.vertex2 = *it;
+                    deadLoopPair.edge1 = edge1;
+                    deadLoopPair.edge2 = edge;
+                    REPORT_WARNING("Dead loop has occurred!")
+                    return DeadLoop;
                 }
-            //}
+                prevVertex1 = vertex3;
+                prevVertex2 = *it;
+                if (projection->isApproaching())
+                    ApproachingVertices::jumpVertex(vertex3, *it);
+                return Cross;
+            }
         }
         linkedEdge = linkedEdge->next;
     }

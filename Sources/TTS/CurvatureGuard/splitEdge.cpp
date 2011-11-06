@@ -15,6 +15,7 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     static int level = 0;
     static const int maxLevel = 3;
     static const double smallAngle = 90.0/Rad2Deg;
+    static const double smallDistance = 0.1/Rad2Deg*Sphere::radius;
     static Edge *edge0;
     static Polygon *polygon1; // for OrientLeft polygon
     static Polygon *polygon2; // for OrientRight polygon
@@ -29,7 +30,7 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     static double angleCheck[4];
     Location loc;
 
-//    if (TimeManager::getSteps() >= 25 && edge->getID() == 955733)
+//    if (TimeManager::getSteps() >= 230 && edge->getID() == 19769)
 //        REPORT_DEBUG;
     level++;
 
@@ -55,9 +56,9 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     //       more easily split.
     double d1 = vertex1->detectAgent.getShortestDistance();
     double d2 = vertex2->detectAgent.getShortestDistance();
-    if ((d1 != UndefinedDistance && d1 < 5000.0) ||
-        (d2 != UndefinedDistance && d2 < 5000.0)) {
-        a0 *= 0.5;
+    if ((d1 != UndefinedDistance && d1 < smallDistance) ||
+        (d2 != UndefinedDistance && d2 < smallDistance)) {
+        a0 *= 0.2;
     }
 
     if (fabs(angle-PI) > a0) {

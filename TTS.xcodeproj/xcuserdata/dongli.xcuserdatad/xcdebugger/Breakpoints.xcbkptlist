@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Polygon/Polygon.cpp"
-         timestampString = "335956157.573494"
+         timestampString = "342186709.56376"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
+         startingLineNumber = "87"
+         endingLineNumber = "87"
          landmarkName = "Polygon::calcArea()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -30,28 +30,6 @@
          endingLineNumber = "80"
          landmarkName = "Vertex::unlinkEdge(Edge *edge)"
          landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/splitPolygon.h"
-         timestampString = "337447317.53535"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "98"
-         endingLineNumber = "98"
-         landmarkName = "TTS::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.AppleScript">
-               <ActionContent
-                  script = "set tts_run_dir to &quot;/Users/dongli/Works/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/Works/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/polygon&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -378,38 +356,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/splitPolygon.h"
-         timestampString = "337447315.517698"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "96"
-         endingLineNumber = "96"
-         landmarkName = "TTS::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.Sound">
-               <ActionContent
-                  soundName = "Submarine">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Polygon/Polygon.cpp"
-         timestampString = "336832419.209869"
+         timestampString = "342186709.56376"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "54"
-         endingLineNumber = "54"
+         startingLineNumber = "60"
+         endingLineNumber = "60"
          landmarkName = "Polygon::calcArea()"
          landmarkType = "5">
          <Actions>
@@ -423,74 +379,16 @@
          </Actions>
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/splitPolygon.h"
-         timestampString = "337426604.23004"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "34"
-         endingLineNumber = "34"
-         landmarkName = "TTS::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "Yes"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/splitPolygon.h"
-         timestampString = "337426616.445769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "330"
-         endingLineNumber = "330"
-         landmarkName = "TTS::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.AppleScript">
-               <ActionContent
-                  script = "set tts_run_dir to &quot;/Users/dongli/Works/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/Works/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/polygon1&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "Yes"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/splitPolygon.h"
-         timestampString = "337426616.445769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "335"
-         endingLineNumber = "335"
-         landmarkName = "TTS::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.AppleScript">
-               <ActionContent
-                  script = "set tts_run_dir to &quot;/Users/dongli/Works/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/Works/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/polygon3&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "340125309.88825"
+         timestampString = "342194856.800327"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
+         startingLineNumber = "56"
+         endingLineNumber = "56"
          landmarkName = "PotentialCrossDetector::detect1(Vertex *vertex3, Vertex *testVertex, Edge *edge1)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -565,20 +463,6 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "340082564.73741"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "160"
-         endingLineNumber = "160"
-         landmarkName = "CurvatureGuard::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -593,30 +477,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "340963483.21232"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "124"
-         endingLineNumber = "124"
-         landmarkName = "CurvatureGuard::splitPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "341241899.550187"
+         timestampString = "342263718.879935"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1033"
-         endingLineNumber = "1033"
+         startingLineNumber = "1036"
+         endingLineNumber = "1036"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
          <Actions>
@@ -662,11 +532,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "341241026.330665"
+         timestampString = "342263718.879935"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1235"
-         endingLineNumber = "1235"
+         startingLineNumber = "1245"
+         endingLineNumber = "1245"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -676,11 +546,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "341241120.610287"
+         timestampString = "342263718.879935"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "958"
-         endingLineNumber = "958"
+         startingLineNumber = "961"
+         endingLineNumber = "961"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -690,11 +560,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "341241117.644795"
+         timestampString = "342263718.879935"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1007"
-         endingLineNumber = "1007"
+         startingLineNumber = "1010"
+         endingLineNumber = "1010"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -704,11 +574,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "341241130.99749"
+         timestampString = "342263718.879935"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1066"
-         endingLineNumber = "1066"
+         startingLineNumber = "1072"
+         endingLineNumber = "1072"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>

@@ -25,6 +25,10 @@ Polygon::~Polygon()
 void Polygon::reinit()
 {
     edgePointers.recycle();
+#ifdef TTS_ONLINE
+    for (int i = 0; i < tracers.size(); ++i)
+        tracers[i].reinit();
+#endif
     isAreaSet = false;
 }
 
@@ -32,17 +36,19 @@ void Polygon::calcArea()
 {
     double excess = 0.0;
     double area;
-
-    EdgePointer *edgePointer = edgePointers.front();
-    for (int i = 0; i < edgePointers.size(); ++i) {
+    if (edgePointers.size() != 1) {
+        EdgePointer *edgePointer = edgePointers.front();
+        for (int i = 0; i < edgePointers.size(); ++i) {
 #ifdef DEBUG
-        assert(edgePointer->getAngle() != UNSET_ANGLE);
+            assert(edgePointer->getAngle() != UNSET_ANGLE);
 #endif
-        excess += edgePointer->getAngle();
-        edgePointer = edgePointer->next;
-    }
-    excess -= (edgePointers.size()-2)*PI;
-    area = excess*Sphere::radius2;
+            excess += edgePointer->getAngle();
+            edgePointer = edgePointer->next;
+        }
+        excess -= (edgePointers.size()-2)*PI;
+        area = excess*Sphere::radius2;
+    } else
+        area = 0.0;
 #ifdef DEBUG
     if (area <= 0.0) {
         cout << "Polygon ID: " << getID() << endl;
