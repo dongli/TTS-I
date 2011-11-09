@@ -483,5 +483,4 @@ int Sphere::inTriangle(Point *vertex1, Point *vertex2,
         }
     }
     return res;
-
 }

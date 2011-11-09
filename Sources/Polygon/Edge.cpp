@@ -256,7 +256,21 @@ Polygon *EdgePointer::getPolygon(OrientStatus orient) const
         orient = orient == OrientLeft ? OrientRight : OrientLeft;
         return edge->getPolygon(orient);
     } else {
-        REPORT_ERROR("Unknown orient.")
+        REPORT_ERROR("Unknown orient.");
+    }
+}
+
+EdgePointer *EdgePointer::getNeighborEdgePointer() const
+{
+    switch (orient) {
+        case OrientLeft:
+            return edge->getEdgePointer(OrientRight);
+            break;
+        case OrientRight:
+            return edge->getEdgePointer(OrientLeft);
+            break;
+        default:
+            REPORT_ERROR("Unknown orient.");
     }
 }
 

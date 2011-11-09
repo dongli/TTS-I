@@ -84,6 +84,8 @@ public:
     Vertex *getEndPoint(PointOrder order) const;
     Polygon *getPolygon(OrientStatus orient) const;
 
+    EdgePointer *getNeighborEdgePointer() const;
+
     Vector getNormVector(TimeLevel timeLevel = NewTimeLevel) const;
     
     static double calcAngle(const Vector &, const Vector &, const Coordinate &);

@@ -25,7 +25,7 @@ int SystemCalls::getNumFile(const std::string &dir)
     int numFile = 0;
     int pos = 0;
     while (pos < result.length()) {
-        pos = result.find("\n", pos)+1;
+        pos = static_cast<int>(result.find("\n", pos))+1;
         numFile++;
     }
 
@@ -56,7 +56,7 @@ int SystemCalls::getNumFile(const std::string &dir,
     int numFile = 0;
     int pos = 0;
     while (pos < result.length()) {
-        pos = result.find("\n", pos)+1;
+        pos = static_cast<int>(result.find("\n", pos))+1;
         numFile++;
     }
 
@@ -84,11 +84,11 @@ void SystemCalls::getFiles(const std::string &dir,
             result += buffer;
 
     pclose(pipe);
- 
+
     int pos = 0, prev_pos;
     while (pos < result.length()) {
         prev_pos = pos;
-        pos = result.find("\n", pos)+1;
+        pos = static_cast<int>(result.find("\n", pos))+1;
         fileNames.push_back(result.substr(prev_pos, pos-1-prev_pos));
     }
 }

@@ -130,7 +130,7 @@ void RLLMesh::init(MeshSpec spec, int numLon, int numLat,
         }
 #ifdef DEBUG
         double totalArea = sum(area);
-        assert(fabs(totalArea-4.0*PI*Sphere::radius2) < 1.0e-10);
+        assert(fabs(totalArea/Sphere::radius2/4.0-PI) < 1.0e-10);
 #endif
     }
     isConstructed = true;

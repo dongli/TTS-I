@@ -157,7 +157,7 @@ void PolygonManager::init(const string &fileName)
     delete [] oldTestLat;
     delete [] newTestLon;
     delete [] newTestLat;
-    
+
     // -------------------------------------------------------------------------
     // polygons part
     polygons.create(numPolygon);

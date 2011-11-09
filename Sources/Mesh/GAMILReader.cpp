@@ -24,8 +24,8 @@ void GAMILReader::init(const string &dir, const string &filePattern)
 
     NcFile file(fileNames[0].c_str(), NcFile::ReadOnly);
     // get the mesh information
-    int numLon = file.get_dim("lon_full")->size();
-    int numLat = file.get_dim("lat_full")->size();
+    int numLon = static_cast<int>(file.get_dim("lon_full")->size());
+    int numLat = static_cast<int>(file.get_dim("lat_full")->size());
     Array<double, 1> lon(numLon), lat(numLat);
     file.get_var("lon")->get(lon.data(), numLon);
     file.get_var("lat")->get(lat.data(), numLat);
@@ -35,7 +35,7 @@ void GAMILReader::init(const string &dir, const string &filePattern)
     double time;
     file.get_var("time")->get(&time);
     TimeManager::setClock(1200, time*86400.0);
-    TimeManager::setEndStep(fileNames.size()-1);
+    TimeManager::setEndStep(static_cast<int>(fileNames.size())-1);
     file.close();
 
     meshManager.init(numLon, numLat, lon.data(), lat.data());
@@ -57,11 +57,11 @@ void GAMILReader::getVelocityField()
         REPORT_ERROR(message.str())
     }
 
-    int numLon = file.get_dim("lon_full")->size();
-    int numLat = file.get_dim("lat_full")->size();
-    int numLonHalf = file.get_dim("lon_half")->size();
-    int numLatHalf = file.get_dim("lat_half")->size();
-    int numLev = file.get_dim("lev")->size();
+    int numLon = static_cast<int>(file.get_dim("lon_full")->size());
+    int numLat = static_cast<int>(file.get_dim("lat_full")->size());
+    int numLonHalf = static_cast<int>(file.get_dim("lon_half")->size());
+    int numLatHalf = static_cast<int>(file.get_dim("lat_half")->size());
+    int numLev = static_cast<int>(file.get_dim("lev")->size());
     Array<double, 3> a(numLev, numLat, numLonHalf), b(numLev, numLatHalf, numLon);
     file.get_var("us")->get(a.data(), 1, numLev, numLat, numLonHalf);
     file.get_var("vs")->get(b.data(), 1, numLev, numLatHalf, numLon);

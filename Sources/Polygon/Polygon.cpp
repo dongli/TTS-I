@@ -141,7 +141,8 @@ void Polygon::handleLinePolygon(PolygonManager &polygonManager, Polygon *polygon
 #ifdef TTS_ONLINE
             TTS::recordTask(TTS::UpdateAngle, edgePointer3->next);
 #endif
-        }
+        } else
+            REPORT_ERROR("Unhandled branches!");
         polygon1->edgePointers.remove(edgePointer3);
         polygon1->edgePointers.remove(edgePointer4);
         polygonManager.edges.remove(edge1);

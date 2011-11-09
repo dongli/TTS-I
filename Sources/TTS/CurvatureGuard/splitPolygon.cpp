@@ -34,11 +34,24 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
 {
     bool isSplit = false;
     static const double smallDistance = 0.05/Rad2Deg*Sphere::radius;
+    // major internal variables
+    // vertex3 is the vertex which is approaching to edge1
+    // vertex1 and vertex2 are the end points of the edge1
+    // polygon1 is the polygon which will be split
+    // polygon2 is the neighbor of polygon1 at edge1
+    // polygon3 is the new polygon which is split from polygon1
+    Vertex *vertex1, *vertex2, *vertex3;
+    Edge *edge1;
+    EdgePointer *edgePointer1, *edgePointer2, *edgePointer3;
+    Polygon *polygon1, *polygon2, *polygon3, *polygon4;
+    // other internal variables
+    int i, j;
+    EdgePointer *edgePointer, *linkedEdge;
 
     TTS::resetTasks();
 
     while (!ApproachingVertices::isEmpty()) {
-        Vertex *vertex3 = ApproachingVertices::vertices.front();
+        vertex3 = ApproachingVertices::vertices.front();
         // ---------------------------------------------------------------------
         Projection *projection = vertex3->detectAgent.getActiveProjection();
         // Note: The approaching status of vertex may change during splitPolygon.
@@ -47,21 +60,24 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
             continue;
         }
         // ---------------------------------------------------------------------
-        Edge *edge1 = projection->getEdge();
-        Vertex *vertex1, *vertex2;
-        Polygon *polygon1, *polygon2;
-        EdgePointer *edgePointer1, *edgePointer2 = NULL;
-        if (projection->getOrient() == OrientLeft) {
-            polygon1 = edge1->getPolygon(OrientLeft);
-            polygon2 = edge1->getPolygon(OrientRight);
-            edgePointer1 = edge1->getEdgePointer(OrientLeft);
-        } else {
-            polygon1 = edge1->getPolygon(OrientRight);
-            polygon2 = edge1->getPolygon(OrientLeft);
-            edgePointer1 = edge1->getEdgePointer(OrientRight);
+        edge1 = projection->getEdge();
+        edgePointer2 = NULL;
+        switch (projection->getOrient()) {
+            case OrientLeft:
+                polygon1 = edge1->getPolygon(OrientLeft);
+                polygon2 = edge1->getPolygon(OrientRight);
+                edgePointer1 = edge1->getEdgePointer(OrientLeft);
+                break;
+            case OrientRight:
+                polygon1 = edge1->getPolygon(OrientRight);
+                polygon2 = edge1->getPolygon(OrientLeft);
+                edgePointer1 = edge1->getEdgePointer(OrientRight);
+                break;
+            default:
+                REPORT_ERROR("Unknown orientation!");
         }
-        EdgePointer *linkedEdge = vertex3->linkedEdges.front();
-        for (int i = 0; i < vertex3->linkedEdges.size(); ++i) {
+        linkedEdge = vertex3->linkedEdges.front();
+        for (i = 0; i < vertex3->linkedEdges.size(); ++i) {
             if (linkedEdge->edge->getPolygon(OrientLeft) == polygon1 &&
                 linkedEdge->edge->getEndPoint(SecondPoint) == vertex3) {
                 edgePointer2 = linkedEdge->edge->getEdgePointer(OrientLeft);
@@ -176,7 +192,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // ---------------------------------------------------------------------
         // splitPolygon may affect the neightbor polygon, so record it for later
         // processing
-        Polygon *polygon4 = NULL;
+        polygon4 = NULL;
         if (option == 1 && edgePointer1 == edgePointer2->next->next)
             polygon4 = edgePointer2->next->getPolygon(OrientRight);
         else if (option == 2 && edgePointer1 == edgePointer2->prev)
@@ -184,22 +200,22 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // ---------------------------------------------------------------------
         int numTracer = static_cast<int>(polygon1->tracers.size());
         double mass[numTracer];
-        for (int i = 0; i < numTracer; ++i)
+        for (i = 0; i < numTracer; ++i)
             mass[i] = polygon1->tracers[i].getMass();
         // polygon1 and new polygon3 may be degenerated simultaneously, the mass
         // of original polygon1 should be assigned to its neighbors
         int numNeighbor = polygon1->edgePointers.size();
         Polygon *neighbors[numNeighbor];
-        EdgePointer *edgePointer = polygon1->edgePointers.front();
+        edgePointer = polygon1->edgePointers.front();
         if (polygon4 == NULL)
-            for (int i = 0; i < numNeighbor; ++i) {
+            for (i = 0; i < numNeighbor; ++i) {
                 neighbors[i] = edgePointer->getPolygon(OrientRight);
                 edgePointer = edgePointer->next;
             }
         else {
             // put polygon4 into the last neighbor
-            int j = 0;
-            for (int i = 0; i < numNeighbor; ++i) {
+            j = 0;
+            for (i = 0; i < numNeighbor; ++i) {
                 if (edgePointer->getPolygon(OrientRight) != polygon4)
                     neighbors[j++] = edgePointer->getPolygon(OrientRight);
                 edgePointer = edgePointer->next;
@@ -208,10 +224,9 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         }
         // ---------------------------------------------------------------------
         // create a new polygon
-        Polygon *polygon3;
         polygonManager.polygons.append(&polygon3);
         Vertex *newVertex;
-        EdgePointer *edgePointer3 = edgePointer2->next;
+        edgePointer3 = edgePointer2->next;
         EdgePointer *endEdgePointer;
         if (option == 1) {
             endEdgePointer = edgePointer1;
@@ -334,7 +349,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
             if (polygon4->edgePointers.size() == 2) {
                 Polygon *polygon41 = polygon4->edgePointers.front()->getPolygon(OrientRight);
                 Polygon *polygon42 = polygon4->edgePointers.back()->getPolygon(OrientRight);
-                for (int i = 0; i < numTracer; ++i) {
+                for (i = 0; i < numTracer; ++i) {
                     double mass = polygon4->tracers[i].getMass()*0.5;
                     polygon41->tracers[i].addMass(mass);
                     polygon42->tracers[i].addMass(mass);
@@ -345,10 +360,97 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // ---------------------------------------------------------------------
         TTS::doTask(TTS::UpdateAngle);
         // ---------------------------------------------------------------------
+        // assign mass to new parcels or neighbors
+        if (polygon1 != NULL && polygon3 != NULL) {
+            polygon1->calcArea(); polygon3->calcArea();
+            double totalArea = polygon1->getArea()+polygon3->getArea();
+            double weight1 = polygon1->getArea()/totalArea;
+            double weight3 = polygon3->getArea()/totalArea;
+            polygon3->tracers.resize(numTracer);
+            for (i = 0; i < numTracer; ++i) {
+                polygon1->tracers[i].setMass(mass[i]*weight1);
+                polygon3->tracers[i].setMass(mass[i]*weight3);
+            }
+        } else if (polygon1 == NULL && polygon3 != NULL) {
+            polygon3->tracers.resize(numTracer);
+            for (i = 0; i < numTracer; ++i)
+                polygon3->tracers[i].setMass(mass[i]);
+        } else if (polygon1 == NULL && polygon3 == NULL) {
+            for (i = 0; i < numTracer; ++i)
+                mass[i] /= numNeighbor;
+            for (j = 0; j < numNeighbor; ++j)
+                for (i = 0; i < numTracer; ++i)
+                    neighbors[j]->tracers[i].addMass(mass[i]);
+        }
+#ifdef DEBUG
+        //        static double targetMass = 10.9682466106844085379;
+        //        double totalMass = 0.0;
+        //        polygon2 = polygonManager.polygons.front();
+        //        for (i = 0; i < polygonManager.polygons.size(); ++i) {
+        //            totalMass += polygon2->tracers[2].getMass();
+        //            polygon2 = polygon2->next;
+        //        }
+        //        if (fabs(totalMass-targetMass) > 1.0e-9)
+        //            REPORT_DEBUG;
+#endif
+        // ---------------------------------------------------------------------
+        // check if polygon1 or polygon3 has been contained by another polygon
+        if (polygon1 != NULL) {
+            polygon2 = polygon1->edgePointers.front()->getPolygon(OrientRight);
+            edgePointer1 = polygon1->edgePointers.front();
+            for (i = 0; i < polygon1->edgePointers.size(); ++i) {
+                if (edgePointer1->getPolygon(OrientRight) != polygon2)
+                    break;
+                edgePointer1 = edgePointer1->next;
+            }
+            if (edgePointer1 == polygon1->edgePointers.front()) {
+                edgePointer2 = NULL; edgePointer3 = NULL;
+                edgePointer1 = polygon1->edgePointers.front();
+                for (i = 0; i < polygon1->edgePointers.size(); ++i) {
+                    if (edgePointer1->getEndPoint(FirstPoint)->linkedEdges.size() > 2) {
+                        edgePointer2 = edgePointer1->prev->getNeighborEdgePointer();
+                        edgePointer3 = edgePointer1->getNeighborEdgePointer();
+                        break;
+                    }
+                    edgePointer1 = edgePointer1->next;
+                }
+                edgePointer = edgePointer2;
+                while (edgePointer != edgePointer3->next) {
+                    polygon2->edgePointers.remove(edgePointer);
+                    if (edgePointer != edgePointer2)
+                        polygonManager.vertices.remove
+                        (edgePointer->getEndPoint(FirstPoint));
+                    polygonManager.edges.remove(edgePointer->edge);
+                    edgePointer = edgePointer->next;
+                }
+                edgePointer->calcAngle();
+                polygonManager.polygons.remove(polygon1);
+            }
+        }
+        if (polygon3 != NULL) {
+            polygon2 = polygon3->edgePointers.front()->getPolygon(OrientRight);
+            edgePointer3 = polygon3->edgePointers.front();
+            for (i = 0; i < polygon3->edgePointers.size(); ++i) {
+                if (edgePointer3->getPolygon(OrientRight) != polygon2)
+                    break;
+                edgePointer3 = edgePointer3->next;
+            }
+            if (edgePointer3 == polygon3->edgePointers.front()) {
+                edgePointer3 = polygon3->edgePointers.front();
+                for (i = 0; i < polygon3->edgePointers.size(); ++i) {
+                    if (edgePointer3->getEndPoint(FirstPoint)->linkedEdges.size() > 2) {
+                        
+                    }
+                    edgePointer3 = edgePointer3->next;
+                }
+            }
+            
+        }
+        // ---------------------------------------------------------------------
         // detect the new vertex for approaching
         if (option >= 3) {
-            EdgePointer *linkedEdge = newVertex->linkedEdges.front();
-            for (int i = 0; i < newVertex->linkedEdges.size(); ++i) {
+            linkedEdge = newVertex->linkedEdges.front();
+            for (i = 0; i < newVertex->linkedEdges.size(); ++i) {
                 Edge *edge = linkedEdge->edge;
                 if (edge->getEndPoint(FirstPoint) == newVertex)
                     orient = OrientLeft;
@@ -369,40 +471,6 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
 #endif
             delete testVertex;
         }
-        // ---------------------------------------------------------------------
-        // assign mass to new parcels or neighbors
-        if (polygon1 != NULL && polygon3 != NULL) {
-            polygon1->calcArea(); polygon3->calcArea();
-            double totalArea = polygon1->getArea()+polygon3->getArea();
-            double weight1 = polygon1->getArea()/totalArea;
-            double weight3 = polygon3->getArea()/totalArea;
-            polygon3->tracers.resize(numTracer);
-            for (int i = 0; i < numTracer; ++i) {
-                polygon1->tracers[i].setMass(mass[i]*weight1);
-                polygon3->tracers[i].setMass(mass[i]*weight3);
-            }
-        } else if (polygon1 == NULL && polygon3 != NULL) {
-            polygon3->tracers.resize(numTracer);
-            for (int i = 0; i < numTracer; ++i)
-                polygon3->tracers[i].setMass(mass[i]);
-        } else if (polygon1 == NULL && polygon3 == NULL) {
-            for (int i = 0; i < numTracer; ++i)
-                mass[i] /= numNeighbor;
-            for (int j = 0; j < numNeighbor; ++j)
-                for (int i = 0; i < numTracer; ++i)
-                    neighbors[j]->tracers[i].addMass(mass[i]);
-        }
-#ifdef DEBUG
-//        static double targetMass = 10.9682466106844085379;
-//        double totalMass = 0.0;
-//        polygon2 = polygonManager.polygons.front();
-//        for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-//            totalMass += polygon2->tracers[2].getMass();
-//            polygon2 = polygon2->next;
-//        }
-//        if (fabs(totalMass-targetMass) > 1.0e-9)
-//            REPORT_DEBUG;
-#endif
         // ---------------------------------------------------------------------
 #ifdef DEBUG
         if (polygon1 != NULL) {
