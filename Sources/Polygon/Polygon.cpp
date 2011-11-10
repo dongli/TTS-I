@@ -188,14 +188,20 @@ void Polygon::handlePointPolygon(PolygonManager &polygonManager, Polygon *polygo
 #endif
 }
 
-void Polygon::dump(const string &fileName) const
+void Polygon::dump(const char *fileName) const
 {
-    std::ostream *output;
-    if (fileName != "") {
-        output = new std::ofstream(fileName.c_str());
-    } else {
-        output = &std::cout;
-    }
+    std::ostream *output = new std::ofstream(fileName);
+    dump(output);
+    delete output;
+}
+
+void Polygon::dump() const
+{
+    dump(&std::cout);
+}
+
+void Polygon::dump(std::ostream *output) const
+{
     // vertices
     EdgePointer *edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {

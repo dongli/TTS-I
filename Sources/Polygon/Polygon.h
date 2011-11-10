@@ -29,7 +29,9 @@ public:
     static void handleLinePolygon(PolygonManager &, Polygon *);
     static void handlePointPolygon(PolygonManager &, Polygon *);
 
-    void dump(const string &fileName = "") const;
+    void dump(const char *fileName) const;
+    void dump() const;
+    void dump(std::ostream *output) const;
 
     List<EdgePointer> edgePointers;
 #ifdef TTS_ONLINE

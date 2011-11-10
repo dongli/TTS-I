@@ -11,16 +11,13 @@ class MultiTimeLevel
 public:
     MultiTimeLevel() {
         inited = false;
-        linked = false;
         mirrored = false;
     }
     virtual ~MultiTimeLevel() {
         if (!mirrored) {
-            if (inited || linked)
-                for (int i = 1; i < TIMELEVEL; ++i)
+            if (inited)
+                for (int i = 0; i < TIMELEVEL; ++i)
                     delete value[i];
-            if (inited && !linked)
-                delete value[0];
         }
     }
 
@@ -28,13 +25,6 @@ public:
         for (int i = 0; i < TIMELEVEL; ++i)
             value[i] = new T;
         inited = true;
-    }
-
-    void link(T &value) {
-        this->value[0] = &value;
-        for (int i = 1; i < TIMELEVEL; ++i)
-            this->value[i] = new T;
-        linked = true;
     }
 
     void mirror(MultiTimeLevel<T, TIMELEVEL> &that) {
@@ -127,7 +117,7 @@ public:
     }
 
 protected:
-    bool inited, linked, mirrored;
+    bool inited, mirrored;
     T *value[TIMELEVEL];
 };
 
