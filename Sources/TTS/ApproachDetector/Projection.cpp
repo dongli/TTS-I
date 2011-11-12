@@ -79,10 +79,6 @@ bool Projection::project(TimeLevel timeLevel)
 
 bool Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)
 {
-#ifdef DEBUG
-    assert(vertex != edge->getEndPoint(FirstPoint) &&
-           vertex != edge->getEndPoint(SecondPoint));
-#endif
 #ifdef TRACK_PROJECTION
     if (vertex->getID() == PROJECT_VERTEX_ID && edge->getID() == PROJECT_EDGE_ID) {
         cout << endl << endl;

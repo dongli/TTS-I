@@ -109,6 +109,8 @@
 		5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
 		55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
+		55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
+		55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
 		55D3C79814104A5100B2B4D4 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		55D3C79914104A5100B2B4D4 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
 		55D3C79A14104A5100B2B4D4 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
@@ -290,6 +292,8 @@
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
 		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
+		55D2647A146E118600753BC0 /* SpecialPolygons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialPolygons.h; sourceTree = "<group>"; };
+		55D2647B146E121300753BC0 /* SpecialPolygons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialPolygons.cpp; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
 		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_sphere.h; sourceTree = "<group>"; };
 		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_mesh.h; sourceTree = "<group>"; };
@@ -539,6 +543,7 @@
 		5598FAAE13D3DA9F00BC1AC4 /* TTS */ = {
 			isa = PBXGroup;
 			children = (
+				55D26478146E116200753BC0 /* SpecialPolygons */,
 				558803A61435A645008F4C84 /* MeshAdaptor */,
 				552EEE2C1421C0DB001E8352 /* CurvatureGuard */,
 				553FED94141767F500B1C14F /* PotentialCrossDetector */,
@@ -597,6 +602,15 @@
 				55C1E3D0142C5EE400D83018 /* TracerManager.cpp */,
 			);
 			path = Tracer;
+			sourceTree = "<group>";
+		};
+		55D26478146E116200753BC0 /* SpecialPolygons */ = {
+			isa = PBXGroup;
+			children = (
+				55D2647A146E118600753BC0 /* SpecialPolygons.h */,
+				55D2647B146E121300753BC0 /* SpecialPolygons.cpp */,
+			);
+			path = SpecialPolygons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -782,6 +796,7 @@
 				553FED98141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */,
 				55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */,
 				558803AB1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
+				55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,6 +869,7 @@
 				550A94A414271B4500D97A06 /* Deformation.cpp in Sources */,
 				55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */,
 				558803AA1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
+				55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,16 +24,17 @@
 #include "PolygonManager.h"
 #include "ApproachDetector.h"
 #include "PotentialCrossDetector.h"
+#include "SpecialPolygons.h"
 
 using namespace ApproachDetector;
 using namespace PotentialCrossDetector;
+using namespace SpecialPolygons;
 
 bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
                                   const FlowManager &flowManager,
                                   PolygonManager &polygonManager)
 {
     bool isSplit = false;
-    static const double smallDistance = 0.05/Rad2Deg*Sphere::radius;
     // major internal variables
     // vertex3 is the vertex which is approaching to edge1
     // vertex1 and vertex2 are the end points of the edge1
@@ -152,25 +153,13 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         polygon1->dump("polygon");
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
-        if (TimeManager::getSteps() >= 69 && polygon1->getID() == 3328)
-            REPORT_DEBUG;
+//        if (TimeManager::getSteps() >= 69 && polygon1->getID() == 3328)
+//            REPORT_DEBUG;
 #endif
         isSplit = true;
         // ---------------------------------------------------------------------
-        double d1 = Sphere::calcDistance(vertex1->getCoordinate(),
-                                         vertex3->getCoordinate());
-        double d2 = Sphere::calcDistance(vertex2->getCoordinate(),
-                                         vertex3->getCoordinate());
-        int option;
-        if (d1 <= d2 && d1 < smallDistance) {
-            option = 1;
-        } else if (d2 < d1 && d2 < smallDistance) {
-            option = 2;
-        } else if (projection->getDistance(NewTimeLevel) > smallDistance) {
-            option = 3;
-        } else {
-            option = 4;
-        }
+        int option = ApproachDetector::chooseMode(vertex1, vertex2, vertex3,
+                                                  projection);
         // ---------------------------------------------------------------------
         Vertex *testVertex;
         Location loc;
@@ -353,19 +342,19 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // ---------------------------------------------------------------------
         // handle degenerate polygons
         if (polygon1->edgePointers.size() == 1) {
-            Polygon::handlePointPolygon(polygonManager, polygon1);
+            handlePointPolygon(polygonManager, polygon1);
             polygon1 = NULL;
         }
         if (polygon3->edgePointers.size() == 1) {
-            Polygon::handlePointPolygon(polygonManager, polygon3);
+            handlePointPolygon(polygonManager, polygon3);
             polygon3 = NULL;
         }
         if (polygon1 != NULL && polygon1->edgePointers.size() == 2) {
-            Polygon::handleLinePolygon(polygonManager, polygon1);
+            handleLinePolygon(polygonManager, polygon1);
             polygon1 = NULL;
         }
         if (polygon3 != NULL && polygon3->edgePointers.size() == 2) {
-            Polygon::handleLinePolygon(polygonManager, polygon3);
+            handleLinePolygon(polygonManager, polygon3);
             polygon3 = NULL;
         }
         if (polygon4 != NULL)
@@ -378,7 +367,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
                     polygon42->tracers[i].addMass(mass);
                 }
                 numNeighbor--;
-                Polygon::handleLinePolygon(polygonManager, polygon4);
+                handleLinePolygon(polygonManager, polygon4);
             }
         // ---------------------------------------------------------------------
         TTS::doTask(TTS::UpdateAngle);
@@ -497,6 +486,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
                 cout << edge->getPolygon(orient)->getID() << endl;
 #endif
                 ApproachDetector::detect(meshManager, flowManager,
+                                         polygonManager,
                                          edge->getPolygon(orient));
                 linkedEdge = linkedEdge->next;
             }
@@ -509,19 +499,6 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // ---------------------------------------------------------------------
         if (option == 3 || option == 4)
             delete testVertex;
-        // ---------------------------------------------------------------------
-#ifdef DEBUG
-        if (polygon1 != NULL) {
-            cout << "Splitted polygon 1 ID: " << polygon1->getID() << endl;
-            polygon1->dump("polygon1");
-            REPORT_DEBUG
-        }
-        if (polygon3 != NULL) {
-            cout << "Splitted polygon 3 ID: " << polygon3->getID() << endl;
-            polygon3->dump("polygon3");
-            REPORT_DEBUG
-        }
-#endif
     }
     
     return isSplit;

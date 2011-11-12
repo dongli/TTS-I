@@ -26,9 +26,6 @@ public:
         return area.get(timeLevel);
     }
 
-    static void handleLinePolygon(PolygonManager &, Polygon *);
-    static void handlePointPolygon(PolygonManager &, Polygon *);
-
     void dump(const char *fileName) const;
     void dump() const;
     void dump(std::ostream *output) const;
