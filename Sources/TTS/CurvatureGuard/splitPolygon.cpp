@@ -406,72 +406,6 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         //            REPORT_DEBUG;
 #endif
         // ---------------------------------------------------------------------
-        // check if polygon1 or polygon3 has been contained by another polygon
-        if (polygon1 != NULL) {
-            polygon2 = polygon1->edgePointers.front()->getPolygon(OrientRight);
-            edgePointer1 = polygon1->edgePointers.front();
-            for (i = 0; i < polygon1->edgePointers.size(); ++i) {
-                if (edgePointer1->getPolygon(OrientRight) != polygon2)
-                    break;
-                edgePointer1 = edgePointer1->next;
-            }
-            if (edgePointer1 == polygon1->edgePointers.front()) {
-                edgePointer2 = NULL; edgePointer3 = NULL;
-                edgePointer1 = polygon1->edgePointers.front();
-                for (i = 0; i < polygon1->edgePointers.size(); ++i) {
-                    if (edgePointer1->getEndPoint(FirstPoint)->linkedEdges.size() > 2) {
-                        edgePointer2 = edgePointer1->prev->getNeighborEdgePointer();
-                        edgePointer3 = edgePointer1->getNeighborEdgePointer();
-                        break;
-                    }
-                    edgePointer1 = edgePointer1->next;
-                }
-                edgePointer = edgePointer2;
-                while (edgePointer != edgePointer3->next) {
-                    polygon2->edgePointers.remove(edgePointer);
-                    if (edgePointer != edgePointer2)
-                        polygonManager.vertices.remove
-                        (edgePointer->getEndPoint(FirstPoint));
-                    polygonManager.edges.remove(edgePointer->edge);
-                    edgePointer = edgePointer->next;
-                }
-                edgePointer->calcAngle();
-                polygonManager.polygons.remove(polygon1);
-            }
-        }
-        if (polygon3 != NULL) {
-            polygon2 = polygon3->edgePointers.front()->getPolygon(OrientRight);
-            edgePointer1 = polygon3->edgePointers.front();
-            for (i = 0; i < polygon3->edgePointers.size(); ++i) {
-                if (edgePointer1->getPolygon(OrientRight) != polygon2)
-                    break;
-                edgePointer1 = edgePointer1->next;
-            }
-            if (edgePointer1 == polygon3->edgePointers.front()) {
-                edgePointer2 = NULL; edgePointer3 = NULL;
-                edgePointer1 = polygon3->edgePointers.front();
-                for (i = 0; i < polygon3->edgePointers.size(); ++i) {
-                    if (edgePointer1->getEndPoint(FirstPoint)->linkedEdges.size() > 2) {
-                        edgePointer2 = edgePointer1->prev->getNeighborEdgePointer();
-                        edgePointer3 = edgePointer1->getNeighborEdgePointer();
-                        break;
-                    }
-                    edgePointer1 = edgePointer1->next;
-                }
-                edgePointer = edgePointer2;
-                while (edgePointer != edgePointer3->next) {
-                    polygon2->edgePointers.remove(edgePointer);
-                    if (edgePointer != edgePointer2)
-                        polygonManager.vertices.remove
-                        (edgePointer->getEndPoint(FirstPoint));
-                    polygonManager.edges.remove(edgePointer->edge);
-                    edgePointer = edgePointer->next;
-                }
-                edgePointer->calcAngle();
-                polygonManager.polygons.remove(polygon3);
-            }
-        }
-        // ---------------------------------------------------------------------
         // detect the new vertex for approaching
         if (option >= 3) {
             linkedEdge = newVertex->linkedEdges.front();
@@ -500,7 +434,6 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         if (option == 3 || option == 4)
             delete testVertex;
     }
-    
     return isSplit;
 }
 
