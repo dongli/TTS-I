@@ -1,3 +1,6 @@
+#ifndef splitPolygon_h
+#define splitPolygon_h
+
 /*
  * splitPolygon
  *
@@ -14,17 +17,18 @@
  *
  */
 
-#ifndef splitPolygon_h
-#define splitPolygon_h
-
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "PolygonManager.h"
 #include "ApproachDetector.h"
+#include "ApproachingVertices.h"
 #include "PotentialCrossDetector.h"
 #include "SpecialPolygons.h"
+#ifdef DEBUG
+#include "DebugTools.h"
+#endif
 
 using namespace ApproachDetector;
 using namespace PotentialCrossDetector;
@@ -48,13 +52,29 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
     // other internal variables
     int i, j;
     EdgePointer *edgePointer, *linkedEdge;
+    Projection *projection;
+    Vertex *prevVertex = NULL, *nextVertex, vertex;
 
     TTS::resetTasks();
 
     while (!ApproachingVertices::isEmpty()) {
         vertex3 = ApproachingVertices::vertices.front();
         // ---------------------------------------------------------------------
-        Projection *projection = vertex3->detectAgent.getActiveProjection();
+        // if the vertex3 is a test point, split its edge
+        if (vertex3->getID() == -1) {
+            if (splitEdge(meshManager, flowManager, polygonManager,
+                          vertex3->getHostEdge(), true))
+                vertex3 = polygonManager.vertices.back();
+            else {
+                projection = vertex3->detectAgent.getActiveProjection();
+                projection->setApproach(false);
+                if (vertex3->detectAgent.getActiveProjection() == NULL)
+                    ApproachingVertices::removeVertex(vertex3);
+                continue;
+            }
+        }
+        // ---------------------------------------------------------------------
+        projection = vertex3->detectAgent.getActiveProjection();
         // Note: The approaching status of vertex may change during splitPolygon.
         if (projection == NULL) {
             ApproachingVertices::removeVertex(vertex3);
@@ -68,15 +88,14 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         bool hasAnotherVertex = false;
         list<Vertex *>::const_iterator it = edge1->detectAgent.vertices.begin();
         for (; it != edge1->detectAgent.vertices.end(); ++it) {
-            Projection *projection1 = (*it)->detectAgent.getActiveProjection();
-            if (projection1 != NULL) {
+            Projection *projection1 = (*it)->detectAgent.getProjection(edge1);
+            if (projection1->isApproaching())
                 if (projection1->getDistance(NewTimeLevel) <
                     projection->getDistance(NewTimeLevel)) {
                     ApproachingVertices::jumpVertex(vertex3, *it);
                     hasAnotherVertex = true;
                     break;
                 }
-            }
         }
         if (hasAnotherVertex) continue;
         // ---------------------------------------------------------------------
@@ -112,7 +131,33 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         if (edgePointer2 == NULL) {
             polygon1->dump("polygon");
         }
-        assert(edgePointer2 != NULL);
+        if (edgePointer2 == NULL) {
+            // Note: There are possibilities that vertex3 is not a vertex of
+            //       polygon1, so we should ignore vertex3.
+            bool isReallyCross = false;
+            linkedEdge = vertex3->linkedEdges.front();
+            for (i = 0; i < vertex3->linkedEdges.size(); ++i) {
+                if (linkedEdge->edge->getPolygon(OrientLeft) == polygon1 ||
+                    linkedEdge->edge->getPolygon(OrientRight) == polygon1) {
+                    isReallyCross = true;
+                    break;
+                }
+                linkedEdge = linkedEdge->next;
+            }
+            if (!isReallyCross) {
+                ApproachDetector::AgentPair::unpair(vertex3, edge1);
+                if (vertex3->detectAgent.getActiveProjection() == NULL)
+                    ApproachingVertices::recordVertex(vertex3);
+                continue;
+            }
+            Message message;
+            message << "Edge-crossing event has occurred!\n";
+            message << "polygon1: " << polygon1->getID() << "\n";
+            message << "polygon2: " << polygon2->getID() << "\n";
+            message << "edge1: " << edge1->getID() << "\n";
+            message << "vertex3: " << vertex3->getID() << "\n";
+            REPORT_ERROR(message.str());
+        }
 #endif
         vertex1 = edgePointer1->getEndPoint(FirstPoint);
         vertex2 = edgePointer1->getEndPoint(SecondPoint);
@@ -153,38 +198,44 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         polygon1->dump("polygon");
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
-//        if (TimeManager::getSteps() >= 69 && polygon1->getID() == 3328)
-//            REPORT_DEBUG;
+        if (TimeManager::getSteps() == 70 && vertex3->getID() == 249310)
+            REPORT_DEBUG;
 #endif
         isSplit = true;
         // ---------------------------------------------------------------------
-        int option = ApproachDetector::chooseMode(vertex1, vertex2, vertex3,
-                                                  projection);
+        int mode = ApproachDetector::chooseMode(vertex1, vertex2, vertex3,
+                                                projection);
+        if (mode == -1) {
+            ApproachDetector::AgentPair::unpair(vertex3, edge1);
+            if (vertex3->detectAgent.getActiveProjection() == NULL)
+                ApproachingVertices::removeVertex(vertex3);
+            continue;
+        }
         // ---------------------------------------------------------------------
         Vertex *testVertex;
         Location loc;
         OrientStatus orient;
-        if (option == 1) {
+        if (mode == 1) {
             testVertex = vertex1;
-        } else if (option == 2) {
+        } else if (mode == 2) {
             testVertex = vertex2;
-        } else if (option >= 3) {
-            testVertex = new Vertex;
+        } else if (mode >= 3) {
+            testVertex = &vertex;
             testVertex->setCoordinate(projection->getCoordinate(OldTimeLevel));
             meshManager.checkLocation(testVertex->getCoordinate(), loc);
             testVertex->setLocation(loc);
             TTS::track(meshManager, flowManager, testVertex);
         }
         // ---------------------------------------------------------------------
-        if (option != 3) {
-            if (detect1(vertex3, testVertex, edge1) != NoCross) {
-                // when option is 1/2/4, vertex3 will be eliminated, and this
-                // may cause edge-crossing. If this happens, shift to option 5
+        if (mode != 3)
+            if (detect1(vertex3, testVertex) != NoCross) {
+                // when mode is 1/2/4, vertex3 will be eliminated, and this
+                // may cause edge-crossing. If this happens, shift to mode 5
                 // by making testVertex be vertex3.
-                if (option >= 3) delete testVertex;
-                testVertex = vertex3; option = 5;
+                testVertex = vertex3; mode = 5;
             }
-            if (detect2(testVertex, edge1, polygon2) == Cross) {
+        if (mode > 2 && mode != 5)
+            if (detect2(testVertex, edge1, polygon2) != NoCross) {
                 testVertex->setCoordinate
                 (projection->getCoordinate(NewTimeLevel), NewTimeLevel);
                 testVertex->setCoordinate
@@ -192,17 +243,17 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
                 meshManager.checkLocation(testVertex->getCoordinate(), loc);
                 testVertex->setLocation(loc);
             }
-        }
         // ---------------------------------------------------------------------
         ApproachDetector::AgentPair::unpair(vertex3, edge1);
-        ApproachingVertices::removeVertex(vertex3);
+        if (vertex3->detectAgent.getActiveProjection() == NULL)
+            ApproachingVertices::removeVertex(vertex3);
         // ---------------------------------------------------------------------
         // splitPolygon may affect the neightbor polygon, so record it for later
         // processing
         polygon4 = NULL;
-        if (option == 1 && edgePointer1 == edgePointer2->next->next)
+        if (mode == 1 && edgePointer1 == edgePointer2->next->next)
             polygon4 = edgePointer2->next->getPolygon(OrientRight);
-        else if (option == 2 && edgePointer1 == edgePointer2->prev)
+        else if (mode == 2 && edgePointer1 == edgePointer2->prev)
             polygon4 = edgePointer2->getPolygon(OrientRight);
         // ---------------------------------------------------------------------
         int numTracer = static_cast<int>(polygon1->tracers.size());
@@ -235,10 +286,10 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         Vertex *newVertex;
         edgePointer3 = edgePointer2->next;
         EdgePointer *endEdgePointer;
-        if (option == 1) {
+        if (mode == 1) {
             endEdgePointer = edgePointer1;
             newVertex = vertex1;
-        } else if (option == 2) {
+        } else if (mode == 2) {
             endEdgePointer = edgePointer1->next;
             newVertex = vertex2;
         } else {
@@ -258,16 +309,15 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // edge 1 is too close to vertex 1 or 2
         // if true, just use the 1 or 2
         // if not, use the new one
-        if (option < 3) {
+        if (mode < 3) {
             polygon3->edgePointers.ring();
         } else {
             polygon3->edgePointers.append(&edgePointer3);
             polygon3->edgePointers.ring();
             // create a new vertex on the edge 1
-            if (option != 5) {
+            if (mode != 5) {
                 polygonManager.vertices.append(&newVertex);
                 *newVertex = *testVertex;
-                meshManager.countPoint(newVertex);
             } else
                 newVertex = testVertex;
             // split the edge pointed by edge 1
@@ -296,7 +346,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
         // judge whether we need to add another new edge to connect
         // the new vertex and vertex
         Edge *newEdge2 = NULL;
-        if (option == 3) {
+        if (mode == 3) {
             polygonManager.edges.append(&newEdge2);
             newEdge2->linkEndPoint(FirstPoint, vertex3);
             newEdge2->linkEndPoint(SecondPoint, newVertex);
@@ -331,7 +381,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
             edge1->detectAgent.updateVertexProjections();
         }
         if (newEdge2 == NULL) {
-            if (option != 5) {
+            if (mode != 5) {
                 vertex3->handoverEdges(newVertex, meshManager,
                                        flowManager, polygonManager);
                 polygonManager.vertices.remove(vertex3);
@@ -341,11 +391,11 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
             vertex3->detectAgent.clean();
         // ---------------------------------------------------------------------
         // handle degenerate polygons
-        if (polygon1->edgePointers.size() == 1) {
+        if (polygon1 != NULL && polygon1->edgePointers.size() == 1) {
             handlePointPolygon(polygonManager, polygon1);
             polygon1 = NULL;
         }
-        if (polygon3->edgePointers.size() == 1) {
+        if (polygon3 != NULL && polygon3->edgePointers.size() == 1) {
             handlePointPolygon(polygonManager, polygon3);
             polygon3 = NULL;
         }
@@ -357,6 +407,10 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
             handleLinePolygon(polygonManager, polygon3);
             polygon3 = NULL;
         }
+        if (polygon1 != NULL)
+            handleSlimPolygon(meshManager, flowManager, polygonManager, polygon1);
+        if (polygon3 != NULL)
+            handleSlimPolygon(meshManager, flowManager, polygonManager, polygon3);
         if (polygon4 != NULL)
             if (polygon4->edgePointers.size() == 2) {
                 Polygon *polygon41 = polygon4->edgePointers.front()->getPolygon(OrientRight);
@@ -407,7 +461,7 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
 #endif
         // ---------------------------------------------------------------------
         // detect the new vertex for approaching
-        if (option >= 3) {
+        if (mode >= 3) {
             linkedEdge = newVertex->linkedEdges.front();
             for (i = 0; i < newVertex->linkedEdges.size(); ++i) {
                 Edge *edge = linkedEdge->edge;
@@ -431,8 +485,18 @@ bool CurvatureGuard::splitPolygon(MeshManager &meshManager,
 #endif
         }
         // ---------------------------------------------------------------------
-        if (option == 3 || option == 4)
-            delete testVertex;
+        // handle dead loop
+        if (prevVertex == NULL) prevVertex = vertex3;
+        if (ApproachingVertices::vertices.size() != 0) {
+            nextVertex = ApproachingVertices::vertices.front();
+            if (prevVertex == nextVertex) {
+                nextVertex->detectAgent.getActiveProjection()->setApproach(false);
+                if (nextVertex->detectAgent.getActiveProjection() != NULL)
+                    ApproachingVertices::removeVertex(nextVertex);
+                REPORT_DEBUG;
+            }
+        }
+        prevVertex = vertex3;
     }
     return isSplit;
 }

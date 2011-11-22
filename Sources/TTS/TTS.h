@@ -18,8 +18,7 @@ public:
                 const FlowManager &flowManager,
                 TracerManager &tracerManager);
 
-    static void track(MeshManager &, const FlowManager &, Point *,
-                      bool isCount = false);
+    static void track(MeshManager &, const FlowManager &, Point *);
 
     enum TaskType {
         UpdateAngle

@@ -2,6 +2,7 @@
 #define splitEdge_h
 
 #include "CurvatureGuard.h"
+#include "TTS.h"
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "PolygonManager.h"
@@ -9,11 +10,13 @@
 #include "DebugTools.h"
 #endif
 
-inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
-                      PolygonManager &polygonManager, Edge *edge)
+bool CurvatureGuard::splitEdge(MeshManager &meshManager,
+                               const FlowManager &flowManager,
+                               PolygonManager &polygonManager,
+                               Edge *edge, bool isMustSplit)
 {
     static int level = 0;
-    static const int maxLevel = 3;
+    static const int maxLevel = 1;
     static const double smallAngle = 90.0/Rad2Deg;
     static const double smallDistance = 0.1/Rad2Deg*Sphere::radius;
     static Edge *edge0;
@@ -30,8 +33,6 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     static double angleCheck[4];
     Location loc;
 
-//    if (TimeManager::getSteps() >= 230 && edge->getID() == 19769)
-//        REPORT_DEBUG;
     level++;
 
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
@@ -54,14 +55,24 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
     // Note: When one or both of the end points is or are approaching to other
     //       edges, the angle threshold should be decreased to make the edge
     //       more easily split.
-    double d1 = vertex1->detectAgent.getShortestDistance();
-    double d2 = vertex2->detectAgent.getShortestDistance();
-    if ((d1 != UndefinedDistance && d1 < smallDistance) ||
-        (d2 != UndefinedDistance && d2 < smallDistance)) {
-        a0 *= 0.2;
-    }
+//    double d1 = vertex1->detectAgent.getShortestDistance();
+//    double d2 = vertex2->detectAgent.getShortestDistance();
+//    if ((d1 != UndefinedDistance && d1 < smallDistance) ||
+//        (d2 != UndefinedDistance && d2 < smallDistance)) {
+//        a0 *= 0.2;
+//    } else {
+        std::list<Vertex *>::const_iterator it;
+        for (it = edge->detectAgent.vertices.begin();
+             it != edge->detectAgent.vertices.end(); ++it) {
+            Projection *projection = (*it)->detectAgent.getProjection(edge);
+            if (projection->getDistance(NewTimeLevel) < smallDistance*0.1) {
+                a0 *= 0.2;
+                break;
+            }
+        }
+//    }
 
-    if (fabs(angle-PI) > a0) {
+    if (fabs(angle-PI) > a0 || isMustSplit) {
         // ---------------------------------------------------------------------
         // record the polygons and edge pointers, and reset the tasks
         if (level == 1) {
@@ -168,9 +179,7 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             Edge *newEdge;
             polygonManager.edges.append(&newEdge);
             *newEdge = edge1;
-            //vertex1->unlinkEdge(&edge1);
             vertex1->linkEdge(newEdge);
-            //newVertex->unlinkEdge(&edge1);
             newVertex->linkEdge(newEdge);
             newEdge->calcNormVector();
             newEdge->calcLength();
@@ -211,9 +220,7 @@ inline bool splitEdge(MeshManager &meshManager, const FlowManager &flowManager,
             Edge *newEdge;
             polygonManager.edges.append(&newEdge);
             *newEdge = edge2;
-            //vertex2->unlinkEdge(&edge2);
             vertex2->linkEdge(newEdge);
-            //newVertex->unlinkEdge(&edge2);
             newVertex->linkEdge(newEdge);
             newEdge->calcNormVector();
             newEdge->calcLength();
@@ -254,9 +261,9 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
 {
     bool isSplit = false;
     Edge *edge = polygonManager.edges.front();
-    Edge *endEdge = polygonManager.edges.back();
+    Edge *endEdge = polygonManager.edges.back()->next;
     Edge *nextEdge;
-    while (edge != endEdge->next) {
+    while (edge != endEdge) {
         nextEdge = edge->next;
         if (splitEdge(meshManager, flowManager, polygonManager, edge))
             isSplit = true;

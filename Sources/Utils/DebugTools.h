@@ -18,27 +18,25 @@ public:
 
     static void output_polygon(const PolygonManager &polygonManager, int timeStep, int ID);
 
-    static void assert_colinear(const Coordinate &x1, const Coordinate &x2,
-                                const Coordinate &x3);
+    static bool is_colinear(const Coordinate &x1, const Coordinate &x2,
+                            const Coordinate &x3);
 
 #ifdef TTS_ONLINE
-    static void assert_consistent_projection(Projection *projection);
+    static void assert_consistent_projection(const Projection *projection);
 #endif
 
-    static void watch_vertex(Vertex *);
-    static void watch_edge(Edge *);
-    static void watch_polygon(Polygon *);
+    static void watch(Vertex *vertex) { watchedVertex = vertex; }
+    static void watch(Edge *edge) { watchedEdge = edge; }
+    static void watch(Polygon *polygon) { watchedPolygon = polygon; }
 
     static void dump_watchers();
     static void dump_watched_vertex();
     static void dump_watched_edge();
     static void dump_watched_polygon();
 
-    static Vertex *get_watched_vertex();
-
-    static Vertex *watcher_vertex;
-    static Edge *watcher_edge;
-    static Polygon *watcher_polygon;
+    static Vertex *watchedVertex;
+    static Edge *watchedEdge;
+    static Polygon *watchedPolygon;
 };
 
 #endif

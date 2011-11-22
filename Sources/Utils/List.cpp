@@ -1,6 +1,7 @@
 template <class T>
 ListElement<T>::ListElement()
 {
+    ID = -1;
     prev = NULL;
     next = NULL;
 }

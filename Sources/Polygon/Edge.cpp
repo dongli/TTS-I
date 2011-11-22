@@ -38,6 +38,7 @@ void Edge::clean()
     for (int i = 0; i < 2; ++i)
         if (endPoints[i] != NULL)
             endPoints[i]->unlinkEdge(this);
+    testPoint.clean();
 #ifdef TTS_ONLINE
     detectAgent.clean();
 #endif
@@ -64,7 +65,10 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point)
         double dlat = (PI05-xr.getLat())*0.5;
         xr.set(xr.getLon(), PI05-dlat);
         Sphere::inverseRotate(x1, xo, xr);
+        testPoint.clean();
         testPoint.setCoordinate(xo, NewTimeLevel);
+        // record the edge so that other codes can derive the edge from it
+        testPoint.setHostEdge(this);
     }
 }
 
@@ -171,6 +175,7 @@ Edge &Edge::operator=(const Edge &that)
             edgePointers[i] = that.edgePointers[i];
         }
         testPoint = that.testPoint;
+        testPoint.setHostEdge(this);
         normVector = that.normVector;
         isNormVectorSet = that.isNormVectorSet;
     }

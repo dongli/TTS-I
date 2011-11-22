@@ -28,6 +28,8 @@ public:
     void handoverEdges(Vertex *, MeshManager &, const FlowManager &,
                        PolygonManager &);
 #endif
+    void setHostEdge(Edge *edge) { hostEdge = edge; }
+    Edge *getHostEdge() const { return hostEdge; }
 
     bool isJoint() const { return linkedEdges.size() > 2; }
 
@@ -38,8 +40,8 @@ public:
 #ifdef TTS_ONLINE
     ApproachDetector::VertexAgent detectAgent;
 #endif
-
 	List<EdgePointer> linkedEdges;
+    Edge *hostEdge; // for test point
 };
 
 #endif

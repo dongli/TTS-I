@@ -68,6 +68,7 @@ namespace ApproachDetector
     //!             vertex should be added on the edge to split polygon;
     //!         4 - vertex3 is very close to the edge and will be replaced by
     //!             its projection on the edge.
+    //!        -1 - vertex3 should not be judged as an approaching vertex. 
     int chooseMode(Vertex *vertex1, Vertex *vertex2,
                    Vertex *vertex3, Projection *projection);
 }

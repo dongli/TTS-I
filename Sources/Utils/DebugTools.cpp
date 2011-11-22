@@ -1,9 +1,9 @@
 #include "DebugTools.h"
 #include "Sphere.h"
 
-Vertex *DebugTools::watcher_vertex;
-Edge *DebugTools::watcher_edge;
-Polygon *DebugTools::watcher_polygon;
+Vertex *DebugTools::watchedVertex;
+Edge *DebugTools::watchedEdge;
+Polygon *DebugTools::watchedPolygon;
 
 void DebugTools::output_angles(Polygon *polygon, const std::string &fileName)
 {
@@ -59,17 +59,24 @@ void DebugTools::output_polygon(const PolygonManager &polygonManager, int timeSt
     }
 }
 
-void DebugTools::assert_colinear(const Coordinate &x1, const Coordinate &x2,
-                                 const Coordinate &x3)
+bool DebugTools::is_colinear(const Coordinate &x1, const Coordinate &x2,
+                             const Coordinate &x3)
 {
+    static const double smallDistance = 1.0e-4/Rad2Deg*Sphere::radius;
     Coordinate x2r, x3r;
     Sphere::rotate(x1, x2, x2r);
     Sphere::rotate(x1, x3, x3r);
-    assert(fabs(x2r.getLon()-x3r.getLon()) < EPS);
+    if (fabs(x2r.getLon()-x3r.getLon()) > EPS) {
+        if (Sphere::calcDistance(x1, x3) < smallDistance ||
+            Sphere::calcDistance(x2, x3) < smallDistance)
+            return true;
+        return false;
+    }
+    return true;
 }
 
 #ifdef TTS_ONLINE
-void DebugTools::assert_consistent_projection(Projection *projection)
+void DebugTools::assert_consistent_projection(const Projection *projection)
 {
     TimeLevel timeLevel;
     if (projection->isApproaching()) {
@@ -82,30 +89,15 @@ void DebugTools::assert_consistent_projection(Projection *projection)
     const Coordinate &x1 = vertex1->getCoordinate(timeLevel);
     const Coordinate &x2 = vertex2->getCoordinate(timeLevel);
     const Coordinate &x3 = projection->getCoordinate(timeLevel);
-    Coordinate x2r, x3r;
-    Sphere::rotate(x1, x2, x2r);
-    Sphere::rotate(x1, x3, x3r);
-    if (fabs(x2r.getLon()-x3r.getLon()) > EPS) {
+    if (!is_colinear(x1, x2, x3)) {
         projection->getVertex()->detectAgent.dump();
-        REPORT_ERROR("Projection is not consistent!")
+        Message message;
+        message << "Projection on edge " << projection->getEdge()->getID();
+        message << " is not consistent!";
+        REPORT_ERROR(message.str());
     }
 }
 #endif
-
-void DebugTools::watch_vertex(Vertex *vertex)
-{
-    watcher_vertex = vertex;
-}
-
-void DebugTools::watch_polygon(Polygon *polygon)
-{
-    watcher_polygon = polygon;
-}
-
-void DebugTools::watch_edge(Edge *edge)
-{
-    watcher_edge = edge;
-}
 
 void DebugTools::dump_watchers()
 {
@@ -116,42 +108,44 @@ void DebugTools::dump_watchers()
 
 void DebugTools::dump_watched_vertex()
 {
-    if (watcher_vertex == NULL) {
+    if (watchedVertex == NULL) {
         //REPORT_ERROR("Watched vertex is NULL!")
         return;
     }
-    cout << "Watched vertex ID: " << watcher_vertex->getID() << endl;
+    cout << "Watched vertex ID: " << watchedVertex->getID() << endl;
     cout << "Coordinate:" << endl;
-    watcher_vertex->getCoordinate().dump();
-    watcher_vertex->dump();
+    watchedVertex->getCoordinate().dump();
+    watchedVertex->dump();
+    std::list<Projection>::const_iterator it;
+    for (it = watchedVertex->detectAgent.getProjections().begin();
+         it != watchedVertex->detectAgent.getProjections().end(); ++it) {
+        const Projection *p = &(*it);
+        if (p->isCalculated())
+            assert_consistent_projection(p);
+    }
     REPORT_DEBUG
 }
 
 void DebugTools::dump_watched_edge()
 {
-    if (watcher_edge == NULL) {
+    if (watchedEdge == NULL) {
         return;
     }
-    cout << "Watched edge ID: " << watcher_edge->getID() << endl;
+    cout << "Watched edge ID: " << watchedVertex->getID() << endl;
     cout << "  End points ID: ";
-    cout << watcher_edge->getEndPoint(FirstPoint)->getID() << "  ";
-    cout << watcher_edge->getEndPoint(SecondPoint)->getID() << endl;
+    cout << watchedEdge->getEndPoint(FirstPoint)->getID() << "  ";
+    cout << watchedEdge->getEndPoint(SecondPoint)->getID() << endl;
     cout << "  Edge pointers: ";
-    cout << watcher_edge->getEdgePointer(OrientLeft) << "  ";
-    cout << watcher_edge->getEdgePointer(OrientRight) << endl;
+    cout << watchedEdge->getEdgePointer(OrientLeft) << "  ";
+    cout << watchedEdge->getEdgePointer(OrientRight) << endl;
     REPORT_DEBUG
 }
 
 void DebugTools::dump_watched_polygon()
 {
-    if (watcher_polygon == NULL) {
+    if (watchedPolygon == NULL) {
         return;
     }
-    watcher_polygon->dump("watched_polygon");
+    watchedPolygon->dump("watched_polygon");
     REPORT_DEBUG
-}
-
-Vertex *DebugTools::get_watched_vertex()
-{
-    return watcher_vertex;
 }

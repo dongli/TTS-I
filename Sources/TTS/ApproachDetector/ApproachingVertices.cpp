@@ -18,35 +18,27 @@ ApproachingVertices::~ApproachingVertices()
 
 void ApproachingVertices::recordVertex(Vertex *vertex)
 {
-#ifdef DEBUG
-    if (std::find(vertices.begin(), vertices.end(), vertex) != vertices.end()) {
-        vertex->detectAgent.dump();
-        cout << "---> Duplicate record of vertex " << vertex->getID() << endl;
-        return;
-    }
-#endif
 #ifdef TRACK_APPROACH_VERTEX
     if (vertex->getID() == APPROACH_VERTEX_ID) {
         vertex->detectAgent.dump();
         REPORT_DEBUG
     }
 #endif
+    if (std::find(vertices.begin(), vertices.end(), vertex) != vertices.end())
+        return;
     vertices.push_back(vertex);
 }
 
 void ApproachingVertices::removeVertex(Vertex *vertex)
 {
-#ifdef DEBUG
-    assert(std::find(vertices.begin(), vertices.end(), vertex) != vertices.end());
-#endif
+    if (std::find(vertices.begin(), vertices.end(), vertex) == vertices.end())
+        return;
 #ifdef TRACK_APPROACH_VERTEX
     if (vertex->getID() == APPROACH_VERTEX_ID) {
         vertex->detectAgent.dump();
         REPORT_DEBUG
     }
 #endif
-    if (vertex->detectAgent.getActiveProjection() != NULL)
-        return;
     vertices.remove(vertex);
 }
 

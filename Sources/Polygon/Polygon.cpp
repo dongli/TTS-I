@@ -69,7 +69,7 @@ void Polygon::calcArea()
         isAreaSet = true;
     }
 #ifdef DEBUG
-    static const double maxRatio = 1000.0;
+    static const double maxRatio = 5.0;
     double ratio = fabs(this->area.getOld()-this->area.getNew())/this->area.getOld();
     if (ratio > maxRatio) {
         cout << "Polygon ID: " << getID() << endl;

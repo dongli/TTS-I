@@ -13,6 +13,8 @@ namespace CurvatureGuard
 
     //! \brief Split the edge when the line approximation goes poor.
     bool splitEdge(MeshManager &, const FlowManager &, PolygonManager &);
+    bool splitEdge(MeshManager &, const FlowManager &, PolygonManager &,
+                   Edge *edge, bool isMustSplit = false);
 
     //! \brief Merge edges when line approximation goes well.
     bool mergeEdge(MeshManager &, const FlowManager &, PolygonManager &);
@@ -23,13 +25,6 @@ namespace CurvatureGuard
     //! \brief Calculate angle thresholds for "splitEdge" and "mergeEdge".
     double angleThreshold(Edge *edge);
     double angleThreshold(Edge *edge1, Edge *edge2);
-
 }
-
-#include "guard.cpp"
-#include "angleThreshold.cpp"
-#include "splitEdge.cpp"
-#include "mergeEdge.cpp"
-#include "splitPolygon.cpp"
 
 #endif

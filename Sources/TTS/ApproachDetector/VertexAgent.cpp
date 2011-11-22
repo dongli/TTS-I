@@ -31,6 +31,7 @@ void VertexAgent::clean()
             (*it).getEdge()->detectAgent.removeVertex(host);
     }
     projections.clear();
+    ApproachingVertices::removeVertex(host);
 }
 
 void VertexAgent::recordProjection(Edge *edge, Projection *projection)
@@ -47,6 +48,9 @@ void VertexAgent::recordProjection(Edge *edge, Projection *projection)
 
 void VertexAgent::removeProjection(Projection *projection)
 {
+#ifdef DEBUG
+    assert(projection != NULL);
+#endif
     std::list<Projection>::iterator it = projections.begin();
     for (; it != projections.end(); ++it) {
         if (&(*it) == projection) {
@@ -59,8 +63,17 @@ void VertexAgent::removeProjection(Projection *projection)
 void VertexAgent::expireProjection()
 {
     std::list<Projection>::iterator it = projections.begin();
-    for (; it != projections.end(); ++it)
+    for (; it != projections.end(); ++it) {
+        // Note: There is a possibility that the paired vertex and edge belong
+        //       to different polygons after one is split, so they should be
+        //       unpaired to avoid unconsistent projection.
+        if (!(*it).isCalculated()) {
+            AgentPair::unpair(host, (*it).getEdge());
+            if (getActiveProjection() == NULL)
+                ApproachingVertices::removeVertex(host);
+        }
         (*it).expire();
+    }
 }
 
 Projection *VertexAgent::getProjection(Edge *edge)
@@ -103,16 +116,37 @@ double VertexAgent::getShortestDistance()
     return distance;
 }
 
+VertexAgent &VertexAgent::operator=(const VertexAgent &that)
+{
+    if (this != &that) {
+        projections = that.projections;
+        std::list<Projection>::iterator it = projections.begin();
+        for (; it != projections.end(); ++it) {
+            if ((*it).isApproaching()) {
+                // Note: If the host of "that" is approaching to some edge,
+                //       remember to replace it with "this" host.
+                ApproachingVertices::removeVertex(that.host);
+                ApproachingVertices::recordVertex(host);
+            }
+            (*it).setVertex(host);
+            (*it).getEdge()->detectAgent.removeVertex(that.host);
+            (*it).getEdge()->detectAgent.recordVertex(host);
+        }
+    }
+    return *this;
+}
+
 void VertexAgent::dump()
 {
     cout << "Paired edge projections of vertex ";
-    cout << host->getID() << ":" << endl;
+    cout << host->getID() << " " << host << ":" << endl;
     std::list<Projection>::iterator it = projections.begin();
     for (; it != projections.end(); ++it) {
-        Vertex *vertex1 = (*it).getEdge()->getEndPoint(FirstPoint);
-        Vertex *vertex2 = (*it).getEdge()->getEndPoint(SecondPoint);
+        Edge *edge = (*it).getEdge();
+        Vertex *vertex1 = edge->getEndPoint(FirstPoint);
+        Vertex *vertex2 = edge->getEndPoint(SecondPoint);
         cout << "  ** Edge ID: ";
-        cout << (*it).getEdge()->getID() << " " << (*it).getEdge() << endl;
+        cout << edge->getID() << " " << edge << endl;
         cout << "     Approaching?: ";
         if ((*it).isApproaching())
             cout << "yes" << endl;

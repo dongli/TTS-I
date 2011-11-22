@@ -51,7 +51,7 @@ void TTS::advect(MeshManager &meshManager,
     // advect vertices of each parcel (polygon)
     vertex = polygonManager.vertices.front();
     for (int i = 0; i < polygonManager.vertices.size(); ++i) {
-        track(meshManager, flowManager, vertex, true);
+        track(meshManager, flowManager, vertex);
         vertex = vertex->next;
     }
     //char fileName[30];
@@ -100,7 +100,14 @@ void TTS::advect(MeshManager &meshManager,
     double bias = fabs(totalArea-trueTotalArea)/trueTotalArea;
     cout << "Total area bias: " << setw(30) << setprecision(16);
     cout << bias << endl;
-    assert(bias < 1.0e-6);
+    if (bias > 1.0e-6) {
+        polygon = polygonManager.polygons.front();
+        for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+            cout << polygon->getID() << ": " << polygon->getArea() << endl;
+            polygon = polygon->next;
+        }
+        REPORT_ERROR("Area bias is too large!");
+    }
     cout << "Total edge number: " << setw(10);
     cout << polygonManager.edges.size() << endl;
     cout << "Total polygon number: " << setw(10);
@@ -117,7 +124,7 @@ void TTS::advect(MeshManager &meshManager,
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
-                Point *point, bool isCount)
+                Point *point)
 {
     const Coordinate &x0 = point->getCoordinate();
     const Location &loc0 = point->getLocation();
@@ -157,11 +164,7 @@ void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
     // -------------------------------------------------------------------------
     v = (v1+v2*2.0+v3*2.0+v4)/6.0;
     meshManager.move(x0, x1, v, dt, loc0);
-    if (isCount) {
-        meshManager.checkLocation(x1, loc1, point);
-    } else {
-        meshManager.checkLocation(x1, loc1);
-    }
+    meshManager.checkLocation(x1, loc1, point);
 
     // -------------------------------------------------------------------------
     point->setCoordinate(x1);

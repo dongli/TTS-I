@@ -203,4 +203,5 @@ void TracerManager::output(const string &fileName)
     }
     // -------------------------------------------------------------------------
     file.close();
+    NOTICE("TracerManager", fileName+" is generated.");
 }

@@ -62,18 +62,22 @@ void EdgeAgent::updateVertexProjections()
                 ApproachingVertices::removeVertex(vertex3);
         } else {
             bool isAlreadyApproaching = projection->isApproaching();
-            if (projection->project(NewTimeLevel)) {
+            ProjectionStatus status = projection->project(NewTimeLevel);
+            if (status == HasProjection) {
                 projection->project(OldTimeLevel);
                 projection->checkApproaching();
                 if (projection->isApproaching()) {
                     if (!isAlreadyApproaching)
                         ApproachingVertices::recordVertex(vertex3);
                 } else
-                    if (isAlreadyApproaching)
+                    if (isAlreadyApproaching &&
+                        vertex3->detectAgent.getActiveProjection() == NULL)
                         ApproachingVertices::removeVertex(vertex3);
                 ++it;
-            } else
+            } else if (status == HasNoProjection) {
                 AgentPair::unpair(it, projection);
+            } else if (status == CrossEdge)
+                REPORT_DEBUG;
         }
     }
 }
@@ -102,11 +106,6 @@ void EdgeAgent::handoverVertices(Edge *edge)
                 projection->project(vertex3, edge, OldTimeLevel);
                 projection->checkApproaching();
                 if (projection->isApproaching()) {
-#ifdef DEBUG
-                    ostringstream message;
-                    message << "Paired vertex " << vertex3->getID() << " is handled over.";
-                    NOTICE("EdgeAgent::handoverVertices", message.str())
-#endif
                     if (vertex3->detectAgent.getActiveProjection() == NULL)
                         ApproachingVertices::recordVertex(vertex3);
                 }

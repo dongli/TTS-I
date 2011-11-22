@@ -28,12 +28,11 @@ void Vertex::reinit()
 #ifdef TTS_ONLINE
     detectAgent.reinit();
 #endif
+    hostEdge = NULL;
 }
 
 void Vertex::clean()
 {
-    //if (TimeManager::getSteps() >= 45 && getID() == 185239)
-    //    REPORT_DEBUG
     EdgePointer *linkedEdge = linkedEdges.front();
     for (int i = 0; i < linkedEdges.size(); ++i) {
         if (linkedEdge->edge->getEndPoint(FirstPoint) == this)
@@ -41,7 +40,7 @@ void Vertex::clean()
         else if (linkedEdge->edge->getEndPoint(SecondPoint) == this)
             linkedEdge->edge->linkEndPoint(SecondPoint, NULL);
         else
-            REPORT_ERROR("Unlinked edge!")
+            REPORT_ERROR("Unlinked edge!");
         linkedEdge = linkedEdge->next;
     }
     linkedEdges.recycle();
@@ -52,16 +51,12 @@ void Vertex::clean()
 
 void Vertex::linkEdge(Edge *edge)
 {
-    //if (TimeManager::getSteps() >= 45 && getID() == 185239)
-    //    REPORT_DEBUG
     linkedEdges.append();
     linkedEdges.back()->edge = edge;
 }
 
 void Vertex::unlinkEdge(Edge *edge)
 {
-    //if (TimeManager::getSteps() >= 45 && getID() == 185239)
-    //    REPORT_DEBUG
     EdgePointer *linkedEdge = linkedEdges.front();
     for (int i = 0; i < linkedEdges.size(); ++i) {
         if (linkedEdge->edge == edge) {
@@ -117,6 +112,10 @@ Vertex &Vertex::operator=(const Vertex &that)
 {
     if (this != &that) {
         Point::operator=(that);
+#ifdef TTS_ONLINE
+        // for detecting test points 2011-11-12
+        detectAgent = that.detectAgent;
+#endif
     }
     return *this;
 }

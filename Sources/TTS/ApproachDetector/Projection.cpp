@@ -41,7 +41,7 @@ void Projection::reinit()
     calculated = false;
 }
 
-bool Projection::project(TimeLevel timeLevel)
+ProjectionStatus Projection::project(TimeLevel timeLevel)
 {
 #ifdef DEBUG
     if (distance.getOld() == UndefinedDistance &&
@@ -52,7 +52,8 @@ bool Projection::project(TimeLevel timeLevel)
     }
 #endif
 #ifdef TRACK_PROJECTION
-    if (vertex->getID() == PROJECT_VERTEX_ID && edge->getID() == PROJECT_EDGE_ID) {
+    if (vertex->getID() == PROJECT_VERTEX_ID &&
+        edge->getID() == PROJECT_EDGE_ID) {
         cout << endl << endl;
         cout << "*** ApproachDetector::Projection::project ***" << endl;
         vertex->detectAgent.dump();
@@ -67,14 +68,10 @@ bool Projection::project(TimeLevel timeLevel)
     }
     OrientStatus orient = this->orient;
     if (!project(vertex, edge, timeLevel))
-        return false;
-    if (this->orient != orient) {
-        ostringstream message;
-        message << "Vertex " << vertex->getID();
-        message << " is crossing its paired edge " << edge->getID() << "!";
-        REPORT_ERROR(message.str());
-    }
-    return true;
+        return HasNoProjection;
+    if (this->orient != orient)
+        return CrossEdge;
+    return HasProjection;
 }
 
 bool Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)
@@ -98,9 +95,14 @@ bool Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)
         distance.set(timeLevel, d);
         if (timeLevel == NewTimeLevel)
             orient = Sphere::orient(x1, x2, x3);
-#ifdef DEBUG
-        assert(orient != OrientOn);
-#endif
+        if (orient == OrientOn) {
+            if (dot(cross(x3.getCAR(), x1.getCAR()),
+                    cross(x3.getCAR(), x2.getCAR())) > 0.0) {
+                REPORT_ERROR("Vertex is on the edge!");
+            } else {
+                return false;
+            }
+        }
         return true;
     } else {
         distance.set(timeLevel, d);
@@ -108,7 +110,7 @@ bool Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)
     }
 }
 
-const Coordinate &Projection::getCoordinate(TimeLevel timeLevel)
+const Coordinate &Projection::getCoordinate(TimeLevel timeLevel) const
 {
     if (timeLevel == OldTimeLevel)
         return x.getOld();
@@ -128,6 +130,11 @@ double Projection::getDistance(TimeLevel timeLevel)
         REPORT_ERROR("Unknown time level.")
 }
 
+void Projection::calcChangeRate()
+{
+    changeRate = (distance.getOld()-distance.getNew())/distance.getOld();
+}
+
 void Projection::checkApproaching()
 {
     approach = ApproachDetector::isApproaching(this);
@@ -141,6 +148,7 @@ Projection &Projection::operator=(const Projection &that)
         this->x = that.x;
         this->distance = that.distance;
         this->orient = that.orient;
+        this->changeRate = that.changeRate;
         this->approach = that.approach;
         this->calculated = that.calculated;
     }

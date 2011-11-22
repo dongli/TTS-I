@@ -111,6 +111,16 @@
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
 		55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
+		55D2647E146E9D5C00753BC0 /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
+		55D2647F146E9D5C00753BC0 /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
+		55D26480146E9D5D00753BC0 /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
+		55D26481146E9D5D00753BC0 /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
+		55D26482146E9D5D00753BC0 /* guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE311421CE86001E8352 /* guard.cpp */; };
+		55D26483146E9D7600753BC0 /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
+		55D26484146E9D7600753BC0 /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
+		55D26485146E9D7600753BC0 /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
+		55D26486146E9D7600753BC0 /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
+		55D26487146E9D7600753BC0 /* guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE311421CE86001E8352 /* guard.cpp */; };
 		55D3C79814104A5100B2B4D4 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		55D3C79914104A5100B2B4D4 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
 		55D3C79A14104A5100B2B4D4 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
@@ -766,6 +776,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55D26483146E9D7600753BC0 /* angleThreshold.cpp in Sources */,
+				55D26484146E9D7600753BC0 /* splitEdge.cpp in Sources */,
+				55D26485146E9D7600753BC0 /* mergeEdge.cpp in Sources */,
+				55D26486146E9D7600753BC0 /* splitPolygon.cpp in Sources */,
+				55D26487146E9D7600753BC0 /* guard.cpp in Sources */,
 				5581143C13EA474C004AF124 /* tts_gamil_demo.cpp in Sources */,
 				5581143D13EA474C004AF124 /* GAMILReader.cpp in Sources */,
 				5581143E13EA474C004AF124 /* PointCounter.cpp in Sources */,
@@ -837,6 +852,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55D2647E146E9D5C00753BC0 /* angleThreshold.cpp in Sources */,
+				55D2647F146E9D5C00753BC0 /* splitEdge.cpp in Sources */,
+				55D26480146E9D5D00753BC0 /* mergeEdge.cpp in Sources */,
+				55D26481146E9D5D00753BC0 /* splitPolygon.cpp in Sources */,
+				55D26482146E9D5D00753BC0 /* guard.cpp in Sources */,
 				55D3C79814104A5100B2B4D4 /* Projection.cpp in Sources */,
 				55D3C79914104A5100B2B4D4 /* VertexAgent.cpp in Sources */,
 				55D3C79A14104A5100B2B4D4 /* EdgeAgent.cpp in Sources */,

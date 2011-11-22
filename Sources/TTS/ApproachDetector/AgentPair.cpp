@@ -28,7 +28,7 @@ void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
 #else
     if (vertex->getID() == PAIR_VERTEX_ID) {
 #endif
-        DebugTools::watch_vertex(vertex);
+        DebugTools::watch(vertex);
         cout << endl << endl;
         cout << "*** ApproachDetector::AgentPair::pair ***" << endl;
         cout << "---> Vertex " << vertex->getID() << " is paired with ";
@@ -57,7 +57,7 @@ void AgentPair::unpair(Vertex *vertex, Edge *edge)
 #else
     if (vertex->getID() == PAIR_VERTEX_ID) {
 #endif
-        cout << "---> Vertex " << vertex->getID() << " is unpaired with ";
+        cout << "1: ---> Vertex " << vertex->getID() << " is unpaired with ";
         cout << "edge " << edge->getID() << endl;
         REPORT_DEBUG
     }
@@ -76,7 +76,7 @@ void AgentPair::unpair(std::list<Vertex *>::iterator &it, Edge *edge)
 #else
     if ((*it)->getID() == PAIR_VERTEX_ID) {
 #endif
-        cout << "---> Vertex " << (*it)->getID() << " is unpaired with ";
+        cout << "2: ---> Vertex " << (*it)->getID() << " is unpaired with ";
         cout << "edge " << edge->getID() << endl;
         REPORT_DEBUG
     }
@@ -98,7 +98,7 @@ void AgentPair::unpair(std::list<Vertex *>::iterator &it,
     if ((*it)->getID() == PAIR_VERTEX_ID) {
 #endif
     
-        cout << "---> Vertex " << (*it)->getID() << " is unpaired with ";
+        cout << "3: ---> Vertex " << (*it)->getID() << " is unpaired with ";
         cout << "edge " << projection->getEdge()->getID() << endl;
         REPORT_DEBUG
     }

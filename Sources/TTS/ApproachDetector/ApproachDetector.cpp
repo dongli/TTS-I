@@ -3,19 +3,22 @@
 #include "FlowManager.h"
 #include "PolygonManager.h"
 #include "SpecialPolygons.h"
+#include "CurvatureGuard.h"
+#include "TTS.h"
 #ifdef DEBUG
 #include "TimeManager.h"
 #include "DebugTools.h"
 #endif
 
 using namespace SpecialPolygons;
+using namespace CurvatureGuard;
 
 double ApproachDetector::approachTrendThreshold(double distance)
 {
-    static const double D0 = 0.005/Rad2Deg*Sphere::radius;
-    static const double D1 = 0.1/Rad2Deg*Sphere::radius;
+    static const double D0 = 0.001/Rad2Deg*Sphere::radius;
+    static const double D1 = 2.0/Rad2Deg*Sphere::radius;
     static const double P0 = 0.3;
-    static const double P1 = 0.5;
+    static const double P1 = 0.8;
     static const double dD = D1-D0;
     static const double dP = P1-P0;
     
@@ -44,9 +47,9 @@ bool ApproachDetector::isApproaching(Projection *projection)
     double oldDistance = projection->getDistance(OldTimeLevel);
     double newDistance = projection->getDistance(NewTimeLevel);
     if (oldDistance != UndefinedDistance && newDistance != UndefinedDistance) {
-        double ratio = (oldDistance-newDistance)/oldDistance;
-        double ratio0 = approachTrendThreshold(oldDistance);
-        if (ratio > ratio0 || newDistance < smallDistance)
+        projection->calcChangeRate();
+        double rate0 = approachTrendThreshold(oldDistance);
+        if (projection->getChangeRate() > rate0 || newDistance < smallDistance)
             return true;
     } else if (newDistance != UndefinedDistance && newDistance < smallDistance) {
         return false;
@@ -58,7 +61,7 @@ inline Projection *detectPoint(Edge *edge, int I1, int I2, int J1, int J2,
                                Vertex *point)
 {
     bool isApproaching = false;
-    Projection p;
+    static Projection p;
     Projection *projection = point->detectAgent.getProjection(edge);
     const Location &loc =point->getLocation();
     // -------------------------------------------------------------------------
@@ -100,9 +103,14 @@ inline Projection *detectPoint(Edge *edge, int I1, int I2, int J1, int J2,
             // Scenario 2-1:
             //   The projection of vertex3 on edge1 has already been
             //   calculated by other procedures.
-            if (projection->isCalculated())
-                return NULL;
-            if (projection->project(NewTimeLevel)) {
+            if (projection->isCalculated()) {
+                if (projection->isApproaching())
+                    return projection;
+                else
+                    return NULL;
+            }
+            ProjectionStatus status = projection->project(NewTimeLevel);
+            if (status == HasProjection) {
                 // -------------------------------------------------------------
                 // Scenario 2-1:
                 //   Vertex3 has projection on edge1 at new time step.
@@ -111,11 +119,13 @@ inline Projection *detectPoint(Edge *edge, int I1, int I2, int J1, int J2,
                     ApproachingVertices::recordVertex(point);
                     isApproaching = true;
                 }
-            } else
+            } else if (status == HasNoProjection) {
                 // -------------------------------------------------------------
                 // Scenario 2-2:
                 //   Vertex3 has no projection on edge1 at new time step.
                 AgentPair::unpair(point, edge);
+            } else if (status == CrossEdge)
+                REPORT_DEBUG;
         }
     } else
         if (projection != NULL)
@@ -135,11 +145,25 @@ void ApproachDetector::detect(MeshManager &meshManager,
                               PolygonManager &polygonManager,
                               Polygon *polygon)
 {
-//    if (TimeManager::getSteps() >= 73 && polygon->getID() == 3296) {
-//        DebugTools::watch_polygon(polygon);
-//        polygon->dump("polygon");
-//        REPORT_DEBUG;
-//    }
+    if (TimeManager::getSteps() >= 10 && polygon->getID() == 1000) {
+        DebugTools::watch(polygon);
+        polygon->dump("polygon");
+        REPORT_DEBUG;
+    }
+    // -------------------------------------------------------------------------
+    // handle degenerate polygons
+    if (polygon->edgePointers.size() == 2) {
+        Polygon *polygon1 = polygon->edgePointers.front()->getPolygon(OrientRight);
+        Polygon *polygon2 = polygon->edgePointers.back()->getPolygon(OrientRight);
+        for (int i = 0; i < polygon->tracers.size(); ++i) {
+            polygon1->tracers[i].addMass(polygon->tracers[i].getMass()*0.5);
+            polygon2->tracers[i].addMass(polygon->tracers[i].getMass()*0.5);
+        }
+        handleLinePolygon(polygonManager, polygon);
+        TTS::doTask(TTS::UpdateAngle);
+        return;
+    }
+    // -------------------------------------------------------------------------
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     for (int i = 0; i < polygon->edgePointers.size(); ++i) {
         Edge *edge1 = edgePointer1->edge;
@@ -161,29 +185,74 @@ void ApproachDetector::detect(MeshManager &meshManager,
             J2 = vertex1->getLocation().j[4]+1;
         }
         EdgePointer *edgePointer2 = edgePointer1->next;
-        for (int j = 0; j < polygon->edgePointers.size()-2; ++j) {
+        EdgePointer *nextEdgePointer;
+        while (edgePointer2 != edgePointer1) {
+            nextEdgePointer = edgePointer2->next;
             Projection *projection; Vertex *vertex3;
             // -----------------------------------------------------------------
-            vertex3 = edgePointer2->getEndPoint(SecondPoint);
-            if (vertex3 == vertex1) {
-                handleEnclosedPolygons(polygonManager, polygon,
-                                       edgePointer1, edgePointer2);
-                goto next_edge;
-            } else if (vertex3 == vertex2) {
-                handleEnclosedPolygons(polygonManager, polygon,
-                                       edgePointer1->next, edgePointer2);
-                goto next_edge;
+            if (edgePointer2 != edgePointer1->prev) {
+                vertex3 = edgePointer2->getEndPoint(SecondPoint);
+                if (vertex3 == vertex1) {
+                    handleEnclosedPolygons(polygonManager, polygon,
+                                           edgePointer1, edgePointer2);
+                    goto next_edge1;
+                } else if (vertex3 == vertex2) {
+                    handleEnclosedPolygons(polygonManager, polygon,
+                                           edgePointer1->next, edgePointer2);
+                    goto next_edge1;
+                }
+                projection = detectPoint(edge1, I1, I2, J1, J2, vertex3);
+                if (projection != NULL &&
+                    chooseMode(vertex1, vertex2, vertex3, projection) == -1) {
+                    vertex3->detectAgent.getProjection(edge1)->setApproach(false);
+                    if (vertex3->detectAgent.getActiveProjection() == NULL)
+                        ApproachingVertices::removeVertex(vertex3);
+                }
             }
-            projection = detectPoint(edge1, I1, I2, J1, J2, vertex3);
             // -----------------------------------------------------------------
-//            vertex3 = edgePointer2->edge->getTestPoint()
-//            projection = detectPoint(edge1, I1, I2, J1, J2, vertex3);
-//            if (projection != NULL) {
-//                
-//            }
-            edgePointer2 = edgePointer2->next;
+            vertex3 = edgePointer2->edge->getTestPoint();
+            assert(vertex3->getHostEdge() == edgePointer2->edge);
+            projection = detectPoint(edge1, I1, I2, J1, J2, vertex3);
+            if (projection != NULL && projection->isApproaching()) {
+                if ((edgePointer2->next->edge == edge1 ||
+                     edgePointer2->prev->edge == edge1) &&
+                    !(edgePointer1->getAngle(NewTimeLevel) < 20.0/Rad2Deg ||
+                      PI2-edgePointer1->getAngle(NewTimeLevel) < 20.0/Rad2Deg) &&
+                    projection->getChangeRate() <= 0.35) {
+                    vertex3->detectAgent.getProjection(edge1)->setApproach(false);
+                    if (vertex3->detectAgent.getActiveProjection() == NULL)
+                        ApproachingVertices::removeVertex(vertex3);
+                    goto next_edge2;
+                }
+                // Note: Only when both the end points are not approaching some
+                //       edges, we split the edge.
+                if (chooseMode(vertex1, vertex2, vertex3, projection) > 2 &&
+                    edgePointer2->getEndPoint(FirstPoint)->detectAgent.
+                    getActiveProjection() == NULL &&
+                    edgePointer2->getEndPoint(SecondPoint)->detectAgent.
+                    getActiveProjection() == NULL) {
+                    if (splitEdge(meshManager, flowManager, polygonManager,
+                                  vertex3->getHostEdge(), true)) {
+                        vertex3 = polygonManager.vertices.back();
+                    } else {
+                        // Note: There are some occasions that the host edge of
+                        //       vertex3 can not be split
+                        AgentPair::unpair(vertex3, edge1);
+                        if (vertex3->detectAgent.getActiveProjection() == NULL)
+                            ApproachingVertices::removeVertex(vertex3);
+                    }
+                } else {
+                    AgentPair::unpair(vertex3, edge1);
+                    // Note: Make sure there is no other edges that vertex3 is
+                    //       approaching.
+                    if (vertex3->detectAgent.getActiveProjection() == NULL)
+                        ApproachingVertices::removeVertex(vertex3);
+                }
+            }
+            // -----------------------------------------------------------------
+        next_edge2: edgePointer2 = nextEdgePointer;
         }
-    next_edge: edgePointer1 = edgePointer1->next;
+    next_edge1: edgePointer1 = edgePointer1->next;
     }
 }
 
@@ -191,8 +260,9 @@ void ApproachDetector::detect(MeshManager &meshManager,
                               const FlowManager &flowManager,
                               PolygonManager &polygonManager)
 {
+    Polygon *endPolygon = polygonManager.polygons.back()->next;
     Polygon *polygon = polygonManager.polygons.front();
-    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+    while (polygon != endPolygon) {
         detect(meshManager, flowManager, polygonManager, polygon);
         polygon = polygon->next;
     }
@@ -215,17 +285,58 @@ void ApproachDetector::reset(PolygonManager &polygonManager)
 int ApproachDetector::chooseMode(Vertex *vertex1, Vertex *vertex2,
                                  Vertex *vertex3, Projection *projection)
 {
-    static const double smallDistance = 0.05/Rad2Deg*Sphere::radius;
+    static const double smallDistance1 = 0.01/Rad2Deg*Sphere::radius;
+    static const double smallDistance2 = 0.1/Rad2Deg*Sphere::radius;
+    static const double smallDistance3 = 0.01/Rad2Deg*Sphere::radius;
     double d1 = Sphere::calcDistance(vertex1->getCoordinate(),
                                      vertex3->getCoordinate());
     double d2 = Sphere::calcDistance(vertex2->getCoordinate(),
                                      vertex3->getCoordinate());
-    if (d1 <= d2 && d1 < smallDistance)
-        return 1;
-    else if (d2 < d1 && d2 < smallDistance)
-        return 2;
-    else if (projection->getDistance(NewTimeLevel) > smallDistance)
-        return 3;
+    double d3;
+    if (d1 <= d2)
+        d3 = Sphere::calcDistance(vertex1->getCoordinate(),
+                                  projection->getCoordinate(NewTimeLevel));
     else
-        return 4;
+        d3 = Sphere::calcDistance(vertex2->getCoordinate(),
+                                  projection->getCoordinate(NewTimeLevel));
+    double d4 = projection->getDistance(NewTimeLevel);
+    if (d1 <= d2) {
+        if (d3 <= smallDistance2) {
+            if (projection->getChangeRate() <= 0.5)
+                return -1;
+            else {
+                if (d1 <= smallDistance1)
+                    return 1;
+                else
+                    if (d4 >= smallDistance3*1.5)
+                        return 3;
+                    else
+                        return 4;
+            }
+        } else {
+            if (d4 > smallDistance1)
+                return 3;
+            else
+                return 4;
+        }
+    } else {
+        if (d3 <= smallDistance2) {
+            if (projection->getChangeRate() <= 0.5)
+                return -1;
+            else {
+                if (d2 <= smallDistance1)
+                    return 2;
+                else
+                    if (d4 >= smallDistance3*1.5)
+                        return 3;
+                    else
+                        return 4;
+            }
+        } else {
+            if (d4 > smallDistance1)
+                return 3;
+            else
+                return 4;
+        }
+    }
 }

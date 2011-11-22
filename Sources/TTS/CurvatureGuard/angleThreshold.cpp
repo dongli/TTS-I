@@ -8,11 +8,11 @@
  correctly, and also for accomplishing balance between efficiency and performance.
  */
 
+#include "CurvatureGuard.h"
 #include "Edge.h"
 #include "Sphere.h"
-#include "CurvatureGuard.h"
 
-inline double CurvatureGuard::angleThreshold(Edge *edge)
+double CurvatureGuard::angleThreshold(Edge *edge)
 {
     static double A0 = 1.0/Rad2Deg;
     static double A1 = 120.0/Rad2Deg;
@@ -32,11 +32,10 @@ inline double CurvatureGuard::angleThreshold(Edge *edge)
     }
 }
 
-inline double CurvatureGuard::angleThreshold(Edge *edge1, Edge *edge2)
+double CurvatureGuard::angleThreshold(Edge *edge1, Edge *edge2)
 {
     double A1 = CurvatureGuard::angleThreshold(edge1);
     double A2 = CurvatureGuard::angleThreshold(edge2);
-    //return (A1+A2)*0.5;
     return fmin(A1, A2);
 }
 

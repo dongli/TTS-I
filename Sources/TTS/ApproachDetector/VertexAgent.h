@@ -48,7 +48,13 @@ namespace ApproachDetector
 
         double getShortestDistance();
 
+        VertexAgent &operator=(const VertexAgent &);
+
         void dump();
+
+#ifdef DEBUG
+        const std::list<Projection> &getProjections() const { return projections; }
+#endif
 
     private:
         friend class EdgeAgent;
