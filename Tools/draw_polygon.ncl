@@ -7,11 +7,11 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
-    projection@angle = 1.0
+    projection@angle = 3.0
     projection@min_lat = 80.0
     projection@max_lat = -80.0
     line_width = 1.0
-    point_size = 0.005
+    point_size = 0.01
 
     if (.not. isdefined("file_name")) then
         system("echo Input the polygon file:")
@@ -73,10 +73,12 @@ begin
     end if
 
     ; --------------------------------------------------------------------------
-    wks = gsn_open_wks("newpdf", file_name)
+    wks = gsn_open_wks("pdf", file_name)
 
-    projection@center_lon = calc_polygon_center_lon(vertex_lon)
-    projection@center_lat = avg(vertex_lat)
+    projection@center_lon = new(1, double)
+    projection@center_lat = new(1, double)
+    calc_polygon_center(vertex_lon, vertex_lat, \
+                        projection@center_lon, projection@center_lat)
     res_map = True
     setup_map(projection, res_map)
     map = gsn_csm_map(wks, res_map)
@@ -103,6 +105,10 @@ begin
         res_point@gsMarkerColor     = "red"
         gsn_polymarker(wks, map, testpoint_lon, testpoint_lat, res_point)
     end if
+
+    ; draw poles as references
+    res_point@gsMarkerColor = "green"
+    gsn_polymarker(wks, map, (/0.0,0.0/), (/90.0,-90.0/), res_point)
 
     frame(wks)
 

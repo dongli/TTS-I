@@ -109,6 +109,8 @@
 		5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
 		55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
+		55C9C1491497174F0063230B /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
+		55C9C14A1497174F0063230B /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
 		55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
 		55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
 		55D2647E146E9D5C00753BC0 /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
@@ -127,6 +129,8 @@
 		55D3C79B14104A5100B2B4D4 /* AgentPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CD14093757000B7E48 /* AgentPair.cpp */; };
 		55D3C79C14104A5100B2B4D4 /* ApproachingVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D114093757000B7E48 /* ApproachingVertices.cpp */; };
 		55D3C79D14104A5100B2B4D4 /* ApproachDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CF14093757000B7E48 /* ApproachDetector.cpp */; };
+		55D5B1F91491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
+		55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55DA3E2A13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		55DA3E2B13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 /* End PBXBuildFile section */
@@ -205,6 +209,7 @@
 		5566C5ED13EC0D010044E352 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
 		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PointCounter.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		556E49BF13D54DCF00AE4150 /* PointCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCounter.h; sourceTree = "<group>"; };
+		557EF504148C9079004D6E85 /* ThresholdFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThresholdFunction.h; sourceTree = "<group>"; };
 		5581140413EA4432004AF124 /* tts_gamil_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tts_gamil_demo.cpp; sourceTree = "<group>"; };
 		5581140713EA4463004AF124 /* GAMILReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GAMILReader.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5581142A13EA4631004AF124 /* SystemCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCalls.cpp; sourceTree = "<group>"; };
@@ -224,6 +229,7 @@
 		558A48D614093757000B7E48 /* Projection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projection.h; sourceTree = "<group>"; };
 		558A48D714093757000B7E48 /* VertexAgent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexAgent.cpp; sourceTree = "<group>"; };
 		558A48D814093757000B7E48 /* VertexAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexAgent.h; sourceTree = "<group>"; };
+		5595604E14A4919400EA93D5 /* Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tags.h; sourceTree = "<group>"; };
 		5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DelaunayDriver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DelaunayDriver.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelaunayTriangle.cpp; sourceTree = "<group>"; };
@@ -302,8 +308,14 @@
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
 		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
+		55C9C1431497173A0063230B /* EdgeTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeTags.h; sourceTree = "<group>"; };
+		55C9C1441497173A0063230B /* VertexTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexTags.h; sourceTree = "<group>"; };
+		55C9C1471497174F0063230B /* CommonTasks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonTasks.cpp; sourceTree = "<group>"; };
+		55C9C1481497174F0063230B /* CommonTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonTasks.h; sourceTree = "<group>"; };
 		55D2647A146E118600753BC0 /* SpecialPolygons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialPolygons.h; sourceTree = "<group>"; };
 		55D2647B146E121300753BC0 /* SpecialPolygons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialPolygons.cpp; sourceTree = "<group>"; };
+		55D5B1F71491E80B008B43B8 /* TestPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestPoint.h; sourceTree = "<group>"; };
+		55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPoint.cpp; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
 		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_sphere.h; sourceTree = "<group>"; };
 		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_mesh.h; sourceTree = "<group>"; };
@@ -498,6 +510,8 @@
 				5598FA9013D3DA9F00BC1AC4 /* Point.cpp */,
 				5598FA9713D3DA9F00BC1AC4 /* Vertex.h */,
 				5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */,
+				55D5B1F71491E80B008B43B8 /* TestPoint.h */,
+				55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */,
 				5598FA8F13D3DA9F00BC1AC4 /* Edge.h */,
 				5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */,
 				5598FA9313D3DA9F00BC1AC4 /* Polygon.h */,
@@ -553,6 +567,8 @@
 		5598FAAE13D3DA9F00BC1AC4 /* TTS */ = {
 			isa = PBXGroup;
 			children = (
+				55C9C1461497174F0063230B /* CommonTasks */,
+				55C9C1421497173A0063230B /* Tags */,
 				55D26478146E116200753BC0 /* SpecialPolygons */,
 				558803A61435A645008F4C84 /* MeshAdaptor */,
 				552EEE2C1421C0DB001E8352 /* CurvatureGuard */,
@@ -592,6 +608,7 @@
 				5581142A13EA4631004AF124 /* SystemCalls.cpp */,
 				55C4AF4513F2BF5A00B2C331 /* DebugTools.h */,
 				55DA3E2913F6A34800C565F7 /* DebugTools.cpp */,
+				557EF504148C9079004D6E85 /* ThresholdFunction.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -612,6 +629,25 @@
 				55C1E3D0142C5EE400D83018 /* TracerManager.cpp */,
 			);
 			path = Tracer;
+			sourceTree = "<group>";
+		};
+		55C9C1421497173A0063230B /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				5595604E14A4919400EA93D5 /* Tags.h */,
+				55C9C1431497173A0063230B /* EdgeTags.h */,
+				55C9C1441497173A0063230B /* VertexTags.h */,
+			);
+			path = Tags;
+			sourceTree = "<group>";
+		};
+		55C9C1461497174F0063230B /* CommonTasks */ = {
+			isa = PBXGroup;
+			children = (
+				55C9C1471497174F0063230B /* CommonTasks.cpp */,
+				55C9C1481497174F0063230B /* CommonTasks.h */,
+			);
+			path = CommonTasks;
 			sourceTree = "<group>";
 		};
 		55D26478146E116200753BC0 /* SpecialPolygons */ = {
@@ -733,6 +769,9 @@
 /* Begin PBXProject section */
 		55B025F013B96EB400322B59 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 55B025F313B96EB400322B59 /* Build configuration list for PBXProject "TTS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -812,6 +851,8 @@
 				55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */,
 				558803AB1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
 				55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */,
+				55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */,
+				55C9C14A1497174F0063230B /* CommonTasks.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -890,6 +931,8 @@
 				55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */,
 				558803AA1435AA4E008F4C84 /* MeshAdaptor.cpp in Sources */,
 				55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */,
+				55D5B1F91491E9E7008B43B8 /* TestPoint.cpp in Sources */,
+				55C9C1491497174F0063230B /* CommonTasks.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -983,7 +1026,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -1005,7 +1048,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = TTS_ONLINE;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;

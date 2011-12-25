@@ -1,10 +1,6 @@
 #ifndef TracerManager_h
 #define TracerManager_h
 
-#include <list>
-
-using std::list;
-
 #include "MeshManager.h"
 #include "PolygonManager.h"
 #include "Field.h"

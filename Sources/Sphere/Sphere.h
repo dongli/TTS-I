@@ -29,6 +29,10 @@ public:
     static void inverseRotate(const Coordinate &xp, Coordinate &xo,
                               const Coordinate &xr);
 
+    static bool isIntersect(const Coordinate &x1, const Coordinate &x2,
+                            const Coordinate &x3, const Coordinate &x4);
+    static bool isIntersect(Point *point1, Point *point2,
+                            Point *point3, Point *point4);
     static void calcIntersect(const Coordinate &x1, const Coordinate &x2,
                               const Coordinate &x3, const Coordinate &x4,
                               Coordinate &x5, Coordinate &x6);
@@ -38,6 +42,9 @@ public:
                                  double lat, double &lon1, double &lon2);
     static void calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
                                  double lat, Coordinate &x3, Coordinate &x4);
+
+    static void calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
+                                Coordinate &x);
 
     static bool is_lon_between(double lon1, double lon2, double lon);
     static bool is_lon_gt(double lon1, double lon2);

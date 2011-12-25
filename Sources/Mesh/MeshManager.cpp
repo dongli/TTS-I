@@ -87,9 +87,6 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
     }
 #endif
 
-    double rlat = PI05-x.getLat();
-    if (fabs(rlat) < EPS) rlat = 0.0;
-
     double ratio;
     int j;
 
@@ -264,7 +261,7 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
 
     // -------------------------------------------------------------------------
     // count
-    // Todo: This part is duplicate with "countPoint" functionally, try to
+    // TODO: This part is duplicate with "countPoint" functionally, try to
     //       merge them.
     if (point != NULL) {
         double dlon = mesh[BothHalf].dlon/pointCounter.numSubLon;
@@ -319,6 +316,7 @@ void MeshManager::move(const Coordinate &x0, Coordinate &x1, const Velocity &v,
         dlat = v.v*dt/Sphere::radius;
         lon = x0.getLon()+dlon;
         lat = x0.getLat()+dlat;
+        // TODO: Check if the polar boundary will be reached or not.
         // Polar boundary check
         if (lat > PI05) {
             lon = PI+x0.getLon()-dlon;

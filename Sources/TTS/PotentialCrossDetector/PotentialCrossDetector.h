@@ -3,7 +3,12 @@
 
 class Vertex;
 class Edge;
+class EdgePointer;
 class Polygon;
+class MeshManager;
+class FlowManager;
+class PolygonManager;
+#include "Vector.h"
 
 namespace PotentialCrossDetector
 {
@@ -11,16 +16,29 @@ namespace PotentialCrossDetector
         NoCross, Cross
     };
 
-    //! \brief Detect the potential edge-crossing event (CASE 1).
-    //! \param vertex3 The approaching vertex.
-    //! \param testVertex The vertex that will replace vertex3.
-    //! \param edge1 The edge that is being approached by vertex3.
-    //! \return Detection result.
-    Status detect1(Vertex *vertex3, Vertex *testVertex);
+    Status detectReplaceVertex(Vertex *oldVertex, Vertex *newVertex,
+                               bool isJustDetect = false);
 
-    Status detect2(Vertex *testVertex, Edge *edge1, Polygon *polygon2);
+    Status detectRemoveVertexOnEdges(MeshManager &meshManager,
+                                     EdgePointer *edgePointer,
+                                     Vertex *testPoint, Polygon *polygon);
 
-    Status detect3(Edge *edge1, Edge *edge2);
+    Status detectInsertVertexOnEdge(MeshManager &meshManager,
+                                    const FlowManager &flowManager,
+                                    PolygonManager &polygonManager,
+                                    Edge *oldEdge, Vertex *newVertex,
+                                    Vertex *oldVertex = 0x0,
+                                    Edge **crossedEdge = 0x0);
+
+    Status detectAddConnection(Polygon *polygon,
+                               EdgePointer *edgePointer1,
+                               EdgePointer *&edgePointer2,
+                               bool &isConnectOk1, bool &isConnectOk2,
+                               Vector &vector1, Vector &vector2);
+
+    Status detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2);
+
+    void adjustMergeEdgeAngleThreshold(Edge *edge1, Edge *edge2, double &a0);
 }
 
 #endif

@@ -108,10 +108,8 @@ void DebugTools::dump_watchers()
 
 void DebugTools::dump_watched_vertex()
 {
-    if (watchedVertex == NULL) {
-        //REPORT_ERROR("Watched vertex is NULL!")
+    if (watchedVertex == NULL || watchedVertex->endTag == Vertex::Null)
         return;
-    }
     cout << "Watched vertex ID: " << watchedVertex->getID() << endl;
     cout << "Coordinate:" << endl;
     watchedVertex->getCoordinate().dump();
@@ -128,24 +126,24 @@ void DebugTools::dump_watched_vertex()
 
 void DebugTools::dump_watched_edge()
 {
-    if (watchedEdge == NULL) {
+    if (watchedEdge == NULL || watchedEdge->endTag == Edge::Null)
         return;
-    }
-    cout << "Watched edge ID: " << watchedVertex->getID() << endl;
+    cout << "Watched edge ID: " << watchedEdge->getID() << endl;
     cout << "  End points ID: ";
     cout << watchedEdge->getEndPoint(FirstPoint)->getID() << "  ";
     cout << watchedEdge->getEndPoint(SecondPoint)->getID() << endl;
     cout << "  Edge pointers: ";
     cout << watchedEdge->getEdgePointer(OrientLeft) << "  ";
     cout << watchedEdge->getEdgePointer(OrientRight) << endl;
+    cout << "  Paired vertices: ";
+    watchedEdge->detectAgent.dump();
     REPORT_DEBUG
 }
 
 void DebugTools::dump_watched_polygon()
 {
-    if (watchedPolygon == NULL) {
+    if (watchedPolygon == NULL || watchedPolygon->endTag == Polygon::Null)
         return;
-    }
     watchedPolygon->dump("watched_polygon");
     REPORT_DEBUG
 }

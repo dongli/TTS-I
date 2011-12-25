@@ -13,6 +13,10 @@ public:
     void addMass(double mass) { this->mass += mass; }
     double getMass() const { return mass; }
 
+    void setDensity(double density) { this->density = density; }
+    double getDensity() const { return density; }
+
+private:
     double mass;
     double density;
 };

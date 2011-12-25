@@ -96,10 +96,10 @@ void Sphere::rotate(const Coordinate &xp, const Coordinate &xo, Coordinate &xr)
 #ifdef DEBUG
     if (tmp3 < -1.0 || tmp3 > 1.0) {
         if (fabs(tmp3)-1.0 < EPS) {
-            REPORT_WARNING("tmp3 is out of range [-1, 1]!")
+            REPORT_WARNING("tmp3 is out of range [-1, 1]!");
             tmp3 = fmin(1.0, fmax(-1.0, tmp3));
         } else
-            REPORT_ERROR("tmp3 is out of range [-1, 1]!")
+            REPORT_ERROR("tmp3 is out of range [-1, 1]!");
     }
 #endif
     double lat = asin(tmp3);
@@ -144,6 +144,77 @@ void Sphere::inverseRotate(const Coordinate &xp, Coordinate &xo,
     xo.set(lon, lat, xr.getLev());
 }
 
+void Sphere::calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
+                             Coordinate &x)
+{
+    Coordinate xr;
+    Sphere::rotate(x1, x2, xr);
+    double dlat = (PI05-xr.getLat())*0.5;
+    xr.set(xr.getLon(), PI05-dlat);
+    Sphere::inverseRotate(x1, x, xr);
+}
+
+inline bool Sphere::isIntersect(const Coordinate &x1, const Coordinate &x2,
+                                const Coordinate &x3, const Coordinate &x4)
+{
+    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
+    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
+    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
+    double d =  x3.getY()*x4.getZ()-x3.getZ()*x4.getY();
+    double e = -x3.getX()*x4.getZ()+x3.getZ()*x4.getX();
+    double f =  x3.getX()*x4.getY()-x3.getY()*x4.getX();
+
+    double g1, g2, g3, r;
+    static const double eps = 1.0e-12;
+    double x, y, z;
+
+    g1 = c*e-b*f;
+    g2 = a*f-c*d;
+    g3 = b*d-a*e;
+
+    r = sqrt(g1*g1+g2*g2+g3*g3);
+
+    if (r > eps) {
+        x = g1/r;
+        y = g2/r;
+        z = g3/r;
+    } else
+        return false;
+
+    double lat1 = asin(z);
+    double lat2 = -lat1;
+    double lon1 = atan2(y, x);
+    double lon2 = lon1-PI;
+    
+    if (lon1 < 0.0) lon1 += PI2;
+    if (lon1 > PI2) lon1 -= PI2;
+    if (lon2 < 0.0) lon2 += PI2;
+    if (lon2 > PI2) lon2 -= PI2;
+    
+    Coordinate X[2];
+
+    X[0].set(lon1, lat1);
+    X[1].set(lon2, lat2);
+
+    Vector tmp1, tmp2, tmp3, tmp4;
+    for (int i = 0; i < 2; ++i) {
+        tmp1 = cross(x1.getCAR(), X[i].getCAR());
+        tmp2 = cross(x2.getCAR(), X[i].getCAR());
+        tmp3 = cross(x3.getCAR(), X[i].getCAR());
+        tmp4 = cross(x4.getCAR(), X[i].getCAR());
+        if (dot(tmp1, tmp2) < 0.0 && dot(tmp3, tmp4) < 0.0)
+            return true;
+    }
+    return false;
+}
+
+bool Sphere::isIntersect(Point *point1, Point *point2,
+                         Point *point3, Point *point4)
+{
+    return isIntersect(point1->getCoordinate(), point2->getCoordinate(),
+                       point3->getCoordinate(), point4->getCoordinate());
+}
+
 void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
                            const Coordinate &x3, const Coordinate &x4,
                            Coordinate &x5, Coordinate &x6)
@@ -155,70 +226,36 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
     double e = -x3.getX()*x4.getZ()+x3.getZ()*x4.getX();
     double f =  x3.getX()*x4.getY()-x3.getY()*x4.getX();
 
-    double g1, g2, h1, h2;
-    int branch = -1;
+    double g1, g2, g3, r;
     static const double eps = 1.0e-12;
+    double x, y, z;
 
     g1 = c*e-b*f;
-    if (fabs(g1) > eps && fabs(b) > eps) {
-        g2 = b*d-a*e;
-        h1 = b*g1;
-        h2 = -c*g2-a*g1;
-        branch = 1;
+    g2 = a*f-c*d;
+    g3 = b*d-a*e;
+
+    r = sqrt(g1*g1+g2*g2+g3*g3);
+
+    if (r > eps) {
+        x = g1/r;
+        y = g2/r;
+        z = g3/r;
     } else {
-        g1 = c*d-a*f;
-        if (fabs(g1) > eps && fabs(c) > eps) {
-            g2 = b*f-c*e;
-            h1 = c*g1;
-            h2 = -a*g2-b*g1;
-            branch = 2;
-        } else {
-            g1 = a*e-b*d;
-            if (fabs(g1) > eps && fabs(a) > eps) {
-                g2 = c*d-a*f;
-                h1 = a*g1;
-                h2 = -b*g2-c*g1;
-                branch = 3;
-            }
-        }
-    }
-
-    double g2_over_g1 = g2/g1;
-    double h2_over_h1 = h2/h1;
-
-    double x, y, z;
-    switch (branch) {
-        case 1:
-            x = 1.0/sqrt(1.0+pow(g2_over_g1, 2.0)+pow(h2_over_h1, 2.0));
-            z = g2_over_g1*x;
-            y = h2_over_h1*x;
-            break;
-        case 2:
-            y = 1.0/sqrt(1.0+pow(g2_over_g1, 2.0)+pow(h2_over_h1, 2.0));
-            x = g2_over_g1*y;
-            z = h2_over_h1*y;
-            break;
-        case 3:
-            z = 1.0/sqrt(1.0+pow(g2_over_g1, 2.0)+pow(h2_over_h1, 2.0));
-            y = g2_over_g1*z;
-            x = h2_over_h1*z;
-            break;
-        default:
-            x5.set(-999.0, -999.0);
-            x6.set(-999.0, -999.0);
-            return;
+        x5.set(-999.0, -999.0);
+        x6.set(-999.0, -999.0);
+        return;
     }
 
     double lat1 = asin(z);
     double lat2 = -lat1;
     double lon1 = atan2(y, x);
     double lon2 = lon1-PI;
-
+    
     if (lon1 < 0.0) lon1 += PI2;
     if (lon1 > PI2) lon1 -= PI2;
     if (lon2 < 0.0) lon2 += PI2;
     if (lon2 > PI2) lon2 -= PI2;
-
+    
     x5.set(lon1, lat1);
     x6.set(lon2, lat2);
 }

@@ -10,6 +10,8 @@ int main(int argc, char **argv)
     TracerManager tracerManager;
     TTS tts;
 
+    char fileName[30], filePattern[50] = "gamil_2562_%5.5d.nc";
+
     // -------------------------------------------------------------------------
     Sphere::setRadius(6371.299e3);
 
@@ -26,8 +28,7 @@ int main(int argc, char **argv)
                    gamilReader.flowManager, tracerManager);
         timeManager.advance();
         gamilReader.getVelocityField();
-        char fileName[30];
-        sprintf(fileName, "tts_test%5.5d.nc", timeManager.getSteps());
-        tracerManager.output(fileName);
+//        sprintf(fileName, filePattern, timeManager.getSteps());
+//        tracerManager.output(fileName);
     }
 }

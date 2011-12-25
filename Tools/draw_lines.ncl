@@ -7,6 +7,7 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
+    projection@angle = 1.0
 
     if (.not. isdefined("file_name")) then
         system("echo Input the node coordinates file:")
@@ -14,11 +15,11 @@ begin
     end if
 
     if (projection .eq. "ST") then
-        if (.not. isdefined("angle")) then
+        if (.not. isatt(projection, "angle")) then
             system("echo Input view angle:")
-            angle = stringtofloat(systemfunc("read -p ' > ' ans; echo $ans"))
+            projection@angle = stringtofloat(systemfunc \
+                ("read -p ' > ' ans; echo $ans"))
         end if
-        projection@angle = angle
     end if
 
     contents = asciiread(file_name, -1, "double")
@@ -34,8 +35,20 @@ begin
     point_lon = point_lon*Rad2Deg
     point_lat = point_lat*Rad2Deg
 
-    res_map = setup_map(projection)
+    ; --------------------------------------------------------------------------
+    wks = gsn_open_wks("newpdf", file_name)
 
+    projection@center_lon = new(1, double)
+    projection@center_lat = new(1, double)
+    calc_polygon_center(point_lon, point_lat, \
+                        projection@center_lon, projection@center_lat)
+    res_map = True
+    setup_map(projection, res_map)
+    map = gsn_csm_map(wks, res_map)
+
+    draw(map)
+
+    ; --------------------------------------------------------------------------
     res_line                        = True
     res_line@gsLineThicknessF       = 0.5
     res_line@gsLineColor            = "blue"
@@ -43,14 +56,6 @@ begin
     res_point                       = True
     res_point@gsMarkerIndex         = 1
     res_point@gsMarkerSizeF         = 0.01
-
-    wks = gsn_open_wks("newpdf", file_name)
-
-    if (projection .eq. "ST") then
-        res_map@mpCenterLonF = calc_polygon_center_lon(point_lon)
-        res_map@mpCenterLatF = avg(point_lat)
-    end if
-    map = gsn_csm_map(wks, res_map)
 
     gsn_polyline(wks, map, point_lon, point_lat, res_line)
 

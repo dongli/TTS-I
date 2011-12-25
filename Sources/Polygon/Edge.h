@@ -3,16 +3,18 @@
 
 #include "List.h"
 #include "Vertex.h"
+#include "TestPoint.h"
 #include "Vector.h"
 #include "Sphere.h"
-#ifdef TTS_ONLINE
-#include "MeshManager.h"
-#include "FlowManager.h"
-#include "ApproachDetector.h"
-#endif
 
 class Polygon;
 class EdgePointer;
+#ifdef TTS_ONLINE
+class MeshManager;
+class FlowManager;
+#include "ApproachDetector.h"
+#include "EdgeTags.h"
+#endif
 
 // -----------------------------------------------------------------------------
 enum PointOrder {
@@ -29,10 +31,13 @@ public:
     void reinit();
     void clean();
 
-    void linkEndPoint(PointOrder, Vertex *);
+    void linkEndPoint(PointOrder, Vertex *, bool isSetTestPoint = true);
     Vertex *getEndPoint(PointOrder order) const { return endPoints[order]; }
 #ifdef TTS_ONLINE
-    void changeEndPoint(PointOrder, Vertex *, MeshManager &, const FlowManager &);
+    void changeEndPoint(PointOrder, Vertex *point,
+                        MeshManager &, const FlowManager &);
+    void changeEndPoint(PointOrder, Vertex *point, Vertex *testPoint,
+                        MeshManager &, const FlowManager &);
 #endif
 
     void linkPolygon(OrientStatus, Polygon *);
@@ -48,7 +53,7 @@ public:
     void calcLength();
     double getLength() const { return length; }
 
-    Vertex *getTestPoint() { return &testPoint; }
+    TestPoint *getTestPoint() { return &testPoint; }
 
     Edge &operator=(const Edge &);
 
@@ -56,13 +61,16 @@ public:
 
 #ifdef TTS_ONLINE
     ApproachDetector::EdgeAgent detectAgent;
+    EdgeTags tags;
 #endif
 
 private:
     friend class EdgePointer;
 
 	Vertex *endPoints[2];
-    Vertex testPoint;
+#ifdef TTS_ONLINE
+    TestPoint testPoint;
+#endif
     Polygon *polygons[2];
 	EdgePointer *edgePointers[2];
     MultiTimeLevel<Vector, 2> normVector;
@@ -87,7 +95,8 @@ public:
     EdgePointer *getNeighborEdgePointer() const;
 
     Vector getNormVector(TimeLevel timeLevel = NewTimeLevel) const;
-    
+
+    static double calcAngle(const Vector &, const Vector &);
     static double calcAngle(const Vector &, const Vector &, const Coordinate &);
     static double calcAngle(const Vector &, const Vector &, const Vertex &);
 

@@ -5,20 +5,20 @@
 #include "ApproachDetector.h"
 #include "PotentialCrossDetector.h"
 #include "TTS.h"
+#include "CommonTasks.h"
 
 using namespace SpecialPolygons;
 using namespace ApproachDetector;
 using namespace PotentialCrossDetector;
 
 void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
-                                        Polygon *polygon)
+                                        Polygon *&polygon)
 {
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     EdgePointer *edgePointer2 = polygon->edgePointers.back();
     EdgePointer *edgePointer3, *edgePointer4;
     Edge *edge1 = edgePointer1->edge;
     Edge *edge2 = edgePointer2->edge;
-    polygonManager.polygons.remove(polygon);
 #ifdef DEBUG
     assert(((edge1->getEndPoint(FirstPoint) ==
              edge2->getEndPoint(FirstPoint)) &&
@@ -42,36 +42,41 @@ void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
     Polygon *polygon1 = edge1->getPolygon(edgePointer3->orient);
     Polygon *polygon2 = edge2->getPolygon(edgePointer4->orient);
     if (polygon1 == polygon2) {
-        TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
-        TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
-        TTS::deleteTask(TTS::UpdateAngle, edgePointer3);
-        TTS::deleteTask(TTS::UpdateAngle, edgePointer4);
-#ifdef DEBUG
-        assert(edgePointer3->next == edgePointer4 ||
-               edgePointer4->next == edgePointer3);
-#endif
-        Vertex *vertex;
+        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
+        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
         if (edgePointer3->next == edgePointer4) {
-            vertex = edgePointer4->getEndPoint(FirstPoint);
-            TTS::recordTask(TTS::UpdateAngle, edgePointer4->next);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer3);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer4);
+            CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer4->next); 
+            polygon1->edgePointers.remove(edgePointer3);
+            polygon1->edgePointers.remove(edgePointer4);
+            polygonManager.edges.remove(edge1);
+            polygonManager.edges.remove(edge2);
+            polygonManager.vertices.remove(edgePointer4->getEndPoint(FirstPoint));
         } else if (edgePointer4->next == edgePointer3) {
-            vertex = edgePointer3->getEndPoint(FirstPoint);
-            TTS::recordTask(TTS::UpdateAngle, edgePointer3->next);
-        } else
-            REPORT_ERROR("Unhandled branches!");
-        polygon1->edgePointers.remove(edgePointer3);
-        polygon1->edgePointers.remove(edgePointer4);
-        polygonManager.edges.remove(edge1);
-        polygonManager.edges.remove(edge2);
-        polygonManager.vertices.remove(vertex);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer3);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer4); 
+            CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer3->next);
+            polygon1->edgePointers.remove(edgePointer3);
+            polygon1->edgePointers.remove(edgePointer4);
+            polygonManager.edges.remove(edge1);
+            polygonManager.edges.remove(edge2);
+            polygonManager.vertices.remove(edgePointer3->getEndPoint(FirstPoint));
+        } else {
+            Message message;
+            message << "Line polygon is enclosed and there is another polygon "
+            "on the other end!";
+            REPORT_ERROR(message.str());
+        }
     } else {
         edge1->setPolygon(edgePointer1->orient, polygon2);
         edge1->setEdgePointer(edgePointer1->orient, edgePointer4);
         edge2->detectAgent.handoverVertices(edge1);
-        TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
-        TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
+        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
+        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
         polygonManager.edges.remove(edge2);
     }
+    polygonManager.polygons.remove(polygon);
 }
 
 void SpecialPolygons::handlePointPolygon(PolygonManager &polygonManager,
@@ -97,8 +102,8 @@ void SpecialPolygons::handlePointPolygon(PolygonManager &polygonManager,
 #endif
     polygonManager.polygons.remove(polygon);
     polygonManager.edges.remove(edgePointer1->edge);
-    TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
-    TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
+    CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
+    CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
 }
 
 void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
@@ -115,7 +120,7 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
         for (int i = 0; i < polygon->edgePointers.size(); ++i) {
             if (edgePointer->getAngle() == UNSET_ANGLE) {
                 edgePointer->calcAngle();
-                TTS::deleteTask(TTS::UpdateAngle, edgePointer);
+                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer);
             }
             edgePointer = edgePointer->next;
         }
@@ -125,8 +130,6 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
         EdgePointer *edgePointer3 = NULL;
         edgePointer = polygon->edgePointers.front();
         for (int i = 0; i < polygon->edgePointers.size()+1; ++i) {
-//            if (edgePointer->prev->getAngle() < smallAngle &&
-//                edgePointer->getAngle() < smallAngle) {
             if (edgePointer->getAngle() < smallAngle) {
                 edgePointer1 = edgePointer;
                 edgePointer2 = edgePointer->next;
@@ -150,7 +153,9 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
             edgePointer2 = edgePointer2->getNeighborEdgePointer();
             edgePointer3 = edgePointer3->getNeighborEdgePointer();
             // 4. handle the slim triangle in different scenarios
+            // -----------------------------------------------------------------
             if (polygon1 != polygon3 && polygon2 != polygon3) {
+                // =============================================================
                 if (polygon1 == polygon2) {
 #ifdef DEBUG
                     assert(edgePointer1->prev == edgePointer2);
@@ -167,14 +172,16 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                     polygonManager.edges.remove(edge1);
                     polygonManager.edges.remove(edge2);
                     polygonManager.vertices.remove(vertex2);
-                    TTS::recordTask(TTS::UpdateAngle, edgePointer1);
-                    TTS::recordTask(TTS::UpdateAngle, edgePointer1->next);
+                    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1);
+                    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1->next);
                     polygon2->edgePointers.remove(edgePointer2);
-                } else {
+                }
+                // =============================================================
+                else {
                     edge1->calcLength();
                     edge2->calcLength();
                     if (edge1->getLength() < smallDistance &&
-                        detect1(vertex2, vertex1) == NoCross) {
+                        detectReplaceVertex(vertex2, vertex1, true) == NoCross) {
                         vertex2->handoverEdges(vertex1, meshManager,
                                                flowManager, polygonManager);
                         if (edge3->getPolygon(OrientLeft) == polygon) {
@@ -189,12 +196,12 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                         polygonManager.edges.remove(edge1);
                         polygonManager.edges.remove(edge2);
                         polygonManager.vertices.remove(vertex2);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer2);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer2->next);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer1->next);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2->next);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1->next);
                         polygon1->edgePointers.remove(edgePointer1);
                     } else if (edge2->getLength() < smallDistance &&
-                               detect1(vertex2, vertex3) == NoCross) {
+                               detectReplaceVertex(vertex2, vertex3, true) == NoCross) {
                         vertex2->handoverEdges(vertex3, meshManager,
                                                flowManager, polygonManager);
                         if (edge3->getPolygon(OrientLeft) == polygon) {
@@ -209,39 +216,25 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                         polygonManager.edges.remove(edge1);
                         polygonManager.edges.remove(edge2);
                         polygonManager.vertices.remove(vertex2);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer1);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer1->next);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer2->next);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1->next);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2->next);
                         polygon2->edgePointers.remove(edgePointer2);
                     } else {
-                        EdgePointer *edgePointer4;
-                        polygon3->edgePointers.insert(edgePointer3, &edgePointer4);
-                        if (edge1->getPolygon(OrientLeft) == polygon) {
-                            edge1->setPolygon(OrientLeft, polygon3);
-                            edge1->setEdgePointer(OrientLeft, edgePointer3);
-                        } else {
-                            edge1->setPolygon(OrientRight, polygon3);
-                            edge1->setEdgePointer(OrientRight, edgePointer3);
-                        }
-                        if (edge2->getPolygon(OrientLeft) == polygon) {
-                            edge2->setPolygon(OrientLeft, polygon3);
-                            edge2->setEdgePointer(OrientLeft, edgePointer4);
-                        } else {
-                            edge2->setPolygon(OrientRight, polygon3);
-                            edge2->setEdgePointer(OrientRight, edgePointer4);
-                        }
-                        edge3->detectAgent.handoverVertices(edge1);
-                        edge3->detectAgent.handoverVertices(edge2);
-                        polygonManager.edges.remove(edge3);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer3);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer4);
-                        TTS::recordTask(TTS::UpdateAngle, edgePointer4->next);
+                        polygon->dump("polygon");
+                        return;
                     }
                 }
-            } else if (polygon1 != polygon3 && polygon2 == polygon3) {
-#ifdef DEBUG
-                assert(vertex3->linkedEdges.size() == 2);
-#endif
+                polygonManager.polygons.remove(polygon);
+            }
+            // -----------------------------------------------------------------
+            else if (polygon1 != polygon3 && polygon2 == polygon3) {
+                if (vertex3->linkedEdges.size() != 2) {
+                    
+                    handleEnclosedPolygons(polygonManager, polygon2,
+                                           edgePointer3->getNeighborEdgePointer(),
+                                           edgePointer2->getNeighborEdgePointer());
+                }
                 if (edge1->getPolygon(OrientLeft) == polygon) {
                     edge1->setPolygon(OrientLeft, polygon3);
                     edge1->setEdgePointer(OrientLeft, edgePointer3);
@@ -254,61 +247,94 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                 polygonManager.edges.remove(edge2);
                 polygonManager.edges.remove(edge3);
                 polygonManager.vertices.remove(vertex3);
-                TTS::recordTask(TTS::UpdateAngle, edgePointer3);
-                TTS::recordTask(TTS::UpdateAngle, edgePointer3->next);
+                CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer3);
+                CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2->next);
+                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
                 polygon2->edgePointers.remove(edgePointer2);
-            } else if (polygon1 == polygon3 && polygon2 != polygon3) {
-#ifdef DEBUG
-                assert(vertex1->linkedEdges.size() == 2);
-#endif
-                if (edge2->getPolygon(OrientLeft) == polygon) {
-                    edge2->setPolygon(OrientLeft, polygon3);
-                    edge2->setEdgePointer(OrientLeft, edgePointer3);
+                polygonManager.polygons.remove(polygon);
+            }
+            // -----------------------------------------------------------------
+            else if (polygon1 == polygon3 && polygon2 != polygon3) {
+                if (vertex1->linkedEdges.size() == 2) {
+                    if (edge2->getPolygon(OrientLeft) == polygon) {
+                        edge2->setPolygon(OrientLeft, polygon3);
+                        edge2->setEdgePointer(OrientLeft, edgePointer3);
+                    } else {
+                        edge2->setPolygon(OrientRight, polygon3);
+                        edge2->setEdgePointer(OrientRight, edgePointer3);
+                    }
+                    edge1->detectAgent.handoverVertices(edge2);
+                    edge3->detectAgent.handoverVertices(edge2);
+                    polygonManager.edges.remove(edge1);
+                    polygonManager.edges.remove(edge3);
+                    polygonManager.vertices.remove(vertex1);
+                    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer3);
+                    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer3->next);
+                    CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
+                    polygon1->edgePointers.remove(edgePointer1);
                 } else {
-                    edge2->setPolygon(OrientRight, polygon3);
-                    edge2->setEdgePointer(OrientRight, edgePointer3);
+                    edge2->calcLength();
+                    if (edge2->getLength() < smallDistance &&
+                        detectReplaceVertex(vertex2, vertex3, true) == NoCross) {
+                        vertex2->handoverEdges(vertex3, meshManager,
+                                               flowManager, polygonManager);
+                        if (edge3->getPolygon(OrientLeft) == polygon) {
+                            edge3->setPolygon(OrientLeft, polygon1);
+                            edge3->setEdgePointer(OrientLeft, edgePointer1);
+                        } else {
+                            edge3->setPolygon(OrientRight, polygon1);
+                            edge3->setEdgePointer(OrientRight, edgePointer1);
+                        }
+                        edge1->detectAgent.handoverVertices(edge3);
+                        edge2->detectAgent.handoverVertices(edge3);
+                        polygonManager.edges.remove(edge1);
+                        polygonManager.edges.remove(edge2);
+                        polygonManager.vertices.remove(vertex2);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer1->next);
+                        CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2->next);
+                        polygon2->edgePointers.remove(edgePointer2);
+                    } else
+                        return;
                 }
-                edge1->detectAgent.handoverVertices(edge2);
-                edge3->detectAgent.handoverVertices(edge2);
-                polygonManager.edges.remove(edge1);
-                polygonManager.edges.remove(edge3);
-                polygonManager.vertices.remove(vertex1);
-                TTS::recordTask(TTS::UpdateAngle, edgePointer3);
-                TTS::recordTask(TTS::UpdateAngle, edgePointer3->next);
-                polygon1->edgePointers.remove(edgePointer1);
-            } else if (polygon1 == polygon3 && polygon2 == polygon3) {
+                polygonManager.polygons.remove(polygon);
+            }
+            // -----------------------------------------------------------------
+            else if (polygon1 == polygon3 && polygon2 == polygon3) {
+                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
+                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
+                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer3);
+                // =============================================================
                 if (vertex1->linkedEdges.size() != 2) {
 #ifdef DEBUG
                     assert(vertex2->linkedEdges.size() == 2);
                     assert(vertex3->linkedEdges.size() == 2);
-                    assert(edgePointer1->next->getAngle(NewTimeLevel) == UNSET_ANGLE);
 #endif
-                    polygonManager.vertices.remove(vertex2);
-                    polygonManager.vertices.remove(vertex3);
-                    TTS::recordTask(TTS::UpdateAngle, edgePointer1->next);
-                } else if (vertex3->linkedEdges.size() != 2) {
+                    handleEnclosedPolygons(polygonManager, polygon1,
+                                           edgePointer3, edgePointer1);
+                }
+                // =============================================================
+                else if (vertex2->linkedEdges.size() != 2) {
+#ifdef DEBUG
+                    assert(vertex1->linkedEdges.size() == 2);
+                    assert(vertex3->linkedEdges.size() == 2);
+#endif
+                    handleEnclosedPolygons(polygonManager, polygon1,
+                                           edgePointer1, edgePointer2);
+                }
+                // =============================================================
+                else if (vertex3->linkedEdges.size() != 2) {
 #ifdef DEBUG
                     assert(vertex1->linkedEdges.size() == 2);
                     assert(vertex2->linkedEdges.size() == 2);
-                    assert(edgePointer3->next->getAngle(NewTimeLevel) == UNSET_ANGLE);
 #endif
-                    polygonManager.vertices.remove(vertex1);
-                    polygonManager.vertices.remove(vertex2);
-                    TTS::recordTask(TTS::UpdateAngle, edgePointer3->next);
-                } else
-                    REPORT_ERROR("Unhandled case!");
-                polygonManager.edges.remove(edge1);
-                polygonManager.edges.remove(edge2);
-                polygonManager.edges.remove(edge3);
-                TTS::deleteTask(TTS::UpdateAngle, edgePointer1);
-                TTS::deleteTask(TTS::UpdateAngle, edgePointer2);
-                TTS::deleteTask(TTS::UpdateAngle, edgePointer3);
-                polygon1->edgePointers.remove(edgePointer1);
-                polygon2->edgePointers.remove(edgePointer2);
-                polygon3->edgePointers.remove(edgePointer3);
-            } else
+                    handleEnclosedPolygons(polygonManager, polygon1,
+                                           edgePointer2, edgePointer3);
+                }
+            }
+            // -----------------------------------------------------------------
+            else
                 REPORT_ERROR("Unhandled case!");
-            polygonManager.polygons.remove(polygon);
             polygon = NULL;
         }
     }
@@ -350,6 +376,7 @@ void SpecialPolygons::handleEnclosedPolygons(PolygonManager &polygonManager,
             if (edgePointer == edgePointer12) break;
             edgePointer = edgePointer->next;
         }
+        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer13);
         edgePointer13->calcAngle();
     } else {
         edgePointer2 = edgePointer11->getNeighborEdgePointer();

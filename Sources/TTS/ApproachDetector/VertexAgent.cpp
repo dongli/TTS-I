@@ -60,19 +60,49 @@ void VertexAgent::removeProjection(Projection *projection)
     }
 }
 
+void VertexAgent::removeProjection(std::list<Projection>::iterator &it)
+{
+    it = projections.erase(it);
+}
+
 void VertexAgent::expireProjection()
 {
+    Polygon *polygon1, *polygon2, *polygon3, *polygon4;
     std::list<Projection>::iterator it = projections.begin();
-    for (; it != projections.end(); ++it) {
+    for (; it != projections.end();) {
         // Note: There is a possibility that the paired vertex and edge belong
         //       to different polygons after one is split, so they should be
         //       unpaired to avoid unconsistent projection.
-        if (!(*it).isCalculated()) {
-            AgentPair::unpair(host, (*it).getEdge());
+        bool isSeperated = true;
+        polygon1 = (*it).getEdge()->getPolygon(OrientLeft);
+        polygon2 = (*it).getEdge()->getPolygon(OrientRight);
+        if (host->getHostEdge() == NULL) {
+            EdgePointer *linkedEdge = host->linkedEdges.front();
+            for (int i = 0; i < host->linkedEdges.size(); ++i) {
+                polygon3 = linkedEdge->edge->getPolygon(OrientLeft);
+                polygon4 = linkedEdge->edge->getPolygon(OrientRight);
+                if (polygon1 == polygon3 || polygon1 == polygon4 ||
+                    polygon2 == polygon3 || polygon2 == polygon4) {
+                    isSeperated = false;
+                    break;
+                }
+                linkedEdge = linkedEdge->next;
+            }
+        } else {
+            polygon3 = host->getHostEdge()->getPolygon(OrientLeft);
+            polygon4 = host->getHostEdge()->getPolygon(OrientRight);
+            if (polygon1 == polygon3 || polygon1 == polygon4 ||
+                polygon2 == polygon3 || polygon2 == polygon4)
+                isSeperated = false;
+        }
+        if (isSeperated) {
+            AgentPair::unpair(it);
             if (getActiveProjection() == NULL)
                 ApproachingVertices::removeVertex(host);
+        } else {
+            (*it).expire();
+            ++it;
         }
-        (*it).expire();
     }
 }
 

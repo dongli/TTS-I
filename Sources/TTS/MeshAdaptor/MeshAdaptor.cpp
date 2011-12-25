@@ -1262,7 +1262,7 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
     // reset tracer mass
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
-        polygon->tracers[tracerId].mass = 0.0;
+        polygon->tracers[tracerId].setMass(0.0);
         polygon = polygon->next;
     }
 
@@ -1283,16 +1283,15 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
             for (itOa = overlapAreaList(i, j, 0).begin();
                  itOa != overlapAreaList(i, j, 0).end(); ++itOa) {
                 double weight = (*itOa).area/totalArea;
-                (*itOa).polygon->tracers[tracerId].mass += cellMass*weight;
+                (*itOa).polygon->tracers[tracerId].addMass(cellMass*weight);
             }
         }
 
     // calculate tracer density
     polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
-        polygon->tracers[tracerId].density
-        = polygon->tracers[tracerId].mass/polygon->getArea(NewTimeLevel);
-        totalPolygonMass += polygon->tracers[tracerId].mass;
+        polygon->updateTracer(tracerId);
+        totalPolygonMass += polygon->tracers[tracerId].getMass();
         polygon = polygon->next;
     }
 
@@ -1319,7 +1318,7 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
             for (itOa = overlapAreaList(i, j, 0).begin();
                  itOa != overlapAreaList(i, j, 0).end(); ++itOa) {
                 double weight = (*itOa).area/(*itOa).totalArea;
-                q.values(i, j, 0) += (*itOa).polygon->tracers[tracerId].mass*weight;
+                q.values(i, j, 0) += (*itOa).polygon->tracers[tracerId].getMass()*weight;
             }
             totalCellMass += q.values(i, j, 0).getNew();
             q.values(i, j, 0) /= mesh.area(i, j);
@@ -1327,7 +1326,7 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
 
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
-        totalPolygonMass += polygon->tracers[tracerId].mass;
+        totalPolygonMass += polygon->tracers[tracerId].getMass();
         polygon = polygon->next;
     }
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;

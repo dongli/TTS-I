@@ -43,7 +43,54 @@ begin
 
 end
 
-; The following script is erroneous!
+procedure invert_lonlat_to_cartesian(lon, lat, x, y, z)
+begin
+
+    x = cos(lat/Rad2Deg)*cos(lon/Rad2Deg)
+    y = cos(lat/Rad2Deg)*sin(lon/Rad2Deg)
+    z = sin(lat/Rad2Deg)
+
+end
+
+procedure invert_cartesian_to_lonlat(x, y, z, lon, lat)
+begin
+
+    lon = atan2(y, x)*Rad2Deg
+    lat = asin(z)*Rad2Deg
+
+    if (lon .lt. 0.0) then
+        lon = lon+360.0
+    end if
+    if (lon .gt. 360.0) then
+        lon = lon-360.0
+    end if
+
+end
+
+procedure calc_polygon_center(lon, lat, lon0, lat0)
+begin
+
+    x = new(dimsizes(lon), double)
+    y = new(dimsizes(lon), double)
+    z = new(dimsizes(lon), double)
+
+    do i = 0, dimsizes(lon)-1
+        invert_lonlat_to_cartesian(lon(i), lat(i), x(i), y(i), z(i))
+    end do
+
+    x0 = avg(x)
+    y0 = avg(y)
+    z0 = avg(z)
+
+    norm = sqrt(x0*x0+y0*y0+z0*z0)
+    x0 = x0/norm
+    y0 = y0/norm
+    z0 = z0/norm
+
+    invert_cartesian_to_lonlat(x0, y0, z0, lon0, lat0)
+
+end
+
 function calc_polygon_center_lon(lon)
 begin
 
@@ -82,6 +129,43 @@ begin
     end if
 
     return center_lon
+
+end
+
+procedure get_viewpoint(lon, lat)
+begin
+
+    Re = 1.0
+    u0 = 2*PI*Re/(12*86400)
+    alpha = 45/Rad2Deg
+    dt = 2400
+
+    lon = lon/Rad2Deg
+    lat = lat/Rad2Deg
+    u =  u0*(cos(lat)*cos(alpha)+sin(lat)*cos(lon)*sin(alpha))
+    v = -u0*sin(lon)*sin(alpha)
+
+    dlon = u*dt/cos(lat)
+    dlat = v*dt
+    lon = lon+dlon
+    lat = lat+dlat
+    lon = lon*Rad2Deg
+    lat = lat*Rad2Deg
+
+    if (lat .gt. 90) then
+        lon = 180+lon-dlon
+        lat = 180-lat-dlat
+    end if
+    if (lat .lt. -90) then
+        lon = 180+lon-dlon
+        lat = -180-lon-dlat
+    end if
+    if (lon .lt. 0) then
+        lon = 360+mod(lon, 360)
+    end if
+    if (lon .gt. 360) then
+        lon = mod(lon, 360)
+    end if
 
 end
 
@@ -127,12 +211,20 @@ begin
     end if
 
     if (projection .eq. "ST") then
-        res@mpProjection        = "satellite"
-        res@mpLimitMode         = "angles"
-        res@mpLeftAngleF        = projection@angle
-        res@mpRightAngleF       = projection@angle
-        res@mpBottomAngleF      = projection@angle
-        res@mpTopAngleF         = projection@angle
+        res@mpProjection          = "satellite"
+        res@mpSatelliteDistF      = 3.0
+        res@mpGridLineDashPattern = 2
+        res@vpXF                  = 0.1
+        res@vpYF                  = 0.9
+        res@vpWidthF              = 0.8
+        res@vpHeightF             = 0.7
+        if (isatt(projection, "angle")) then
+            res@mpLimitMode    = "angles"
+            res@mpLeftAngleF   = projection@angle
+            res@mpRightAngleF  = projection@angle
+            res@mpBottomAngleF = projection@angle
+            res@mpTopAngleF    = projection@angle
+        end if
     end if
     if (projection .eq. "NH") then
         res@gsnPolar = "NH"
@@ -372,15 +464,16 @@ begin
 
     do i = 0, num_time-1
         f = addfile(file_names(i), "r")
-        num_total_vertex(i) = dimsizes(f->vertex_lon)
+        num_total_vertex(i) = dimsizes(f->new_vertex_lon)
         delete(f)
     end do
+    print(num_total_vertex)
 
     res                     = True
     res@gsnMaximize         = True
     res@tiMainString        = "Total Number of Polygon Vertices"
     res@tiXAxisString       = "time step"
-    res@trYMaxF             = 2000
+    ;res@trYMaxF             = 2000
 
     plot = gsn_csm_xy(wks, ispan(0, num_time-1, 1), num_total_vertex, res)
 
@@ -465,7 +558,7 @@ begin
 
     res                         = True
     res@mpGreatCircleLinesOn    = False
-    res@gsLineThicknessF        = 0.1
+    res@gsLineThicknessF        = 3.0
 
     num_lon = dimsizes(lon)
     num_lat = dimsizes(lat)

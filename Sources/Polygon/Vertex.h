@@ -8,6 +8,7 @@ class MeshManager;
 class FlowManager;
 class PolygonManager;
 #include "ApproachDetector.h"
+#include "VertexTags.h"
 #endif
 
 class Edge;
@@ -27,9 +28,9 @@ public:
 #ifdef TTS_ONLINE
     void handoverEdges(Vertex *, MeshManager &, const FlowManager &,
                        PolygonManager &);
-#endif
     void setHostEdge(Edge *edge) { hostEdge = edge; }
     Edge *getHostEdge() const { return hostEdge; }
+#endif
 
     bool isJoint() const { return linkedEdges.size() > 2; }
 
@@ -39,9 +40,10 @@ public:
 
 #ifdef TTS_ONLINE
     ApproachDetector::VertexAgent detectAgent;
+    VertexTags tags;
+    Edge *hostEdge; // for test point
 #endif
 	List<EdgePointer> linkedEdges;
-    Edge *hostEdge; // for test point
 };
 
 #endif

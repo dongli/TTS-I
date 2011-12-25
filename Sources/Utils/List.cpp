@@ -311,7 +311,7 @@ template <class T>
 void List<T>::remove(T *elem)
 {
     if (elem->endTag == ListElement<T>::Null)
-        REPORT_ERROR("Element has already been removed.")
+        REPORT_ERROR("Element has already been removed.");
     --numElem;
     if (elem->endTag != ListElement<T>::Head) {
         elem->prev->next = elem->next;
@@ -440,9 +440,8 @@ void List<T>::reindex()
 template <class T>
 void List<T>::shift(int count)
 {
-    if (!isRing()) {
-        REPORT_ERROR("The list has not be made as a ring.")
-    }
+    if (!isRing())
+        REPORT_ERROR("The list has not been made as a ring!");
     if (count > 0) {
         head = at(count);
     } else {

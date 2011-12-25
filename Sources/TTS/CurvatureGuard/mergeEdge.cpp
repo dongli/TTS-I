@@ -1,58 +1,48 @@
 #ifndef mergeEdge_h
 #define mergeEdge_h
 
-#include "CurvatureGuard.h"
-#include "TTS.h"
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "PolygonManager.h"
 #include "PotentialCrossDetector.h"
+#include "CurvatureGuard.h"
+#include "TTS.h"
+#include "CommonTasks.h"
 #ifdef DEBUG
 #include "DebugTools.h"
 #endif
 
 using namespace PotentialCrossDetector;
 
-inline double relaxThreshold(Edge *edge1, Edge *edge2)
-{
-    static const double R0 = 0.5;
-    static const double R1 = 0.9;
-    static const double L0 = 0.001/Rad2Deg*Sphere::radius;
-    static const double L1 = 4.0/Rad2Deg*Sphere::radius;
-    static const double dR = R1-R0;
-    static const double dL = L1-L0;
-    double length = fmin(edge1->getLength(), edge2->getLength());
-    if (length > L0 && length < L1) {
-        double t = 1.0-(length-L0)/dL;
-        return dR*(4.0-3.0*t)*pow(t, 3.0)+R0;
-    } else if (length <= L0) {
-        return R1;
-    } else {
-        return R0;
-    }
-}
-
 inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
                       PolygonManager &polygonManager, Polygon *polygon)
 {
-    static const double smallAngle = 20.0/Rad2Deg;
     bool isMerged = false;
 
-    TTS::resetTasks();
+    Edge *edge1, *edge2;
+    double a0;
 
-//    if (TimeManager::getSteps() >= 74 && polygon->getID() == 8132) {
+    assert(CommonTasks::getTaskNumber(CommonTasks::UpdateAngle) == 0);
+
+//    if (TimeManager::getSteps() >= 420 && (polygon->getID() == 124665)) {
 //        polygon->dump("polygon");
 //        REPORT_DEBUG;
 //    }
+
+    if (polygon->edgePointers.size() == 3)
+        return isMerged;
 
     EdgePointer *edgePointer = polygon->edgePointers.front();
     EdgePointer *nextEdgePointer;
     while (edgePointer != NULL && edgePointer != polygon->edgePointers.back()) {
         nextEdgePointer = edgePointer->next;
-        Edge *edge1 = edgePointer->prev->edge; // to be deleted if necessary
-        Edge *edge2 = edgePointer->edge;
-        double a0 = CurvatureGuard::angleThreshold(edge1, edge2)*
-        relaxThreshold(edge1, edge2);
+        if (edgePointer->prev->getPolygon(OrientRight)->getID() < polygon->getID())
+            goto next_edge;
+        edge1 = edgePointer->prev->edge; // to be deleted if necessary
+        edge2 = edgePointer->edge;
+        CurvatureGuard::calcAngleThreshold(edge1, edge2, a0);
+        CurvatureGuard::relaxAngleThreshold(edge1, edge2, a0);
+        adjustMergeEdgeAngleThreshold(edge1, edge2, a0);
         if (fabs(edgePointer->getAngle(OldTimeLevel)-PI) < a0 &&
             fabs(edgePointer->getAngle(NewTimeLevel)-PI) < a0) {
             isMerged = true;
@@ -64,11 +54,26 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             // Note: If the vertex is connected by more than two edges, that is
             //       a joint, then do not merge the edges.
             if (vertex2->isJoint())
+                goto next_edge;
+            // -----------------------------------------------------------------
+            // avoid the line polygon in neighbor polygons
+            if (edgePointer->getPolygon(OrientRight)->edgePointers.size() == 3)
                 return false;
+            // -----------------------------------------------------------------
+            // new test point waiting for check
+            Vertex testPoint;
+            Coordinate x; Location loc;
+            Sphere::calcMiddlePoint(vertex1->getCoordinate(OldTimeLevel),
+                                    vertex3->getCoordinate(OldTimeLevel), x);
+            meshManager.checkLocation(x, loc);
+            testPoint.setCoordinate(x, NewTimeLevel);
+            testPoint.setLocation(loc);
+            TTS::track(meshManager, flowManager, &testPoint);
             // -----------------------------------------------------------------
             // check whether the edge-merging operation will cause edge-crossing
             // event or not
-            if (detect3(edge1, edge2) != NoCross)
+            if (detectRemoveVertexOnEdges(meshManager, edgePointer,
+                                          &testPoint, polygon) != NoCross)
                 goto next_edge;
             // -----------------------------------------------------------------
             EdgePointer *oldEdgePointer1, *oldEdgePointer2;
@@ -82,29 +87,6 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
 #ifdef DEBUG
             assert(oldEdgePointer1 == edgePointer);
 #endif
-            // -----------------------------------------------------------------
-            if (oldEdgePointer1->next->getAngle() < smallAngle) {
-                edgePointer = edgePointer->next;
-                continue;
-            }
-            if (oldEdgePointer1->prev->getAngle() < smallAngle) {
-                edgePointer = edgePointer->next;
-                continue;
-            }
-            if (oldEdgePointer2->getAngle() < smallAngle) {
-                edgePointer = edgePointer->next;
-                continue;
-            }
-            if (oldEdgePointer2->next->next->getAngle() < smallAngle) {
-                edgePointer = edgePointer->next;
-                continue;
-            }
-            // -----------------------------------------------------------------
-            if (oldEdgePointer1->isTangly() ||
-                oldEdgePointer2->next->isTangly()) {
-                edgePointer = edgePointer->next;
-                continue;
-            }
             // -----------------------------------------------------------------
             Polygon *polygon1, *polygon2;
             if (vertex1 == edge1->getEndPoint(FirstPoint)) {
@@ -136,36 +118,35 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             // adjust edges
             if (vertex1 == edge1->getEndPoint(FirstPoint)) {
                 edge1->setEdgePointer(OrientLeft, newEdgePointer1);
-                edge1->changeEndPoint(SecondPoint, vertex3,
+                edge1->changeEndPoint(SecondPoint, vertex3, &testPoint,
                                       meshManager, flowManager);
                 if (newEdgePointer2 != NULL)
                     edge1->setEdgePointer(OrientRight, newEdgePointer2);
             } else {
                 edge1->setEdgePointer(OrientRight, newEdgePointer1);
-                edge1->changeEndPoint(FirstPoint, vertex3,
+                edge1->changeEndPoint(FirstPoint, vertex3, &testPoint,
                                       meshManager, flowManager);
                 if (newEdgePointer2 != NULL)
                     edge1->setEdgePointer(OrientLeft, newEdgePointer2);
             }
-            edge1->detectAgent.updateVertexProjections();
+            edge1->detectAgent.updateVertexProjections(meshManager);
             edge2->detectAgent.handoverVertices(edge1);
             polygonManager.edges.remove(edge2);
             // -----------------------------------------------------------------
-            TTS::doTask(TTS::UpdateAngle);
+            CommonTasks::doTask(CommonTasks::UpdateAngle);
         }
     next_edge: edgePointer = nextEdgePointer;
     }
     return isMerged;
 }
 
-bool CurvatureGuard::mergeEdge(MeshManager &meshManager,
-                               const FlowManager &flowManager,
-                               PolygonManager &polygonManager)
+bool CurvatureGuard::mergeEdges(MeshManager &meshManager,
+                                const FlowManager &flowManager,
+                                PolygonManager &polygonManager)
 {
     bool isMerged = false;
-    Polygon *endPolygon = polygonManager.polygons.back()->next;
     Polygon *polygon = polygonManager.polygons.front();
-    while (polygon != endPolygon) {
+    while (polygon != NULL) {
         if (mergeEdge(meshManager, flowManager, polygonManager, polygon))
             isMerged = true;
         polygon = polygon->next;

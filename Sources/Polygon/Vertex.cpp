@@ -27,8 +27,8 @@ void Vertex::reinit()
     Point::reinit();
 #ifdef TTS_ONLINE
     detectAgent.reinit();
-#endif
     hostEdge = NULL;
+#endif
 }
 
 void Vertex::clean()
@@ -80,31 +80,39 @@ void Vertex::handoverEdges(Vertex *newVertex, MeshManager &meshManager,
                            const FlowManager &flowManager,
                            PolygonManager &polygonManager)
 {
+    static std::list<Edge *> edges;
+    // -------------------------------------------------------------------------
     EdgePointer *linkedEdge = linkedEdges.front();
     while (linkedEdge != NULL) {
+        edges.push_back(linkedEdge->edge);
         if (linkedEdge->edge->getEndPoint(FirstPoint) == this) {
             linkedEdge->edge->changeEndPoint(FirstPoint, newVertex,
-                                              meshManager, flowManager);
+                                             meshManager, flowManager);
         } else {
             linkedEdge->edge->changeEndPoint(SecondPoint, newVertex,
-                                              meshManager, flowManager);
+                                             meshManager, flowManager);
         }
-        if (linkedEdge->edge->getEndPoint(FirstPoint) ==
-            linkedEdge->edge->getEndPoint(SecondPoint) &&
-            linkedEdge->edge->detectAgent.vertices.size() != 0) {
-            EdgePointer *linkedEdge1 = newVertex->linkedEdges.front();
-            for (int j = 0; j < newVertex->linkedEdges.size(); ++j) {
-                linkedEdge->edge->detectAgent.handoverVertices(linkedEdge1->edge);
-                linkedEdge1 = linkedEdge1->next;
-            }
-            if (linkedEdge->edge->detectAgent.vertices.size() != 0) {
-                linkedEdge->edge->detectAgent.clean();
-                REPORT_DEBUG
-            }
-        }
-        linkedEdge->edge->detectAgent.updateVertexProjections();
         linkedEdge = linkedEdge->next;
     }
+    // -------------------------------------------------------------------------
+    static std::list<Edge *>::iterator it;
+    for (it = edges.begin(); it != edges.end(); ++it) {
+        if ((*it)->getEndPoint(FirstPoint) ==
+            (*it)->getEndPoint(SecondPoint) &&
+            (*it)->detectAgent.vertices.size() != 0) {
+            // Note: When the linked edge degenerates to a point, hand over its
+            //       paired vertices. If there is any vertex left, clean it.
+            linkedEdge = newVertex->linkedEdges.front();
+            for (int j = 0; j < newVertex->linkedEdges.size(); ++j) {
+                (*it)->detectAgent.handoverVertices(linkedEdge->edge);
+                linkedEdge = linkedEdge->next;
+            }
+            if ((*it)->detectAgent.vertices.size() != 0)
+                (*it)->detectAgent.clean();
+        }
+        (*it)->detectAgent.updateVertexProjections(meshManager);
+    }
+    edges.clear();
 }
 #endif
 

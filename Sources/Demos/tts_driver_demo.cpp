@@ -17,17 +17,24 @@ int main(int argc, char **argv)
     MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
-    Deformation testCase(Deformation::Case4, Deformation::CosineHills);
+    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
+//    MovingVortices testCase;
     TTS tts;
 
-    char fileName[30], filePattern[50] = "ch_360x180_10242_600_%3.3d.nc";
+//    char fileName[30], filePattern[50] = "gh_360x180_2562_600_%3.3d.nc";
+//    char fileName[30], filePattern[50] = "ch_240x120_240x120_600_%3.3d.nc";
+//    char fileName[30], filePattern[50] = "ch_128x60_128x60_600_%3.3d.nc";
+//    char fileName[30], filePattern[50] = "mv_%3.3d.nc";
 
     // -------------------------------------------------------------------------
     timeManager.setClock(5.0/600);
     timeManager.setEndStep(600);
+//    timeManager.setClock(1800.0);
+//    timeManager.setEndStep(576);
 
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
+//    int numLon = 128, numLat = 60;
     double dlon = PI2/numLon;
     double dlat = PI/(numLat+1);
     double lon[numLon], lat[numLat];
@@ -46,17 +53,17 @@ int main(int argc, char **argv)
     tracerManager.init(argv[1]);
 
     // -------------------------------------------------------------------------
-    testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
-    sprintf(fileName, filePattern, timeManager.getSteps());
-    tracerManager.output(fileName);
+//    testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
+//    sprintf(fileName, filePattern, timeManager.getSteps());
+//    tracerManager.output(fileName);
 
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         timeManager.advance();
         testCase.calcVelocityField(flowManager);
-        sprintf(fileName, filePattern, timeManager.getSteps());
-        tracerManager.output(fileName);
+//        sprintf(fileName, filePattern, timeManager.getSteps());
+//        tracerManager.output(fileName);
 //        flowManager.output("flow.nc");
     }
 }

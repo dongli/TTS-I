@@ -19,18 +19,6 @@ public:
                 TracerManager &tracerManager);
 
     static void track(MeshManager &, const FlowManager &, Point *);
-
-    enum TaskType {
-        UpdateAngle
-    };
-    static void resetTasks();
-    static void recordTask(TaskType, EdgePointer *);
-    static void deleteTask(TaskType, EdgePointer *);
-    static void doTask(TaskType, bool debug = false);
-    static void dumpTask(TaskType);
-
-private:
-    static std::list<EdgePointer *> needUpdateAngles;
 };
 
 #endif

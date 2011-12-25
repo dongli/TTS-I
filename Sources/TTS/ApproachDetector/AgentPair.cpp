@@ -7,9 +7,10 @@
 
 using namespace ApproachDetector;
 
-//#define TRACK_PAIRS
-#define PAIR_VERTEX_ID 51628
-#define PAIR_EDGE_ID 691316
+#define TRACK_PAIRS
+#define PAIR_VERTEX_ID 1130691
+#define PAIR_TEST_POINT_HOST_EDGE_ID -999
+#define PAIR_EDGE_ID 2147744
 
 void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
 {
@@ -24,11 +25,16 @@ void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
 #endif
 #ifdef TRACK_PAIRS
 #ifdef PAIR_EDGE_ID
-    if (vertex->getID() == PAIR_VERTEX_ID && edge->getID() == PAIR_EDGE_ID) {
+    if ((vertex->getID() == PAIR_VERTEX_ID ||
+         (vertex->getHostEdge() != NULL &&
+          vertex->getHostEdge()->getID() == PAIR_TEST_POINT_HOST_EDGE_ID)) &&
+         edge->getID() == PAIR_EDGE_ID)
 #else
-    if (vertex->getID() == PAIR_VERTEX_ID) {
+    if (vertex->getID() == PAIR_VERTEX_ID)
 #endif
+    {
         DebugTools::watch(vertex);
+        DebugTools::watch(edge);
         cout << endl << endl;
         cout << "*** ApproachDetector::AgentPair::pair ***" << endl;
         cout << "---> Vertex " << vertex->getID() << " is paired with ";
@@ -42,7 +48,7 @@ void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
         cout << "--->   New distance: ";
         cout << projection->getDistance(NewTimeLevel) << endl;
         cout << endl << endl;
-        REPORT_DEBUG
+        REPORT_DEBUG;
     }
 #endif
     vertex->detectAgent.recordProjection(edge, projection);
@@ -53,18 +59,24 @@ void AgentPair::unpair(Vertex *vertex, Edge *edge)
 {
 #ifdef TRACK_PAIRS
 #ifdef PAIR_EDGE_ID
-    if (vertex->getID() == PAIR_VERTEX_ID && edge->getID() == PAIR_EDGE_ID) {
+    if ((vertex->getID() == PAIR_VERTEX_ID ||
+         (vertex->getHostEdge() != NULL &&
+          vertex->getHostEdge()->getID() == PAIR_TEST_POINT_HOST_EDGE_ID)) &&
+        edge->getID() == PAIR_EDGE_ID)
 #else
-    if (vertex->getID() == PAIR_VERTEX_ID) {
+    if (vertex->getID() == PAIR_VERTEX_ID)
 #endif
+    {
         cout << "1: ---> Vertex " << vertex->getID() << " is unpaired with ";
         cout << "edge " << edge->getID() << endl;
-        REPORT_DEBUG
+        REPORT_DEBUG;
     }
 #endif
     Projection *projection = vertex->detectAgent.getProjection(edge);
     edge->detectAgent.removeVertex(vertex);
     vertex->detectAgent.removeProjection(projection);
+    if (vertex->detectAgent.getActiveProjection() == NULL)
+        ApproachingVertices::removeVertex(vertex);
 }
 
 
@@ -72,19 +84,25 @@ void AgentPair::unpair(std::list<Vertex *>::iterator &it, Edge *edge)
 {
 #ifdef TRACK_PAIRS
 #ifdef PAIR_EDGE_ID
-    if ((*it)->getID() == PAIR_VERTEX_ID && edge->getID() == PAIR_EDGE_ID) {
+    if (((*it)->getID() == PAIR_VERTEX_ID ||
+         ((*it)->getHostEdge() != NULL &&
+          (*it)->getHostEdge()->getID() == PAIR_TEST_POINT_HOST_EDGE_ID)) &&
+        edge->getID() == PAIR_EDGE_ID)
 #else
-    if ((*it)->getID() == PAIR_VERTEX_ID) {
+    if ((*it)->getID() == PAIR_VERTEX_ID)
 #endif
+    {
         cout << "2: ---> Vertex " << (*it)->getID() << " is unpaired with ";
         cout << "edge " << edge->getID() << endl;
-        REPORT_DEBUG
+        REPORT_DEBUG;
     }
 #endif
     Vertex *vertex = *it;
     Projection *projection = vertex->detectAgent.getProjection(edge);
     edge->detectAgent.removeVertex(it);
     vertex->detectAgent.removeProjection(projection);
+    if (vertex->detectAgent.getActiveProjection() == NULL)
+        ApproachingVertices::removeVertex(vertex);
 }
 
 void AgentPair::unpair(std::list<Vertex *>::iterator &it,
@@ -92,19 +110,48 @@ void AgentPair::unpair(std::list<Vertex *>::iterator &it,
 {
 #ifdef TRACK_PAIRS
 #ifdef PAIR_EDGE_ID
-    if ((*it)->getID() == PAIR_VERTEX_ID &&
-        projection->getEdge()->getID() == PAIR_EDGE_ID) {
+    if (((*it)->getID() == PAIR_VERTEX_ID ||
+         ((*it)->getHostEdge() != NULL &&
+          (*it)->getHostEdge()->getID() == PAIR_TEST_POINT_HOST_EDGE_ID)) &&
+        projection->getEdge()->getID() == PAIR_EDGE_ID)
 #else
-    if ((*it)->getID() == PAIR_VERTEX_ID) {
+    if ((*it)->getID() == PAIR_VERTEX_ID)
 #endif
-    
+    {
         cout << "3: ---> Vertex " << (*it)->getID() << " is unpaired with ";
         cout << "edge " << projection->getEdge()->getID() << endl;
-        REPORT_DEBUG
+        REPORT_DEBUG;
     }
 #endif
     Vertex *vertex = *it;
     Edge *edge = projection->getEdge();
     edge->detectAgent.removeVertex(it);
     vertex->detectAgent.removeProjection(projection);
+    if (vertex->detectAgent.getActiveProjection() == NULL)
+        ApproachingVertices::removeVertex(vertex);
+}
+
+void AgentPair::unpair(std::list<Projection>::iterator &it)
+{
+    Vertex *vertex = (*it).getVertex();
+    Edge *edge = (*it).getEdge();
+#ifdef TRACK_PAIRS
+#ifdef PAIR_EDGE_ID
+    if ((vertex->getID() == PAIR_VERTEX_ID ||
+         (vertex->getHostEdge() != NULL &&
+          vertex->getHostEdge()->getID() == PAIR_TEST_POINT_HOST_EDGE_ID)) &&
+        edge->getID() == PAIR_EDGE_ID)
+#else
+    if (vertex->getID() == PAIR_VERTEX_ID)
+#endif
+    {
+        cout << "4: ---> Vertex " << vertex->getID() << " is unpaired with ";
+        cout << "edge " << edge->getID() << endl;
+        REPORT_DEBUG;
+    }
+#endif
+    edge->detectAgent.removeVertex(vertex);
+    vertex->detectAgent.removeProjection(it);
+    if (vertex->detectAgent.getActiveProjection() == NULL)
+        ApproachingVertices::removeVertex(vertex);
 }

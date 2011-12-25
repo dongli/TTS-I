@@ -30,10 +30,14 @@ public:
     void dump() const;
     void dump(std::ostream *output) const;
 
-    List<EdgePointer> edgePointers;
 #ifdef TTS_ONLINE
+    void updateTracer(int tracerId);
+    void updateTracers();
+    void handoverTracers();
+    void handoverTracers(Polygon *polygon, double percent);
     vector<Tracer> tracers;
 #endif
+    List<EdgePointer> edgePointers;
 
 private:
     bool isAreaSet;

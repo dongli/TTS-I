@@ -34,43 +34,23 @@ namespace ApproachDetector
     //! \return The boolean status of approaching.
     bool isApproaching(Projection *projection);
 
-    //! \brief Detect the approaching event within the polygon.
-    //! \param meshManager The mesh manager.
-    //! \param flowManager The flow manager.
-    //! \param polygon The polygon.
-    //! \return none.
-    void detect(MeshManager &meshManager, const FlowManager &flowManager,
-                PolygonManager &polygonManager, Polygon *polygon);
+    bool checkApproachValid(MeshManager &meshManager,
+                            const FlowManager &flowManager,
+                            PolygonManager &polygonManager,
+                            EdgePointer *edgePointer1,
+                            EdgePointer *edgePointer2,
+                            Vertex *vertex3);
 
-    //! \brief Detect each polygon in the polygon manager.
-    //! \param meshManager The mesh manager.
-    //! \param flowManager The flow manager.
-    //! \param polygonManager The polygon manager.
-    //! \return none.
-    void detect(MeshManager &meshManager, const FlowManager &flowManager,
-                PolygonManager &polygonManager);
+    void detectPolygon(MeshManager &meshManager, const FlowManager &flowManager,
+                       PolygonManager &polygonManager, Polygon *polygon);
 
-    //! \brief Reset the detect agents.
-    //! \param polygonManager The polygon manager.
-    //! \return none.
+    void detectPolygons(MeshManager &meshManager, const FlowManager &flowManager,
+                        PolygonManager &polygonManager);
+
     void reset(PolygonManager &polygonManager);
 
-    //! \brief Choose the mode based on the distances between approaching vertex
-    //!        and end points of the edge.
-    //! \param vertex1 The first end point of the edge.
-    //! \param vertex2 The second end point of the edge.
-    //! \param vertex3 The approaching vertex.
-    //! \param projection The projection of vertex3 on the edge.
-    //! \return mode.
-    //!         1 - vertex3 is very close to vertex1;
-    //!         2 - vertex3 is very close to vertex2;
-    //!         3 - vertex3 is not so close to vertex1 and vertex2, and the new
-    //!             vertex should be added on the edge to split polygon;
-    //!         4 - vertex3 is very close to the edge and will be replaced by
-    //!             its projection on the edge.
-    //!        -1 - vertex3 should not be judged as an approaching vertex. 
-    int chooseMode(Vertex *vertex1, Vertex *vertex2,
-                   Vertex *vertex3, Projection *projection);
+    int chooseMode(EdgePointer *edgePointer1, Vertex *vertex3,
+                   Projection *projection);
 }
 
 #endif

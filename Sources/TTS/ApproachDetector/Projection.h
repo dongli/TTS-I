@@ -44,11 +44,12 @@ namespace ApproachDetector
         Edge *getEdge() const { return edge; }
         void setEdge(Edge *edge) { this->edge = edge; }
 
-        const Coordinate &getCoordinate(TimeLevel timeLevel) const;
+        const Coordinate &getCoordinate(TimeLevel timeLevel = NewTimeLevel) const;
 
-        double getDistance(TimeLevel timeLevel);
+        double getDistance(TimeLevel timeLevel = NewTimeLevel) const;
 
-        OrientStatus getOrient() { return orient; }
+        void setOrient(OrientStatus orient) { this->orient = orient; }
+        OrientStatus getOrient() const { return orient; }
 
         void calcChangeRate();
         double getChangeRate() const { return changeRate; }
@@ -57,19 +58,8 @@ namespace ApproachDetector
         void checkApproaching();
         void setApproach(bool approach) { this->approach = approach; }
 
-        //! \brief Check the validation of data to avoid repeated calculation.
-        //! \param none.
-        //! \return The boolean status.
         bool isCalculated() const { return calculated; }
-
-        //! \brief Validate the data.
-        //! \param none.
-        //! \return none.
         void setCalculated() { calculated = true; }
-        
-        //! \brief Expire the data.
-        //! \param none.
-        //! \return none.
         void expire() { calculated = false; }
 
         Projection &operator=(const Projection &);

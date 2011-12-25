@@ -5,8 +5,8 @@
 using namespace ApproachDetector;
 
 //#define TRACK_PROJECTION
-#define PROJECT_VERTEX_ID 243829
-#define PROJECT_EDGE_ID 332328
+#define PROJECT_VERTEX_ID 45804
+#define PROJECT_EDGE_ID 85762
 
 Projection::Projection()
 {
@@ -58,7 +58,7 @@ ProjectionStatus Projection::project(TimeLevel timeLevel)
         cout << "*** ApproachDetector::Projection::project ***" << endl;
         vertex->detectAgent.dump();
         cout << endl << endl;
-        REPORT_DEBUG
+        REPORT_DEBUG;
     }
 #endif
     if (timeLevel == NewTimeLevel) {
@@ -82,7 +82,7 @@ bool Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)
         cout << "*** ApproachDetector::Projection::project ***" << endl;
         vertex->detectAgent.dump();
         cout << endl << endl;
-        REPORT_DEBUG
+        REPORT_DEBUG;
     }
 #endif
     const Coordinate &x1 = edge->getEndPoint(FirstPoint)->getCoordinate(timeLevel);
@@ -120,14 +120,14 @@ const Coordinate &Projection::getCoordinate(TimeLevel timeLevel) const
         REPORT_ERROR("Unknown time level.")
 }
 
-double Projection::getDistance(TimeLevel timeLevel)
+double Projection::getDistance(TimeLevel timeLevel) const
 {
     if (timeLevel == OldTimeLevel)
         return distance.getOld();
     else if (timeLevel == NewTimeLevel)
         return distance.getNew();
     else
-        REPORT_ERROR("Unknown time level.")
+        REPORT_ERROR("Unknown time level.");
 }
 
 void Projection::calcChangeRate()

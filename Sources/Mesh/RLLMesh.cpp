@@ -30,9 +30,8 @@ RLLMesh::~RLLMesh()
 void RLLMesh::init(MeshSpec spec, int numLon, int numLat,
                    double *lon, double *lat)
 {
-    if (isConstructed) {
-        REPORT_ERROR("RLL mesh has already been created.")
-    }
+    if (isConstructed)
+        REPORT_ERROR("RLL mesh has already been created.");
 	// Note: Input "lon" and "lat" are of FULL mesh
     this->spec = spec;
 	// -------------------------------------------------------------------------
@@ -134,6 +133,67 @@ void RLLMesh::init(MeshSpec spec, int numLon, int numLat,
 #endif
     }
     isConstructed = true;
+}
+
+void RLLMesh::getBoundBox(int i1, int i2, int j1, int j2, int ii, int jj,
+                          int &I1, int &I2, int &J1, int &J2) const
+{
+    // TODO: We will encounter problem in near-pole area.
+    // Note: The mesh should be the center mesh!
+    int di = fabs(i1-i2);
+    if (i1 <= i2) {
+        if (di < lon.size()-di) {
+            I1 = i1-ii;
+            I2 = i2+ii;
+        } else {
+            I1 = i2-ii;
+            I2 = i1+ii;
+        }
+    } else {
+        if (di < lon.size()-di) {
+            I1 = i2-ii;
+            I2 = i1+ii;
+        } else {
+            I1 = i1-ii;
+            I2 = i2+ii;
+        }
+    }
+    if (I1 < 0)
+        I1 += lon.size()-1;
+    if (I2 >= lon.size()-1)
+        I2 -= lon.size()-1;
+    if (j1 <= j2) {
+        J1 = j1-jj;
+        J2 = j2+jj;
+    } else {
+        J1 = j2-jj;
+        J2 = j1+jj;
+    }
+}
+
+bool RLLMesh::isInBoundBox(int I1, int I2, int J1, int J2, int i, int j) const
+{
+    if (j < J1 || j > J2)
+        return false;
+    int dI = fabs(I1-I2);
+    if (I1 < I2) {
+        if (dI < lon.size()-dI) {
+            if (i < I1 || i > I2)
+                return false;
+        } else {
+            if (i > I1 && i < I2)
+                return false;
+        } 
+    } else {
+        if (dI < lon.size()-dI) {
+            if (i < I2 || i > I1)
+                return false;
+        } else {
+            if (i > I2 && i < I1)
+                return false;
+        }
+    }
+    return true;
 }
 
 void RLLMesh::dump() const

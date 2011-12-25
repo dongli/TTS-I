@@ -9,7 +9,7 @@ class FlowManager;
 
 namespace SpecialPolygons
 {
-    void handleLinePolygon(PolygonManager &polygonManager, Polygon *polygon);
+    void handleLinePolygon(PolygonManager &polygonManager, Polygon *&polygon);
 
     void handlePointPolygon(PolygonManager &polygonManager, Polygon *polygon);
 
@@ -17,6 +17,8 @@ namespace SpecialPolygons
                            const FlowManager &flowManager,
                            PolygonManager &polygonManager, Polygon *&polygon);
 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // try to eliminate the enclosed polygons from beginning!
     void handleEnclosedPolygons(PolygonManager &polygonManager,
                                 Polygon *polygon1,
                                 EdgePointer *edgePointer11,

@@ -5,7 +5,7 @@
 
 void test_checkLocation()
 {
-    int numLon = 4, numLat = 4;
+    int numLon = 128, numLat = 4;
     double dlon, dlat;
     double lon[numLon], lat[numLat];
 
@@ -24,7 +24,7 @@ void test_checkLocation()
     Coordinate x;
     Location loc;
 
-    x.set(lon[numLon-1]+dlon*0.47, 65.0/Rad2Deg);
+    x.set(6.2826213232128572, 65.0/Rad2Deg);
     point.setCoordinate(x);
 
     meshManager.checkLocation(point.getCoordinate(), loc, &point);

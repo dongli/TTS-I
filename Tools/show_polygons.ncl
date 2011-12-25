@@ -16,7 +16,7 @@ begin
     is_plot_testpoint = False
     is_plot_point_counters = False
     projection = "CE"
-    projection@angle = 10.0
+    projection@move_viewpoint = True
     projection@min_lat = 80.0
     projection@max_lat = -80.0
     line_width = 1.0
@@ -32,6 +32,10 @@ begin
     setup_map(projection, res_map)
 
     ; --------------------------------------------------------------------------
+    if (projection .eq. "ST") then
+        res_map@mpCenterLonF = 0.0
+        res_map@mpCenterLatF = 0.0
+    end if
 
     ; --------------------------------------------------------------------------
     if (is_plot_polygons .or. is_plot_quantities .or. \
@@ -48,6 +52,11 @@ begin
                 system("echo plotting "+polygon_file_names(i))
             end if
 
+            if (projection .eq. "ST") then
+                get_viewpoint(res_map@mpCenterLonF, res_map@mpCenterLatF)
+                system("echo "+res_map@mpCenterLonF+"  "+res_map@mpCenterLatF)
+            end if
+                
             map = gsn_csm_map(wks, res_map)
 
             f = addfile(polygon_file_names(i), "r")
@@ -118,7 +127,8 @@ begin
     end if
 
     if (is_plot_vertex_number) then
-        show_vertex_number(wks, file_names)
+        wks = gsn_open_wks("pdf", "vertex_number")
+        show_vertex_number(wks, polygon_file_names)
     end if
 
     if (is_plot_polygon_area) then

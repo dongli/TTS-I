@@ -1,13 +1,14 @@
 #ifndef guard_h
 #define guard_h
 
-#include "CurvatureGuard.h"
-#include "TTS.h"
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "PolygonManager.h"
 #include "TimeManager.h"
 #include "ApproachDetector.h"
+#include "CurvatureGuard.h"
+#include "TTS.h"
+#include "CommonTasks.h"
 #ifdef DEBUG
 #include "DebugTools.h"
 #endif
@@ -44,25 +45,31 @@ void CurvatureGuard::guard(MeshManager &meshManager,
 #endif
 
     // -------------------------------------------------------------------------
-    if (splitEdge(meshManager, flowManager, polygonManager)) flag = true;
+    if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
-    if (mergeEdge(meshManager, flowManager, polygonManager)) flag = true;
+    ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
-    ApproachDetector::detect(meshManager, flowManager, polygonManager);
+    if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
-    if (splitPolygon(meshManager, flowManager, polygonManager)) flag = true;
+    ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
+#ifdef DEBUG
+    DebugTools::dump_watchers();
+#endif
+
+    // -------------------------------------------------------------------------
+    if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
@@ -70,12 +77,13 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     ApproachDetector::reset(polygonManager);
 
+    CommonTasks::resetTasks();
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
-    if (flag) {
-        polygonManager.vertices.reindex();
-        polygonManager.edges.reindex();
-    }
+//    if (flag) {
+//        polygonManager.vertices.reindex();
+//        polygonManager.edges.reindex();
+//    }
 }
 
 #endif

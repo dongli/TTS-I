@@ -1,9 +1,12 @@
 #include "EdgeAgent.h"
 #include "Vertex.h"
 #include "Edge.h"
+#include "PolygonManager.h"
+#include "CurvatureGuard.h"
 #include "ReportMacros.h"
 
 using namespace ApproachDetector;
+using namespace CurvatureGuard;
 
 EdgeAgent::EdgeAgent()
 {
@@ -27,8 +30,8 @@ void EdgeAgent::reinit()
 
 void EdgeAgent::clean()
 {
-    std::list<Vertex *>::iterator it = vertices.begin();
-    for (; it != vertices.end();)
+    std::list<Vertex *>::iterator it;
+    for (it = vertices.begin(); it != vertices.end();)
         AgentPair::unpair(it, host);
 }
 
@@ -47,7 +50,7 @@ void EdgeAgent::removeVertex(std::list<Vertex *>::iterator &it)
     it = vertices.erase(it);
 }
 
-void EdgeAgent::updateVertexProjections()
+void EdgeAgent::updateVertexProjections(MeshManager &meshManager)
 {
     Vertex *vertex1 = host->getEndPoint(FirstPoint);
     Vertex *vertex2 = host->getEndPoint(SecondPoint);
@@ -55,7 +58,14 @@ void EdgeAgent::updateVertexProjections()
     for (; it != vertices.end();) {
         Vertex *vertex3 = *it;
         Projection *projection = vertex3->detectAgent.getProjection(host);
-        if (vertex3 == vertex1 || vertex3 == vertex2) {
+        if (vertex3 == vertex1 || vertex3 == vertex2 ||
+            vertex3->getHostEdge() == host ||
+            // Note: To avoid line polygons.
+            (vertex3->getHostEdge() != NULL &&
+             ((vertex3->getHostEdge()->getEndPoint(FirstPoint) == vertex1 &&
+               vertex3->getHostEdge()->getEndPoint(SecondPoint) == vertex2) ||
+              (vertex3->getHostEdge()->getEndPoint(FirstPoint) == vertex2 &&
+               vertex3->getHostEdge()->getEndPoint(SecondPoint) == vertex1)))) {
             AgentPair::unpair(it, host);
             if (projection->isApproaching() &&
                 vertex3->detectAgent.getActiveProjection() == NULL)
@@ -76,8 +86,29 @@ void EdgeAgent::updateVertexProjections()
                 ++it;
             } else if (status == HasNoProjection) {
                 AgentPair::unpair(it, projection);
-            } else if (status == CrossEdge)
-                REPORT_DEBUG;
+            } else if (status == CrossEdge) {
+                if (vertex3->getID() == -1) {
+                    // Note: When the test point cross the paired edge, we can
+                    //       only to reset it to avoid potential problems.
+                    static_cast<TestPoint *>(vertex3)->reset(meshManager);
+                    projection->project(NewTimeLevel);
+                    projection->project(OldTimeLevel);
+                    projection->checkApproaching();
+                    if (projection->isApproaching())
+                        if (!isAlreadyApproaching)
+                            ApproachingVertices::recordVertex(vertex3);
+                    else
+                        if (isAlreadyApproaching &&
+                            vertex3->detectAgent.getActiveProjection() == NULL)
+                            ApproachingVertices::removeVertex(vertex3);
+                    ++it;
+                } else {
+                    Message message;
+                    message << "Vertex " << vertex3->getID() << " crosses ";
+                    message << "edge " << host->getID() << "!";
+                    REPORT_ERROR(message.str());
+                }
+            }
         }
     }
 }
@@ -92,7 +123,8 @@ void EdgeAgent::handoverVertices(Edge *edge)
     std::list<Vertex *>::iterator it = vertices.begin();
     for (; it != vertices.end(); ++it) {
         Vertex *vertex3 = *it;
-        if (vertex3 == vertex1 || vertex3 == vertex2) {
+        if (vertex3 == vertex1 || vertex3 == vertex2 ||
+            vertex3->getHostEdge() == edge) {
             continue;
         }
         Projection *projection = vertex3->detectAgent.getProjection(edge);
@@ -125,7 +157,11 @@ void EdgeAgent::dump()
     cout << "Paired vertices:" << endl;
     std::list<Vertex *>::iterator it = vertices.begin();
     for (; it != vertices.end(); ++it) {
-        cout << setw(8) << (*it)->getID();
+        cout << setw(12) << *it << ":";
+        if ((*it)->getID() != -1)
+            cout << setw(10) << (*it)->getID() << endl;
+        else
+            cout << setw(10) << "[" << (*it)->getHostEdge()->getID() << "]" << endl;
     }
     cout << endl;
 }

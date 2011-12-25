@@ -20,6 +20,8 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     this->numSubLon = numSubLon; this->numSubLat = numSubLat;
     // -------------------------------------------------------------------------
     // bounds of cells for counting points
+    // TODO: Clarify the size of longitude grids.
+    //       Why do we minus 2 here, not 1?
     int numLon = (lon.size()-2)*numSubLon;
     int numLat = (lat.size()-1)*numSubLat+1+2;
     double lonBnds[numLon], latBnds[numLat];

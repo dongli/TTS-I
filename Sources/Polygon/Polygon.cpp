@@ -40,26 +40,36 @@ void Polygon::calcArea()
         EdgePointer *edgePointer = edgePointers.front();
         for (int i = 0; i < edgePointers.size(); ++i) {
 #ifdef DEBUG
-            assert(edgePointer->getAngle() != UNSET_ANGLE);
+            if (edgePointer->getAngle() == UNSET_ANGLE) {
+                Message message;
+                message << "Polygon " << getID() << " has unset angle between ";
+                message << "edge " << edgePointer->prev->edge->getID();
+                message << " and " << edgePointer->edge->getID() << "!";
+                REPORT_ERROR(message.str());
+            }
 #endif
             excess += edgePointer->getAngle();
             edgePointer = edgePointer->next;
         }
         excess -= (edgePointers.size()-2)*PI;
         area = excess*Sphere::radius2;
+#ifdef DEBUG
+        excess = 0.0;
+        edgePointer = edgePointers.front();
+        for (int i = 0; i < edgePointers.size(); ++i) {
+            edgePointer->resetAngle();
+            edgePointer->calcAngle();
+            excess += edgePointer->getAngle();
+            edgePointer = edgePointer->next;
+        }
+        excess -= (edgePointers.size()-2)*PI;
+        if (fabs(excess) > 1.0 || excess <= 0.0)
+            REPORT_DEBUG;
+        excess = excess*Sphere::radius2;
+        assert(excess == area);
+#endif
     } else
         area = 0.0;
-#ifdef DEBUG
-    if (area <= 0.0) {
-        cout << "Polygon ID: " << getID() << endl;
-#ifdef TTS_ONLINE
-        DebugTools::output_angles(this, "angles");
-        DebugTools::output_lengths(this, "lengths");
-#endif
-        dump("polygon");
-        REPORT_ERROR("Encounter negative area.")
-    }
-#endif
     if (isAreaSet) {
         this->area.save();
     }
@@ -68,26 +78,41 @@ void Polygon::calcArea()
         this->area.save();
         isAreaSet = true;
     }
-#ifdef DEBUG
-    static const double maxRatio = 5.0;
-    double ratio = fabs(this->area.getOld()-this->area.getNew())/this->area.getOld();
-    if (ratio > maxRatio) {
-        cout << "Polygon ID: " << getID() << endl;
-#ifdef TTS_ONLINE
-        DebugTools::output_angles(this, "angles");
-        DebugTools::output_lengths(this, "lengths");
-#endif
-        dump("polygon");
-        cout << "Old area: ";
-        cout << setw(20) << setprecision(15) << this->area.getOld() << endl;
-        cout << "New area: ";
-        cout << setw(20) << setprecision(15) << this->area.getNew() << endl;
-        char message[100];
-        sprintf(message, "Change of polygon area exceeds %f%% (%f%%)!", maxRatio*100.0, ratio*100.0);
-        REPORT_WARNING(message);
-    }
-#endif
 }
+
+#ifdef TTS_ONLINE
+void Polygon::updateTracer(int tracerId)
+{
+    tracers[tracerId].setDensity(tracers[tracerId].getMass()/area.getNew());
+}
+
+void Polygon::updateTracers()
+{
+    for (int i = 0; i < tracers.size(); ++i) {
+        tracers[i].setDensity(tracers[i].getMass()/area.getNew());
+    }
+}
+
+void Polygon::handoverTracers()
+{
+    for (int i = 0; i < tracers.size(); ++i) {
+        double mass = tracers[i].getMass()/edgePointers.size();
+        EdgePointer *edgePointer = edgePointers.front();
+        for (int j = 0; j < edgePointers.size(); ++j) {
+            edgePointer->getPolygon(OrientRight)->tracers[i].addMass(mass);
+            edgePointer = edgePointer->next;
+        }
+    }
+}
+
+void Polygon::handoverTracers(Polygon *polygon, double percent)
+{
+    for (int i = 0; i < tracers.size(); ++i) {
+        double mass = tracers[i].getMass()*percent;
+        polygon->tracers[i].addMass(mass);
+    }
+}
+#endif
 
 void Polygon::dump(const char *fileName) const
 {

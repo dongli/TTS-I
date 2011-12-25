@@ -11,32 +11,52 @@
 #include "CurvatureGuard.h"
 #include "Edge.h"
 #include "Sphere.h"
+#include "ThresholdFunction.h"
 
-double CurvatureGuard::angleThreshold(Edge *edge)
+void CurvatureGuard::calcAngleThreshold(Edge *edge, double &a0)
 {
-    static double A0 = 1.0/Rad2Deg;
-    static double A1 = 120.0/Rad2Deg;
-    static double L0 = 0.01/Rad2Deg*Sphere::radius;
-    static double L1 = 10.0/Rad2Deg*Sphere::radius;
-    static double dA = A1-A0;
-    static double dL = L1-L0;
-    
-    double length = edge->getLength();
-    if (length > L0 && length < L1) {
-        double t = 1.0-(length-L0)/dL;
-        return dA*(4.0-3.0*t)*pow(t, 3.0)+A0;
-    } else if (length <= L0) {
-        return A1;
-    } else {
-        return A0;
-    }
+    static const double L[] = {
+        0.01/Rad2Deg*Sphere::radius,
+        0.5/Rad2Deg*Sphere::radius,
+        1.0/Rad2Deg*Sphere::radius,
+        4.0/Rad2Deg*Sphere::radius
+    };
+    static const double A[] = {
+        180.0/Rad2Deg,
+        60.0/Rad2Deg,
+        30.0/Rad2Deg,
+        1.0/Rad2Deg
+    };
+    double l = edge->getLength();
+    a0 = piecewiseCubicthreshold(4, L, A, l);
 }
 
-double CurvatureGuard::angleThreshold(Edge *edge1, Edge *edge2)
+void CurvatureGuard::calcAngleThreshold(Edge *edge1, Edge *edge2, double &a0)
 {
-    double A1 = CurvatureGuard::angleThreshold(edge1);
-    double A2 = CurvatureGuard::angleThreshold(edge2);
-    return fmin(A1, A2);
+    double A1, A2;
+    CurvatureGuard::calcAngleThreshold(edge1, A1);
+    CurvatureGuard::calcAngleThreshold(edge2, A2);
+    // TODO: Choose a better weight function.
+//    a0 = fmin(A1, A2);
+    a0 = (A1+A2)*0.5;
+}
+
+void CurvatureGuard::relaxAngleThreshold(Edge *edge1, Edge *edge2, double &a0)
+{
+    static const double L[] = {
+        0.01/Rad2Deg*Sphere::radius,
+        0.5/Rad2Deg*Sphere::radius,
+        1.0/Rad2Deg*Sphere::radius,
+        4.0/Rad2Deg*Sphere::radius
+    };
+    static const double R[] = {
+        1.0,
+        0.8,
+        0.5,
+        0.2
+    };
+    double l = fmax(edge1->getLength(), edge2->getLength());
+    a0 *= piecewiseCubicthreshold(4, L, R, l);
 }
 
 #endif

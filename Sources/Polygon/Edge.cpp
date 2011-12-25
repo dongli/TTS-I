@@ -3,11 +3,20 @@
 #include "Constants.h"
 #include "Sphere.h"
 #ifdef TTS_ONLINE
+#include "MeshManager.h"
+#include "FlowManager.h"
+#include "ApproachDetector.h"
+#include "PotentialCrossDetector.h"
 #include "TTS.h"
+#include "CommonTasks.h"
+
+using namespace PotentialCrossDetector;
 #endif
 
 Edge::Edge()
 {
+    // record the edge so that other codes can derive the edge from it
+    testPoint.setHostEdge(this);
 #ifdef TTS_ONLINE
     detectAgent.checkin(this);
 #endif
@@ -30,6 +39,7 @@ void Edge::reinit()
     isNormVectorSet = false;
 #ifdef TTS_ONLINE
     detectAgent.reinit();
+    tags.reset();
 #endif
 }
 
@@ -44,7 +54,7 @@ void Edge::clean()
 #endif
 }
 
-void Edge::linkEndPoint(PointOrder order, Vertex *point)
+void Edge::linkEndPoint(PointOrder order, Vertex *point, bool isSetTestPoint)
 {
     isNormVectorSet = false;
     endPoints[order] = point;
@@ -57,18 +67,15 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point)
     //       calculate the coordinate of test point at new time level, because
     //       the test point will be advected following, so the new coordinate
     //       will be copied to old coordinate.
-    if (endPoints[0] != NULL && endPoints[1] != NULL) {
+    if (endPoints[0] != NULL && endPoints[1] != NULL && isSetTestPoint) {
         const Coordinate &x1 = endPoints[0]->getCoordinate(OldTimeLevel);
         const Coordinate &x2 = endPoints[1]->getCoordinate(OldTimeLevel);
-        Coordinate xr, xo;
-        Sphere::rotate(x1, x2, xr);
-        double dlat = (PI05-xr.getLat())*0.5;
-        xr.set(xr.getLon(), PI05-dlat);
-        Sphere::inverseRotate(x1, xo, xr);
-        testPoint.clean();
-        testPoint.setCoordinate(xo, NewTimeLevel);
-        // record the edge so that other codes can derive the edge from it
-        testPoint.setHostEdge(this);
+        Coordinate x;
+        Sphere::calcMiddlePoint(x1, x2, x);
+#ifdef TTS_ONLINE
+        testPoint.detectAgent.clean();
+#endif
+        testPoint.setCoordinate(x, NewTimeLevel);
     }
 }
 
@@ -77,21 +84,37 @@ void Edge::changeEndPoint(PointOrder order, Vertex *point,
                           MeshManager &meshManager,
                           const FlowManager &flowManager)
 {
-    Vertex *testPoint = getTestPoint();
-    testPoint->Point::reinit();
+    testPoint.Point::reinit();
     if (endPoints[order] != NULL)
         endPoints[order]->unlinkEdge(this);
     linkEndPoint(order, point);
     calcNormVector();
     calcLength();
-    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientLeft));
-    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientLeft)->next);
-    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientRight));
-    TTS::recordTask(TTS::UpdateAngle, getEdgePointer(OrientRight)->next);
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientLeft));
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientLeft)->next);
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight));
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight)->next);
     Location loc;
-    meshManager.checkLocation(testPoint->getCoordinate(), loc);
-    testPoint->setLocation(loc);
-    TTS::track(meshManager, flowManager, testPoint);
+    meshManager.checkLocation(testPoint.getCoordinate(), loc);
+    testPoint.setLocation(loc);
+    TTS::track(meshManager, flowManager, &testPoint);
+}
+
+void Edge::changeEndPoint(PointOrder order, Vertex *point, Vertex *testPoint,
+                          MeshManager &meshManager,
+                          const FlowManager &flowManager)
+{
+    if (endPoints[order] != NULL)
+        endPoints[order]->unlinkEdge(this);
+    linkEndPoint(order, point, false);
+    calcNormVector();
+    calcLength();
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientLeft));
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientLeft)->next);
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight));
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight)->next);
+    this->testPoint.detectAgent.clean();
+    this->testPoint = *testPoint;
 }
 #endif
 
@@ -123,8 +146,8 @@ void Edge::setEdgePointer(OrientStatus orient, EdgePointer *edgePointer)
     edgePointer->edge = this;
     edgePointer->orient = orient;
 #ifdef TTS_ONLINE
-    TTS::recordTask(TTS::UpdateAngle, edgePointer);
-    TTS::recordTask(TTS::UpdateAngle, edgePointer->next);
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer);
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer->next);
 #else
     edgePointer->resetAngle();
     edgePointer->next->resetAngle();
@@ -137,14 +160,12 @@ void Edge::calcNormVector()
         normVector.save();
     const Coordinate &x1 = endPoints[0]->getCoordinate();
     const Coordinate &x2 = endPoints[1]->getCoordinate();
-    Vector tmp = cross(x2.getCAR(), x1.getCAR());
-    tmp /= norm(tmp);
+    Vector tmp = norm_cross(x2.getCAR(), x1.getCAR());
     normVector.setNew(tmp);
     if (!isNormVectorSet) {
         const Coordinate &x1 = endPoints[0]->getCoordinate(OldTimeLevel);
         const Coordinate &x2 = endPoints[1]->getCoordinate(OldTimeLevel);
-        Vector tmp = cross(x2.getCAR(), x1.getCAR());
-        tmp /= norm(tmp);
+        Vector tmp = norm_cross(x2.getCAR(), x1.getCAR());
         normVector.setOld(tmp);
         isNormVectorSet = true;
     }
@@ -279,16 +300,23 @@ EdgePointer *EdgePointer::getNeighborEdgePointer() const
     }
 }
 
+double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2)
+{
+    double tmp = dot(vector1, vector2);
+    tmp = fmax(-1.0, fmin(1.0, tmp));
+    return acos(-tmp);
+}
+
 double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2,
                               const Coordinate &x)
 {
     double angle;
-    
+
     // -------------------------------------------------------------------------
     double tmp = dot(vector1, vector2);
     tmp = fmax(-1.0, fmin(1.0, tmp));
     angle = acos(-tmp);
-    
+
     // -------------------------------------------------------------------------
     // handle obtuse angle
     Vector judge = cross(vector1, vector2);
@@ -312,17 +340,16 @@ Vector EdgePointer::getNormVector(TimeLevel timeLevel) const
         else if (timeLevel == NewTimeLevel)
             return edge->normVector.getNew();
         else
-            REPORT_ERROR("Unknown time level.")
+            REPORT_ERROR("Unknown time level.");
     } else if (orient == OrientRight) {
         if (timeLevel == OldTimeLevel)
             return -edge->normVector.getOld();
         else if (timeLevel == NewTimeLevel)
             return -edge->normVector.getNew();
         else
-            REPORT_ERROR("Unknown time level.")
-    } else {
-        REPORT_ERROR("Unknown orient.")
-    }
+            REPORT_ERROR("Unknown time level.");
+    } else
+        REPORT_ERROR("Unknown orient.");
 }
 
 void EdgePointer::calcAngle()
@@ -331,24 +358,10 @@ void EdgePointer::calcAngle()
         this->angle.save();
     Vertex *point = getEndPoint(FirstPoint);
     double angle = calcAngle(prev->getNormVector(), getNormVector(), *point);
-    if (angle > 359/Rad2Deg) {
-        cout << "Left polygon ID: " << edge->polygons[0]->getID() << endl;
-        cout << "Right polygon ID: " << edge->polygons[1]->getID() << endl;
-        edge->polygons[0]->dump("left_polygon");
-        edge->polygons[1]->dump("right_polygon");
-        REPORT_DEBUG
-    }
     this->angle.setNew(angle);
     if (!isAngleSet) {
         angle = calcAngle(prev->getNormVector(OldTimeLevel),
                           getNormVector(OldTimeLevel), *point);
-        if (angle > 359/Rad2Deg) {
-            cout << "Left polygon ID: " << edge->polygons[0]->getID() << endl;
-            cout << "Right polygon ID: " << edge->polygons[1]->getID() << endl;
-            edge->polygons[0]->dump("left_polygon");
-            edge->polygons[1]->dump("right_polygon");
-            REPORT_DEBUG
-        }
         this->angle.setOld(angle);
         isAngleSet = true;
     }

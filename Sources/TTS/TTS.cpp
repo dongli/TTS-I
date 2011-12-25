@@ -9,8 +9,6 @@
 #include "DebugTools.h"
 #endif
 
-std::list<EdgePointer *> TTS::needUpdateAngles;
-
 TTS::TTS()
 {
     REPORT_ONLINE("TTS")
@@ -118,9 +116,9 @@ void TTS::advect(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     // adapt the quantities carried by parcels (polygons)
     // onto the background fixed mesh
-    meshAdaptor.adapt(tracerManager, meshManager);
-    for (int i = 0; i < tracerManager.getTracerNum(); ++i)
-        meshAdaptor.remap(tracerManager.getTracerName(i), tracerManager);
+//    meshAdaptor.adapt(tracerManager, meshManager);
+//    for (int i = 0; i < tracerManager.getTracerNum(); ++i)
+//        meshAdaptor.remap(tracerManager.getTracerName(i), tracerManager);
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
@@ -169,73 +167,4 @@ void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
     // -------------------------------------------------------------------------
     point->setCoordinate(x1);
     point->setLocation(loc1);
-}
-
-void TTS::resetTasks()
-{
-    needUpdateAngles.clear();
-}
-
-void TTS::recordTask(TaskType type, EdgePointer *edgePointer)
-{
-    if (type == UpdateAngle) {
-        if (find(needUpdateAngles.begin(), needUpdateAngles.end(), edgePointer)
-            == needUpdateAngles.end()) {
-            edgePointer->resetAngle();
-            needUpdateAngles.push_back(edgePointer);
-        }
-    }
-}
-
-void TTS::deleteTask(TaskType type, EdgePointer *edgePointer)
-{
-    if (type == UpdateAngle) {
-#ifdef DEBUG
-        if (find(needUpdateAngles.begin(), needUpdateAngles.end(), edgePointer)
-            == needUpdateAngles.end()) {
-            //dumpTask(type);
-            REPORT_WARNING("The edge pointer does not contained in the list.")
-        }
-#endif
-        needUpdateAngles.remove(edgePointer);
-    }
-}
-
-void TTS::doTask(TaskType type, bool debug)
-{
-    if (type == UpdateAngle) {
-        std::list<EdgePointer *>::iterator it = needUpdateAngles.begin();
-        for (; it != needUpdateAngles.end(); ++it) {
-#ifdef DEBUG
-            assert((*it)->isAngleSet == false);
-#endif
-            (*it)->calcAngle();
-            if (debug) {
-                (*it)->dump();
-            }
-        }
-        needUpdateAngles.clear();
-    }
-}
-
-void TTS::dumpTask(TaskType type)
-{
-    std::list<EdgePointer *>::const_iterator it;
-    it = needUpdateAngles.begin();
-    cout << setw(8) << "Edge ID";
-    cout << setw(8) << "Orient";
-    cout << setw(8) << "ID";
-    cout << setw(20) << "First point ID";
-    cout << setw(20) << "Second point ID" << endl;
-    for (; it != needUpdateAngles.end(); ++it) {
-        cout << setw(8) << (*it)->edge->getID();
-        if ((*it)->orient == OrientLeft)
-            cout << setw(8) << "left";
-        else
-            cout << setw(8) << "right";
-        cout << setw(8) << (*it)->getID();
-        cout << setw(20) << (*it)->getEndPoint(FirstPoint)->getID();
-        cout << setw(20) << (*it)->getEndPoint(SecondPoint)->getID();
-        cout << endl;
-    }
 }

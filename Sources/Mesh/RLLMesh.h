@@ -17,6 +17,13 @@ struct MeshSpec {
     bool isAreaFit;
 };
 
+/*!
+ RLLMesh - Regular Longitude-Latitude Mesh
+ Note:
+ - The longitude range of Full, LatHalf is (0,360).
+ - The longitude range of LonHalf, BothHalf is (-dlon*0.5,360+dlon*0.5).
+ */
+
 class RLLMesh
 {
 public:
@@ -28,6 +35,10 @@ public:
 
     int getNumLon() const { return static_cast<int>(lon.size()); }
     int getNumLat() const { return static_cast<int>(lat.size()); }
+
+    void getBoundBox(int i1, int i2, int j1, int j2, int ii, int jj,
+                     int &I1, int &I2, int &J1, int &J2) const;
+    bool isInBoundBox(int I1, int I2, int J1, int J2, int i, int j) const;
 
     void dump() const;
     void output(const string &fileName) const;

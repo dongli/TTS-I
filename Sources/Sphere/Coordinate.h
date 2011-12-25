@@ -25,7 +25,7 @@ public:
         sph(2) = lev;
         // Convert spherical coordinate to Cartesian coordinate
         double cosLat = cos(lat);
-        // Todo: Do we need to multiply sphere radius?
+        // TODO: Do we need to multiply sphere radius?
         car(0) = cosLat*cos(lon);
         car(1) = cosLat*sin(lon);
         car(2) = sin(lat);

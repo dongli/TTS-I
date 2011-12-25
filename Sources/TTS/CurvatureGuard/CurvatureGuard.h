@@ -2,29 +2,32 @@
 #define CurvatureGuard_h
 
 class Edge;
+class EdgePointer;
+class Vertex;
+class Polygon;
 class MeshManager;
 class FlowManager;
 class PolygonManager;
 
 namespace CurvatureGuard
 {
-    //! \brief The main interface of CurvatureGuard.
     void guard(MeshManager &, const FlowManager &, PolygonManager &);
-
-    //! \brief Split the edge when the line approximation goes poor.
-    bool splitEdge(MeshManager &, const FlowManager &, PolygonManager &);
+    
     bool splitEdge(MeshManager &, const FlowManager &, PolygonManager &,
-                   Edge *edge, bool isMustSplit = false);
+                   Edge *edge, bool isChecked = false, bool isMustSplit = false);
+    bool splitEdges(MeshManager &, const FlowManager &, PolygonManager &);
 
-    //! \brief Merge edges when line approximation goes well.
-    bool mergeEdge(MeshManager &, const FlowManager &, PolygonManager &);
+    bool mergeEdges(MeshManager &, const FlowManager &, PolygonManager &);
 
-    //! \brief Split the polygon when vertex-edge approaching events occur.
-    bool splitPolygon(MeshManager &, const FlowManager &, PolygonManager &);
+    void splitPolygon(MeshManager &, const FlowManager &, PolygonManager &,
+                      Polygon *&polygon1, EdgePointer *edgePointer1,
+                      EdgePointer *edgePointer2, Vertex *vertex3, int mode);
+    bool splitPolygons(MeshManager &, const FlowManager &, PolygonManager &);
 
     //! \brief Calculate angle thresholds for "splitEdge" and "mergeEdge".
-    double angleThreshold(Edge *edge);
-    double angleThreshold(Edge *edge1, Edge *edge2);
+    void calcAngleThreshold(Edge *edge, double &a0);
+    void calcAngleThreshold(Edge *edge1, Edge *edge2, double &a0);
+    void relaxAngleThreshold(Edge *edge1, Edge *edge2, double &a0);
 }
 
 #endif
