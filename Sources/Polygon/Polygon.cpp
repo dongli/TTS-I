@@ -138,6 +138,7 @@ void Polygon::dump(std::ostream *output) const
         *output << endl;
         edgePointer = edgePointer->next;
     }
+#ifdef TTS_ONLINE
     // test points
     edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
@@ -148,4 +149,5 @@ void Polygon::dump(std::ostream *output) const
         *output << endl;
         edgePointer = edgePointer->next;
     }
+#endif
 }

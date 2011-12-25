@@ -133,6 +133,32 @@
 		55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55DA3E2A13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		55DA3E2B13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
+		55F30BE114A775370057BBBE /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
+		55F30BE314A775750057BBBE /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
+		55F30BE414A775750057BBBE /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
+		55F30BE514A775750057BBBE /* MeshManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */; };
+		55F30BE614A775750057BBBE /* PolarRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */; };
+		55F30BE714A775750057BBBE /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */; };
+		55F30BE814A775750057BBBE /* FlowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */; };
+		55F30BE914A775750057BBBE /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
+		55F30BEA14A775890057BBBE /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
+		55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
+		55F30BEC14A775B30057BBBE /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
+		55F30BED14A775B30057BBBE /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
+		55F30BEE14A775B30057BBBE /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
+		55F30BEF14A775B30057BBBE /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
+		55F30BF014A775B30057BBBE /* guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE311421CE86001E8352 /* guard.cpp */; };
+		55F30BF114A775B30057BBBE /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
+		55F30BF214A775B30057BBBE /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
+		55F30BF314A775B30057BBBE /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
+		55F30BF414A775B30057BBBE /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
+		55F30BF514A775B30057BBBE /* AgentPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CD14093757000B7E48 /* AgentPair.cpp */; };
+		55F30BF614A775B30057BBBE /* ApproachingVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D114093757000B7E48 /* ApproachingVertices.cpp */; };
+		55F30BF714A775B30057BBBE /* ApproachDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CF14093757000B7E48 /* ApproachDetector.cpp */; };
+		55F30BF814A775B30057BBBE /* TTS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */; };
+		55F30BF914A775CC0057BBBE /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
+		55F30BFA14A775DB0057BBBE /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
+		55F30BFB14A775E70057BBBE /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -799,6 +825,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F30BFB14A775E70057BBBE /* TracerManager.cpp in Sources */,
+				55F30BFA14A775DB0057BBBE /* DebugTools.cpp in Sources */,
+				55F30BF914A775CC0057BBBE /* CommonTasks.cpp in Sources */,
+				55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */,
+				55F30BEC14A775B30057BBBE /* angleThreshold.cpp in Sources */,
+				55F30BED14A775B30057BBBE /* splitEdge.cpp in Sources */,
+				55F30BEE14A775B30057BBBE /* mergeEdge.cpp in Sources */,
+				55F30BEF14A775B30057BBBE /* splitPolygon.cpp in Sources */,
+				55F30BF014A775B30057BBBE /* guard.cpp in Sources */,
+				55F30BF114A775B30057BBBE /* PotentialCrossDetector.cpp in Sources */,
+				55F30BF214A775B30057BBBE /* Projection.cpp in Sources */,
+				55F30BF314A775B30057BBBE /* VertexAgent.cpp in Sources */,
+				55F30BF414A775B30057BBBE /* EdgeAgent.cpp in Sources */,
+				55F30BF514A775B30057BBBE /* AgentPair.cpp in Sources */,
+				55F30BF614A775B30057BBBE /* ApproachingVertices.cpp in Sources */,
+				55F30BF714A775B30057BBBE /* ApproachDetector.cpp in Sources */,
+				55F30BF814A775B30057BBBE /* TTS.cpp in Sources */,
+				55F30BEA14A775890057BBBE /* Velocity.cpp in Sources */,
+				55F30BE314A775750057BBBE /* RLLMesh.cpp in Sources */,
+				55F30BE414A775750057BBBE /* Layers.cpp in Sources */,
+				55F30BE514A775750057BBBE /* MeshManager.cpp in Sources */,
+				55F30BE614A775750057BBBE /* PolarRing.cpp in Sources */,
+				55F30BE714A775750057BBBE /* Field.cpp in Sources */,
+				55F30BE814A775750057BBBE /* FlowManager.cpp in Sources */,
+				55F30BE914A775750057BBBE /* PointCounter.cpp in Sources */,
+				55F30BE114A775370057BBBE /* TestPoint.cpp in Sources */,
 				5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */,
 				5598FB1813D3DC8F00BC1AC4 /* Sphere.cpp in Sources */,
 				5598FB1713D3DC8200BC1AC4 /* TimeManager.cpp in Sources */,
@@ -976,7 +1028,10 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					TTS_ONLINE,
+					DEBUG,
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

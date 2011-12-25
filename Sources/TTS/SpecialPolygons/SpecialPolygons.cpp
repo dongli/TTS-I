@@ -63,10 +63,8 @@ void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
             polygonManager.edges.remove(edge2);
             polygonManager.vertices.remove(edgePointer3->getEndPoint(FirstPoint));
         } else {
-            Message message;
-            message << "Line polygon is enclosed and there is another polygon "
-            "on the other end!";
-            REPORT_ERROR(message.str());
+            REPORT_ERROR("Line polygon is enclosed and there is "
+                         "another polygon on the other end!");
         }
     } else {
         edge1->setPolygon(edgePointer1->orient, polygon2);
@@ -229,12 +227,9 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
             }
             // -----------------------------------------------------------------
             else if (polygon1 != polygon3 && polygon2 == polygon3) {
-                if (vertex3->linkedEdges.size() != 2) {
-                    
-                    handleEnclosedPolygons(polygonManager, polygon2,
-                                           edgePointer3->getNeighborEdgePointer(),
-                                           edgePointer2->getNeighborEdgePointer());
-                }
+#ifdef DEBUG
+                assert(vertex3->linkedEdges.size() == 2);
+#endif
                 if (edge1->getPolygon(OrientLeft) == polygon) {
                     edge1->setPolygon(OrientLeft, polygon3);
                     edge1->setEdgePointer(OrientLeft, edgePointer3);
@@ -301,36 +296,7 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
             }
             // -----------------------------------------------------------------
             else if (polygon1 == polygon3 && polygon2 == polygon3) {
-                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
-                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
-                CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer3);
-                // =============================================================
-                if (vertex1->linkedEdges.size() != 2) {
-#ifdef DEBUG
-                    assert(vertex2->linkedEdges.size() == 2);
-                    assert(vertex3->linkedEdges.size() == 2);
-#endif
-                    handleEnclosedPolygons(polygonManager, polygon1,
-                                           edgePointer3, edgePointer1);
-                }
-                // =============================================================
-                else if (vertex2->linkedEdges.size() != 2) {
-#ifdef DEBUG
-                    assert(vertex1->linkedEdges.size() == 2);
-                    assert(vertex3->linkedEdges.size() == 2);
-#endif
-                    handleEnclosedPolygons(polygonManager, polygon1,
-                                           edgePointer1, edgePointer2);
-                }
-                // =============================================================
-                else if (vertex3->linkedEdges.size() != 2) {
-#ifdef DEBUG
-                    assert(vertex1->linkedEdges.size() == 2);
-                    assert(vertex2->linkedEdges.size() == 2);
-#endif
-                    handleEnclosedPolygons(polygonManager, polygon1,
-                                           edgePointer2, edgePointer3);
-                }
+                REPORT_ERROR("Encounter enclosed slim triangle!");
             }
             // -----------------------------------------------------------------
             else
@@ -338,72 +304,4 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
             polygon = NULL;
         }
     }
-}
-
-void SpecialPolygons::handleEnclosedPolygons(PolygonManager &polygonManager,
-                                             Polygon *polygon1,
-                                             EdgePointer *edgePointer11,
-                                             EdgePointer *edgePointer12,
-                                             Polygon *polygon)
-{
-    EdgePointer *edgePointer2;
-    EdgePointer *edgePointer;
-    Vertex *vertex;
-    Polygon *polygon2;
-    if (polygon == NULL) {
-        edgePointer2 = edgePointer12->getNeighborEdgePointer();
-        polygon2 = edgePointer2->getPolygon(OrientLeft);
-        // ---------------------------------------------------------------------
-        Polygon *polygon3;
-        edgePointer = edgePointer2;
-        do {
-            polygon3 = edgePointer->getPolygon(OrientRight);
-            if (polygon3 != polygon1 && polygon3 != NULL)
-                handleEnclosedPolygons(polygonManager, polygon1,
-                                       edgePointer, NULL, polygon2);
-            if (edgePointer->next != edgePointer2) {
-                vertex = edgePointer->getEndPoint(SecondPoint);
-                polygonManager.vertices.remove(vertex);
-            }
-            polygonManager.edges.remove(edgePointer->edge);
-            edgePointer = edgePointer->next;
-        } while (edgePointer != edgePointer2);
-        // ---------------------------------------------------------------------
-        EdgePointer *edgePointer13 = edgePointer12->next;
-        edgePointer = edgePointer11;
-        while (true) {
-            polygon1->edgePointers.remove(edgePointer);
-            if (edgePointer == edgePointer12) break;
-            edgePointer = edgePointer->next;
-        }
-        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer13);
-        edgePointer13->calcAngle();
-    } else {
-        edgePointer2 = edgePointer11->getNeighborEdgePointer();
-        polygon2 = edgePointer2->getPolygon(OrientLeft);
-        edgePointer = edgePointer2->next;
-        do {
-            if (edgePointer->next->getPolygon(OrientRight) != polygon) {
-                vertex = edgePointer->getEndPoint(SecondPoint);
-                polygonManager.vertices.remove(vertex);
-            }
-            if (edgePointer->getPolygon(OrientRight) == polygon) {
-                EdgePointer *edgePointer3 = edgePointer->getNeighborEdgePointer();
-                if (edgePointer3->orient == OrientLeft)
-                    edgePointer3->edge->setPolygon(OrientRight, NULL);
-                else
-                    edgePointer3->edge->setPolygon(OrientLeft, NULL);
-            } else if (edgePointer->getPolygon(OrientRight) == polygon1) {
-                polygonManager.edges.remove(edgePointer->edge);
-            } else if (edgePointer->getPolygon(OrientRight) != NULL) {
-                handleEnclosedPolygons(polygonManager, polygon1,
-                                       edgePointer, NULL, polygon2);
-                polygonManager.edges.remove(edgePointer->edge);
-            } else {
-                polygonManager.edges.remove(edgePointer->edge);
-            }
-            edgePointer = edgePointer->next;
-        } while (edgePointer != edgePointer2);
-    }
-    polygonManager.polygons.remove(polygon2);
 }

@@ -15,8 +15,11 @@ begin
     is_plot_polygon_area = False
     is_plot_testpoint = False
     is_plot_point_counters = False
-    projection = "CE"
-    projection@move_viewpoint = True
+    projection = "ST"
+    projection@angle = 10.0
+    ;projection@move_viewpoint = True
+    projection@center_lon = 0.0
+    projection@center_lat = 0.0
     projection@min_lat = 80.0
     projection@max_lat = -80.0
     line_width = 1.0
@@ -53,8 +56,10 @@ begin
             end if
 
             if (projection .eq. "ST") then
-                get_viewpoint(res_map@mpCenterLonF, res_map@mpCenterLatF)
-                system("echo "+res_map@mpCenterLonF+"  "+res_map@mpCenterLatF)
+                if (isatt(projection, "move_viewpoint") .and. \
+                    projection@move_viewpoint) then
+                    get_viewpoint(res_map@mpCenterLonF, res_map@mpCenterLatF)
+                end if
             end if
                 
             map = gsn_csm_map(wks, res_map)

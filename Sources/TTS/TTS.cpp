@@ -93,7 +93,7 @@ void TTS::advect(MeshManager &meshManager,
 #endif
         polygon = polygon->next;
     }
-#ifdef DEBUG
+#ifdef CHECK_AREA_BIAS
     static const double trueTotalArea = 4.0*PI*Sphere::radius2;
     double bias = fabs(totalArea-trueTotalArea)/trueTotalArea;
     cout << "Total area bias: " << setw(30) << setprecision(16);

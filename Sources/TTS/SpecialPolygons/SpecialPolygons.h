@@ -16,14 +16,6 @@ namespace SpecialPolygons
     void handleSlimPolygon(MeshManager &meshManager,
                            const FlowManager &flowManager,
                            PolygonManager &polygonManager, Polygon *&polygon);
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // try to eliminate the enclosed polygons from beginning!
-    void handleEnclosedPolygons(PolygonManager &polygonManager,
-                                Polygon *polygon1,
-                                EdgePointer *edgePointer11,
-                                EdgePointer *edgePointer12,
-                                Polygon *polygon = 0x0);
 }
 
 #endif

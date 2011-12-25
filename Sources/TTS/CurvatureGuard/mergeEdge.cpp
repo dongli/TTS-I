@@ -36,7 +36,8 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
     EdgePointer *nextEdgePointer;
     while (edgePointer != NULL && edgePointer != polygon->edgePointers.back()) {
         nextEdgePointer = edgePointer->next;
-        if (edgePointer->prev->getPolygon(OrientRight)->getID() < polygon->getID())
+        if (edgePointer->prev->getPolygon(OrientRight) != NULL &&
+            edgePointer->prev->getPolygon(OrientRight)->getID() < polygon->getID())
             goto next_edge;
         edge1 = edgePointer->prev->edge; // to be deleted if necessary
         edge2 = edgePointer->edge;
@@ -57,7 +58,8 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
                 goto next_edge;
             // -----------------------------------------------------------------
             // avoid the line polygon in neighbor polygons
-            if (edgePointer->getPolygon(OrientRight)->edgePointers.size() == 3)
+            if (edgePointer->getPolygon(OrientRight) != NULL &&
+                edgePointer->getPolygon(OrientRight)->edgePointers.size() == 3)
                 return false;
             // -----------------------------------------------------------------
             // new test point waiting for check

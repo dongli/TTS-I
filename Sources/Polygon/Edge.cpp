@@ -16,8 +16,8 @@ using namespace PotentialCrossDetector;
 Edge::Edge()
 {
     // record the edge so that other codes can derive the edge from it
-    testPoint.setHostEdge(this);
 #ifdef TTS_ONLINE
+    testPoint.setHostEdge(this);
     detectAgent.checkin(this);
 #endif
     normVector.init();
@@ -48,8 +48,8 @@ void Edge::clean()
     for (int i = 0; i < 2; ++i)
         if (endPoints[i] != NULL)
             endPoints[i]->unlinkEdge(this);
-    testPoint.clean();
 #ifdef TTS_ONLINE
+    testPoint.clean();
     detectAgent.clean();
 #endif
 }
@@ -61,6 +61,7 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point, bool isSetTestPoint)
     if (point != NULL)
         point->linkEdge(this);
 
+#ifdef TTS_ONLINE
     // -------------------------------------------------------------------------
     // set test point
     // Note: Here use the coordinates of end points at old time level to
@@ -72,11 +73,10 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point, bool isSetTestPoint)
         const Coordinate &x2 = endPoints[1]->getCoordinate(OldTimeLevel);
         Coordinate x;
         Sphere::calcMiddlePoint(x1, x2, x);
-#ifdef TTS_ONLINE
         testPoint.detectAgent.clean();
-#endif
         testPoint.setCoordinate(x, NewTimeLevel);
     }
+#endif
 }
 
 #ifdef TTS_ONLINE
@@ -111,8 +111,10 @@ void Edge::changeEndPoint(PointOrder order, Vertex *point, Vertex *testPoint,
     calcLength();
     CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientLeft));
     CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientLeft)->next);
-    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight));
-    CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight)->next);
+    if (getEdgePointer(OrientRight) != NULL) {
+        CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight));
+        CommonTasks::recordTask(CommonTasks::UpdateAngle, getEdgePointer(OrientRight)->next);
+    }
     this->testPoint.detectAgent.clean();
     this->testPoint = *testPoint;
 }
@@ -195,8 +197,10 @@ Edge &Edge::operator=(const Edge &that)
             polygons[i] = that.polygons[i];
             edgePointers[i] = that.edgePointers[i];
         }
+#ifdef TTS_ONLINE
         testPoint = that.testPoint;
         testPoint.setHostEdge(this);
+#endif
         normVector = that.normVector;
         isNormVectorSet = that.isNormVectorSet;
     }

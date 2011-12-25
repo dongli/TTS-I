@@ -3,7 +3,6 @@
 
 #include "List.h"
 #include "Vertex.h"
-#include "TestPoint.h"
 #include "Vector.h"
 #include "Sphere.h"
 
@@ -12,6 +11,7 @@ class EdgePointer;
 #ifdef TTS_ONLINE
 class MeshManager;
 class FlowManager;
+#include "TestPoint.h"
 #include "ApproachDetector.h"
 #include "EdgeTags.h"
 #endif
@@ -38,6 +38,8 @@ public:
                         MeshManager &, const FlowManager &);
     void changeEndPoint(PointOrder, Vertex *point, Vertex *testPoint,
                         MeshManager &, const FlowManager &);
+
+    TestPoint *getTestPoint() { return &testPoint; }
 #endif
 
     void linkPolygon(OrientStatus, Polygon *);
@@ -52,8 +54,6 @@ public:
 
     void calcLength();
     double getLength() const { return length; }
-
-    TestPoint *getTestPoint() { return &testPoint; }
 
     Edge &operator=(const Edge &);
 

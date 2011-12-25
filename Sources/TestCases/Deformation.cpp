@@ -222,7 +222,7 @@ void Deformation::calcInitCond(MeshManager &meshManager,
     double totalPolygonMass = 0.0;
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
-        totalPolygonMass += polygon->tracers[1].mass;
+        totalPolygonMass += polygon->tracers[1].getMass();
         polygon = polygon->next;
     }
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;

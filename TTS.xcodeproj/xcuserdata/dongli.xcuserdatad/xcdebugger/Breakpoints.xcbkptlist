@@ -391,11 +391,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344698680.387138"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "336"
-         endingLineNumber = "336"
+         startingLineNumber = "302"
+         endingLineNumber = "302"
          landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -405,11 +405,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/EdgeAgent.cpp"
-         timestampString = "346075189.399387"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "111"
-         endingLineNumber = "111"
+         startingLineNumber = "109"
+         endingLineNumber = "109"
          landmarkName = "EdgeAgent::updateVertexProjections(MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -447,11 +447,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344621640.141607"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "224"
-         endingLineNumber = "224"
+         startingLineNumber = "222"
+         endingLineNumber = "222"
          landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -517,11 +517,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/EdgeAgent.cpp"
-         timestampString = "346075189.399387"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "106"
-         endingLineNumber = "106"
+         startingLineNumber = "104"
+         endingLineNumber = "104"
          landmarkName = "EdgeAgent::updateVertexProjections(MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -531,68 +531,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "345459370.760865"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "69"
-         endingLineNumber = "69"
+         startingLineNumber = "67"
+         endingLineNumber = "67"
          landmarkName = "SpecialPolygons::handleLinePolygon(PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344698405.774317"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "233"
-         endingLineNumber = "233"
-         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344698680.387138"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "312"
-         endingLineNumber = "312"
-         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344698680.387138"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "321"
-         endingLineNumber = "321"
-         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344698680.387138"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "330"
-         endingLineNumber = "330"
-         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -652,27 +596,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346301030.638718"
+         timestampString = "346519338.579311"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "43"
-         endingLineNumber = "43"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
          landmarkName = "mergeEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "344779164.512512"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "353"
-         endingLineNumber = "353"
-         landmarkName = "SpecialPolygons::handleEnclosedPolygons(PolygonManager &amp;polygonManager, Polygon *polygon1, EdgePointer *edgePointer11, EdgePointer *edgePointer12, Polygon *polygon)"
-         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -680,11 +610,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346479589.081993"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "599"
-         endingLineNumber = "599"
+         startingLineNumber = "596"
+         endingLineNumber = "596"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
          <Actions>
@@ -702,11 +632,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346479589.081993"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "600"
-         endingLineNumber = "600"
+         startingLineNumber = "597"
+         endingLineNumber = "597"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
          <Actions>
@@ -724,11 +654,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346301030.638718"
+         timestampString = "346519338.579311"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "40"
-         endingLineNumber = "40"
+         startingLineNumber = "41"
+         endingLineNumber = "41"
          landmarkName = "mergeEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -830,11 +760,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346479589.081993"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "565"
-         endingLineNumber = "565"
+         startingLineNumber = "562"
+         endingLineNumber = "562"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
          <Actions>
@@ -880,11 +810,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346301030.638718"
+         timestampString = "346519338.579311"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
          landmarkName = "mergeEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -908,11 +838,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346479589.081993"
+         timestampString = "346519028.236724"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "490"
-         endingLineNumber = "490"
+         startingLineNumber = "487"
+         endingLineNumber = "487"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -928,6 +858,20 @@
          startingLineNumber = "290"
          endingLineNumber = "290"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
+         timestampString = "346519028.236724"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "299"
+         endingLineNumber = "299"
+         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
