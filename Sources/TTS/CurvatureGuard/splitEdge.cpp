@@ -8,7 +8,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 
@@ -35,7 +35,7 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
     // TEST: Reset the test point of small edges.
     if (edge->getLength() < 0.01/Rad2Deg) {
         edge->getTestPoint()->reset(meshManager);
-        REPORT_DEBUG;
+//        REPORT_DEBUG;
     }
 
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
@@ -51,7 +51,7 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
     if (!isMustSplit) {
         testPoint->calcAngle();
         testPoint->calcOrient();
-        calcAngleThreshold(edge, a0);
+        CurvatureGuard::AngleThreshold::calc(edge, a0);
     }
 
     if (PI-testPoint->getAngle() > a0 || isMustSplit) {

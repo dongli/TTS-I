@@ -10,10 +10,10 @@ begin
     ; user configurations
     is_plot_polygons = True
     is_plot_quantities = False
-    is_plot_vertices = False
+    is_plot_vertices = True
     is_plot_vertex_number = False
     is_plot_polygon_area = False
-    is_plot_testpoint = False
+    is_plot_testpoint = True
     is_plot_point_counters = False
     projection = "ST"
     projection@angle = 10.0
@@ -22,8 +22,8 @@ begin
     projection@center_lat = 0.0
     projection@min_lat = 80.0
     projection@max_lat = -80.0
-    line_width = 1.0
-    point_size = 0.005
+    line_width = 2.0
+    point_size = 0.01
 
     ; --------------------------------------------------------------------------
     file_name_pattern = ask("Input the polygon file name pattern:")

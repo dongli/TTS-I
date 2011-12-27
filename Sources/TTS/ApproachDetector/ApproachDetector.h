@@ -17,21 +17,10 @@ class FlowManager;
 
 namespace ApproachDetector
 {
-    //! \brief Calculate the threshold for the approaching events.
-    //! \param distance Distance between the vertex and the edge.
-    //! \return The minimal distance change ratio that an approaching
-    //!         event should satisfy.
     double approachTrendThreshold(double distance);
 
-    //! \brief Judge whether the vertex and edge should be checked.
-    //! \param distance The distance between vertex and edge.
-    //! \return The boolean status.
     bool isNeedCheck(double distance);
 
-    //! \brief Judge whether the approaching event occurs for the
-    //!        given projection.
-    //! \param projection Projection on the edge of the vertex.
-    //! \return The boolean status of approaching.
     bool isApproaching(Projection *projection);
 
     bool checkApproachValid(MeshManager &meshManager,

@@ -5,13 +5,14 @@
 #include "MeshAdaptor.h"
 #include "FlowManager.h"
 #include "TracerManager.h"
-#include <list>
 
 class TTS
 {
 public:
     TTS();
     virtual ~TTS();
+
+    void init();
 
     void advect(MeshManager &meshManager,
                 MeshAdaptor &meshAdaptor,

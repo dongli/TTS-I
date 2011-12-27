@@ -13,7 +13,7 @@ double piecewiseLinearThreshold(int n, const double *xs, const double *ys, doubl
                 return (x-xs[i])*(ys[i+1]-ys[i])/(xs[i+1]-xs[i])+ys[i];
 }
 
-double piecewiseCubicthreshold(int n, const double *X, const double *Y, double x)
+double piecewiseCubicThreshold(int n, const double *X, const double *Y, double x)
 {
     if (x < X[0])
         return Y[0];

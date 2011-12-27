@@ -11,6 +11,53 @@
 		5534794D1429CF6800FCC94C /* unit_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5534794C1429CF6800FCC94C /* unit_test_main.cpp */; };
 		553FED97141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		553FED98141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
+		5541C98114A998950052D2A2 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
+		5541C98214A99F710052D2A2 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
+		5541C98314A99F790052D2A2 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
+		554F970114A84BA7000052E2 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970014A84BA7000052E2 /* init.cpp */; };
+		554F970214A84BA7000052E2 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970014A84BA7000052E2 /* init.cpp */; };
+		554F970414A84C4F000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
+		554F970514A84C4F000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
+		554F975A14A8C566000052E2 /* tts_square_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970A14A8C264000052E2 /* tts_square_demo.cpp */; };
+		554F975B14A8C566000052E2 /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
+		554F975C14A8C566000052E2 /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
+		554F975D14A8C566000052E2 /* MeshManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */; };
+		554F975E14A8C566000052E2 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+		554F975F14A8C566000052E2 /* PolarRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */; };
+		554F976014A8C566000052E2 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */; };
+		554F976114A8C566000052E2 /* FlowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */; };
+		554F976214A8C566000052E2 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
+		554F976314A8C566000052E2 /* GAMILReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581140713EA4463004AF124 /* GAMILReader.cpp */; };
+		554F976414A8C566000052E2 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
+		554F976514A8C566000052E2 /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
+		554F976614A8C566000052E2 /* StaticVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */; };
+		554F976714A8C566000052E2 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
+		554F976814A8C566000052E2 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
+		554F976914A8C566000052E2 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
+		554F976A14A8C566000052E2 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
+		554F976B14A8C566000052E2 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
+		554F976C14A8C566000052E2 /* PolygonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */; };
+		554F976D14A8C566000052E2 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
+		554F976E14A8C566000052E2 /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
+		554F976F14A8C566000052E2 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
+		554F977014A8C566000052E2 /* MeshAdaptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */; };
+		554F977114A8C566000052E2 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970014A84BA7000052E2 /* init.cpp */; };
+		554F977214A8C566000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
+		554F977314A8C566000052E2 /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
+		554F977414A8C566000052E2 /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
+		554F977514A8C566000052E2 /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
+		554F977614A8C566000052E2 /* guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE311421CE86001E8352 /* guard.cpp */; };
+		554F977714A8C566000052E2 /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
+		554F977814A8C566000052E2 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
+		554F977914A8C566000052E2 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
+		554F977A14A8C566000052E2 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
+		554F977B14A8C566000052E2 /* AgentPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CD14093757000B7E48 /* AgentPair.cpp */; };
+		554F977C14A8C566000052E2 /* ApproachingVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D114093757000B7E48 /* ApproachingVertices.cpp */; };
+		554F977D14A8C566000052E2 /* ApproachDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CF14093757000B7E48 /* ApproachDetector.cpp */; };
+		554F977E14A8C566000052E2 /* TTS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */; };
+		554F977F14A8C566000052E2 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
+		554F978014A8C566000052E2 /* SystemCalls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581142A13EA4631004AF124 /* SystemCalls.cpp */; };
+		554F978114A8C566000052E2 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		5581143C13EA474C004AF124 /* tts_gamil_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581140413EA4432004AF124 /* tts_gamil_demo.cpp */; };
@@ -41,7 +88,6 @@
 		558A48DC14093757000B7E48 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
 		558A48DD14093757000B7E48 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		558A48DE14093757000B7E48 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
-		558D215613FBED0500912715 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		5598FACA13D3DA9F00BC1AC4 /* tts_driver_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */; };
 		5598FACB13D3DA9F00BC1AC4 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */; };
 		5598FACC13D3DA9F00BC1AC4 /* FlowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */; };
@@ -113,12 +159,10 @@
 		55C9C14A1497174F0063230B /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
 		55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
 		55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
-		55D2647E146E9D5C00753BC0 /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
 		55D2647F146E9D5C00753BC0 /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
 		55D26480146E9D5D00753BC0 /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
 		55D26481146E9D5D00753BC0 /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
 		55D26482146E9D5D00753BC0 /* guard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE311421CE86001E8352 /* guard.cpp */; };
-		55D26483146E9D7600753BC0 /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
 		55D26484146E9D7600753BC0 /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
 		55D26485146E9D7600753BC0 /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
 		55D26486146E9D7600753BC0 /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
@@ -143,7 +187,6 @@
 		55F30BE914A775750057BBBE /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		55F30BEA14A775890057BBBE /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
 		55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
-		55F30BEC14A775B30057BBBE /* angleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE321421D103001E8352 /* angleThreshold.cpp */; };
 		55F30BED14A775B30057BBBE /* splitEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.cpp */; };
 		55F30BEE14A775B30057BBBE /* mergeEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */; };
 		55F30BEF14A775B30057BBBE /* splitPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */; };
@@ -162,6 +205,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		554F974E14A8C513000052E2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		557D139213BB048700BFDCEF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -226,11 +278,18 @@
 		552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = splitPolygon.cpp; sourceTree = "<group>"; };
 		552EEE301421C0F6001E8352 /* CurvatureGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurvatureGuard.h; sourceTree = "<group>"; };
 		552EEE311421CE86001E8352 /* guard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guard.cpp; sourceTree = "<group>"; };
-		552EEE321421D103001E8352 /* angleThreshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = angleThreshold.cpp; sourceTree = "<group>"; };
 		5534794C1429CF6800FCC94C /* unit_test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unit_test_main.cpp; sourceTree = "<group>"; };
 		553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PotentialCrossDetector.cpp; sourceTree = "<group>"; };
 		553FED96141767F500B1C14F /* PotentialCrossDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PotentialCrossDetector.h; sourceTree = "<group>"; };
+		5541C97C14A9937E0052D2A2 /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
+		5541C97E14A9937E0052D2A2 /* tts_square_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_square_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		5541E1CF14506D1400279AED /* Tracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracer.h; sourceTree = "<group>"; };
+		554F96FF14A8495F000052E2 /* AngleThreshold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AngleThreshold.h; sourceTree = "<group>"; };
+		554F970014A84BA7000052E2 /* init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = init.cpp; sourceTree = "<group>"; };
+		554F970314A84C4F000052E2 /* AngleThreshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AngleThreshold.cpp; sourceTree = "<group>"; };
+		554F970614A8AEF6000052E2 /* ConfigTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigTools.h; sourceTree = "<group>"; };
+		554F970714A8B437000052E2 /* ConfigTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigTools.cpp; sourceTree = "<group>"; };
+		554F970A14A8C264000052E2 /* tts_square_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tts_square_demo.cpp; sourceTree = "<group>"; };
 		5566C5EB13EC0D010044E352 /* generate_RLLMesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_RLLMesh; sourceTree = BUILT_PRODUCTS_DIR; };
 		5566C5ED13EC0D010044E352 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
 		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PointCounter.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -328,7 +387,6 @@
 		5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
-		55A4D1CC13D52ECF00DCC5AB /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55C1E3CA142C557D00D83018 /* unit_test_tracers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_tracers.h; sourceTree = "<group>"; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
@@ -348,6 +406,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		554F974D14A8C513000052E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		557D139113BB048700BFDCEF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -396,7 +461,9 @@
 		552EEE2C1421C0DB001E8352 /* CurvatureGuard */ = {
 			isa = PBXGroup;
 			children = (
-				552EEE321421D103001E8352 /* angleThreshold.cpp */,
+				554F970014A84BA7000052E2 /* init.cpp */,
+				554F96FF14A8495F000052E2 /* AngleThreshold.h */,
+				554F970314A84C4F000052E2 /* AngleThreshold.cpp */,
 				552EEE2E1421C0DB001E8352 /* splitEdge.cpp */,
 				552EEE2D1421C0DB001E8352 /* mergeEdge.cpp */,
 				552EEE2F1421C0DB001E8352 /* splitPolygon.cpp */,
@@ -418,9 +485,10 @@
 		5566C5EF13EC20DB0044E352 /* Executables */ = {
 			isa = PBXGroup;
 			children = (
+				5541C97E14A9937E0052D2A2 /* tts_square_demo */,
+				5541C97C14A9937E0052D2A2 /* preprocess */,
 				55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */,
 				55A4D1CA13D52ECF00DCC5AB /* unit_test_main */,
-				55A4D1CC13D52ECF00DCC5AB /* preprocess */,
 				5581143213EA470B004AF124 /* tts_gamil_demo */,
 				5566C5EB13EC0D010044E352 /* generate_RLLMesh */,
 				5566C5ED13EC0D010044E352 /* generate_square */,
@@ -500,6 +568,7 @@
 			children = (
 				5581140413EA4432004AF124 /* tts_gamil_demo.cpp */,
 				5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */,
+				554F970A14A8C264000052E2 /* tts_square_demo.cpp */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -635,6 +704,8 @@
 				55C4AF4513F2BF5A00B2C331 /* DebugTools.h */,
 				55DA3E2913F6A34800C565F7 /* DebugTools.cpp */,
 				557EF504148C9079004D6E85 /* ThresholdFunction.h */,
+				554F970614A8AEF6000052E2 /* ConfigTools.h */,
+				554F970714A8B437000052E2 /* ConfigTools.cpp */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -688,6 +759,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		554F974F14A8C513000052E2 /* tts_square_demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 554F975714A8C514000052E2 /* Build configuration list for PBXNativeTarget "tts_square_demo" */;
+			buildPhases = (
+				554F974C14A8C513000052E2 /* Sources */,
+				554F974D14A8C513000052E2 /* Frameworks */,
+				554F974E14A8C513000052E2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tts_square_demo;
+			productName = tts_square_demo;
+			productReference = 5541C97E14A9937E0052D2A2 /* tts_square_demo */;
+			productType = "com.apple.product-type.tool";
+		};
 		557D139313BB048700BFDCEF /* generate_square */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 557D139A13BB048700BFDCEF /* Build configuration list for PBXNativeTarget "generate_square" */;
@@ -736,7 +824,7 @@
 			);
 			name = preprocess;
 			productName = preprocess;
-			productReference = 55A4D1CC13D52ECF00DCC5AB /* preprocess */;
+			productReference = 5541C97C14A9937E0052D2A2 /* preprocess */;
 			productType = "com.apple.product-type.tool";
 		};
 		559975F113BACBF20075D5FB /* generate_RLLMesh */ = {
@@ -816,11 +904,60 @@
 				559975F113BACBF20075D5FB /* generate_RLLMesh */,
 				557D139313BB048700BFDCEF /* generate_square */,
 				5581143113EA470B004AF124 /* tts_gamil_demo */,
+				554F974F14A8C513000052E2 /* tts_square_demo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		554F974C14A8C513000052E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5541C98114A998950052D2A2 /* ConfigTools.cpp in Sources */,
+				554F975A14A8C566000052E2 /* tts_square_demo.cpp in Sources */,
+				554F975B14A8C566000052E2 /* RLLMesh.cpp in Sources */,
+				554F975C14A8C566000052E2 /* Layers.cpp in Sources */,
+				554F975D14A8C566000052E2 /* MeshManager.cpp in Sources */,
+				554F975E14A8C566000052E2 /* Location.cpp in Sources */,
+				554F975F14A8C566000052E2 /* PolarRing.cpp in Sources */,
+				554F976014A8C566000052E2 /* Field.cpp in Sources */,
+				554F976114A8C566000052E2 /* FlowManager.cpp in Sources */,
+				554F976214A8C566000052E2 /* PointCounter.cpp in Sources */,
+				554F976314A8C566000052E2 /* GAMILReader.cpp in Sources */,
+				554F976414A8C566000052E2 /* Sphere.cpp in Sources */,
+				554F976514A8C566000052E2 /* Velocity.cpp in Sources */,
+				554F976614A8C566000052E2 /* StaticVortices.cpp in Sources */,
+				554F976714A8C566000052E2 /* Point.cpp in Sources */,
+				554F976814A8C566000052E2 /* Vertex.cpp in Sources */,
+				554F976914A8C566000052E2 /* TestPoint.cpp in Sources */,
+				554F976A14A8C566000052E2 /* Edge.cpp in Sources */,
+				554F976B14A8C566000052E2 /* Polygon.cpp in Sources */,
+				554F976C14A8C566000052E2 /* PolygonManager.cpp in Sources */,
+				554F976D14A8C566000052E2 /* TracerManager.cpp in Sources */,
+				554F976E14A8C566000052E2 /* CommonTasks.cpp in Sources */,
+				554F976F14A8C566000052E2 /* SpecialPolygons.cpp in Sources */,
+				554F977014A8C566000052E2 /* MeshAdaptor.cpp in Sources */,
+				554F977114A8C566000052E2 /* init.cpp in Sources */,
+				554F977214A8C566000052E2 /* AngleThreshold.cpp in Sources */,
+				554F977314A8C566000052E2 /* splitEdge.cpp in Sources */,
+				554F977414A8C566000052E2 /* mergeEdge.cpp in Sources */,
+				554F977514A8C566000052E2 /* splitPolygon.cpp in Sources */,
+				554F977614A8C566000052E2 /* guard.cpp in Sources */,
+				554F977714A8C566000052E2 /* PotentialCrossDetector.cpp in Sources */,
+				554F977814A8C566000052E2 /* Projection.cpp in Sources */,
+				554F977914A8C566000052E2 /* VertexAgent.cpp in Sources */,
+				554F977A14A8C566000052E2 /* EdgeAgent.cpp in Sources */,
+				554F977B14A8C566000052E2 /* AgentPair.cpp in Sources */,
+				554F977C14A8C566000052E2 /* ApproachingVertices.cpp in Sources */,
+				554F977D14A8C566000052E2 /* ApproachDetector.cpp in Sources */,
+				554F977E14A8C566000052E2 /* TTS.cpp in Sources */,
+				554F977F14A8C566000052E2 /* TimeManager.cpp in Sources */,
+				554F978014A8C566000052E2 /* SystemCalls.cpp in Sources */,
+				554F978114A8C566000052E2 /* DebugTools.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		557D139013BB048700BFDCEF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -829,7 +966,6 @@
 				55F30BFA14A775DB0057BBBE /* DebugTools.cpp in Sources */,
 				55F30BF914A775CC0057BBBE /* CommonTasks.cpp in Sources */,
 				55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */,
-				55F30BEC14A775B30057BBBE /* angleThreshold.cpp in Sources */,
 				55F30BED14A775B30057BBBE /* splitEdge.cpp in Sources */,
 				55F30BEE14A775B30057BBBE /* mergeEdge.cpp in Sources */,
 				55F30BEF14A775B30057BBBE /* splitPolygon.cpp in Sources */,
@@ -867,7 +1003,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55D26483146E9D7600753BC0 /* angleThreshold.cpp in Sources */,
+				5541C98214A99F710052D2A2 /* ConfigTools.cpp in Sources */,
 				55D26484146E9D7600753BC0 /* splitEdge.cpp in Sources */,
 				55D26485146E9D7600753BC0 /* mergeEdge.cpp in Sources */,
 				55D26486146E9D7600753BC0 /* splitPolygon.cpp in Sources */,
@@ -905,6 +1041,8 @@
 				55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */,
 				55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */,
 				55C9C14A1497174F0063230B /* CommonTasks.cpp in Sources */,
+				554F970214A84BA7000052E2 /* init.cpp in Sources */,
+				554F970514A84C4F000052E2 /* AngleThreshold.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -912,7 +1050,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				558D215613FBED0500912715 /* DebugTools.cpp in Sources */,
 				5598FB0F13D3DC4F00BC1AC4 /* Location.cpp in Sources */,
 				5598FB0E13D3DC4300BC1AC4 /* TimeManager.cpp in Sources */,
 				5598FB0A13D3DC3600BC1AC4 /* Edge.cpp in Sources */,
@@ -945,7 +1082,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55D2647E146E9D5C00753BC0 /* angleThreshold.cpp in Sources */,
+				5541C98314A99F790052D2A2 /* ConfigTools.cpp in Sources */,
 				55D2647F146E9D5C00753BC0 /* splitEdge.cpp in Sources */,
 				55D26480146E9D5D00753BC0 /* mergeEdge.cpp in Sources */,
 				55D26481146E9D5D00753BC0 /* splitPolygon.cpp in Sources */,
@@ -985,6 +1122,8 @@
 				55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */,
 				55D5B1F91491E9E7008B43B8 /* TestPoint.cpp in Sources */,
 				55C9C1491497174F0063230B /* CommonTasks.cpp in Sources */,
+				554F970114A84BA7000052E2 /* init.cpp in Sources */,
+				554F970414A84C4F000052E2 /* AngleThreshold.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1018,6 +1157,59 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		554F975814A8C514000052E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					TTS_ONLINE,
+					DEBUG,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		554F975914A8C514000052E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					TTS_ONLINE,
+					DEBUG,
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		557D139B13BB048700BFDCEF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1233,6 +1425,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG_TTS,
 					DEBUG,
 					TTS_ONLINE,
 				);
@@ -1324,6 +1517,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		554F975714A8C514000052E2 /* Build configuration list for PBXNativeTarget "tts_square_demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554F975814A8C514000052E2 /* Debug */,
+				554F975914A8C514000052E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		557D139A13BB048700BFDCEF /* Build configuration list for PBXNativeTarget "generate_square" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

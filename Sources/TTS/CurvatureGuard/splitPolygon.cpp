@@ -11,7 +11,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 

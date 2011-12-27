@@ -9,7 +9,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 
@@ -40,37 +40,37 @@ void CurvatureGuard::guard(MeshManager &meshManager,
         TTS::track(meshManager, flowManager, edge->getTestPoint());
         edge = edge->next;
     }
-#ifdef DEBUG
+#ifdef DEBUG_TTS
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG
+#ifdef DEBUG_TTS
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-#ifdef DEBUG
+#ifdef DEBUG_TTS
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG
+#ifdef DEBUG_TTS
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-#ifdef DEBUG
+#ifdef DEBUG_TTS
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG
+#ifdef DEBUG_TTS
     DebugTools::dump_watchers();
 #endif
 
@@ -78,12 +78,15 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     ApproachDetector::reset(polygonManager);
 
     CommonTasks::resetTasks();
+
+#ifndef DEBUG_TTS
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
-//    if (flag) {
-//        polygonManager.vertices.reindex();
-//        polygonManager.edges.reindex();
-//    }
+    if (flag) {
+        polygonManager.vertices.reindex();
+        polygonManager.edges.reindex();
+    }
+#endif
 }
 
 #endif

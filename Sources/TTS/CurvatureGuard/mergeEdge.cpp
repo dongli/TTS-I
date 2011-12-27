@@ -8,7 +8,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 
@@ -41,8 +41,8 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             goto next_edge;
         edge1 = edgePointer->prev->edge; // to be deleted if necessary
         edge2 = edgePointer->edge;
-        CurvatureGuard::calcAngleThreshold(edge1, edge2, a0);
-        CurvatureGuard::relaxAngleThreshold(edge1, edge2, a0);
+        CurvatureGuard::AngleThreshold::calc(edge1, edge2, a0);
+        CurvatureGuard::AngleThreshold::relax(edge1, edge2, a0);
         adjustMergeEdgeAngleThreshold(edge1, edge2, a0);
         if (fabs(edgePointer->getAngle(OldTimeLevel)-PI) < a0 &&
             fabs(edgePointer->getAngle(NewTimeLevel)-PI) < a0) {

@@ -9,8 +9,15 @@ class MeshManager;
 class FlowManager;
 class PolygonManager;
 
+#include "AngleThreshold.h"
+#include <string>
+
+using std::string;
+
 namespace CurvatureGuard
 {
+    void init();
+
     void guard(MeshManager &, const FlowManager &, PolygonManager &);
     
     bool splitEdge(MeshManager &, const FlowManager &, PolygonManager &,
@@ -24,7 +31,6 @@ namespace CurvatureGuard
                       EdgePointer *edgePointer2, Vertex *vertex3, int mode);
     bool splitPolygons(MeshManager &, const FlowManager &, PolygonManager &);
 
-    //! \brief Calculate angle thresholds for "splitEdge" and "mergeEdge".
     void calcAngleThreshold(Edge *edge, double &a0);
     void calcAngleThreshold(Edge *edge1, Edge *edge2, double &a0);
     void relaxAngleThreshold(Edge *edge1, Edge *edge2, double &a0);

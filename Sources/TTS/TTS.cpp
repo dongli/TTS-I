@@ -5,18 +5,23 @@
 #include "Constants.h"
 #include "Sphere.h"
 #include "CurvatureGuard.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 
 TTS::TTS()
 {
-    REPORT_ONLINE("TTS")
+    REPORT_ONLINE("TTS");
 }
 
 TTS::~TTS()
 {
-    REPORT_OFFLINE("TTS")
+    REPORT_OFFLINE("TTS");
+}
+
+void TTS::init()
+{
+    CurvatureGuard::init();
 }
 
 void TTS::advect(MeshManager &meshManager,
@@ -106,11 +111,13 @@ void TTS::advect(MeshManager &meshManager,
         }
         REPORT_ERROR("Area bias is too large!");
     }
+#endif
+    cout << "Total vertex number: " << setw(10);
+    cout << polygonManager.vertices.size() << endl;
     cout << "Total edge number: " << setw(10);
     cout << polygonManager.edges.size() << endl;
     cout << "Total polygon number: " << setw(10);
     cout << polygonManager.polygons.size() << endl;
-#endif
     tracerManager.update();
 
     // -------------------------------------------------------------------------

@@ -22,20 +22,8 @@ namespace ApproachDetector
 
         void reinit();
 
-        //! \brief Calculate the projection of the vertex onto its paired edge.
-        //! \param timeLevel The time level.
-        //! \return The boolean status of the projection
-        //!         - true (inside edge)
-        //!         - false (outside edge, should be unpaired with the edge)
         ProjectionStatus project(TimeLevel timeLevel);
 
-        //! \brief Calculate the projection of any vertex onto any edge.
-        //! \param vertex The vertex.
-        //! \param edge The edge.
-        //! \param timeLevel The time level.
-        //! \return The boolean status of the projection
-        //!         - true (inside edge)
-        //!         - false (outside edge, should be unpaired with the edge)
         bool project(Vertex *vertex, Edge *edge, TimeLevel timeLevel);
 
         Vertex *getVertex() const { return vertex; }

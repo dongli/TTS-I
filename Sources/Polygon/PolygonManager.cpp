@@ -23,6 +23,7 @@ PolygonManager::~PolygonManager()
 #endif
 }
 
+#ifdef TTS_ONLINE
 void PolygonManager::init(const string &fileName)
 {
     NOTICE("PolygonManager::init", "Reading polygons from \""+fileName+"\" ...");
@@ -200,6 +201,7 @@ void PolygonManager::init(const string &fileName)
     // -------------------------------------------------------------------------
     file.close();
 }
+#endif
 
 void PolygonManager::output(const string &fileName)
 {
@@ -304,6 +306,7 @@ void PolygonManager::output(const string &fileName)
     newTestLatVar->add_att("long_name", "new test point latitude");
     newTestLatVar->add_att("units", "degree_north");
 
+#ifdef TTS_ONLINE
     double *oldTestLon = new double[edges.size()];
     double *oldTestLat = new double[edges.size()];
     double *newTestLon = new double[edges.size()];
@@ -328,6 +331,7 @@ void PolygonManager::output(const string &fileName)
     delete [] oldTestLat;
     delete [] newTestLon;
     delete [] newTestLat;
+#endif
 
     // -------------------------------------------------------------------------
     // polygons part

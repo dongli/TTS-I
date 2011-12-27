@@ -5,7 +5,7 @@
 #include "PolygonManager.h"
 #ifdef TTS_ONLINE
 #include "TTS.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 #endif

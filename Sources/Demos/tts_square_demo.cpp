@@ -3,13 +3,10 @@
 #include "Sphere.h"
 #include "TimeManager.h"
 #include "MeshManager.h"
-#include "FlowManager.h"
-#include "SolidRotation.h"
-#include "MovingVortices.h"
-#include "StaticVortices.h"
-#include "Deformation.h"
-#include "TTS.h"
 #include "MeshAdaptor.h"
+#include "FlowManager.h"
+#include "StaticVortices.h"
+#include "TTS.h"
 
 int main(int argc, char **argv)
 {
@@ -17,13 +14,13 @@ int main(int argc, char **argv)
     MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
-    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
+    StaticVortices testCase;
     TTS tts;
-    char fileName[30], filePattern[50] = "gh_360x180_2562_600_%3.3d.nc";
+    char fileName[30], filePattern[50] = "sq_360x180_%3.3d.nc";
     // -------------------------------------------------------------------------
-    ConfigTools::parse("tts_config");
-    TimeManager::setClock(5.0/600);
-    TimeManager::setEndStep(600);
+    ConfigTools::parse("tts_square_config");
+    TimeManager::setClock(1800.0);
+    TimeManager::setEndStep(576);
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;
@@ -37,21 +34,15 @@ int main(int argc, char **argv)
     meshAdaptor.init(meshManager);
     flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
-    flowManager.output("flow.nc");
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);
-    // -------------------------------------------------------------------------
-    testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
-    sprintf(fileName, filePattern, TimeManager::getSteps());
-    tracerManager.output(fileName);
+    tts.init();
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         TimeManager::advance();
         testCase.calcVelocityField(flowManager);
-#ifndef DEBUG_TTS
         sprintf(fileName, filePattern, TimeManager::getSteps());
         tracerManager.output(fileName);
-#endif
     }
 }

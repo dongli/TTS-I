@@ -1,13 +1,13 @@
 #include "AgentPair.h"
 #include "Vertex.h"
 #include "Edge.h"
-#ifdef DEBUG
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 
 using namespace ApproachDetector;
 
-#define TRACK_PAIRS
+//#define TRACK_PAIRS
 #define PAIR_VERTEX_ID 1130691
 #define PAIR_TEST_POINT_HOST_EDGE_ID -999
 #define PAIR_EDGE_ID 2147744

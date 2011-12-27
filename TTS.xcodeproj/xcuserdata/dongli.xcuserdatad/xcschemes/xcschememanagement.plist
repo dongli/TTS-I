@@ -29,6 +29,11 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>tts_square_demo.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>unit_test_main.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -37,6 +42,21 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>554F970E14A8C27A000052E2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>554F971914A8C2E9000052E2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>554F974F14A8C513000052E2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>557D139313BB048700BFDCEF</key>
 		<dict>
 			<key>primary</key>

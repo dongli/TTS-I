@@ -7,11 +7,11 @@
 #include "PotentialCrossDetector.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG
-#include "TimeManager.h"
+#ifdef DEBUG_TTS
 #include "DebugTools.h"
 #endif
 
+using namespace ApproachDetector;
 using namespace SpecialPolygons;
 using namespace CurvatureGuard;
 using namespace PotentialCrossDetector;
@@ -177,7 +177,6 @@ bool ApproachDetector::checkApproachValid(MeshManager &meshManager,
     Projection *projection;
     TestPoint *testPoint;
     OrientStatus orient1, orient2;
-
     // -------------------------------------------------------------------------
     // collect information
     projection = vertex3->detectAgent.getProjection(edgePointer1->edge);

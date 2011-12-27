@@ -14,7 +14,9 @@ public:
     PolygonManager();
     virtual ~PolygonManager();
 
+#ifdef TTS_ONLINE
     void init(const string &fileName);
+#endif
 
     void output(const string &fileName);
 
