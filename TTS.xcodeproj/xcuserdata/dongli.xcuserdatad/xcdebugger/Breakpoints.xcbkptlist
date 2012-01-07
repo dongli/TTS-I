@@ -18,20 +18,6 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346483369.575344"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "57"
-         endingLineNumber = "57"
-         landmarkName = "ApproachDetector::isApproaching(Projection *projection)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -216,20 +202,6 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/Polygon/PolygonManager.cpp"
-         timestampString = "342495007.288691"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "210"
-         endingLineNumber = "210"
-         landmarkName = "PolygonManager::output(const string &amp;fileName)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -369,18 +341,18 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
+         timestampString = "347557526.084308"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "260"
-         endingLineNumber = "260"
+         startingLineNumber = "280"
+         endingLineNumber = "280"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.AppleScript">
                <ActionContent
-                  script = "set tts_run_dir to &quot;/Users/dongli/Works/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/Works/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/polygon&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
+                  script = "set tts_run_dir to &quot;/Users/dongli/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/polygon&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
@@ -390,22 +362,8 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "346519028.236724"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "302"
-         endingLineNumber = "302"
-         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/EdgeAgent.cpp"
-         timestampString = "346519028.236724"
+         timestampString = "347503483.714278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "109"
@@ -446,22 +404,8 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "346519028.236724"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "222"
-         endingLineNumber = "222"
-         landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346334398.463275"
+         timestampString = "347120654.36865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "26"
@@ -483,24 +427,24 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
+         timestampString = "347465206.083652"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "276"
-         endingLineNumber = "276"
+         startingLineNumber = "297"
+         endingLineNumber = "297"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.DebuggerCommand">
                <ActionContent
-                  consoleCommand = "p vertex1-&gt;ID">
+                  consoleCommand = "p edgePointer1-&gt;getEndPoint(FirstPoint)-&gt;ID">
                </ActionContent>
             </BreakpointActionProxy>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.DebuggerCommand">
                <ActionContent
-                  consoleCommand = "p vertex2-&gt;ID">
+                  consoleCommand = "p edgePointer1-&gt;getEndPoint(SecondPoint)-&gt;ID">
                </ActionContent>
             </BreakpointActionProxy>
             <BreakpointActionProxy
@@ -517,7 +461,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/EdgeAgent.cpp"
-         timestampString = "346519028.236724"
+         timestampString = "347503483.714278"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "104"
@@ -531,11 +475,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "346519028.236724"
+         timestampString = "347338924.439628"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "67"
-         endingLineNumber = "67"
+         startingLineNumber = "68"
+         endingLineNumber = "68"
          landmarkName = "SpecialPolygons::handleLinePolygon(PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -546,11 +490,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
+         timestampString = "347465206.083652"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "283"
-         endingLineNumber = "283"
+         startingLineNumber = "304"
+         endingLineNumber = "304"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -560,11 +504,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
+         timestampString = "347465206.083652"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "285"
-         endingLineNumber = "285"
+         startingLineNumber = "306"
+         endingLineNumber = "306"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
@@ -596,7 +540,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346519338.579311"
+         timestampString = "347120654.36865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "44"
@@ -610,11 +554,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346519028.236724"
+         timestampString = "347552086.076354"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "596"
-         endingLineNumber = "596"
+         startingLineNumber = "598"
+         endingLineNumber = "598"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
          <Actions>
@@ -632,11 +576,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346519028.236724"
+         timestampString = "347552086.076354"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "597"
-         endingLineNumber = "597"
+         startingLineNumber = "599"
+         endingLineNumber = "599"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
          <Actions>
@@ -654,7 +598,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346519338.579311"
+         timestampString = "347120654.36865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "41"
@@ -735,7 +679,7 @@
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.AppleScript">
                <ActionContent
-                  script = "set tts_run_dir to &quot;/Users/dongli/Works/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/Works/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/watched_polygon&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
+                  script = "set tts_run_dir to &quot;/Users/dongl/TTS/Run&quot;&#13;set tts_tools_dir to &quot;/Users/dongli/TTS/Tools&quot;&#13;set file_name to tts_run_dir &amp; &quot;/watched_polygon&quot;&#13;do shell script &quot;source ~/.profile &amp;&amp; ncl &quot; &amp; tts_tools_dir &amp; &quot;/draw_polygon.ncl file_name=\\\&quot;&quot; &amp; file_name &amp; &quot;\\\&quot;&quot;&#13;set file_name to file_name &amp; &quot;.pdf&quot;&#13;set polygon_file to POSIX file file_name&#13;tell application &quot;Preview&quot; to open polygon_file">
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
@@ -760,11 +704,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346519028.236724"
+         timestampString = "347552086.076354"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "562"
-         endingLineNumber = "562"
+         startingLineNumber = "564"
+         endingLineNumber = "564"
          landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
          <Actions>
@@ -782,11 +726,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
+         timestampString = "347442474.759241"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "160"
-         endingLineNumber = "160"
+         startingLineNumber = "179"
+         endingLineNumber = "179"
          landmarkName = "detectPoint(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Vertex *point, EdgePointer *edgePointer1, EdgePointer *edgePointer2, bool &amp;isPointCrossEdge)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -796,11 +740,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "346324080.321233"
+         timestampString = "347591137.927243"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "192"
-         endingLineNumber = "192"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
          landmarkName = "PotentialCrossDetector::detectInsertVertexOnEdge (MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *oldEdge, Vertex *newVertex, Vertex *oldVertex, Edge **crossedEdge)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -810,7 +754,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/mergeEdge.cpp"
-         timestampString = "346519338.579311"
+         timestampString = "347120654.36865"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "57"
@@ -819,45 +763,17 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
+         filePath = "Sources/Polygon/Edge.cpp"
+         timestampString = "347119919.883062"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "237"
-         endingLineNumber = "237"
-         landmarkName = "ApproachDetector::checkApproachValid(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, EdgePointer *edgePointer1, EdgePointer *edgePointer2, Vertex *vertex3)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "346519028.236724"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "487"
-         endingLineNumber = "487"
-         landmarkName = "handleBentPolygons(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "346509870.599442"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "290"
-         endingLineNumber = "290"
-         landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         startingLineNumber = "277"
+         endingLineNumber = "277"
+         landmarkName = "EdgePointer::getEndPoint(PointOrder order)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -865,13 +781,139 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
-         timestampString = "346519028.236724"
+         filePath = "Sources/Polygon/Edge.cpp"
+         timestampString = "347120009.457893"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "299"
-         endingLineNumber = "299"
+         startingLineNumber = "289"
+         endingLineNumber = "289"
+         landmarkName = "EdgePointer::getPolygon(OrientStatus orient)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "347591137.927243"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "507"
+         endingLineNumber = "507"
+         landmarkName = "PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "347591137.927243"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "496"
+         endingLineNumber = "496"
+         landmarkName = "PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "347591137.927243"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "475"
+         endingLineNumber = "475"
+         landmarkName = "PotentialCrossDetector::detectAddConnection(Polygon *polygon, EdgePointer *edgePointer1, EdgePointer *&amp;edgePointer2, bool &amp;isConnectOk1, bool &amp;isConnectOk2, Vector &amp;vector1, Vector &amp;vector2)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "347591137.927243"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "457"
+         endingLineNumber = "457"
+         landmarkName = "PotentialCrossDetector::detectAddConnection(Polygon *polygon, EdgePointer *edgePointer1, EdgePointer *&amp;edgePointer2, bool &amp;isConnectOk1, bool &amp;isConnectOk2, Vector &amp;vector1, Vector &amp;vector2)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "347539322.290271"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "78"
+         endingLineNumber = "78"
+         landmarkName = "PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer, Vertex *oldVertex, Vertex *newVertex)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
+         timestampString = "347442474.759241"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "142"
+         endingLineNumber = "142"
+         landmarkName = "detectPoint(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Vertex *point, EdgePointer *edgePointer1, EdgePointer *edgePointer2, bool &amp;isPointCrossEdge)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
+         timestampString = "347554002.546363"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "286"
+         endingLineNumber = "286"
+         landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/SpecialPolygons/SpecialPolygons.cpp"
+         timestampString = "347539322.290271"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "185"
+         endingLineNumber = "185"
          landmarkName = "SpecialPolygons::handleSlimPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "347557518.279345"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "138"
+         endingLineNumber = "138"
+         landmarkName = "PotentialCrossDetector::detectInsertVertexOnEdge (MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *oldEdge, Vertex *newVertex, Vertex *oldVertex, Edge **crossedEdge)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

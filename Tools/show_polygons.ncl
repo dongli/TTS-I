@@ -10,12 +10,12 @@ begin
     ; user configurations
     is_plot_polygons = True
     is_plot_quantities = False
-    is_plot_vertices = True
+    is_plot_vertices = False
     is_plot_vertex_number = False
     is_plot_polygon_area = False
-    is_plot_testpoint = True
+    is_plot_testpoint = False
     is_plot_point_counters = False
-    projection = "ST"
+    projection = "CE"
     projection@angle = 10.0
     ;projection@move_viewpoint = True
     projection@center_lon = 0.0

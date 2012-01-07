@@ -211,7 +211,7 @@ void PolygonManager::output(const string &fileName)
         string message = "Failed to open file "+fileName+".";
         REPORT_ERROR(message.c_str());
     }
-    
+
     // -------------------------------------------------------------------------
     // time information
     if (TimeManager::onLine()) {
@@ -219,7 +219,7 @@ void PolygonManager::output(const string &fileName)
         file.add_att("time_step", TimeManager::getTimeStep());
         file.add_att("steps", TimeManager::getSteps());
     }
-    
+
     // -------------------------------------------------------------------------
     // dimensions
     NcDim *numVertexDim = file.add_dim("num_total_vertex", vertices.size());

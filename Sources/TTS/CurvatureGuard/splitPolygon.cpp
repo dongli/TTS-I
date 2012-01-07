@@ -75,12 +75,19 @@ void CurvatureGuard::splitPolygon
     }
     // -------------------------------------------------------------------------
     // check if the split operation is ok
-    if (mode != 5 && detectReplaceVertex(vertex3, testVertex) != NoCross) {
+    if (mode != 5 && detectReplaceVertex(edgePointer1, vertex3, testVertex) != NoCross) {
+        if (mode == 1 || mode == 2) {
+            projection->setApproach(false);
+            if (vertex3->detectAgent.getActiveProjection() == NULL)
+                ApproachingVertices::removeVertex(vertex3);
+            return;
+        }
         // when mode is 1/2/4, vertex3 will be eliminated, and this
         // may cause edge-crossing. If this happens, shift to mode 5
         // by making testVertex be vertex3.
         testVertex = vertex3;
         mode = 5;
+        // TODO: Whether we should split the polygon at this condition?
     }
     if (mode == 4) {
         if (detectInsertVertexOnEdge(meshManager, flowManager, polygonManager,
@@ -184,7 +191,6 @@ void CurvatureGuard::splitPolygon
         vertex3->handoverEdges(newVertex, meshManager,
                                flowManager, polygonManager);
         polygonManager.vertices.remove(vertex3);
-        vertex3 = NULL;
     }
     if (newEdge != NULL) {
         if (edgePointer1->orient == OrientLeft) {
@@ -276,6 +282,8 @@ bool handleApproachEvents(MeshManager &meshManager,
 
     while (!ApproachingVertices::isEmpty()) {
         vertex3 = ApproachingVertices::vertices.front();
+        if (TimeManager::getSteps() == 135 && (vertex3->getID() == 19487))
+            REPORT_DEBUG;
         // ---------------------------------------------------------------------
         // if the vertex3 is a test point, split its edge
         // TODO: Will there be test points here?
@@ -416,7 +424,7 @@ bool handleApproachEvents(MeshManager &meshManager,
 
 inline bool isIntrudingVertex(EdgePointer *markEdgePointer)
 {
-    static const double a0 = 200.0/Rad2Deg;
+    static const double a0 = 250.0/Rad2Deg;
     EdgePointer *edgePointer1, *edgePointer2;
     Edge *edge1, *edge2, *edge3, *edge4;
     Vertex *vertex1, *vertex2, *vertex3, *vertex4, *vertex5;
@@ -479,8 +487,6 @@ bool handleBentPolygons(MeshManager &meshManager,
     bool isConnectOk1, isConnectOk2;
     int mode;
     Location loc;
-    static std::list<Edge *> checkedEdges;
-    // TODO: The position is not right.
     // -------------------------------------------------------------------------
     Polygon *newPolygon;
     Polygon *polygon = polygonManager.polygons.front();
@@ -494,7 +500,6 @@ bool handleBentPolygons(MeshManager &meshManager,
             // -----------------------------------------------------------------
             // find out the vertex that is penetrating into polygon
             if (isIntrudingVertex(markEdgePointer1)) {
-                checkedEdges.clear();
                 vertex1 = markEdgePointer1->getEndPoint(FirstPoint);
                 for (itPrj = vertex1->detectAgent.getProjections().begin();
                      itPrj != vertex1->detectAgent.getProjections().end(); ++itPrj) {
@@ -503,10 +508,6 @@ bool handleBentPolygons(MeshManager &meshManager,
                     if (distance < projection->getDistance(NewTimeLevel))
                         continue;
                     markEdge = projection->getEdge();
-                    if (find(checkedEdges.begin(), checkedEdges.end(), markEdge)
-                        != checkedEdges.end())
-                        continue;
-                    checkedEdges.push_back(markEdge);
                     if (markEdge != markEdgePointer1->prev->prev->edge &&
                         markEdge != markEdgePointer1->next->edge) {
                         if (markEdge->getPolygon(OrientLeft) == polygon) {

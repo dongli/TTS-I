@@ -42,12 +42,6 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
     TestPoint *testPoint = edge->getTestPoint();
     Vertex *vertex2 = edge->getEndPoint(SecondPoint);
 
-//    if (TimeManager::getSteps() >= 95 && edge->getID() == 305357) {
-//        edge->getPolygon(OrientLeft)->dump("polygon1");
-//        edge->getPolygon(OrientRight)->dump("polygon2");
-//        REPORT_DEBUG;
-//    }
-
     if (!isMustSplit) {
         testPoint->calcAngle();
         testPoint->calcOrient();

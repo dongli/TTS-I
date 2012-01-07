@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     TTS tts;
     char fileName[30], filePattern[50] = "sq_360x180_%3.3d.nc";
     // -------------------------------------------------------------------------
-    ConfigTools::parse("tts_square_config");
+    ConfigTools::parse("tts_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(576);
     // -------------------------------------------------------------------------
@@ -36,6 +36,8 @@ int main(int argc, char **argv)
     testCase.calcVelocityField(flowManager);
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);
+    sprintf(fileName, filePattern, TimeManager::getSteps());
+    tracerManager.output(fileName);
     tts.init();
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {

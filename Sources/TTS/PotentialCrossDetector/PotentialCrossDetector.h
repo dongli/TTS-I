@@ -16,8 +16,8 @@ namespace PotentialCrossDetector
         NoCross, Cross
     };
 
-    Status detectReplaceVertex(Vertex *oldVertex, Vertex *newVertex,
-                               bool isJustDetect = false);
+    Status detectReplaceVertex(EdgePointer *edgePointer,
+                               Vertex *oldVertex, Vertex *newVertex);
 
     Status detectRemoveVertexOnEdges(MeshManager &meshManager,
                                      EdgePointer *edgePointer,

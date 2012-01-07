@@ -24,6 +24,8 @@ void TTS::init()
     CurvatureGuard::init();
 }
 
+#define CHECK_AREA_BIAS
+
 void TTS::advect(MeshManager &meshManager,
                  MeshAdaptor &meshAdaptor,
                  const FlowManager &flowManager,
@@ -35,9 +37,8 @@ void TTS::advect(MeshManager &meshManager,
     Polygon *polygon;
     Vertex *vertex;
     Edge *edge;
-
+    // -------------------------------------------------------------------------
     meshManager.resetPointCounter();
-
     // -------------------------------------------------------------------------
     // check the location of each vertex at the first step
     if (TimeManager::isFirstStep()) {
@@ -49,7 +50,6 @@ void TTS::advect(MeshManager &meshManager,
             vertex = vertex->next;
         }
     }
-
     // -------------------------------------------------------------------------
     // advect vertices of each parcel (polygon)
     vertex = polygonManager.vertices.front();
@@ -57,10 +57,6 @@ void TTS::advect(MeshManager &meshManager,
         track(meshManager, flowManager, vertex);
         vertex = vertex->next;
     }
-    //char fileName[30];
-    //sprintf(fileName, "debug_counters%5.5d.nc", TimeManager::getSteps());
-    //meshManager.pointCounter.output(fileName);
-
     // -------------------------------------------------------------------------
     edge = polygonManager.edges.front();
     for (int i = 0; i < polygonManager.edges.size(); ++i) {
@@ -68,7 +64,6 @@ void TTS::advect(MeshManager &meshManager,
         edge->calcLength();
         edge = edge->next;
     }
-    
     // -------------------------------------------------------------------------
     // calculate the angle
     polygon = polygonManager.polygons.front();
@@ -80,11 +75,9 @@ void TTS::advect(MeshManager &meshManager,
         }
         polygon = polygon->next;
     }
-
     // -------------------------------------------------------------------------
     // guard the curvature of each parcel (polygon)
     CurvatureGuard::guard(meshManager, flowManager, polygonManager);
-
     // -------------------------------------------------------------------------
     // update physical quantities
 #ifdef DEBUG
@@ -119,7 +112,6 @@ void TTS::advect(MeshManager &meshManager,
     cout << "Total polygon number: " << setw(10);
     cout << polygonManager.polygons.size() << endl;
     tracerManager.update();
-
     // -------------------------------------------------------------------------
     // adapt the quantities carried by parcels (polygons)
     // onto the background fixed mesh
@@ -139,7 +131,6 @@ void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
     Velocity v1, v2, v3, v4, v;
     double dt = TimeManager::getTimeStep();
     double dt05 = dt*0.5;
-
     // -------------------------------------------------------------------------
     // Note: Set the velocity type to handle the occasion that the point is
     //       acrossing from pole region to normal region, in which case "loc1"
@@ -149,28 +140,23 @@ void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,
     } else {
         type = Velocity::LonLatSpace;
     }
-
     // -------------------------------------------------------------------------
     flowManager.getVelocity(x0, loc0, OldTimeLevel, v1, type);
     meshManager.move(x0, x1, v1, dt05, loc0);
     meshManager.checkLocation(x1, loc1);
     flowManager.getVelocity(x1, loc1, HalfTimeLevel, v2, type);
-
     // -------------------------------------------------------------------------
     meshManager.move(x0, x1, v2, dt05, loc0);
     meshManager.checkLocation(x1, loc1);
     flowManager.getVelocity(x1, loc1, HalfTimeLevel, v3, type);
-
     // -------------------------------------------------------------------------
     meshManager.move(x0, x1, v3, dt, loc0);
     meshManager.checkLocation(x1, loc1);
     flowManager.getVelocity(x1, loc1, NewTimeLevel, v4, type);
-
     // -------------------------------------------------------------------------
     v = (v1+v2*2.0+v3*2.0+v4)/6.0;
     meshManager.move(x0, x1, v, dt, loc0);
     meshManager.checkLocation(x1, loc1, point);
-
     // -------------------------------------------------------------------------
     point->setCoordinate(x1);
     point->setLocation(loc1);

@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     Sphere::setRadius(6371.299e3);
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);
+    tts.init();
     // -------------------------------------------------------------------------
     gamilReader.init("gamil_data", "tts.gamil.suv.*.nc");
     gamilReader.getVelocityField();

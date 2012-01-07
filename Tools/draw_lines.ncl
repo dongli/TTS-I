@@ -36,7 +36,7 @@ begin
     point_lat = point_lat*Rad2Deg
 
     ; --------------------------------------------------------------------------
-    wks = gsn_open_wks("newpdf", file_name)
+    wks = gsn_open_wks("pdf", file_name)
 
     projection@center_lon = new(1, double)
     projection@center_lat = new(1, double)

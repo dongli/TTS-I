@@ -91,15 +91,35 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
             if (!isNeedCheck(projection->getDistance(NewTimeLevel)))
                 return;
             // -----------------------------------------------------------------
-            // Scenario 1-2:
-            //   Vertex3 has projection on edge1 at new time step.
-            projection->project(point, edge, OldTimeLevel);
-            projection->checkApproaching();
-            if (projection->isApproaching() &&
-                point->detectAgent.getActiveProjection() == NULL) {
-                ApproachingVertices::recordVertex(point);
+            // Note: Here we capture the crossing test point, which has not been
+            //       detected.
+            if (!isTestPointHasOldProjection &&
+                detectTestPoint(edgePointer1, edgePointer2) == Cross) {
+                static_cast<TestPoint *>(point)->reset(meshManager);
+                if (projection->project(point, edge, NewTimeLevel)) {
+                    projection->project(point, edge, OldTimeLevel);
+                    projection->checkApproaching();
+                    if (projection->isApproaching())
+                        ApproachingVertices::recordVertex(point);
+                    else if (point->detectAgent.getActiveProjection() == NULL)
+                        ApproachingVertices::removeVertex(point);
+                    AgentPair::pair(point, edge, projection);
+                } else {
+                    if (point->detectAgent.getActiveProjection() == NULL)
+                        ApproachingVertices::removeVertex(point);
+                }
+            } else {
+                // -------------------------------------------------------------
+                // Scenario 1-2:
+                //   Vertex3 has projection on edge1 at new time step.
+                projection->project(point, edge, OldTimeLevel);
+                projection->checkApproaching();
+                if (projection->isApproaching() &&
+                    point->detectAgent.getActiveProjection() == NULL) {
+                    ApproachingVertices::recordVertex(point);
+                }
+                AgentPair::pair(point, edge, projection);
             }
-            AgentPair::pair(point, edge, projection);
         }
     } else {
         // ---------------------------------------------------------------------
@@ -118,7 +138,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
             // Note: Here we capture the crossing test point, which has not been
             //       detected.
             if (!isTestPointHasOldProjection &&
-                detectTestPoint(edgePointer1, edgePointer2)) {
+                detectTestPoint(edgePointer1, edgePointer2) == Cross) {
                 static_cast<TestPoint *>(point)->reset(meshManager);
                 if (projection->project(NewTimeLevel) == HasProjection) {
                     projection->project(OldTimeLevel);
@@ -132,7 +152,6 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                     if (point->detectAgent.getActiveProjection() == NULL)
                         ApproachingVertices::removeVertex(point);
                 }
-                return;
             } else {
                 // -------------------------------------------------------------
                 // Scenario 2-1:
@@ -252,16 +271,19 @@ return_invalid_approach:
     return false;
 }
 
+//#define DIAG_EDGE_LENGTH
+
 void ApproachDetector::detectPolygon(MeshManager &meshManager,
                                      const FlowManager &flowManager,
                                      PolygonManager &polygonManager,
                                      Polygon *polygon)
 {
-//    if (TimeManager::getSteps() >= 409 && (polygon->getID() == 142235)) {
+//    if (TimeManager::getSteps() >= 134 && (polygon->getID() == 40944)) {
 //        DebugTools::watch(polygon);
 //        polygon->dump("polygon");
 //        REPORT_DEBUG;
 //    }
+    // -------------------------------------------------------------------------
     if (polygon->edgePointers.size() == 2) {
         handleLinePolygon(polygonManager, polygon);
         // TODO: Hand over the tracer mass.
@@ -307,6 +329,19 @@ redetect_polygon:
         }
         edgePointer1 = edgePointer1->next;
     }
+#ifdef DIAG_EDGE_LENGTH
+    double minEdgeLength = 1.0e34, maxEdgeLength = -1.0e34;
+    edgePointer1 = polygon->edgePointers.front();
+    for (int i = 0; i < polygon->edgePointers.size(); ++i) {
+        if (edgePointer1->edge->getLength() > maxEdgeLength)
+            maxEdgeLength = edgePointer1->edge->getLength();
+        if (edgePointer1->edge->getLength() < minEdgeLength)
+            minEdgeLength = edgePointer1->edge->getLength();
+        edgePointer1 = edgePointer1->next;
+    }
+    cout << "Min edge length: " << minEdgeLength*Rad2Deg/Sphere::radius << endl;
+    cout << "Max edge length: " << maxEdgeLength*Rad2Deg/Sphere::radius << endl;
+#endif
 }
 
 void ApproachDetector::detectPolygons(MeshManager &meshManager,
@@ -345,6 +380,7 @@ void ApproachDetector::reset(PolygonManager &polygonManager)
 int ApproachDetector::chooseMode(EdgePointer *edgePointer1,
                                  Vertex *vertex3, Projection *projection)
 {
+    // TODO: Avoid use the absolute distance.
     static const double smallDistance1 = 0.06/Rad2Deg*Sphere::radius;
     static const double smallDistance2 = 0.06/Rad2Deg*Sphere::radius;
     const Coordinate &x1 = edgePointer1->getEndPoint(FirstPoint)->getCoordinate();
@@ -354,12 +390,17 @@ int ApproachDetector::chooseMode(EdgePointer *edgePointer1,
     double d3;
     if (d1 <= d2)
         d3 = Sphere::calcDistance(x1, projection->getCoordinate(NewTimeLevel));
-    else
+    else if (d2 <= d1)
         d3 = Sphere::calcDistance(x2, projection->getCoordinate(NewTimeLevel));
     double d4 = projection->getDistance(NewTimeLevel);
+    edgePointer1->edge->calcLength();
+    // branch-1: avoid wild changes
+    if (d4/edgePointer1->edge->getLength() > 0.1)
+        return -1;
+    // branch-2
     if (d1 <= d2) {
         if (d3 <= smallDistance2) {
-            if (d1 <= smallDistance1)
+            if (d1 <= smallDistance1 && 1.0-d1/d2 > 0.5)
                 return 1;
             else {
                 if (projection->getChangeRate() <= 0.45 &&
@@ -378,7 +419,7 @@ int ApproachDetector::chooseMode(EdgePointer *edgePointer1,
         }
     } else {
         if (d3 <= smallDistance2) {
-            if (d2 <= smallDistance1)
+            if (d2 <= smallDistance1 && 1.0-d2/d1 > 0.5)
                 return 2;
             else {
                 if (projection->getChangeRate() <= 0.45 &&

@@ -1268,7 +1268,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TTS_ONLINE,
 					DEBUG,
-					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1425,7 +1424,6 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					DEBUG_TTS,
 					DEBUG,
 					TTS_ONLINE,
 				);
