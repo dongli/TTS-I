@@ -112,9 +112,10 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
     if (crossedEdge != NULL)
         *crossedEdge = NULL;
     // -------------------------------------------------------------------------
-    // check the paired vertices of the old edge to find out:
-    // - vertex crossing
-    // - wrong orientation
+    // branch-1:
+    // check the two new edges will not cross by any vertex
+    // =========================================================================
+    // paired vertices of old edge
     itVtx = oldEdge->detectAgent.vertices.begin();
     while (itVtx != oldEdge->detectAgent.vertices.end()) {
         // test point will be checked later
@@ -163,9 +164,8 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
         }
         itVtx++;
     }
-    // -------------------------------------------------------------------------
-    // check the paired edges of the end points of the old edge to find out:
-    // - vertex crossing
+    // =========================================================================
+    // paired edges of end points of old edge
     for (int i = 0; i < 2; ++i) {
         itPrj = vertices[i]->detectAgent.getProjections().begin();
         while (itPrj != vertices[i]->detectAgent.getProjections().end()) {
@@ -191,8 +191,8 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
         }
     }
     // -------------------------------------------------------------------------
-    // check the paired vertices of the old edge to find out:
-    // - test point crossing
+    // branch-2:
+    // check the two new edges will not cross by any test point, if so reset it
     for (itVtx = oldEdge->detectAgent.vertices.begin();
          itVtx != oldEdge->detectAgent.vertices.end(); ++itVtx) {
         if ((*itVtx)->getID() != -1) continue;
@@ -268,8 +268,8 @@ Status PotentialCrossDetector::detectRemoveVertexOnEdges(MeshManager &meshManage
              edgePointer->orient == OrientRight)
         mode = 4;
     // -------------------------------------------------------------------------
-    // check the potential new edge will not be crossed by the paired vertices
-    // of edge 1 and 2
+    // branch-1:
+    // check the new edge will not be crossed by the paired vertices of edge 1/2
     // =========================================================================
     // edge 1
     for (itVtx = edge1->detectAgent.vertices.begin();
@@ -301,7 +301,8 @@ Status PotentialCrossDetector::detectRemoveVertexOnEdges(MeshManager &meshManage
         }
     }
     // -------------------------------------------------------------------------
-    // check for test point, if it crosses any edge, reset it
+    // branch-2:
+    // check the new test point will not cross any edge, if so reset it
     orient = Sphere::orient(vertex1, vertex3, testPoint);
     if (mode == 1 || mode == 2) {
         if (orient == OrientLeft)
@@ -380,6 +381,30 @@ Status PotentialCrossDetector::detectRemoveVertexOnEdges(MeshManager &meshManage
                 checkedEdges.push_back(edge);
             }
             linkedEdge = linkedEdge->next;
+        }
+    }
+    // =========================================================================
+    for (int i = 0; i < 3; ++i) {
+        for (itPrj = vertices[i]->detectAgent.getProjections().begin();
+             itPrj != vertices[i]->detectAgent.getProjections().end(); ++itPrj) {
+            edge = (*itPrj).getEdge();
+            if (find(checkedEdges.begin(), checkedEdges.end(), edge)
+                == checkedEdges.end()) {
+                vertex5 = NULL; vertex6 = NULL;
+                if (edge->getPolygon(OrientLeft) == markPolygon ||
+                    edge->getPolygon(OrientRight) == markPolygon) {
+                    vertex5 = edge->getEndPoint(FirstPoint);
+                    vertex6 = edge->getEndPoint(SecondPoint);
+                }
+                if (vertex5 != NULL) {
+                    if (((vertex5 != vertex1 && vertex6 != vertex1) &&
+                         Sphere::isIntersect(vertex1, testPoint, vertex5, vertex6)) ||
+                        ((vertex5 != vertex3 && vertex6 != vertex3) &&
+                         Sphere::isIntersect(vertex3, testPoint, vertex5, vertex6)))
+                        goto return_nocross_but_reset_testpoint;
+                }
+                checkedEdges.push_back(edge);
+            }
         }
     }
     // -------------------------------------------------------------------------

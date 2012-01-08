@@ -45,19 +45,6 @@ void TestPoint::reset(MeshManager &meshManager)
 //        ApproachingVertices::removeVertex(this);
 }
 
-void TestPoint::reset(MeshManager &meshManager, const FlowManager &flowManager,
-                      const Coordinate &x0)
-{
-    x.setNew(x0);
-    meshManager.checkLocation(x.getNew(), loc, this);
-    TTS::track(meshManager, flowManager, this);
-    std::list<Projection>::iterator itPrj;
-    for (itPrj = detectAgent.getProjections().begin();
-         itPrj != detectAgent.getProjections().end(); ++itPrj) {
-        (*itPrj).expire();
-    }
-}
-
 void TestPoint::calcAngle()
 {
     const Coordinate &x1 = hostEdge->getEndPoint(FirstPoint)->getCoordinate();

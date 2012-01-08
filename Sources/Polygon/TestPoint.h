@@ -3,8 +3,6 @@
 
 #include "Vertex.h"
 
-class MeshManager;
-
 class TestPoint : public Vertex
 {
 public:
@@ -13,7 +11,6 @@ public:
 
     void reinit();
     void reset(MeshManager &);
-    void reset(MeshManager &, const FlowManager &, const Coordinate &);
 
     void calcAngle();
     double getAngle() const { return angle; }

@@ -341,11 +341,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "347557526.084308"
+         timestampString = "347637656.432169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "280"
-         endingLineNumber = "280"
+         startingLineNumber = "276"
+         endingLineNumber = "276"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
@@ -427,11 +427,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "347465206.083652"
+         timestampString = "347637656.432169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "297"
-         endingLineNumber = "297"
+         startingLineNumber = "293"
+         endingLineNumber = "293"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
@@ -490,11 +490,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "347465206.083652"
+         timestampString = "347637656.432169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "304"
-         endingLineNumber = "304"
+         startingLineNumber = "300"
+         endingLineNumber = "300"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -504,11 +504,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "347465206.083652"
+         timestampString = "347637656.432169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "306"
-         endingLineNumber = "306"
+         startingLineNumber = "302"
+         endingLineNumber = "302"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
@@ -726,11 +726,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "347442474.759241"
+         timestampString = "347637656.432169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "179"
-         endingLineNumber = "179"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
          landmarkName = "detectPoint(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Vertex *point, EdgePointer *edgePointer1, EdgePointer *edgePointer2, bool &amp;isPointCrossEdge)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -796,11 +796,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "347591137.927243"
+         timestampString = "347618997.221713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "507"
-         endingLineNumber = "507"
+         startingLineNumber = "532"
+         endingLineNumber = "532"
          landmarkName = "PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -810,11 +810,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "347591137.927243"
+         timestampString = "347618997.221713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "496"
-         endingLineNumber = "496"
+         startingLineNumber = "521"
+         endingLineNumber = "521"
          landmarkName = "PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -824,11 +824,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "347591137.927243"
+         timestampString = "347618997.221713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "475"
-         endingLineNumber = "475"
+         startingLineNumber = "500"
+         endingLineNumber = "500"
          landmarkName = "PotentialCrossDetector::detectAddConnection(Polygon *polygon, EdgePointer *edgePointer1, EdgePointer *&amp;edgePointer2, bool &amp;isConnectOk1, bool &amp;isConnectOk2, Vector &amp;vector1, Vector &amp;vector2)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -838,11 +838,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "347591137.927243"
+         timestampString = "347618997.221713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "457"
-         endingLineNumber = "457"
+         startingLineNumber = "482"
+         endingLineNumber = "482"
          landmarkName = "PotentialCrossDetector::detectAddConnection(Polygon *polygon, EdgePointer *edgePointer1, EdgePointer *&amp;edgePointer2, bool &amp;isConnectOk1, bool &amp;isConnectOk2, Vector &amp;vector1, Vector &amp;vector2)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -866,11 +866,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "347442474.759241"
+         timestampString = "347637656.432169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "142"
-         endingLineNumber = "142"
+         startingLineNumber = "138"
+         endingLineNumber = "138"
          landmarkName = "detectPoint(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Vertex *point, EdgePointer *edgePointer1, EdgePointer *edgePointer2, bool &amp;isPointCrossEdge)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -908,11 +908,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
-         timestampString = "347557518.279345"
+         timestampString = "347618997.221713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "138"
-         endingLineNumber = "138"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
          landmarkName = "PotentialCrossDetector::detectInsertVertexOnEdge (MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *oldEdge, Vertex *newVertex, Vertex *oldVertex, Edge **crossedEdge)"
          landmarkType = "5">
       </FileBreakpoint>

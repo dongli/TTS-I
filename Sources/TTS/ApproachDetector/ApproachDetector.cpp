@@ -72,10 +72,6 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
     if (projection == NULL && point->getID() == -1)
         isTestPointHasOldProjection = false;
     isPointCrossEdge = false;
-    // -------------------------------------------------------------------------
-    // use the PointCounter mesh as the first filter
-    // TODO: At the regions near Poles, the bounding box may fail to provide the
-    //       true neighbourhood.
     if (projection == NULL) {
         // ---------------------------------------------------------------------
         // Scenario 1:
@@ -201,38 +197,6 @@ bool ApproachDetector::checkApproachValid(MeshManager &meshManager,
     projection = vertex3->detectAgent.getProjection(edgePointer1->edge);
     if (projection == NULL)
         return false;
-    // -------------------------------------------------------------------------
-    // check if vertex3 has crossed the endPoint1->testPoint
-    // and testPoint->endPoint2
-    // TODO: In detectInsertVertexOnEdge may has already checked
-    //       the following situations, so do we need them here?
-    testPoint = edgePointer1->edge->getTestPoint();
-    if (testPoint->getOrient() != OrientOn &&
-        testPoint->getOrient() == projection->getOrient()) {
-        orient1 = Sphere::orient(edgePointer1->edge->getEndPoint(FirstPoint),
-                                 testPoint,
-                                 vertex3);
-        orient2 = Sphere::orient(testPoint,
-                                 edgePointer1->edge->getEndPoint(SecondPoint),
-                                 vertex3);
-        if (edgePointer1->orient == OrientLeft) {
-            if (edgePointer1->orient == testPoint->getOrient()) {
-                if (orient1 == OrientRight && orient2 == OrientRight)
-                    goto return_reset_test_point;
-            } else {
-                if (orient1 == OrientLeft && orient2 == OrientLeft)
-                    goto return_reset_test_point;
-            }
-        } else {
-            if (edgePointer1->orient == testPoint->getOrient()) {
-                if (orient1 == OrientLeft && orient2 == OrientLeft)
-                    goto return_reset_test_point;
-            } else {
-                if (orient1 == OrientRight && orient2 == OrientRight)
-                    goto return_reset_test_point;
-            }
-        }
-    }
     // -------------------------------------------------------------------------
     if (projection->isApproaching()) {
         if (chooseMode(edgePointer1, vertex3, projection) == -1)
