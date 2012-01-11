@@ -8,9 +8,9 @@
 using namespace ApproachDetector;
 
 //#define TRACK_PAIRS
-#define PAIR_VERTEX_ID 1130691
+#define PAIR_VERTEX_ID 620874
 #define PAIR_TEST_POINT_HOST_EDGE_ID -999
-#define PAIR_EDGE_ID 2147744
+#define PAIR_EDGE_ID 184552
 
 void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
 {
@@ -33,8 +33,8 @@ void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
     if (vertex->getID() == PAIR_VERTEX_ID)
 #endif
     {
-        DebugTools::watch(vertex);
-        DebugTools::watch(edge);
+//        DebugTools::watch(vertex);
+//        DebugTools::watch(edge);
         cout << endl << endl;
         cout << "*** ApproachDetector::AgentPair::pair ***" << endl;
         cout << "---> Vertex " << vertex->getID() << " is paired with ";

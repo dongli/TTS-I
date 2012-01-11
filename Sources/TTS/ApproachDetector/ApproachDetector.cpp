@@ -94,15 +94,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                 static_cast<TestPoint *>(point)->reset(meshManager);
                 if (projection->project(point, edge, NewTimeLevel)) {
                     projection->project(point, edge, OldTimeLevel);
-                    projection->checkApproaching();
-                    if (projection->isApproaching())
-                        ApproachingVertices::recordVertex(point);
-                    else if (point->detectAgent.getActiveProjection() == NULL)
-                        ApproachingVertices::removeVertex(point);
                     AgentPair::pair(point, edge, projection);
-                } else {
-                    if (point->detectAgent.getActiveProjection() == NULL)
-                        ApproachingVertices::removeVertex(point);
                 }
             } else {
                 // -------------------------------------------------------------
@@ -136,18 +128,6 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
             if (!isTestPointHasOldProjection &&
                 detectTestPoint(edgePointer1, edgePointer2) == Cross) {
                 static_cast<TestPoint *>(point)->reset(meshManager);
-                if (projection->project(NewTimeLevel) == HasProjection) {
-                    projection->project(OldTimeLevel);
-                    projection->checkApproaching();
-                    if (projection->isApproaching())
-                        ApproachingVertices::recordVertex(point);
-                    else if (point->detectAgent.getActiveProjection() == NULL)
-                        ApproachingVertices::removeVertex(point);
-                } else {
-                    AgentPair::unpair(point, edge);
-                    if (point->detectAgent.getActiveProjection() == NULL)
-                        ApproachingVertices::removeVertex(point);
-                }
             } else {
                 // -------------------------------------------------------------
                 // Scenario 2-1:
@@ -166,13 +146,6 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                 // Note: When the test point cross the paired edge, we can
                 //       only to reset it to avoid potential problems.
                 static_cast<TestPoint *>(point)->reset(meshManager);
-                // Note: Here we use CrossEdge since the orient of point has
-                //       already changed oppositely.
-                if (projection->project(NewTimeLevel) == CrossEdge) {
-                    projection->project(OldTimeLevel);
-                    projection->checkApproaching();
-                } else
-                    AgentPair::unpair(point, edge);
             } else {
                 // TEST: When the point crosses the edge, we should remedy
                 //       this problem insteal of throughing an error.
@@ -190,8 +163,6 @@ bool ApproachDetector::checkApproachValid(MeshManager &meshManager,
                                           Vertex *vertex3)
 {
     Projection *projection;
-    TestPoint *testPoint;
-    OrientStatus orient1, orient2;
     // -------------------------------------------------------------------------
     // collect information
     projection = vertex3->detectAgent.getProjection(edgePointer1->edge);
@@ -242,7 +213,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                                      PolygonManager &polygonManager,
                                      Polygon *polygon)
 {
-//    if (TimeManager::getSteps() >= 134 && (polygon->getID() == 40944)) {
+//    if (TimeManager::getSteps() >= 304 && (polygon->getID() == 12511)) {
 //        DebugTools::watch(polygon);
 //        polygon->dump("polygon");
 //        REPORT_DEBUG;

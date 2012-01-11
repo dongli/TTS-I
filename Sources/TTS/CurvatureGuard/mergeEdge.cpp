@@ -29,6 +29,7 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
 //        REPORT_DEBUG;
 //    }
 
+    // TODO: Handle the slim triangle!
     if (polygon->edgePointers.size() == 3)
         return isMerged;
 

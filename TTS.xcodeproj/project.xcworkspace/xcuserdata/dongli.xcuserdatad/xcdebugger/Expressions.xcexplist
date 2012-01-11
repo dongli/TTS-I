@@ -264,7 +264,7 @@
                value = "edgePointer1-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
-               value = "polygon2-&gt;ID">
+               value = "vertex3-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "polygon3-&gt;edgePointers.size()">
@@ -282,22 +282,16 @@
                value = "edgePointer2-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
-               value = "vertex1-&gt;ID">
-            </PersistentString>
-            <PersistentString
                value = "polygon1-&gt;edgePointers.size()">
             </PersistentString>
             <PersistentString
                value = "edgePointer1-&gt;orient">
             </PersistentString>
             <PersistentString
-               value = "vertex2-&gt;ID">
-            </PersistentString>
-            <PersistentString
                value = "polygon3-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "vertex3-&gt;ID">
+               value = "polygon2-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -305,10 +299,10 @@
          contextName = "PotentialCrossDetector::detectMergeEdges(EdgePointer*, Vertex*, Polygon*):PotentialCrossDetector.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "projection-&gt;orient">
+               value = "projection-&gt;vertex-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "projection-&gt;vertex-&gt;ID">
+               value = "projection-&gt;orient">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -387,13 +381,13 @@
                value = "vertices[0]-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "polygon2-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "projection.orient">
+               value = "vertices[1]-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "projection2-&gt;orient">
+            </PersistentString>
+            <PersistentString
+               value = "projection.orient">
             </PersistentString>
             <PersistentString
                value = "projection1-&gt;orient">
@@ -420,7 +414,7 @@
                value = "projection3-&gt;getDistance(NewTimeLevel)">
             </PersistentString>
             <PersistentString
-               value = "vertices[1]-&gt;ID">
+               value = "polygon2-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -445,6 +439,20 @@
          contextName = "test_orient():unit_test_sphere.h">
       </ContextState>
       <ContextState
+         contextName = "ApproachDetector::EdgeAgent::updateVertexProjections(MeshManager&amp;):EdgeAgent.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "vertex1-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex2-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex3-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "PotentialCrossDetector::detectRemoveVertexOnEdges(EdgePointer*, Vertex*, Polygon*):PotentialCrossDetector.cpp">
          <PersistentStrings>
             <PersistentString
@@ -463,9 +471,6 @@
                value = "projection-&gt;vertex-&gt;ID">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ApproachDetector::EdgeAgent::updateVertexProjections(MeshManager&amp;):EdgeAgent.cpp">
       </ContextState>
       <ContextState
          contextName = "PotentialCrossDetector::detectInsertVertexOnEdge(Edge*, Vertex*, Vertex*):PotentialCrossDetector.cpp">
@@ -493,13 +498,13 @@
          contextName = "handleDisorderedPolygons(PolygonManager&amp;):splitPolygon.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "edgePointer-&gt;next-&gt;angle.getNew()*Rad2Deg">
+               value = "markEdgePointer-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
                value = "edgePointer-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
-               value = "markEdgePointer-&gt;angle.getNew()*Rad2Deg">
+               value = "edgePointer-&gt;next-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -654,7 +659,7 @@
          contextName = "CurvatureGuard::splitEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Edge*, bool, bool):splitEdge.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "edge-&gt;ID">
+               value = "edge-&gt;length*Rad2Deg/Sphere::radius">
             </PersistentString>
             <PersistentString
                value = "testPoint-&gt;getAngle()*Rad2Deg">
@@ -675,15 +680,35 @@
                value = "projection-&gt;changeRate">
             </PersistentString>
             <PersistentString
-               value = "projection-&gt;distance.getNew()">
+               value = "edge-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "edge-&gt;length*Rad2Deg/Sphere::radius">
+               value = "projection-&gt;distance.getNew()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "detectPoint(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Vertex*, EdgePointer*, EdgePointer*, bool&amp;):ApproachDetector.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "PotentialCrossDetector::detectInsertVertexOnEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Edge*, Vertex*, Vertex*, Edge**):PotentialCrossDetector.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "vertex3-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex1-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex4-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex2-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Field::init(RLLMesh const&amp;):Field.cpp">
       </ContextState>
       <ContextState
          contextName = "SpecialPolygons::handleSlimPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*&amp;):SpecialPolygons.cpp">
@@ -718,26 +743,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Field::init(RLLMesh const&amp;):Field.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "PotentialCrossDetector::detectInsertVertexOnEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Edge*, Vertex*, Vertex*, Edge**):PotentialCrossDetector.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "vertex3-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "vertex1-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "vertex4-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "vertex2-&gt;ID">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "handleApproachEvents:splitPolygon.cpp">
          <PersistentStrings>
             <PersistentString
@@ -752,13 +757,13 @@
          contextName = "Vertex::handoverEdges(Vertex*, MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;):Vertex.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "linkedEdge-&gt;edge-&gt;endPoints[1]-&gt;ID">
+               value = "linkedEdge-&gt;edge-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "linkedEdge-&gt;edge-&gt;endPoints[0]-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "linkedEdge-&gt;edge-&gt;ID">
+               value = "linkedEdge-&gt;edge-&gt;endPoints[1]-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -992,7 +997,7 @@
          contextName = "PotentialCrossDetector::detectInsertVertexOnEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, bool, Edge*, Vertex*, Vertex*, Edge**, Vertex*, Vertex*, Vertex*):PotentialCrossDetector.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "vertex2-&gt;ID">
+               value = "projection-&gt;vertex-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "vertex3-&gt;ID">
@@ -1004,10 +1009,10 @@
                value = "vertex4-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "oldVertex-&gt;ID">
+               value = "vertex2-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "projection-&gt;vertex-&gt;ID">
+               value = "oldVertex-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1101,7 +1106,7 @@
          contextName = "ApproachDetector::detectPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*):ApproachDetector.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "vertex3-&gt;ID">
+               value = "edgePointer2-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
                value = "edgePointer1-&gt;angle.getNew()*Rad2Deg">
@@ -1113,25 +1118,16 @@
                value = "edgePointer1-&gt;orient">
             </PersistentString>
             <PersistentString
-               value = "vertex1-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "vertex2-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "edgePointer2-&gt;angle.getNew()*Rad2Deg">
-            </PersistentString>
-            <PersistentString
-               value = "edgePointer1-&gt;prev-&gt;angle.getNew()*Rad2Deg">
-            </PersistentString>
-            <PersistentString
                value = "edgePointer1-&gt;edge-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "edgePointer1-&gt;edge-&gt;length*Rad2Deg/Sphere::radius">
             </PersistentString>
             <PersistentString
                value = "polygon-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "edgePointer1-&gt;edge-&gt;length*Rad2Deg/Sphere::radius">
+               value = "edgePointer1-&gt;prev-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -73,6 +73,24 @@ bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
     return false;
 }
 
+inline bool Sphere::isProject(const Coordinate &x1, const Coordinate &x2,
+                       const Coordinate &x3)
+{
+    Vector tmp1, tmp2;
+    tmp1 = cross(x1.getCAR(), x3.getCAR());
+    tmp2 = cross(x3.getCAR(), x2.getCAR());
+    if (dot(tmp1, tmp2) > 0.0)
+        return true;
+    else
+        return false;
+}
+
+bool Sphere::isProject(Point *point1, Point *point2, Point *point3)
+{
+    return isProject(point1->getCoordinate(), point2->getCoordinate(),
+                     point3->getCoordinate());
+}
+
 void Sphere::rotate(const Coordinate &xp, const Coordinate &xo, Coordinate &xr)
 {
     double dlon = xo.getLon()-xp.getLon();
@@ -157,33 +175,21 @@ void Sphere::calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
 inline bool Sphere::isIntersect(const Coordinate &x1, const Coordinate &x2,
                                 const Coordinate &x3, const Coordinate &x4)
 {
-    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
-    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
-    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
-    double d =  x3.getY()*x4.getZ()-x3.getZ()*x4.getY();
-    double e = -x3.getX()*x4.getZ()+x3.getZ()*x4.getX();
-    double f =  x3.getX()*x4.getY()-x3.getY()*x4.getX();
-
-    double g1, g2, g3, r;
     static const double eps = 1.0e-12;
-    double x, y, z;
-
-    g1 = c*e-b*f;
-    g2 = a*f-c*d;
-    g3 = b*d-a*e;
-
-    r = sqrt(g1*g1+g2*g2+g3*g3);
-
+    Vector n1 = cross(x1.getCAR(), x2.getCAR());
+    Vector n2 = cross(x3.getCAR(), x4.getCAR());
+    Vector v = cross(n1, n2);
+    
+    double r = norm(v);
+    
     if (r > eps) {
-        x = g1/r;
-        y = g2/r;
-        z = g3/r;
+        v /= r;
     } else
         return false;
-
-    double lat1 = asin(z);
+    
+    double lat1 = asin(v[2]);
     double lat2 = -lat1;
-    double lon1 = atan2(y, x);
+    double lon1 = atan2(v[1], v[0]);
     double lon2 = lon1-PI;
     
     if (lon1 < 0.0) lon1 += PI2;
@@ -219,43 +225,31 @@ void Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
                            const Coordinate &x3, const Coordinate &x4,
                            Coordinate &x5, Coordinate &x6)
 {
-    double a =  x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
-    double b = -x1.getX()*x2.getZ()+x1.getZ()*x2.getX();
-    double c =  x1.getX()*x2.getY()-x1.getY()*x2.getX();
-    double d =  x3.getY()*x4.getZ()-x3.getZ()*x4.getY();
-    double e = -x3.getX()*x4.getZ()+x3.getZ()*x4.getX();
-    double f =  x3.getX()*x4.getY()-x3.getY()*x4.getX();
-
-    double g1, g2, g3, r;
     static const double eps = 1.0e-12;
-    double x, y, z;
+    Vector n1 = cross(x1.getCAR(), x2.getCAR());
+    Vector n2 = cross(x3.getCAR(), x4.getCAR());
+    Vector v = cross(n1, n2);
 
-    g1 = c*e-b*f;
-    g2 = a*f-c*d;
-    g3 = b*d-a*e;
-
-    r = sqrt(g1*g1+g2*g2+g3*g3);
+    double r = norm(v);
 
     if (r > eps) {
-        x = g1/r;
-        y = g2/r;
-        z = g3/r;
+        v /= r;
     } else {
         x5.set(-999.0, -999.0);
         x6.set(-999.0, -999.0);
         return;
     }
 
-    double lat1 = asin(z);
+    double lat1 = asin(v[2]);
     double lat2 = -lat1;
-    double lon1 = atan2(y, x);
+    double lon1 = atan2(v[1], v[0]);
     double lon2 = lon1-PI;
-    
+
     if (lon1 < 0.0) lon1 += PI2;
     if (lon1 > PI2) lon1 -= PI2;
     if (lon2 < 0.0) lon2 += PI2;
     if (lon2 > PI2) lon2 -= PI2;
-    
+
     x5.set(lon1, lat1);
     x6.set(lon2, lat2);
 }

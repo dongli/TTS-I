@@ -30,19 +30,19 @@ void TestPoint::reset(MeshManager &meshManager)
     x.setNew(x3); x.setOld(x4);
     meshManager.checkLocation(x3, loc);
     // TODO: Clarify these codes.
-//    // reset projections
+    // reset projections
+    if (detectAgent.getActiveProjection() == NULL)
+        ApproachingVertices::removeVertex(this);
     std::list<Projection>::iterator itPrj;
     for (itPrj = detectAgent.getProjections().begin();
          itPrj != detectAgent.getProjections().end(); ++itPrj) {
         (*itPrj).expire();
-//        if ((*itPrj).project(NewTimeLevel) != HasNoProjection) {
-//            (*itPrj).project(OldTimeLevel);
-//            (*itPrj).checkApproaching();
-//        } else
-//            AgentPair::unpair(itPrj);
+        if ((*itPrj).project(NewTimeLevel) != HasNoProjection) {
+            (*itPrj).project(OldTimeLevel);
+            (*itPrj).setApproach(false);
+        } else
+            AgentPair::unpair(itPrj);
     }
-//    if (detectAgent.getActiveProjection() == NULL)
-//        ApproachingVertices::removeVertex(this);
 }
 
 void TestPoint::calcAngle()

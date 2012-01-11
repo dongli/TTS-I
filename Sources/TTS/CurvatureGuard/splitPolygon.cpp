@@ -282,8 +282,9 @@ bool handleApproachEvents(MeshManager &meshManager,
 
     while (!ApproachingVertices::isEmpty()) {
         vertex3 = ApproachingVertices::vertices.front();
-        if (TimeManager::getSteps() == 135 && (vertex3->getID() == 19487))
-            REPORT_DEBUG;
+//        if (TimeManager::getSteps() == 375 && (vertex3->getID() == 620874 ||
+//                                               vertex3->getID() == 612384))
+//            REPORT_DEBUG;
         // ---------------------------------------------------------------------
         // if the vertex3 is a test point, split its edge
         // TODO: Will there be test points here?
@@ -293,13 +294,6 @@ bool handleApproachEvents(MeshManager &meshManager,
                 vertex3 = polygonManager.vertices.back();
             else {
                 static_cast<TestPoint *>(vertex3)->reset(meshManager);
-                projection = vertex3->detectAgent.getActiveProjection();
-                if (projection != NULL) {
-                    projection->setApproach(false);
-                    if (vertex3->detectAgent.getActiveProjection() == NULL)
-                        ApproachingVertices::removeVertex(vertex3);
-                } else
-                    ApproachingVertices::removeVertex(vertex3);
                 continue;
             }
         }

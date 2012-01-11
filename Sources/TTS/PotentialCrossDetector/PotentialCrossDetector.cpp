@@ -13,15 +13,17 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
                                                    Vertex *oldVertex,
                                                    Vertex *newVertex)
 {
-    std::list<Vertex *>::const_iterator itVtx;
+    static std::list<Vertex *>::const_iterator itVtx;
+    static std::list<Projection>::const_iterator itPrj;
     Vertex *vertex1, *vertex2, *vertex3;
     Projection *projection;
     OrientStatus orient;
+    Edge *edge;
     EdgePointer *linkedEdge = oldVertex->linkedEdges.front();
     for (int i = 0; i < oldVertex->linkedEdges.size(); ++i) {
         // ---------------------------------------------------------------------
         // check the paired vertices of the linked edge
-        Edge *edge = linkedEdge->edge;
+        edge = linkedEdge->edge;
         vertex1 = NULL, vertex2 = NULL;
         if (edge->getEndPoint(FirstPoint) == oldVertex) {
             vertex1 = newVertex;
@@ -82,6 +84,26 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
             }
             otherLinkedEdge = otherLinkedEdge->next;
         }
+        // ---------------------------------------------------------------------
+        // check the paired edges of the old vertex
+        for (itPrj = oldVertex->detectAgent.getProjections().begin();
+             itPrj != oldVertex->detectAgent.getProjections().end(); ++itPrj) {
+            edge = (*itPrj).getEdge();
+            if (edge == edgePointer->edge)
+                continue;
+            if (vertex1 == edge->getEndPoint(FirstPoint)) {
+                vertex2 = edge->getEndPoint(SecondPoint);
+            } else if (vertex1 == edge->getEndPoint(SecondPoint)) {
+                vertex2 = edge->getEndPoint(FirstPoint);
+            } else
+                continue;
+            if (vertex2 == newVertex ||
+                !Sphere::isProject(vertex1, newVertex, vertex2))
+                continue;
+            if (Sphere::orient(vertex1, vertex2, oldVertex) !=
+                Sphere::orient(vertex1, vertex2, newVertex))
+                return Cross;
+        }
         linkedEdge = linkedEdge->next;
     }
     return NoCross;
@@ -95,8 +117,8 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
     // -------------------------------------------------------------------------
     Vertex *vertex1, *vertex2, *vertex3, *vertex4, *vertices[2];
     OrientStatus orient;
-    std::list<Projection>::iterator itPrj;
-    std::list<Vertex *>::iterator itVtx;
+    static std::list<Projection>::iterator itPrj;
+    static std::list<Vertex *>::iterator itVtx;
     Projection *projection;
     EdgePointer *linkedEdge;
     Edge *edge3;
@@ -193,32 +215,29 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
     // -------------------------------------------------------------------------
     // branch-2:
     // check the two new edges will not cross by any test point, if so reset it
-    for (itVtx = oldEdge->detectAgent.vertices.begin();
-         itVtx != oldEdge->detectAgent.vertices.end(); ++itVtx) {
-        if ((*itVtx)->getID() != -1) continue;
-        edge3 = (*itVtx)->getHostEdge();
+    itVtx = oldEdge->detectAgent.vertices.begin();
+    while (itVtx != oldEdge->detectAgent.vertices.end()) {
+        if ((*itVtx)->getID() != -1) {
+            itVtx++;
+            continue;
+        }
+        TestPoint *testPoint = static_cast<TestPoint *>(*itVtx);
+        edge3 = testPoint->getHostEdge();
         vertex3 = edge3->getEndPoint(FirstPoint);
         vertex4 = edge3->getEndPoint(SecondPoint);
-        if ((vertex1 != vertex3 &&
-             Sphere::isIntersect(vertex1, newVertex, vertex3, *itVtx)) ||
-            (vertex1 != vertex4 &&
-             Sphere::isIntersect(vertex1, newVertex, vertex4, *itVtx)) ||
-            (vertex2 != vertex3 &&
-             Sphere::isIntersect(vertex2, newVertex, vertex3, *itVtx)) ||
-            (vertex2 != vertex4 &&
-             Sphere::isIntersect(vertex2, newVertex, vertex4, *itVtx))) {
-            edge3->getTestPoint()->reset(meshManager);
-            // TODO: The following operations should be merged into reset
-            //       function.
-            projection = (*itVtx)->detectAgent.getProjection(oldEdge);
-            if (projection->project(NewTimeLevel) == HasProjection) {
-                projection->project(OldTimeLevel);
-                projection->checkApproaching();
-                if ((*itVtx)->detectAgent.getActiveProjection() == NULL)
-                    ApproachingVertices::removeVertex(*itVtx);
-            } else
-                AgentPair::unpair(itVtx, projection);
-        }
+        if ((vertex3 != oldVertex && vertex4 != oldVertex) &&
+            ((vertex1 != vertex3 &&
+              Sphere::isIntersect(vertex1, newVertex, vertex3, testPoint)) ||
+             (vertex1 != vertex4 &&
+              Sphere::isIntersect(vertex1, newVertex, vertex4, testPoint)) ||
+             (vertex2 != vertex3 &&
+              Sphere::isIntersect(vertex2, newVertex, vertex3, testPoint)) ||
+             (vertex2 != vertex4 &&
+              Sphere::isIntersect(vertex2, newVertex, vertex4, testPoint)))) {
+            itVtx++;
+            testPoint->reset(meshManager);
+        } else
+            itVtx++;
     }
     return NoCross;
 return_insert_vertex_cross_edge:

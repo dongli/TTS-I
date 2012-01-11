@@ -23,6 +23,9 @@ public:
 
     static bool project(const Coordinate &x1, const Coordinate &x2,
                         const Coordinate &x3, Coordinate &x4, double &distance);
+    static bool isProject(const Coordinate &x1, const Coordinate &x2,
+                          const Coordinate &x3);
+    static bool isProject(Point *point1, Point *point2, Point *point3);
 
     static void rotate(const Coordinate &xp, const Coordinate &xo,
                        Coordinate &xr);

@@ -99,18 +99,10 @@ void Vertex::handoverEdges(Vertex *newVertex, MeshManager &meshManager,
     for (it = edges.begin(); it != edges.end(); ++it) {
         if ((*it)->getEndPoint(FirstPoint) ==
             (*it)->getEndPoint(SecondPoint) &&
-            (*it)->detectAgent.vertices.size() != 0) {
-            // Note: When the linked edge degenerates to a point, hand over its
-            //       paired vertices. If there is any vertex left, clean it.
-            linkedEdge = newVertex->linkedEdges.front();
-            for (int j = 0; j < newVertex->linkedEdges.size(); ++j) {
-                (*it)->detectAgent.handoverVertices(linkedEdge->edge);
-                linkedEdge = linkedEdge->next;
-            }
-            if ((*it)->detectAgent.vertices.size() != 0)
-                (*it)->detectAgent.clean();
-        }
-        (*it)->detectAgent.updateVertexProjections(meshManager);
+            (*it)->detectAgent.vertices.size() != 0)
+            (*it)->detectAgent.clean();
+        else
+            (*it)->detectAgent.updateVertexProjections(meshManager);
     }
     edges.clear();
 }

@@ -90,18 +90,8 @@ void EdgeAgent::updateVertexProjections(MeshManager &meshManager)
                 if (vertex3->getID() == -1) {
                     // Note: When the test point cross the paired edge, we can
                     //       only to reset it to avoid potential problems.
-                    static_cast<TestPoint *>(vertex3)->reset(meshManager);
-                    projection->project(NewTimeLevel);
-                    projection->project(OldTimeLevel);
-                    projection->checkApproaching();
-                    if (projection->isApproaching())
-                        if (!isAlreadyApproaching)
-                            ApproachingVertices::recordVertex(vertex3);
-                    else
-                        if (isAlreadyApproaching &&
-                            vertex3->detectAgent.getActiveProjection() == NULL)
-                            ApproachingVertices::removeVertex(vertex3);
                     ++it;
+                    static_cast<TestPoint *>(vertex3)->reset(meshManager);
                 } else {
                     Message message;
                     message << "Vertex " << vertex3->getID() << " crosses ";
