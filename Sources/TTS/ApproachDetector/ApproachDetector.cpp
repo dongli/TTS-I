@@ -219,6 +219,11 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
 //        REPORT_DEBUG;
 //    }
     // -------------------------------------------------------------------------
+    static std::list<Vertex *> crossVertices;
+    Vertex *vertex3;
+    EdgePointer *edgePointer3 = NULL, *edgePointer4 = NULL;
+    static bool handleCrossVertices = false;
+    // -------------------------------------------------------------------------
     if (polygon->edgePointers.size() == 2) {
         handleLinePolygon(polygonManager, polygon);
         // TODO: Hand over the tracer mass.
@@ -226,29 +231,36 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     }
     // -------------------------------------------------------------------------
     bool isPointCrossEdge;
-redetect_polygon:
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     for (int i = 0; i < polygon->edgePointers.size(); ++i) {
         EdgePointer *edgePointer2 = edgePointer1->next;
         EdgePointer *nextEdgePointer2;
         while (edgePointer2 != edgePointer1) {
             nextEdgePointer2 = edgePointer2->next;
-            Vertex *vertex3;
             TestPoint *testPoint;
             // -----------------------------------------------------------------
             if (edgePointer2 != edgePointer1->prev) {
                 vertex3 = edgePointer2->getEndPoint(SecondPoint);
-                detectPoint(meshManager, flowManager, polygonManager, vertex3,
-                            edgePointer1, edgePointer2, isPointCrossEdge);
-                if (isPointCrossEdge) {
-                    // TODO: There are flaws that there may be more than one
-                    //       vertex that cross the edge.
-                    splitPolygon(meshManager, flowManager, polygonManager,
-                                 polygon, edgePointer1, edgePointer2, vertex3, 6);
-                    if (polygon != NULL)
-                        goto redetect_polygon;
+                if (handleCrossVertices &&
+                    find(crossVertices.begin(), crossVertices.end(), vertex3) !=
+                    crossVertices.end()) {
+                    crossVertices.remove(vertex3);
+                    if (edgePointer3 != NULL)
+                        splitPolygon(meshManager, flowManager, polygonManager,
+                                     polygon, edgePointer3, edgePointer4, vertex3, 5);
                     else
-                        return;
+                        splitPolygon(meshManager, flowManager, polygonManager,
+                                     polygon, edgePointer1, edgePointer2, vertex3, 5);
+                    return;
+                } else
+                    detectPoint(meshManager, flowManager, polygonManager, vertex3,
+                                edgePointer1, edgePointer2, isPointCrossEdge);
+                if (isPointCrossEdge) {
+                    if (edgePointer3 == NULL) {
+                        edgePointer3 = edgePointer1;
+                        edgePointer4 = edgePointer2;
+                    }
+                    crossVertices.push_back(vertex3);
                 }
                 checkApproachValid(meshManager, flowManager, polygonManager,
                                    edgePointer1, edgePointer2, vertex3);
@@ -264,6 +276,26 @@ redetect_polygon:
         }
         edgePointer1 = edgePointer1->next;
     }
+    if (handleCrossVertices)
+        return;
+    if (crossVertices.size() != 0) {
+#ifdef DEBUG
+        cout << "Crossing vertex number: " << crossVertices.size() << endl;
+        std::list<Vertex *>::const_iterator it;
+        for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {
+            cout << "  * " << (*it)->getID() << endl;
+        }
+#endif
+        vertex3 = crossVertices.front();
+        crossVertices.remove(vertex3);
+        handleCrossVertices = true;
+        splitPolygon(meshManager, flowManager, polygonManager,
+                     polygon, edgePointer3, edgePointer4, vertex3, 5);
+        handleCrossVertices = false;
+    }
+#ifdef DEBUG
+    assert(crossVertices.size() == 0);
+#endif
 #ifdef DIAG_EDGE_LENGTH
     double minEdgeLength = 1.0e34, maxEdgeLength = -1.0e34;
     edgePointer1 = polygon->edgePointers.front();

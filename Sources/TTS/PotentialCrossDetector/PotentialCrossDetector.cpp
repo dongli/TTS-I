@@ -68,16 +68,25 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
                     for (int k = 0; k < (*itVtx)->linkedEdges.size(); ++k) {
                         vertex2 = vertexLinkedEdge->edge->getEndPoint(FirstPoint);
                         vertex3 = vertexLinkedEdge->edge->getEndPoint(SecondPoint);
-                        if ((vertex2 == vertex1 || vertex3 == vertex1 ||
-                             vertex2 == oldVertex || vertex3 == oldVertex ||
+                        if ((vertex2 == oldVertex || vertex3 == oldVertex ||
                              vertex2 == newVertex || vertex3 == newVertex) ||
                             vertexLinkedEdge->edge == edgePointer->edge) {
                             vertexLinkedEdge = vertexLinkedEdge->next;
                             continue;
                         }
-                        if (Sphere::isIntersect(vertex1, newVertex,
-                                                vertex2, vertex3))
-                            return Cross;
+                        if (vertex2 == vertex1 || vertex3 == vertex1) {
+                            OrientStatus orient1, orient2, orient3;
+                            orient1 = Sphere::orient(oldVertex, vertex1, *itVtx);
+                            orient2 = Sphere::orient(vertex1, newVertex, *itVtx);
+                            orient3 = Sphere::orient(newVertex, oldVertex, *itVtx);
+                            if (orient1 == orient2 && orient1 == orient3 &&
+                                orient1 != OrientOn)
+                                return Cross;
+                        } else {
+                            if (Sphere::isIntersect(vertex1, newVertex,
+                                                    vertex2, vertex3))
+                                return Cross;
+                        }
                         vertexLinkedEdge = vertexLinkedEdge->next;
                     }
                 }
