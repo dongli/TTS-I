@@ -138,68 +138,68 @@ void TracerManager::output(const string &fileName)
     // -------------------------------------------------------------------------
     // output polygon stuffs
     polygonManager.output(fileName);
-//    // -------------------------------------------------------------------------
-//    NcFile file(fileName.c_str(), NcFile::Write);
-//    if (!file.is_valid()) {
-//        Message message;
-//        message << "Failed to open tracer output file \"";
-//        message << fileName << "\" for appending meshed density field!";
-//        REPORT_ERROR(message.str());
-//    }
-//    // -------------------------------------------------------------------------
-//    // output tracer densities on the polygons
-//    NcDim *numPolygonDim = file.get_dim("num_total_polygon");
-//    double q0[polygonManager.polygons.size()];
-//    for (int l = 0; l < tracerNames.size(); ++l) {
-//        char varName[30];
-//        sprintf(varName, "q%d", l);
-//        NcVar *qVar = file.add_var(varName, ncDouble, numPolygonDim);
-//        Polygon *polygon = polygonManager.polygons.front();
-//        for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-//            q0[i] = polygon->tracers[l].density;
-//            polygon = polygon->next;
-//        }
-//        qVar->put(q0, polygonManager.polygons.size());
-//    }
-//    // -------------------------------------------------------------------------
-//    // output tracer densities on the mesh
-//    int numLon = tracerDensities[0].values.extent(0);
-//    int numLat = tracerDensities[0].values.extent(1);
-//    double lon[numLon], lat[numLat];
-//    for (int i = 0; i < numLon; ++i)
-//        lon[i] = tracerDensities[0].getMesh().lon(i)*Rad2Deg;
-//    for (int j = 0; j < numLat; ++j)
-//        lat[j] = tracerDensities[0].getMesh().lat(j)*Rad2Deg;
-//    NcDim *lonDim = file.add_dim("lon", numLon);
-//    NcDim *latDim = file.add_dim("lat", numLat);
-//    NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
-//    lonVar->add_att("long_name", "longitude");
-//    lonVar->add_att("units", "degrees_east");
-//    lonVar->put(lon, numLon);
-//    NcVar *latVar = file.add_var("lat", ncDouble, latDim);
-//    latVar->add_att("long_name", "latitude");
-//    latVar->add_att("units", "degrees_north");
-//    latVar->put(lat, numLat);
-//    NcVar *areaVar = file.add_var("area_mesh", ncDouble, latDim, lonDim);
-//    areaVar->add_att("long_name", "area of fixed mesh cell");
-//    areaVar->add_att("units", "m2");
-//    double area[numLat][numLon];
-//    for (int i = 0; i < numLon; ++i)
-//        for (int j = 0; j < numLat; ++j)
-//            area[j][i] = tracerDensities[0].getMesh(Field::Bound).area(i, j);
-//    areaVar->put(&area[0][0], numLat, numLon);
-//    double q[numLat][numLon];
-//    for (int l = 0; l < tracerNames.size(); ++l) {
-//        char varName[30];
-//        sprintf(varName, "q%d_mesh", l);
-//        NcVar *qVar = file.add_var(varName, ncDouble, latDim, lonDim);
-//        qVar->add_att("long_name", tracerNames[l].c_str());
-//        for (int i = 0; i < numLon; ++i)
-//            for (int j = 0; j < numLat; ++j)
-//                q[j][i] = tracerDensities[l].values(i, j, 0).getNew();
-//        qVar->put(&q[0][0], numLat, numLon);
-//    }
-//    // -------------------------------------------------------------------------
-//    file.close();
+    // -------------------------------------------------------------------------
+    NcFile file(fileName.c_str(), NcFile::Write);
+    if (!file.is_valid()) {
+        Message message;
+        message << "Failed to open tracer output file \"";
+        message << fileName << "\" for appending meshed density field!";
+        REPORT_ERROR(message.str());
+    }
+    // -------------------------------------------------------------------------
+    // output tracer densities on the polygons
+    NcDim *numPolygonDim = file.get_dim("num_total_polygon");
+    double q0[polygonManager.polygons.size()];
+    for (int l = 0; l < tracerNames.size(); ++l) {
+        char varName[30];
+        sprintf(varName, "q%d", l);
+        NcVar *qVar = file.add_var(varName, ncDouble, numPolygonDim);
+        Polygon *polygon = polygonManager.polygons.front();
+        for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+            q0[i] = polygon->tracers[l].getDensity();
+            polygon = polygon->next;
+        }
+        qVar->put(q0, polygonManager.polygons.size());
+    }
+    // -------------------------------------------------------------------------
+    // output tracer densities on the mesh
+    int numLon = tracerDensities[0].values.extent(0);
+    int numLat = tracerDensities[0].values.extent(1);
+    double lon[numLon], lat[numLat];
+    for (int i = 0; i < numLon; ++i)
+        lon[i] = tracerDensities[0].getMesh().lon(i)*Rad2Deg;
+    for (int j = 0; j < numLat; ++j)
+        lat[j] = tracerDensities[0].getMesh().lat(j)*Rad2Deg;
+    NcDim *lonDim = file.add_dim("lon", numLon);
+    NcDim *latDim = file.add_dim("lat", numLat);
+    NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
+    lonVar->add_att("long_name", "longitude");
+    lonVar->add_att("units", "degrees_east");
+    lonVar->put(lon, numLon);
+    NcVar *latVar = file.add_var("lat", ncDouble, latDim);
+    latVar->add_att("long_name", "latitude");
+    latVar->add_att("units", "degrees_north");
+    latVar->put(lat, numLat);
+    NcVar *areaVar = file.add_var("area_mesh", ncDouble, latDim, lonDim);
+    areaVar->add_att("long_name", "area of fixed mesh cell");
+    areaVar->add_att("units", "m2");
+    double area[numLat][numLon];
+    for (int i = 0; i < numLon; ++i)
+        for (int j = 0; j < numLat; ++j)
+            area[j][i] = tracerDensities[0].getMesh(Field::Bound).area(i, j);
+    areaVar->put(&area[0][0], numLat, numLon);
+    double q[numLat][numLon];
+    for (int l = 0; l < tracerNames.size(); ++l) {
+        char varName[30];
+        sprintf(varName, "q%d_mesh", l);
+        NcVar *qVar = file.add_var(varName, ncDouble, latDim, lonDim);
+        qVar->add_att("long_name", tracerNames[l].c_str());
+        for (int i = 0; i < numLon; ++i)
+            for (int j = 0; j < numLat; ++j)
+                q[j][i] = tracerDensities[l].values(i, j, 0).getNew();
+        qVar->put(&q[0][0], numLat, numLon);
+    }
+    // -------------------------------------------------------------------------
+    file.close();
     NOTICE("TracerManager", fileName+" is generated.");
 }

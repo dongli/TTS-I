@@ -306,7 +306,7 @@ void PolygonManager::output(const string &fileName)
     newTestLatVar->add_att("long_name", "new test point latitude");
     newTestLatVar->add_att("units", "degree_north");
 
-#ifdef TTS_ONLINE
+#if defined TTS_ONLINE || PREPROCESS
     double *oldTestLon = new double[edges.size()];
     double *oldTestLat = new double[edges.size()];
     double *newTestLon = new double[edges.size()];

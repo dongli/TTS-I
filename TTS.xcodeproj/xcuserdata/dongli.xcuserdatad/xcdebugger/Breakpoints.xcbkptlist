@@ -614,11 +614,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Polygon/Edge.cpp"
-         timestampString = "347119919.883062"
+         timestampString = "348231630.67935"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "277"
-         endingLineNumber = "277"
+         startingLineNumber = "281"
+         endingLineNumber = "281"
          landmarkName = "EdgePointer::getEndPoint(PointOrder order)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -628,11 +628,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Polygon/Edge.cpp"
-         timestampString = "347120009.457893"
+         timestampString = "348231633.214624"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "289"
-         endingLineNumber = "289"
+         startingLineNumber = "293"
+         endingLineNumber = "293"
          landmarkName = "EdgePointer::getPolygon(OrientStatus orient)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -830,6 +830,20 @@
          startingLineNumber = "84"
          endingLineNumber = "84"
          landmarkName = "PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer, Vertex *oldVertex, Vertex *newVertex)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/Mesh/MeshManager.cpp"
+         timestampString = "348220038.440745"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "86"
+         endingLineNumber = "86"
+         landmarkName = "MeshManager::checkLocation(const Coordinate &amp;x, Location &amp;loc, Point *point)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

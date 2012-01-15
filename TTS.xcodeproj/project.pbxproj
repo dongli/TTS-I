@@ -202,6 +202,7 @@
 		55F30BF914A775CC0057BBBE /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
 		55F30BFA14A775DB0057BBBE /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		55F30BFB14A775E70057BBBE /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
+		55F8350914C1721E00B7AD5C /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1050,6 +1051,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F8350914C1721E00B7AD5C /* TestPoint.cpp in Sources */,
 				5598FB0F13D3DC4F00BC1AC4 /* Location.cpp in Sources */,
 				5598FB0E13D3DC4300BC1AC4 /* TimeManager.cpp in Sources */,
 				5598FB0A13D3DC3600BC1AC4 /* Edge.cpp in Sources */,
@@ -1266,7 +1268,6 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					DEBUG_TTS,
 					TTS_ONLINE,
 					DEBUG,
 				);
@@ -1314,7 +1315,10 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					PREPROCESS,
+					DEBUG,
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;

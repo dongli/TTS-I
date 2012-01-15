@@ -20,6 +20,7 @@ void TestPoint::reinit()
 {
 }
 
+#ifdef TTS_ONLINE
 void TestPoint::reset(MeshManager &meshManager)
 {
     const Coordinate &x1 = hostEdge->getEndPoint(FirstPoint)->getCoordinate();
@@ -77,3 +78,4 @@ TestPoint &TestPoint::operator=(const Vertex &that)
     Vertex::operator=(that);
     return *this;
 }
+#endif

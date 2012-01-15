@@ -48,8 +48,10 @@ void Edge::clean()
     for (int i = 0; i < 2; ++i)
         if (endPoints[i] != NULL)
             endPoints[i]->unlinkEdge(this);
-#ifdef TTS_ONLINE
+#if defined TTS_ONLINE || PREPROCESS
     testPoint.clean();
+#endif
+#ifdef TTS_ONLINE
     detectAgent.clean();
 #endif
 }
@@ -61,7 +63,7 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point, bool isSetTestPoint)
     if (point != NULL)
         point->linkEdge(this);
 
-#ifdef TTS_ONLINE
+#if defined TTS_ONLINE || PREPROCESS
     // -------------------------------------------------------------------------
     // set test point
     // Note: Here use the coordinates of end points at old time level to
@@ -73,7 +75,9 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point, bool isSetTestPoint)
         const Coordinate &x2 = endPoints[1]->getCoordinate(OldTimeLevel);
         Coordinate x;
         Sphere::calcMiddlePoint(x1, x2, x);
+#ifdef TTS_ONLINE
         testPoint.detectAgent.clean();
+#endif
         testPoint.setCoordinate(x, NewTimeLevel);
     }
 #endif

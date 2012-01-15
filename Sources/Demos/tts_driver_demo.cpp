@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     TracerManager tracerManager;
     Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
     TTS tts;
-    char fileName[30], filePattern[50] = "gh_360x180_2562_600_%3.3d.nc";
+    char fileName[30], filePattern[50] = "gh_360x180_40962_600_%3.3d.nc";
     // -------------------------------------------------------------------------
     ConfigTools::parse("tts_config");
     TimeManager::setClock(5.0/600);
@@ -40,6 +40,7 @@ int main(int argc, char **argv)
     flowManager.output("flow.nc");
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);
+    tts.init();
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
     sprintf(fileName, filePattern, TimeManager::getSteps());

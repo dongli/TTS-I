@@ -10,6 +10,7 @@ public:
     virtual ~TestPoint();
 
     void reinit();
+#ifdef TTS_ONLINE
     void reset(MeshManager &);
 
     void calcAngle();
@@ -24,6 +25,7 @@ public:
 private:
     double angle;
     OrientStatus orient;
+#endif
 };
 
 #endif

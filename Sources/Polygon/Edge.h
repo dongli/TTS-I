@@ -11,9 +11,11 @@ class EdgePointer;
 #ifdef TTS_ONLINE
 class MeshManager;
 class FlowManager;
-#include "TestPoint.h"
 #include "ApproachDetector.h"
 #include "EdgeTags.h"
+#endif
+#if defined TTS_ONLINE || PREPROCESS
+#include "TestPoint.h"
 #endif
 
 // -----------------------------------------------------------------------------
@@ -38,7 +40,8 @@ public:
                         MeshManager &, const FlowManager &);
     void changeEndPoint(PointOrder, Vertex *point, Vertex *testPoint,
                         MeshManager &, const FlowManager &);
-
+#endif
+#if defined TTS_ONLINE || PREPROCESS
     TestPoint *getTestPoint() { return &testPoint; }
 #endif
 
@@ -68,7 +71,7 @@ private:
     friend class EdgePointer;
 
 	Vertex *endPoints[2];
-#ifdef TTS_ONLINE
+#if defined TTS_ONLINE || PREPROCESS
     TestPoint testPoint;
 #endif
     Polygon *polygons[2];

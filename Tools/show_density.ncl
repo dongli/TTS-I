@@ -65,8 +65,8 @@ begin
 
         res = True
         ;res@cnFillMode = "RasterFill"
-        res@gsnPolar   = "NH"
-        res@mpMinLatF  = 80.0
+        ;res@gsnPolar   = "NH"
+        ;res@mpMinLatF  = 80.0
         setup_contour(res)
         set_contour_range(res, 0.0, 1.1, 0.1)
 
