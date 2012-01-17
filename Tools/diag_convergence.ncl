@@ -22,8 +22,8 @@ begin
     q1_1 = f1->q1_mesh(:,:num_lon-1)/f1->q0_mesh(:,:num_lon-1)
     area = f0->area_mesh(:,:num_lon-1)
 
-    I1 = sum((q1_1-q1_0)^2.0*area)/4.0d0/PI
-    I2 = sum(q1_0^2.0*area)/4.0d0/PI
+    I1 = sum((q1_1-q1_0)^2.0*area)
+    I2 = sum(q1_0^2.0*area)
 
     L_2 = sqrt(I1/I2)
     L_inf = max(q1_1-q1_0)/max(q1_0)
