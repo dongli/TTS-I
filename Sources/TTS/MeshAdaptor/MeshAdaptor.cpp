@@ -739,8 +739,6 @@ return_not_covered:
     return false;
 }
 
-//#define DEBUG_INTERSECTION
-
 void MeshAdaptor::adapt(const TracerManager &tracerManager,
                         const MeshManager &meshManager)
 {
@@ -766,7 +764,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
 #ifdef DEBUG
         bool debug = false;
         int counter = 0;
-//        if (TimeManager::getSteps() == 0 && polygon->getID() == 1) {
+//        if (TimeManager::getSteps() == 533 && polygon->getID() == 75) {
 //            polygon->dump("polygon");
 //            REPORT_DEBUG;
 //            debug = true;
@@ -787,24 +785,16 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         // internal variables
         int I, J, I1, I2, J1, J2, bndDiff;
         double lonBnd1, lonBnd2, latBnd1, latBnd2;
-        Coordinate *x;
+        Coordinate x;
         bool isForked = false;
         // ---------------------------------------------------------------------
         // search overlapped mesh cell along polygon edges
-#ifdef DEBUG_INTERSECTION
-        ofstream file("debug_intersection");
-#endif
         EdgePointer *edgePointer = polygon->edgePointers.front();
         for (int n = 0; n < polygon->edgePointers.size(); ++n) {
             Vertex *vertex1 = edgePointer->getEndPoint(FirstPoint);
             Vertex *vertex2 = edgePointer->getEndPoint(SecondPoint);
             const Coordinate &x1 = vertex1->getCoordinate();
             const Coordinate &x2 = vertex2->getCoordinate();
-#ifdef DEBUG_INTERSECTION
-            file << setw(5) << 0;
-            file << setw(30) << setprecision(15) << x1.getLon();
-            file << setw(30) << setprecision(15) << x1.getLat() << endl;
-#endif
             I1 = vertex1->getLocation().i[4];
             J1 = vertex1->getLocation().j[4];
             I2 = vertex2->getLocation().i[4];
@@ -820,136 +810,51 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 if (I == I2 && J == J2) break;
                 // record boundary cell indices
                 bndCellIdx[I].push_back(J);
-                //
-                Coordinate x3, x4;
-                Vector tmp1, tmp2;
                 // Note: There are four directions to search.
                 // western boundary
                 if (from != WestBnd || edgePointer != edgePointer0) {
-                    Sphere::calcIntersectLat(x1, x2, lonBnd1, x3, x4);
-                    if (Sphere::is_lon_eq(x3.getLon(), lonBnd1) &&
-                        (x3.getLat() >= latBnd2 && x3.getLat() < latBnd1)) {
-                        if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x3.getCAR());
-                            tmp2 = cross(x3.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = WestBnd; x = &x3;
-                                I = I-1; if (I == -1) I = numLon-1;
-                                from = EastBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
-                    }
-                    if (Sphere::is_lon_eq(x4.getLon(), lonBnd1) &&
-                        (x4.getLat() >= latBnd2 && x4.getLat() < latBnd1)) {
-                        if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x4.getCAR());
-                            tmp2 = cross(x4.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = WestBnd; x = &x4;
-                                I = I-1; if (I == -1) I = numLon-1;
-                                from = EastBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
+                    if (Sphere::calcIntersectLat(x1, x2, lonBnd1,
+                                                 latBnd1, latBnd2, x)) {
+                        I0 = I; J0 = J;
+                        from0 = from; to0 = WestBnd;;
+                        I = I-1; if (I == -1) I = numLon-1;
+                        from = EastBnd;
+                        goto calc_overlap_area;
                     }
                 }
                 // eastern boundary
                 if (from != EastBnd || edgePointer != edgePointer0) {
-                    Sphere::calcIntersectLat(x1, x2, lonBnd2, x3, x4);
-                    if (Sphere::is_lon_eq(x3.getLon(), lonBnd2) &&
-                        (x3.getLat() >= latBnd2 && x3.getLat() < latBnd1)) {
-                        if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x3.getCAR());
-                            tmp2 = cross(x3.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = EastBnd; x = &x3;
-                                I = I+1; if (I == numLon) I = 0;
-                                from = WestBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
-                    }
-                    if (Sphere::is_lon_eq(x4.getLon(), lonBnd2) &&
-                        (x4.getLat() >= latBnd2 && x4.getLat() < latBnd1)) {
-                        if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x4.getCAR());
-                            tmp2 = cross(x4.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = EastBnd; x = &x4;
-                                I = I+1; if (I == numLon) I = 0;
-                                from = WestBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
+                    if (Sphere::calcIntersectLat(x1, x2, lonBnd2,
+                                                 latBnd1, latBnd2, x)) {
+                        I0 = I; J0 = J;
+                        from0 = from; to0 = EastBnd;
+                        I = I+1; if (I == numLon) I = 0;
+                        from = WestBnd;
+                        goto calc_overlap_area;
                     }
                 }
                 // northern boundary
-                if ((from != NorthBnd && J > 0) || edgePointer != edgePointer0) {
-                    Sphere::calcIntersectLon(x1, x2, latBnd1, x3, x4);
-                    if (fabs(x3.getLat()-latBnd1) < EPS &&
-                        Sphere::is_lon_between(lonBnd1, lonBnd2, x3.getLon())) {
-                        if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x3.getCAR());
-                            tmp2 = cross(x3.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = NorthBnd; x = &x3;
-                                J = J-1;
-                                from = SouthBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
-                    }
-                    if (fabs(x4.getLat()-latBnd1) < EPS &&
-                        Sphere::is_lon_between(lonBnd1, lonBnd2, x4.getLon())) {
-                        if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x4.getCAR());
-                            tmp2 = cross(x4.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = NorthBnd; x = &x4;
-                                J = J-1;
-                                from = SouthBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
+                if ((from != NorthBnd && J > 0) ||
+                    edgePointer != edgePointer0) {
+                    if (Sphere::calcIntersectLon(x1, x2, lonBnd1, lonBnd2,
+                                                 latBnd1, x)) {
+                        I0 = I; J0 = J;
+                        from0 = from; to0 = NorthBnd;
+                        J = J-1;
+                        from = SouthBnd;
+                        goto calc_overlap_area;
                     }
                 }
                 // southern boundary
-                if ((from != SouthBnd && J < numLat) || edgePointer != edgePointer0) {
-                    Sphere::calcIntersectLon(x1, x2, latBnd2, x3, x4);
-                    if (fabs(x3.getLat()-latBnd2) < EPS &&
-                        Sphere::is_lon_between(lonBnd1, lonBnd2, x3.getLon())) {
-                        if (dot(x1.getCAR(), x3.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x3.getCAR());
-                            tmp2 = cross(x3.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = SouthBnd; x = &x3;
-                                J = J+1;
-                                from = NorthBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
-                    }
-                    if (fabs(x4.getLat()-latBnd2) < EPS &&
-                        Sphere::is_lon_between(lonBnd1, lonBnd2, x4.getLon())) {
-                        if (dot(x1.getCAR(), x4.getCAR()) > 0.0) {
-                            tmp1 = cross(x1.getCAR(), x4.getCAR());
-                            tmp2 = cross(x4.getCAR(), x2.getCAR());
-                            if (dot(tmp1, tmp2) > 0.0) {
-                                I0 = I; J0 = J;
-                                from0 = from; to0 = SouthBnd; x = &x4;
-                                J = J+1;
-                                from = NorthBnd;
-                                goto calc_overlap_area;
-                            }
-                        }
+                if ((from != SouthBnd && J < numLat) ||
+                    edgePointer != edgePointer0) {
+                    if (Sphere::calcIntersectLon(x1, x2, lonBnd1, lonBnd2,
+                                                 latBnd2, x)) {
+                        I0 = I; J0 = J;
+                        from0 = from; to0 = SouthBnd;
+                        J = J+1;
+                        from = NorthBnd;
+                        goto calc_overlap_area;
                     }
                 }
                 // -------------------------------------------------------------
@@ -965,50 +870,50 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                     if (fabs(x0.getLon()-lonBnd1) < smallAngleDistance &&
                         fabs(x0.getLat()-latBnd1) < smallAngleDistance) {
                         if (from == WestBnd) {
-                            x3.set(lonBnd2, latBnd1);
+                            x.set(lonBnd2, latBnd1);
                             to0 = EastBnd;
                             I = I+1; if (I == numLon) I = 0;
                         } else if (from == NorthBnd) {
-                            x3.set(lonBnd1, latBnd2);
+                            x.set(lonBnd1, latBnd2);
                             to0 = SouthBnd;
                             J = J+1;
                         }
                     } else if (fabs(x0.getLon()-lonBnd1) < smallAngleDistance &&
                                fabs(x0.getLat()-latBnd2) < smallAngleDistance) {
                         if (from == WestBnd) {
-                            x3.set(lonBnd2, latBnd2);
+                            x.set(lonBnd2, latBnd2);
                             to0 = EastBnd;
                             I = I+1; if (I == numLon) I = 0;
                         } else if (from == SouthBnd) {
-                            x3.set(lonBnd1, latBnd1);
+                            x.set(lonBnd1, latBnd1);
                             to0 = NorthBnd;
                             J = J-1;
                         }
                     } else if (fabs(x0.getLon()-lonBnd2) < smallAngleDistance &&
                                fabs(x0.getLat()-latBnd1) < smallAngleDistance) {
                         if (from == EastBnd) {
-                            x3.set(lonBnd1, latBnd1);
+                            x.set(lonBnd1, latBnd1);
                             to0 = WestBnd;
                             I = I-1; if (I == -1) I = numLon-1;
                         } else if (from == NorthBnd) {
-                            x3.set(lonBnd2, latBnd2);
+                            x.set(lonBnd2, latBnd2);
                             to0 = SouthBnd;
                             J = J+1;
                         }
                     } else if (fabs(x0.getLon()-lonBnd2) < smallAngleDistance &&
                                fabs(x0.getLat()-latBnd2) < smallAngleDistance) {
                         if (from == EastBnd) {
-                            x3.set(lonBnd1, latBnd2);
+                            x.set(lonBnd1, latBnd2);
                             to0 = WestBnd;
                             I = I-1; if (I == -1) I = numLon-1;
                         } else if (from == SouthBnd) {
-                            x3.set(lonBnd2, latBnd1);
+                            x.set(lonBnd2, latBnd1);
                             to0 = NorthBnd;
                             J = J-1;
                         }
                     } else
                         REPORT_ERROR("Can not find a path!");
-                    x = &x3; isForked = true;
+                    isForked = true;
                     goto calc_overlap_area;
                 } else {
                     if (from == EastBnd || from == WestBnd)
@@ -1027,36 +932,28 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 }
                 REPORT_ERROR("Can not find a path!");
             calc_overlap_area:
-#ifdef DEBUG_INTERSECTION
-                file << setw(5) << 1;
-                file << setw(30) << setprecision(15) << x->getLon();
-                file << setw(30) << setprecision(15) << x->getLat() << endl;
-#endif
                 if (edgePointer0 != NULL) {
                     double area = calcOverlapArea(I0, J0, from0, to0, bndDiff,
                                                   lonBnd1, lonBnd2,
                                                   latBnd1, latBnd2,
                                                   x0, edgePointer0,
-                                                  *x, edgePointer);
+                                                  x, edgePointer);
                     recordOverlapArea(mesh.area(I0, J0), I0, J0,
                                       from0, to0, bndDiff,
                                       polygon, area, totalArea, overlapAreas);
                 }
                 // record the starting edge and intersection
                 if (edgePointer00 == NULL) {
-                    x00 = *x; edgePointer00 = edgePointer; to00 = to0;
+                    x00 = x; edgePointer00 = edgePointer; to00 = to0;
                 }
                 // record the previous edge and intersection
-                x0 = *x; edgePointer0 = edgePointer;
+                x0 = x; edgePointer0 = edgePointer;
 #ifdef DEBUG
                 counter++;
 #endif
             }
             edgePointer = edgePointer->next;
         }
-#ifdef DEBUG_INTERSECTION
-        file.close();
-#endif
         if (edgePointer00 != NULL) {
             double area = calcOverlapArea(I, J, from, to00, bndDiff,
                                           lonBnd1, lonBnd2, latBnd1, latBnd2,

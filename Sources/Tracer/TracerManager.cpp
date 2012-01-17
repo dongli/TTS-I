@@ -138,6 +138,7 @@ void TracerManager::output(const string &fileName)
     // -------------------------------------------------------------------------
     // output polygon stuffs
     polygonManager.output(fileName);
+#ifndef DEBUG_TTS
     // -------------------------------------------------------------------------
     NcFile file(fileName.c_str(), NcFile::Write);
     if (!file.is_valid()) {
@@ -201,5 +202,6 @@ void TracerManager::output(const string &fileName)
     }
     // -------------------------------------------------------------------------
     file.close();
+#endif
     NOTICE("TracerManager", fileName+" is generated.");
 }

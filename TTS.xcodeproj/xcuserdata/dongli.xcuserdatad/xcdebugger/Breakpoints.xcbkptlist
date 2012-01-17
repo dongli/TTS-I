@@ -179,28 +179,6 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "342263718.879935"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1036"
-         endingLineNumber = "1036"
-         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
-               <ActionContent
-                  consoleCommand = "p x-&gt;dump(0)">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
          timestampString = "341159835.653585"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
@@ -228,56 +206,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "342263718.879935"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1245"
-         endingLineNumber = "1245"
-         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "342263718.879935"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "961"
-         endingLineNumber = "961"
-         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "342263718.879935"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1010"
-         endingLineNumber = "1010"
-         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Sources/UnitTests/unit_test_sphere.h"
-         timestampString = "341639222.916544"
+         timestampString = "348384821.713561"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "57"
-         endingLineNumber = "57"
-         landmarkName = "test_intersection()"
-         landmarkType = "7">
+         startingLineNumber = "68"
+         endingLineNumber = "68">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -805,20 +739,6 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.cpp"
-         timestampString = "348142709.642238"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "286"
-         endingLineNumber = "286"
-         landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -845,6 +765,70 @@
          endingLineNumber = "86"
          landmarkName = "MeshManager::checkLocation(const Coordinate &amp;x, Location &amp;loc, Point *point)"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
+         timestampString = "348385171.604074"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "915"
+         endingLineNumber = "915"
+         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
+         timestampString = "348385171.604074"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1142"
+         endingLineNumber = "1142"
+         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
+         timestampString = "348385171.604074"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "935"
+         endingLineNumber = "935"
+         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p x.dump(0)">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/UnitTests/unit_test_sphere.h"
+         timestampString = "348384821.713561"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "48"
+         endingLineNumber = "48"
+         landmarkName = "test_intersection()"
+         landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
