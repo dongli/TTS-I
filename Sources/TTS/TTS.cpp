@@ -112,12 +112,14 @@ void TTS::advect(MeshManager &meshManager,
     cout << "Total polygon number: " << setw(10);
     cout << polygonManager.polygons.size() << endl;
     tracerManager.update();
+#ifndef DEBUG_TTS
     // -------------------------------------------------------------------------
     // adapt the quantities carried by parcels (polygons)
     // onto the background fixed mesh
     meshAdaptor.adapt(tracerManager, meshManager);
     for (int i = 0; i < tracerManager.getTracerNum(); ++i)
         meshAdaptor.remap(tracerManager.getTracerName(i), tracerManager);
+#endif
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,

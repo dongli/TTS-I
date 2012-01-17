@@ -36,15 +36,15 @@ public:
                             const Coordinate &x3, const Coordinate &x4);
     static bool isIntersect(Point *point1, Point *point2,
                             Point *point3, Point *point4);
-    static void calcIntersect(const Coordinate &x1, const Coordinate &x2,
+    static bool calcIntersect(const Coordinate &x1, const Coordinate &x2,
                               const Coordinate &x3, const Coordinate &x4,
                               Coordinate &x5, Coordinate &x6);
-    static void calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
-                                 double lon, Coordinate &x3, Coordinate &x4);
-    static void calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
-                                 double lat, double &lon1, double &lon2);
-    static void calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
-                                 double lat, Coordinate &x3, Coordinate &x4);
+    static bool calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
+                                 double lon, double lat1, double lat2,
+                                 Coordinate &x);
+    static bool calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
+                                 double lon1, double lon2, double lat,
+                                 Coordinate &x);
 
     static void calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
                                 Coordinate &x);

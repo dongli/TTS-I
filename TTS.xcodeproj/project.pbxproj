@@ -153,6 +153,10 @@
 		5598FB1713D3DC8200BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
 		5598FB1813D3DC8F00BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
 		5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+		55A1C13B14C40A33000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
+		55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
+		55A1C13F14C40B9C000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
+		55A1C14114C40B9C000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C9C1491497174F0063230B /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
@@ -386,6 +390,11 @@
 		5598FAC013D3DA9F00BC1AC4 /* ReportMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportMacros.h; sourceTree = "<group>"; };
 		5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeManager.cpp; sourceTree = "<group>"; };
 		5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
+		55A1C13414C40A33000962C4 /* dlmalloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dlmalloc.c; sourceTree = "<group>"; };
+		55A1C13514C40A33000962C4 /* dlmalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dlmalloc.h; sourceTree = "<group>"; };
+		55A1C13714C40A33000962C4 /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = example.cpp; sourceTree = "<group>"; };
+		55A1C13914C40A33000962C4 /* mpreal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mpreal.cpp; sourceTree = "<group>"; };
+		55A1C13A14C40A33000962C4 /* mpreal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mpreal.h; sourceTree = "<group>"; };
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -692,6 +701,7 @@
 		5598FABA13D3DA9F00BC1AC4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				55A1C13114C40A33000962C4 /* mpfrc++ */,
 				5598FABD13D3DA9F00BC1AC4 /* List.h */,
 				5598FABC13D3DA9F00BC1AC4 /* List.cpp */,
 				5598FABB13D3DA9F00BC1AC4 /* Constants.h */,
@@ -709,6 +719,18 @@
 				554F970714A8B437000052E2 /* ConfigTools.cpp */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		55A1C13114C40A33000962C4 /* mpfrc++ */ = {
+			isa = PBXGroup;
+			children = (
+				55A1C13414C40A33000962C4 /* dlmalloc.c */,
+				55A1C13514C40A33000962C4 /* dlmalloc.h */,
+				55A1C13714C40A33000962C4 /* example.cpp */,
+				55A1C13914C40A33000962C4 /* mpreal.cpp */,
+				55A1C13A14C40A33000962C4 /* mpreal.h */,
+			);
+			path = "mpfrc++";
 			sourceTree = "<group>";
 		};
 		55B025EE13B96EB400322B59 = {
@@ -1126,6 +1148,8 @@
 				55C9C1491497174F0063230B /* CommonTasks.cpp in Sources */,
 				554F970114A84BA7000052E2 /* init.cpp in Sources */,
 				554F970414A84C4F000052E2 /* AngleThreshold.cpp in Sources */,
+				55A1C13B14C40A33000962C4 /* dlmalloc.c in Sources */,
+				55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1133,6 +1157,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55A1C13F14C40B9C000962C4 /* dlmalloc.c in Sources */,
+				55A1C14114C40B9C000962C4 /* mpreal.cpp in Sources */,
 				556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */,
 				5598FAFE13D3DB7D00BC1AC4 /* Velocity.cpp in Sources */,
 				5598FAF313D3DB5700BC1AC4 /* Edge.cpp in Sources */,
@@ -1268,6 +1294,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG_TTS,
 					TTS_ONLINE,
 					DEBUG,
 				);
@@ -1399,6 +1426,8 @@
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
+					"-lmpfr",
+					"-lgmp",
 					"-lnetcdf",
 					"-lnetcdf_c++",
 				);
@@ -1412,6 +1441,8 @@
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
+					"-lmpfr",
+					"-lgmp",
 					"-lnetcdf",
 					"-lnetcdf_c++",
 				);
@@ -1486,6 +1517,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
+					"-lmpfr",
+					"-lgmp",
 					"-lnetcdf",
 					"-lnetcdf_c++",
 				);
@@ -1509,6 +1542,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
+					"-lmpfr",
+					"-lgmp",
 					"-lnetcdf",
 					"-lnetcdf_c++",
 				);
