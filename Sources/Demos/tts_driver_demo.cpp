@@ -11,19 +11,27 @@
 #include "TTS.h"
 #include "MeshAdaptor.h"
 
+#define MOVINGVORTICES_TESTCASE
+
 int main(int argc, char **argv)
 {
     MeshManager meshManager;
     MeshAdaptor meshAdaptor;
     FlowManager flowManager;
     TracerManager tracerManager;
-    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
     TTS tts;
+#ifdef MOVINGVORTICES_TESTCASE
+    MovingVortices testCase;
+    char fileName[30], filePattern[50] = "mv_360x180_40962_576_%3.3d.nc";
+#endif
+#ifdef DEFORMATION_TESTCASE
+    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
     char fileName[30], filePattern[50] = "gh_360x180_40962_600_%3.3d.nc";
+#endif
     // -------------------------------------------------------------------------
     ConfigTools::parse("tts_config");
-    TimeManager::setClock(5.0/600);
-    TimeManager::setEndStep(600);
+    TimeManager::setClock(1800.0);
+    TimeManager::setEndStep(5);
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;

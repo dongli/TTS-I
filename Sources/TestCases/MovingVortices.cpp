@@ -12,8 +12,8 @@ MovingVortices::MovingVortices()
     axisPole.set(PI, PI05-alpha);
 
     gamma = 5.0;
-    vortexPos0.set(PI05, 0.0);
-    Sphere::rotate(axisPole, vortexPos0, vortexRotPos0);
+    xv0.set(PI05, 0.0);
+    Sphere::rotate(axisPole, xv0, xvr0);
 }
 
 MovingVortices::~MovingVortices()
@@ -32,12 +32,12 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager)
 
 void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
 {
-    Coordinate vortexRotPos;
-    double lon = vortexRotPos0.getLon()+U0/Sphere::radius*time;
+    Coordinate xvr;
+    double lon = xvr0.getLon()+U0/Sphere::radius*time;
     if (lon > PI2) lon -= PI2;
-    vortexRotPos.set(lon, vortexRotPos0.getLat());
-    Coordinate vortexPos;
-    Sphere::inverseRotate(axisPole, vortexPos, vortexRotPos);
+    xvr.set(lon, xvr0.getLat());
+    Coordinate xv;
+    Sphere::inverseRotate(axisPole, xv, xvr);
 
     const RLLMesh &umesh = flowManager.u.getMesh();
     const RLLMesh &vmesh = flowManager.v.getMesh();
@@ -50,15 +50,15 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
         for (int j = 0; j < umesh.getNumLat(); ++j) {
             Coordinate x, xr;
             x.set(umesh.lon(i), umesh.lat(j));
-            Sphere::rotate(vortexPos, x, xr);
+            Sphere::rotate(xv, x, xr);
             double ReOmega = Sphere::radius*omega(xr.getLat());
-            double dlon = x.getLon()-vortexPos.getLon();
+            double dlon = x.getLon()-xv.getLon();
             double tmp1, tmp2;
             tmp1 = cos(x.getLat())*cos(alpha);
             tmp2 = sin(x.getLat())*cos(x.getLon())*sin(alpha);
             double rotatePart = U0*(tmp1+tmp2);
-            tmp1 = sin(vortexPos.getLat())*cos(x.getLat());
-            tmp2 = cos(vortexPos.getLat())*cos(dlon)*sin(x.getLat());
+            tmp1 = sin(xv.getLat())*cos(x.getLat());
+            tmp2 = cos(xv.getLat())*cos(dlon)*sin(x.getLat());
             double deformPart = ReOmega*(tmp1-tmp2);
             u[i-1][j][0] = rotatePart+deformPart;
         }
@@ -67,11 +67,11 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
         for (int j = 0; j < vmesh.getNumLat(); ++j) {
             Coordinate x, xr;
             x.set(vmesh.lon(i), vmesh.lat(j));
-            Sphere::rotate(vortexPos, x, xr);
+            Sphere::rotate(xv, x, xr);
             double ReOmega = Sphere::radius*omega(xr.getLat());
-            double dlon = x.getLon()-vortexPos.getLon();
+            double dlon = x.getLon()-xv.getLon();
             double rotatePart = -U0*sin(x.getLon())*sin(alpha);
-            double deformPart = ReOmega*cos(vortexPos.getLat())*sin(dlon);
+            double deformPart = ReOmega*cos(xv.getLat())*sin(dlon);
             v[i][j][0] = rotatePart+deformPart;
         }
 
@@ -96,4 +96,94 @@ double MovingVortices::omega(double latR) const
         U = U0/Sphere::radius*fac*tanh(r)/(cosh(r)*cosh(r));
         return U/r;
     }
+}
+
+void MovingVortices::calcInitCond(MeshManager &meshManager,
+                                  MeshAdaptor &meshAdaptor,
+                                  TracerManager &tracerManager)
+{
+    // -------------------------------------------------------------------------
+    // two dual meshes
+    const RLLMesh &meshCnt = meshManager.getMesh(PointCounter::Center);
+    const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
+    // -------------------------------------------------------------------------
+    // evaluate the initial condition on the RLL mesh of point counter
+    tracerManager.registerTracer("test tracer", "test unit", meshManager);
+    Field qt;
+    qt.init(meshCnt, meshBnd);
+    Array<double, 2> qtmp(meshCnt.lon.size(), meshCnt.lat.size());
+#ifdef DEBUG
+    double totalCellMass = 0.0;
+#endif
+    calcSolution(0.0, meshCnt.lon, meshCnt.lat, qtmp);
+    for (int i = 0; i < meshCnt.lon.size(); ++i)
+        for (int j = 0; j < meshCnt.lat.size(); ++j)
+            qt.values(i, j) = qtmp(i,j);
+    // -------------------------------------------------------------------------
+    // check the location polygon vertices
+    Vertex *vertex = tracerManager.polygonManager.vertices.front();
+    for (int i = 0; i < tracerManager.polygonManager.vertices.size(); ++i) {
+        Location loc;
+        meshManager.checkLocation(vertex->getCoordinate(), loc, vertex);
+        vertex->setLocation(loc);
+        vertex = vertex->next;
+    }
+    // -------------------------------------------------------------------------
+    meshAdaptor.adapt(tracerManager, meshManager);
+    // -------------------------------------------------------------------------
+    meshAdaptor.remap("test tracer", qt, tracerManager);
+    // -------------------------------------------------------------------------
+#ifdef DEBUG
+    double totalPolygonMass = 0.0;
+    Polygon *polygon = tracerManager.polygonManager.polygons.front();
+    for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
+        totalPolygonMass += polygon->tracers[1].getMass();
+        polygon = polygon->next;
+    }
+    cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
+    cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
+    cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
+#endif
+    // -------------------------------------------------------------------------
+    meshAdaptor.remap("test tracer", tracerManager);
+}
+
+void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
+                                  const Array<double, 1> &lat, Array<double, 2> &q)
+{
+    // -------------------------------------------------------------------------
+    // calcuate the rotated coordinate of the north vortex center
+    double lon_ = xvr0.getLon()+U0/Sphere::radius*time;
+    if (lon_ > PI2) lon_ -= PI2;
+    Coordinate xvr, xv;
+    xvr.set(lon_, xvr0.getLat());
+    Sphere::inverseRotate(axisPole, xv, xvr);
+    // -------------------------------------------------------------------------
+    // check if reversal is necessary
+    static bool firstCall = false;
+    static double prevLon;
+    bool doReverse = false;
+    if (firstCall)
+        firstCall = true;
+    else
+        if (fabs(prevLon-lon_) > PI*0.99) {
+            NOTICE("MovingVortices::calcSolution", "Doing reversal");
+            doReverse = !doReverse;
+        }
+    prevLon = lon_;
+    // -------------------------------------------------------------------------
+    Coordinate x, xr;
+    for (int i = 0; i < lon.size(); ++i)
+        for (int j = 0; j < lat.size(); ++j) {
+            x.set(lon(i), lat(j));
+            Sphere::rotate(xv, x, xr);
+            if (doReverse) {
+                lon_ = xr.getLon()+PI;
+                if (lon_ > PI2) lon_ -= PI2;
+                xr.set(lon_, xr.getLat());
+            }
+            q(i, j) = 1.0-tanh(rho(xr.getLat())/gamma*
+                               sin(xr.getLon()-omega(xr.getLat())*time));
+        }
+    
 }

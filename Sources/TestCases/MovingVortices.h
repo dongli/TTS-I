@@ -9,7 +9,12 @@ public:
     MovingVortices();
     virtual ~MovingVortices();
 
-    void calcVelocityField(FlowManager &flowManager);
+    void calcVelocityField(FlowManager &);
+
+    void calcInitCond(MeshManager &, MeshAdaptor &, TracerManager &);
+
+    void calcSolution(double time, const Array<double, 1> &lon,
+                      const Array<double, 1> &lat, Array<double, 2> &q);
 
 private:
     void calcVelocityField(FlowManager &flowManager, double time);
@@ -21,10 +26,10 @@ private:
     double alpha;
     double rho0;
     Coordinate axisPole;
-    Coordinate vortexPos0;
-    Coordinate vortexRotPos0;
 
     double gamma;
+    Coordinate xv0; // initial vortex coordinate
+    Coordinate xvr0; // rotated initial vortex coordinate
 };
 
 #endif
