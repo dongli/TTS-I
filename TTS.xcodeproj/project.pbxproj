@@ -88,6 +88,9 @@
 		558A48DC14093757000B7E48 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
 		558A48DD14093757000B7E48 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		558A48DE14093757000B7E48 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
+		55943B8114C6C6040084B8BB /* CoverMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55943B7F14C6C6040084B8BB /* CoverMask.cpp */; };
+		55943B8214C6C6040084B8BB /* CoverMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55943B7F14C6C6040084B8BB /* CoverMask.cpp */; };
+		55943B8314C6C6040084B8BB /* CoverMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55943B7F14C6C6040084B8BB /* CoverMask.cpp */; };
 		5598FACA13D3DA9F00BC1AC4 /* tts_driver_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */; };
 		5598FACB13D3DA9F00BC1AC4 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */; };
 		5598FACC13D3DA9F00BC1AC4 /* FlowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */; };
@@ -319,6 +322,8 @@
 		558A48D614093757000B7E48 /* Projection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projection.h; sourceTree = "<group>"; };
 		558A48D714093757000B7E48 /* VertexAgent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexAgent.cpp; sourceTree = "<group>"; };
 		558A48D814093757000B7E48 /* VertexAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexAgent.h; sourceTree = "<group>"; };
+		55943B7F14C6C6040084B8BB /* CoverMask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoverMask.cpp; sourceTree = "<group>"; };
+		55943B8014C6C6040084B8BB /* CoverMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverMask.h; sourceTree = "<group>"; };
 		5595604E14A4919400EA93D5 /* Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tags.h; sourceTree = "<group>"; };
 		5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DelaunayDriver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DelaunayDriver.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -392,7 +397,6 @@
 		5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
 		55A1C13414C40A33000962C4 /* dlmalloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dlmalloc.c; sourceTree = "<group>"; };
 		55A1C13514C40A33000962C4 /* dlmalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dlmalloc.h; sourceTree = "<group>"; };
-		55A1C13714C40A33000962C4 /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = example.cpp; sourceTree = "<group>"; };
 		55A1C13914C40A33000962C4 /* mpreal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mpreal.cpp; sourceTree = "<group>"; };
 		55A1C13A14C40A33000962C4 /* mpreal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mpreal.h; sourceTree = "<group>"; };
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -509,6 +513,8 @@
 		558803A61435A645008F4C84 /* MeshAdaptor */ = {
 			isa = PBXGroup;
 			children = (
+				55943B8014C6C6040084B8BB /* CoverMask.h */,
+				55943B7F14C6C6040084B8BB /* CoverMask.cpp */,
 				558803A81435A675008F4C84 /* MeshAdaptor.h */,
 				558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */,
 			);
@@ -726,7 +732,6 @@
 			children = (
 				55A1C13414C40A33000962C4 /* dlmalloc.c */,
 				55A1C13514C40A33000962C4 /* dlmalloc.h */,
-				55A1C13714C40A33000962C4 /* example.cpp */,
 				55A1C13914C40A33000962C4 /* mpreal.cpp */,
 				55A1C13A14C40A33000962C4 /* mpreal.h */,
 			);
@@ -978,6 +983,7 @@
 				554F977F14A8C566000052E2 /* TimeManager.cpp in Sources */,
 				554F978014A8C566000052E2 /* SystemCalls.cpp in Sources */,
 				554F978114A8C566000052E2 /* DebugTools.cpp in Sources */,
+				55943B8314C6C6040084B8BB /* CoverMask.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1066,6 +1072,7 @@
 				55C9C14A1497174F0063230B /* CommonTasks.cpp in Sources */,
 				554F970214A84BA7000052E2 /* init.cpp in Sources */,
 				554F970514A84C4F000052E2 /* AngleThreshold.cpp in Sources */,
+				55943B8214C6C6040084B8BB /* CoverMask.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,6 +1157,7 @@
 				554F970414A84C4F000052E2 /* AngleThreshold.cpp in Sources */,
 				55A1C13B14C40A33000962C4 /* dlmalloc.c in Sources */,
 				55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */,
+				55943B8114C6C6040084B8BB /* CoverMask.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

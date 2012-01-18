@@ -3,10 +3,12 @@
 
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 
 using std::cout;
 using std::endl;
 using std::ostringstream;
+using std::setw;
 
 typedef ostringstream Message;
 

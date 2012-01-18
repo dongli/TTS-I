@@ -38,13 +38,13 @@ public:
                TracerManager &tracerManager);
     void remap(const string &tracerName, TracerManager &tracerManager);
 
-private:    
+private:
     enum Bnd {
         WestBnd, SouthBnd, EastBnd, NorthBnd, NullBnd
     };
 
-    double calcCorrectArea(const Coordinate &x1, const Coordinate &x2,
-                           const Vector &normVector, int signFlag);
+    static double calcCorrectArea(const Coordinate &x1, const Coordinate &x2,
+                                  const Vector &normVector, int signFlag);
 
     double calcOverlapArea(int I, int J, Bnd from, Bnd to, int &bndDiff,
                            double lonBnd1, double lonBnd2,
