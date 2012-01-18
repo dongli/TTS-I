@@ -65,11 +65,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "polygons_2562.nc"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "polygons_10242.nc"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "polygons_40962.nc"
@@ -91,7 +91,7 @@
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Time Profiler.tracetemplate"
+      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Leaks.tracetemplate"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES">

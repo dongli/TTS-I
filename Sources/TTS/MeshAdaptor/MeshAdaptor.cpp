@@ -1,6 +1,7 @@
 #include "MeshAdaptor.h"
 #include "ReportMacros.h"
 #include "Sphere.h"
+#include "CoverMask.h"
 
 #include <map>
 #include <list>
@@ -646,99 +647,6 @@ void MeshAdaptor::recordOverlapArea(double cellArea, int I, int J,
     overlapAreas.push_back(&overlapAreaList(I, J, 0).back());
 }
 
-inline bool isCellCovered(int numCellLon, int numCellLat,
-                          Array<int, 2> &coverMask,
-                          int i0, int j0, int i, int j)
-{
-    // mask meanings:
-    //  0 - cell is not covered by polygon
-    //  1 - cell is partially covered by polygon
-    //  2 - cell is fully covered by polygon
-    // -1 - cell is potentially fully covered by polygon
-    // -------------------------------------------------------------------------
-    if (coverMask(i, j) > 0)
-        return true;
-    else if (coverMask(i, j)== 0)
-        return false;
-    // -------------------------------------------------------------------------
-    int ii, jj;
-    // check left cells
-    for (ii = i-1; ii >= 0; --ii)
-        if (coverMask(ii, j) > 0)
-            break;
-        else if (coverMask(ii, j) == 0)
-            goto return_not_covered;
-        else if (coverMask(ii, j) == -1 && ii == i0 && j == j0)
-            break;
-    if (ii == -1)
-        goto return_not_covered;
-    // check right cells
-    for (ii = i+1; ii < numCellLon; ++ii)
-        if (coverMask(ii, j) > 0)
-            break;
-        else if (coverMask(ii, j) == 0)
-            goto return_not_covered;
-        else if (coverMask(ii, j) == -1)
-            if (!isCellCovered(numCellLon, numCellLat, coverMask, i, j, ii, j))
-                goto return_not_covered;
-            else
-                break;
-    if (ii == numCellLon)
-        goto return_not_covered;
-    // check left-top cells
-    for (ii = i-1, jj = j-1; ii >= 0 && jj >= 0; --ii, --jj)
-        if (coverMask(ii, jj) > 0)
-            break;
-        else if (coverMask(ii, jj) == 0)
-            goto return_not_covered;
-        else if (coverMask(ii, jj) == -1 && ii == i0 && jj == j0)
-            break;
-    if (ii == -1 || jj == -1)
-        goto return_not_covered;
-    // check right-bottom cells
-    for (ii = i+1, jj = j+1; ii < numCellLon && jj < numCellLat; ++ii, ++jj)
-        if (coverMask(ii, jj) > 0)
-            break;
-        else if (coverMask(ii, jj) == 0)
-            goto return_not_covered;
-        else if (coverMask(ii, jj) == -1)
-            if (!isCellCovered(numCellLon, numCellLat, coverMask, i, j, ii, jj))
-                goto return_not_covered;
-            else
-                break;
-    if (ii == numCellLon || jj == numCellLat)
-        goto return_not_covered;
-    // check left-bottom cells
-    for (ii = i-1, jj = j+1; ii >= 0 && jj < numCellLat; --ii, ++jj)
-        if (coverMask(ii, jj) > 0)
-            break;
-        else if (coverMask(ii, jj) == 0)
-            goto return_not_covered;
-        else if (coverMask(ii, jj) == -1 && ii == i0 && jj == j0)
-            break;
-    if (ii == -1 || jj == numCellLat)
-        goto return_not_covered;
-    // check right-top cells
-    for (ii = i+1, jj = j-1; ii < numCellLon && j >= 0; ++ii, --jj)
-        if (coverMask(ii, jj) > 0)
-            break;
-        else if (coverMask(ii, jj) == 0)
-            goto return_not_covered;
-        else if (coverMask(ii, jj) == -1)
-            if (!isCellCovered(numCellLon, numCellLat, coverMask, i, j, ii, jj))
-                goto return_not_covered;
-            else
-                break;
-    if (ii == numCellLon || jj == -1)
-        goto return_not_covered;
-    // -------------------------------------------------------------------------
-    coverMask(i, j) = 2;
-    return true;
-return_not_covered:
-    coverMask(i, j) = 0;
-    return false;
-}
-
 void MeshAdaptor::adapt(const TracerManager &tracerManager,
                         const MeshManager &meshManager)
 {
@@ -764,7 +672,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
 #ifdef DEBUG
         bool debug = false;
         int counter = 0;
-//        if (TimeManager::getSteps() == 533 && polygon->getID() == 75) {
+//        if (TimeManager::getSteps() == 84 && polygon->getID() == 1981) {
 //            polygon->dump("polygon");
 //            REPORT_DEBUG;
 //            debug = true;
@@ -970,127 +878,16 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         // ---------------------------------------------------------------------
         // handle the cells that are fully covered by the polygon
         if (diffArea > areaDiffThreshold) {
-            // 1. get the cell range in which the cells should be checked
-            int numCellLon = static_cast<int>(bndCellIdx.size()), numCellLat = 0;
-            // reference index
-            J0 = -1; J1 = -1;
-            // Note: The following complicated codes are due to the zonal periodic
-            //       boundary condition, please forgive me!
-            map<int, list<int> >::iterator itIdxIJ1 = bndCellIdx.begin();
-            map<int, list<int> >::iterator itIdxIJ2 = bndCellIdx.end();
-            map<int, list<int> >::iterator itIdxIJ3 = bndCellIdx.end();
-            map<int, list<int> >::iterator itIdxIJ4 = bndCellIdx.end();
-            map<int, list<int> >::iterator itIdxIJ  = bndCellIdx.begin();
-            map<int, list<int> >::iterator itIdxIJ0 = bndCellIdx.begin();
-            for (++itIdxIJ0; itIdxIJ != bndCellIdx.end(); ++itIdxIJ, ++itIdxIJ0) {
-                if (itIdxIJ0 != bndCellIdx.end() &&
-                    (*itIdxIJ).first+1 != (*itIdxIJ0).first) {
-                    itIdxIJ2 = itIdxIJ0;
-                    itIdxIJ3 = itIdxIJ0;
-                }
-                (*itIdxIJ).second.sort();
-                (*itIdxIJ).second.unique();
-                if (J0 == -1)
-                    J0 = (*itIdxIJ).second.front();
-                else if (J0 > (*itIdxIJ).second.front())
-                    J0 = (*itIdxIJ).second.front();
-                if (J1 == -1)
-                    J1 = (*itIdxIJ).second.back();
-                else if (J1 < (*itIdxIJ).second.back())
-                    J1 = (*itIdxIJ).second.back();
-            }
-            numCellLat = J1-J0+1;
-            // 3. set the first guess cover mask
-            Array<int, 2> coverMask(numCellLon, numCellLat);
-            coverMask = 0;
-            int idxI[numCellLon], idxJ[numCellLat];
-            int i, j;
-            // second part if the polygon crosses lon = 0 meridinal line
-            for (i = 0, itIdxIJ = itIdxIJ3; itIdxIJ != itIdxIJ4; ++itIdxIJ, ++i) {
-                idxI[i] = (*itIdxIJ).first;
-                j = (*itIdxIJ).second.front()-J0;
-                list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
-                idxJ[j] = *itIdxJ1;
-                coverMask(i, j++) = 1;
-                list<int>::const_iterator itIdxJ2 = itIdxJ1;
-                for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
-                    if (*itIdxJ1-*itIdxJ2 != 1) {
-                        for (J = *itIdxJ2+1; J < *itIdxJ1; ++J) {
-                            idxJ[j] = J;
-                            coverMask(i, j++) = -1;
-                        }
-                        idxJ[j] = J;
-                        coverMask(i, j++) = 1;
-                    } else {
-                        idxJ[j] = *itIdxJ1;
-                        coverMask(i, j++) = 1;
-                    }
-                    itIdxJ2++;
-                }
-            }
-            // first part
-            for (itIdxIJ = itIdxIJ1; itIdxIJ != itIdxIJ2; ++itIdxIJ, ++i) {
-                idxI[i] = (*itIdxIJ).first;
-                j = (*itIdxIJ).second.front()-J0;
-                list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
-                idxJ[j] = *itIdxJ1;
-                coverMask(i, j++) = 1;
-                list<int>::const_iterator itIdxJ2 = itIdxJ1;
-                for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
-                    if (*itIdxJ1-*itIdxJ2 != 1) {
-                        for (J = *itIdxJ2+1; J < *itIdxJ1; ++J) {
-                            idxJ[j] = J;
-                            coverMask(i, j++) = -1;
-                        }
-                        idxJ[j] = J;
-                        coverMask(i, j++) = 1;
-                    } else {
-                        idxJ[j] = *itIdxJ1;
-                        coverMask(i, j++) = 1;
-                    }
-                    itIdxJ2++;
-                }
-            }
-            // 4. set the cell that has been fully covered
-#ifdef DEBUG
-            if (debug) {
-                for (i = 0; i < numCellLon; ++i)
-                    cout << setw(5) << idxI[i];
-                cout << endl;
-                for (j = 0; j < numCellLat; ++j)
-                    cout << idxJ[j] << endl;
-                for (int jj = 0; jj < numCellLat; ++jj) {
-                    for (int ii = 0; ii < numCellLon; ++ii)
-                        cout << setw(3) << coverMask(ii, jj);
-                    cout << endl;
-                }
-            }
-#endif
-            for (i = 0; i < numCellLon; ++i)
-                for (j = 0; j < numCellLat; ++j) {
-                    isCellCovered(numCellLon, numCellLat, coverMask, -1, -1, i, j);
-#ifdef DEBUG
-                    if (debug) {
-                        cout << i << ", " << j << ":" << endl;
-                        for (int jj = 0; jj < numCellLat; ++jj) {
-                            for (int ii = 0; ii < numCellLon; ++ii) {
-                                if (ii == i && jj == j)
-                                    cout << " *" << setw(1) << coverMask(ii, jj);
-                                else
-                                    cout << setw(3) << coverMask(ii, jj);
-                            }
-                            cout << endl;
-                        }
-                    }
-#endif
-                }
-            // 5. add the fully covered cells
-            for (i = 0; i < numCellLon; ++i)
-                for (j = 0; j < numCellLat; ++j)
-                    if (coverMask(i, j) == 2)
-                        recordOverlapArea(mesh.area(idxI[i], idxJ[j]),
-                                          idxI[i], idxJ[j], polygon,
-                                          mesh.area(idxI[i], idxJ[j]),
+            CoverMask coverMask;
+            coverMask.init(bndCellIdx, debug);
+            coverMask.set(debug);
+            // add the fully covered cells
+            for (int i = 0; i < coverMask.mask.extent(0); ++i)
+                for (int j = 0; j < coverMask.mask.extent(1); ++j)
+                    if (coverMask.mask(i, j) == 2)
+                        recordOverlapArea(mesh.area(coverMask.idxI(i), coverMask.idxJ(j)),
+                                          coverMask.idxI(i), coverMask.idxJ(j), polygon,
+                                          mesh.area(coverMask.idxI(i), coverMask.idxJ(j)),
                                           totalArea, overlapAreas);
         }
         // ---------------------------------------------------------------------
