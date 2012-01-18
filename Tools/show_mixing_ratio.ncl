@@ -20,13 +20,15 @@ begin
         end if
     end do
     mr_name = "q1_mesh"
-    if (num_tracer .gt. 1) then
-        mr_names = new(num_tracer, string)
+    if (num_tracer .gt. 2) then
+        mr_names = new(num_tracer-1, string)
         i = 0
         do l = 0, dimsizes(var_names)-1
             if (.not. ismissing(str_match(var_names(l), "q.*_mesh"))) then
-                mr_names(i) = var_names(l)
-                i = i+1
+                if (var_names(l) .ne. "q0_mesh") then
+                    mr_names(i) = var_names(l)
+                    i = i+1
+                end if
             end if
         end do
 
@@ -56,14 +58,16 @@ begin
         f = addfile(file_names(l), "r")
 
         res = True
-        ;res@cnFillMode = "RasterFill"
-        ;res@gsnPolar   = "NH"
-        ;res@mpMinLatF  = 80.0
+        res@mpOutlineOn = False
         setup_contour(res)
         set_contour_range(res, 0.0, 1.1, 0.1)
 
         mr = f->$mr_name$/f->q0_mesh
         copy_VarCoords(f->$mr_name$, mr)
+
+        res@gsnStringFontHeightF = 0.02
+        res@gsnRightString = "min: "+sprintf("%4.2f", min(mr))+", "+ \
+                             "max: "+sprintf("%4.2f", max(mr))
         plot = gsn_csm_contour_map(wks, mr, res)
 
         frame(wks)

@@ -64,12 +64,11 @@ begin
         notice("Total mass is "+sprintf("%30.20f", total_mass))
 
         res = True
-        ;res@cnFillMode = "RasterFill"
-        ;res@gsnPolar   = "NH"
-        ;res@mpMinLatF  = 80.0
         setup_contour(res)
         set_contour_range(res, 0.0, 1.1, 0.1)
 
+        res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \
+                             "max: "+sprintf("%4.2f", max(f->$density_name$))
         plot = gsn_csm_contour_map(wks, f->$density_name$, res)
 
         frame(wks)
