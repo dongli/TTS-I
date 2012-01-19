@@ -660,6 +660,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;
+    CoverMask coverMask;
 
     // reset
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
@@ -873,57 +874,68 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                               polygon->getArea(NewTimeLevel),
                               totalArea, overlapAreas);
         // ---------------------------------------------------------------------
-        // check the area difference
-        diffArea = fabs(totalArea-realArea)/realArea;
-        // ---------------------------------------------------------------------
-        // handle the cells that are fully covered by the polygon
-        if (diffArea > areaDiffThreshold) {
-            CoverMask coverMask;
-            coverMask.init(bndCellIdx, debug);
-            coverMask.set(debug);
-            // add the fully covered cells
-            for (int i = 0; i < coverMask.mask.extent(0); ++i)
-                for (int j = 0; j < coverMask.mask.extent(1); ++j)
-                    if (coverMask.mask(i, j) == 2)
-                        recordOverlapArea(mesh.area(coverMask.idxI(i), coverMask.idxJ(j)),
-                                          coverMask.idxI(i), coverMask.idxJ(j), polygon,
-                                          mesh.area(coverMask.idxI(i), coverMask.idxJ(j)),
-                                          totalArea, overlapAreas);
-        }
-        // ---------------------------------------------------------------------
-        // check the area difference
-        diffArea = fabs(totalArea-realArea)/realArea;
-        // ---------------------------------------------------------------------
         // check if pole has been included
+        diffArea = fabs(totalArea-realArea)/realArea;
         if (diffArea > areaDiffThreshold) {
+            Location::Pole checkPole = Location::Null;
             // Note: Here we assume that if the boundary cells cover the whole
             //       zonal range, then the pole has been included
             if (bndCellIdx.size() == numLon) {
-                Vertex *v = polygon->edgePointers.front()->getEndPoint(FirstPoint);
-                Location::Pole checkPole = v->getCoordinate().getLat() > 0.0 ?
+                checkPole = 
+                polygon->edgePointers.front()->getEndPoint(FirstPoint)->
+                getCoordinate().getLat() > 0.0 ?
                 Location::NorthPole : Location::SouthPole;
-                map<int, list<int> >::const_iterator it1 = bndCellIdx.begin();
-                for (; it1 != bndCellIdx.end(); ++it1) {
-                    int i = (*it1).first;
-                    switch (checkPole) {
-                        case Location::NorthPole:
-                            for (int j = 0; j < (*it1).second.front(); ++j)
-                                recordOverlapArea(mesh.area(i, j), i, j, polygon,
-                                                  mesh.area(i, j),
-                                                  totalArea, overlapAreas);
-                            break;
-                        case Location::SouthPole:
-                            for (int j = (*it1).second.back()+1; j < numLat; ++j)
-                                recordOverlapArea(mesh.area(i, j), i, j, polygon,
-                                                  mesh.area(i, j),
-                                                  totalArea, overlapAreas);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                diffArea = fabs(totalArea-realArea)/realArea;
             }
+            coverMask.init(bndCellIdx, checkPole, numLat, debug);
+            // record the fully covered cells from pole to the first or last
+            // crossed cell along longitude
+            if (checkPole == Location::NorthPole) {
+                for (int i = 0; i < coverMask.mask.extent(0); ++i)
+                    for (int j = 0; j < coverMask.mask.extent(1); ++j)
+                        if (coverMask.mask(i, j) == CoverMask::NoOverlap) {
+                            coverMask.setMask(i, j, CoverMask::FullyCoveredNearPole);
+                            recordOverlapArea(mesh.area(coverMask.idxI(i),
+                                                        coverMask.idxJ(j)),
+                                              coverMask.idxI(i),
+                                              coverMask.idxJ(j), polygon,
+                                              mesh.area(coverMask.idxI(i),
+                                                        coverMask.idxJ(j)),
+                                              totalArea, overlapAreas);
+                        } else
+                            break;
+            } else if (checkPole == Location::SouthPole) {
+                for (int i = 0; i < coverMask.mask.extent(0); ++i)
+                    for (int j = coverMask.mask.extent(1)-1; j >= 0; --j)
+                        if (coverMask.mask(i, j) == CoverMask::NoOverlap) {
+                            coverMask.setMask(i, j, CoverMask::FullyCoveredNearPole);
+                            recordOverlapArea(mesh.area(coverMask.idxI(i),
+                                                        coverMask.idxJ(j)),
+                                              coverMask.idxI(i),
+                                              coverMask.idxJ(j), polygon,
+                                              mesh.area(coverMask.idxI(i),
+                                                        coverMask.idxJ(j)),
+                                              totalArea, overlapAreas);
+                        } else
+                            break;
+            }
+        }
+        // ---------------------------------------------------------------------
+        // handle the cells that are fully covered by the polygon
+        diffArea = fabs(totalArea-realArea)/realArea;
+        if (diffArea > areaDiffThreshold) {
+            coverMask.searchCover(debug);
+            // add the fully covered cells
+            for (int i = 0; i < coverMask.mask.extent(0); ++i)
+                for (int j = 0; j < coverMask.mask.extent(1); ++j)
+                    if (coverMask.mask(i, j) == CoverMask::FullyCovered)
+                        recordOverlapArea(mesh.area(coverMask.idxI(i),
+                                                    coverMask.idxJ(j)),
+                                          coverMask.idxI(i),
+                                          coverMask.idxJ(j), polygon,
+                                          mesh.area(coverMask.idxI(i),
+                                                    coverMask.idxJ(j)),
+                                          totalArea, overlapAreas);
+            diffArea = fabs(totalArea-realArea)/realArea;
         }
         // ---------------------------------------------------------------------
         // record totalArea in each overlapArea to overcome numerical inaccuracy

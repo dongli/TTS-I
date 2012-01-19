@@ -22,16 +22,22 @@ int main(int argc, char **argv)
     TTS tts;
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
-    char fileName[30], filePattern[50] = "mv_360x180_40962_576_%3.3d.nc";
+    char fileName[30], filePattern[50] = "mv_360x180_2562_576_%3.3d.nc";
 #endif
 #ifdef DEFORMATION_TESTCASE
     Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
-    char fileName[30], filePattern[50] = "gh_360x180_40962_600_%3.3d.nc";
+    char fileName[30], filePattern[50] = "gh_360x180_2562_600_%3.3d.nc";
 #endif
     // -------------------------------------------------------------------------
     ConfigTools::parse("tts_config");
+#ifdef MOVINGVORTICES_TESTCASE
     TimeManager::setClock(1800.0);
-    TimeManager::setEndStep(5);
+    TimeManager::setEndStep(576);
+#endif
+#ifdef DEFORMATION_TESTCASE
+    TimeManager::setClock(5.0/600.0);
+    TimeManager::setEndStep(600);
+#endif
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;

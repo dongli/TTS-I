@@ -9,12 +9,14 @@ CoverMask::~CoverMask()
 {
 }
 
-void CoverMask::init(map<int, list<int> > &bndCellIdx, bool debug)
+void CoverMask::init(map<int, list<int> > &bndCellIdx,
+                     Location::Pole pole, int numLat, bool debug)
 {
     // -------------------------------------------------------------------------
     // get the bounding box
     int numCellLon = static_cast<int>(bndCellIdx.size()), numCellLat = 0;
     int J0 = -1, J1 = -1; // reference index
+    int offset = 0; // offset due to the inclusion of north pole
     map<int, list<int> >::iterator itIdxIJ1 = bndCellIdx.begin();
     map<int, list<int> >::iterator itIdxIJ2 = bndCellIdx.end();
     map<int, list<int> >::iterator itIdxIJ3 = bndCellIdx.end();
@@ -39,34 +41,52 @@ void CoverMask::init(map<int, list<int> > &bndCellIdx, bool debug)
             J1 = (*itIdxIJ).second.back();
     }
     numCellLat = J1-J0+1;
+    if (pole == Location::NorthPole) {
+        offset = J0;
+        numCellLat += J0;
+    } else if (pole == Location::SouthPole) {
+        offset = numCellLat;
+        numCellLat += numLat-1-J1;
+    }
+    // -------------------------------------------------------------------------
+    // initialize the index map
+    idxI.resize(numCellLon);
+    idxJ.resize(numCellLat);
+    if (pole == Location::NorthPole)
+        for (int j = 0; j < J0; ++j)
+            idxJ(j) = j;
+    else if (pole == Location::SouthPole) {
+        int i = 1;
+        for (int j = offset; j < numCellLat; ++j)
+            idxJ(j) = J1+(i++);
+        offset = 0;
+    }
     // -------------------------------------------------------------------------
     // set the first guess cover mask
     mask.resize(numCellLon, numCellLat);
-    mask = 0;
-    idxI.resize(numCellLon);
-    idxJ.resize(numCellLat);
-    int i, j, J;
+    mask = NoOverlap;
+    int i = 0, j, J;
     // Note: The following complicated codes are due to the zonal periodic
     //       boundary condition, please forgive me!
     // second part if the polygon crosses lon = 0 meridinal line
-    for (i = 0, itIdxIJ = itIdxIJ3; itIdxIJ != itIdxIJ4; ++itIdxIJ, ++i) {
+    for (itIdxIJ = itIdxIJ3; itIdxIJ != itIdxIJ4; ++itIdxIJ, ++i) {
         idxI(i) = (*itIdxIJ).first;
-        j = (*itIdxIJ).second.front()-J0;
+        j = (*itIdxIJ).second.front()-J0+offset;
         list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
         idxJ(j) = *itIdxJ1;
-        mask(i, j++) = 1;
+        mask(i, j++) = CrossedByEdges;
         list<int>::const_iterator itIdxJ2 = itIdxJ1;
         for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
             if (*itIdxJ1-*itIdxJ2 != 1) {
                 for (J = *itIdxJ2+1; J < *itIdxJ1; ++J) {
                     idxJ(j) = J;
-                    mask(i, j++) = -1;
+                    mask(i, j++) = PotentialCovered;
                 }
                 idxJ(j) = J;
-                mask(i, j++) = 1;
+                mask(i, j++) = CrossedByEdges;
             } else {
                 idxJ(j) = *itIdxJ1;
-                mask(i, j++) = 1;
+                mask(i, j++) = CrossedByEdges;
             }
             itIdxJ2++;
         }
@@ -74,43 +94,37 @@ void CoverMask::init(map<int, list<int> > &bndCellIdx, bool debug)
     // first part
     for (itIdxIJ = itIdxIJ1; itIdxIJ != itIdxIJ2; ++itIdxIJ, ++i) {
         idxI(i) = (*itIdxIJ).first;
-        j = (*itIdxIJ).second.front()-J0;
+        j = (*itIdxIJ).second.front()-J0+offset;
         list<int>::const_iterator itIdxJ1 = (*itIdxIJ).second.begin();
         idxJ(j) = *itIdxJ1;
-        mask(i, j++) = 1;
+        mask(i, j++) = CrossedByEdges;
         list<int>::const_iterator itIdxJ2 = itIdxJ1;
         for (++itIdxJ1; itIdxJ1 != (*itIdxIJ).second.end(); ++itIdxJ1) {
             if (*itIdxJ1-*itIdxJ2 != 1) {
                 for (J = *itIdxJ2+1; J < *itIdxJ1; ++J) {
                     idxJ(j) = J;
-                    mask(i, j++) = -1;
+                    mask(i, j++) = PotentialCovered;
                 }
                 idxJ(j) = J;
-                mask(i, j++) = 1;
+                mask(i, j++) = CrossedByEdges;
             } else {
                 idxJ(j) = *itIdxJ1;
-                mask(i, j++) = 1;
+                mask(i, j++) = CrossedByEdges;
             }
             itIdxJ2++;
         }
     }
 #ifdef DEBUG
-    if (debug) {
-        for (i = 0; i < numCellLon; ++i)
-            cout << setw(5) << idxI(i);
-        cout << endl;
-        for (j = 0; j < numCellLat; ++j)
-            cout << idxJ(j) << endl;
-        for (int jj = 0; jj < numCellLat; ++jj) {
-            for (int ii = 0; ii < numCellLon; ++ii)
-                cout << setw(3) << mask(ii, jj);
-            cout << endl;
-        }
-    }
+    if (debug) dump();
 #endif
 }
 
-void CoverMask::set(bool debug)
+void CoverMask::setMask(int i, int j, MaskType type)
+{
+    mask(i, j) = type;
+}
+
+void CoverMask::searchCover(bool debug)
 {
     // set the cell that has been fully covered
     int i, j;
@@ -118,48 +132,32 @@ void CoverMask::set(bool debug)
         for (j = 0; j < mask.extent(1); ++j) {
             isCovered(-1, -1, i, j);
 #ifdef DEBUG
-            if (debug) {
-                cout << i << ", " << j << ":" << endl;
-                for (int jj = 0; jj < mask.extent(1); ++jj) {
-                    for (int ii = 0; ii < mask.extent(0); ++ii) {
-                        if (ii == i && jj == j)
-                            cout << " *" << setw(1) << mask(ii, jj);
-                        else
-                            cout << setw(3) << mask(ii, jj);
-                    }
-                    cout << endl;
-                }
-            }
+            if (debug) dump(i, j);
 #endif
         }
 }
 
 bool CoverMask::isCovered(int i0, int j0, int i, int j)
 {
-    // mask meanings:
-    //  0 - cell is not covered by polygon
-    //  1 - cell is partially covered by polygon
-    //  2 - cell is fully covered by polygon
-    // -1 - cell is potentially fully covered by polygon
-    //  3 - cell as -1 cell but in checking
     // -------------------------------------------------------------------------
     if (mask(i, j) > 0)
         return true;
-    else if (mask(i, j)== 0)
+    else if (mask(i, j) == 0)
         return false;
     // -------------------------------------------------------------------------
     int ii, jj;
+    // BUG: The periodic zonal boundary condition must be considered!
     // =========================================================================
     // check left-top cells
     for (ii = i-1, jj = j-1; ii >= 0 && jj >= 0; --ii, --jj)
         if (mask(ii, jj) > 0)
             break;
-        else if (mask(ii, jj) == 0)
+        else if (mask(ii, jj) == NoOverlap)
             goto return_not_covered;
-        else if (mask(ii, jj) == -1) {
+        else if (mask(ii, jj) == PotentialCovered) {
             if (ii == i0 && jj == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, ii, jj))
                 goto return_not_covered;
             else
@@ -172,12 +170,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     for (ii = i-1; ii >= 0; --ii)
         if (mask(ii, j) > 0)
             break;
-        else if (mask(ii, j) == 0)
+        else if (mask(ii, j) == NoOverlap)
             goto return_not_covered;
-        else if (mask(ii, jj) == -1) {
+        else if (mask(ii, jj) == PotentialCovered) {
             if (ii == i0 && j == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, ii, j))
                 goto return_not_covered;
             else
@@ -190,12 +188,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     for (ii = i-1, jj = j+1; ii >= 0 && jj < mask.extent(1); --ii, ++jj)
         if (mask(ii, jj) > 0)
             break;
-        else if (mask(ii, jj) == 0)
+        else if (mask(ii, jj) == NoOverlap)
             goto return_not_covered;
-        else if (mask(ii, jj) == -1) {
+        else if (mask(ii, jj) == PotentialCovered) {
             if (ii == i0 && jj == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, ii, jj))
                 goto return_not_covered;
             else
@@ -208,12 +206,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     for (jj = j-1; jj >= 0; --jj)
         if (mask(i, jj) > 0)
             break;
-        else if (mask(i, jj) == 0)
+        else if (mask(i, jj) == NoOverlap)
             goto return_not_covered;
-        else if (mask(i, jj) == -1) {
+        else if (mask(i, jj) == PotentialCovered) {
             if (i == i0 && jj == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, i, jj))
                 goto return_not_covered;
             else
@@ -226,12 +224,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     for (jj = j+1; jj < mask.extent(1); ++jj)
         if (mask(i, jj) > 0)
             break;
-        else if (mask(i, jj) == 0)
+        else if (mask(i, jj) == NoOverlap)
             goto return_not_covered;
-        else if (mask(i, jj) == -1) {
+        else if (mask(i, jj) == PotentialCovered) {
             if (i == i0 && jj == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, i, jj))
                 goto return_not_covered;
             else
@@ -244,12 +242,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     for (ii = i+1, jj = j-1; ii < mask.extent(0) && jj >= 0; ++ii, --jj)
         if (mask(ii, jj) > 0)
             break;
-        else if (mask(ii, jj) == 0)
+        else if (mask(ii, jj) == NoOverlap)
             goto return_not_covered;
-        else if (mask(ii, jj) == -1) {
+        else if (mask(ii, jj) == PotentialCovered) {
             if (ii == i0 && jj == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, ii, jj))
                 goto return_not_covered;
             else
@@ -262,12 +260,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     for (ii = i+1; ii < mask.extent(0); ++ii)
         if (mask(ii, j) > 0)
             break;
-        else if (mask(ii, j) == 0)
+        else if (mask(ii, j) == NoOverlap)
             goto return_not_covered;
-        else if (mask(ii, j) == -1) {
+        else if (mask(ii, j) == PotentialCovered) {
             if (ii == i0 && j == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, ii, j))
                 goto return_not_covered;
             else
@@ -281,12 +279,12 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
          ii < mask.extent(0) && jj < mask.extent(1); ++ii, ++jj)
         if (mask(ii, jj) > 0)
             break;
-        else if (mask(ii, jj) == 0)
+        else if (mask(ii, jj) == NoOverlap)
             goto return_not_covered;
-        else if (mask(ii, jj) == -1) {
+        else if (mask(ii, jj) == PotentialCovered) {
             if (ii == i0 && jj == j0)
                 break;
-            mask(i, j) = 3;
+            mask(i, j) = PotentialCoveredChecked;
             if (!isCovered(i, j, ii, jj))
                 goto return_not_covered;
             else
@@ -295,85 +293,99 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
     if (ii == mask.extent(0) || jj == mask.extent(1))
         goto return_not_covered;
     // -------------------------------------------------------------------------
-    mask(i, j) = 2;
+    mask(i, j) = FullyCovered;
     return true;
 return_not_covered:
     // Note: The search route may forks, and some of the forked may return true,
     //       some may return false, and the order of the forked routes may cause
     //       different results, so we should check the result here to ensure
     //       there will be no false covered masks.
-    mask(i, j) = 0;
+    mask(i, j) = NoOverlap;
     checkFalseCover(i, j);
     return false;
 }
 
 void CoverMask::checkFalseCover(int i, int j)
 {
-    assert(mask(i, j) == 0);
+    assert(mask(i, j) == NoOverlap);
     // check the surrounding mask
     int ii, jj;
     // left-top cell
     if (i != 0 && j != 0) {
         ii = i-1; jj = j-1;
-        if (mask(ii, jj) == 2) {
-            mask(ii, jj) = 0;
+        if (mask(ii, jj) == FullyCovered) {
+            mask(ii, jj) = NoOverlap;
             checkFalseCover(ii, jj);
         }
     }
     // left cell
     if (i != 0) {
         ii = i-1;
-        if (mask(ii, j) == 2) {
-            mask(ii, j) = 0;
+        if (mask(ii, j) == FullyCovered) {
+            mask(ii, j) = NoOverlap;
             checkFalseCover(ii, j);
         }
     }
     // left-bottom cell
     if (i != 0 && j != mask.extent(1)) {
         ii = i-1; jj = j+1;
-        if (mask(ii, jj) == 2) {
-            mask(ii, jj) = 0;
+        if (mask(ii, jj) == FullyCovered) {
+            mask(ii, jj) = NoOverlap;
             checkFalseCover(i, jj);
         }
     }
     // top cell
     if (j != 0) {
         jj = j-1;
-        if (mask(i, jj) == 2) {
-            mask(i, jj) = 0;
+        if (mask(i, jj) == FullyCovered) {
+            mask(i, jj) = NoOverlap;
             checkFalseCover(i, jj);
         }
     }
     // bottom cell
     if (j != mask.extent(1)) {
         jj = j+1;
-        if (mask(i, jj) == 2) {
-            mask(i, jj) = 0;
+        if (mask(i, jj) == FullyCovered) {
+            mask(i, jj) = NoOverlap;
             checkFalseCover(i, jj);
         }
     }
     // right-top cell
     if (i != mask.extent(0) && j != 0) {
         ii = i+1; jj = j-1;
-        if (mask(ii, jj) == 2) {
-            mask(ii, jj) = 0;
+        if (mask(ii, jj) == FullyCovered) {
+            mask(ii, jj) = NoOverlap;
             checkFalseCover(ii, jj);
         }
     }
     // right cell
     if (i != mask.extent(0)) {
         ii = i+1;
-        if (mask(ii, j) == 2) {
-            mask(ii, j) = 0;
+        if (mask(ii, j) == FullyCovered) {
+            mask(ii, j) = NoOverlap;
             checkFalseCover(ii, j);
         }
     }
     // right-bottom cell
     if (i != mask.extent(0) && j != mask.extent(1)) {
         ii = i+1; jj = j+1;
-        if (mask(ii, jj) == 2) {
-            mask(ii, jj) = 0;
+        if (mask(ii, jj) == FullyCovered) {
+            mask(ii, jj) = NoOverlap;
             checkFalseCover(ii, jj);
         }
+    }
+}
+
+void CoverMask::dump(int i, int j)
+{
+    cout << "---------------------------------------------------------" << endl;
+    for (int jj = 0; jj < mask.extent(1); ++jj) {
+        for (int ii = 0; ii < mask.extent(0); ++ii) {
+            if (ii == i && jj == j)
+                cout << " *" << setw(1) << mask(ii, jj);
+            else
+                cout << setw(3) << mask(ii, jj);
+        }
+        cout << endl;
     }
 }
