@@ -1,17 +1,24 @@
-#ifndef guard_h
-#define guard_h
-
+#include "CurvatureGuard.h"
 #include "MeshManager.h"
 #include "FlowManager.h"
 #include "PolygonManager.h"
 #include "TimeManager.h"
 #include "ApproachDetector.h"
-#include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
 #ifdef DEBUG
 #include "DebugTools.h"
 #endif
+
+#include "AngleThreshold.h"
+#include "splitEdge.h"
+#include "mergeEdge.h"
+#include "splitPolygon.h"
+
+void CurvatureGuard::init()
+{
+    AngleThreshold::init();
+}
 
 void CurvatureGuard::guard(MeshManager &meshManager,
                            const FlowManager &flowManager,
@@ -43,31 +50,31 @@ void CurvatureGuard::guard(MeshManager &meshManager,
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
-
+    
     // -------------------------------------------------------------------------
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
-
+    
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
-
+    
     // -------------------------------------------------------------------------
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
-
+    
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
-
+    
 #ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
     if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
@@ -75,12 +82,12 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     DebugTools::dump_watchers();
 #endif
 #endif
-
+    
     // -------------------------------------------------------------------------
     ApproachDetector::reset(polygonManager);
-
+    
     CommonTasks::resetTasks();
-
+    
 #ifdef TTS_OUTPUT
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
@@ -90,5 +97,3 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     }
 #endif
 }
-
-#endif

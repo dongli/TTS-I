@@ -9,11 +9,6 @@ class MeshManager;
 class FlowManager;
 class PolygonManager;
 
-#include "AngleThreshold.h"
-#include <string>
-
-using std::string;
-
 namespace CurvatureGuard
 {
     void init();
