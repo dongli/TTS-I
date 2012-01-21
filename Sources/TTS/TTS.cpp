@@ -5,7 +5,7 @@
 #include "Constants.h"
 #include "Sphere.h"
 #include "CurvatureGuard.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 
@@ -112,7 +112,7 @@ void TTS::advect(MeshManager &meshManager,
     cout << "Total polygon number: " << setw(10);
     cout << polygonManager.polygons.size() << endl;
     tracerManager.update();
-#ifndef DEBUG_TTS
+#ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     // adapt the quantities carried by parcels (polygons)
     // onto the background fixed mesh

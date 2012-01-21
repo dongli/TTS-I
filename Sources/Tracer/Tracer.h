@@ -4,7 +4,7 @@
 class Tracer
 {
 public:
-    Tracer() {}
+    Tracer() { reinit(); }
     virtual ~Tracer() {}
 
     void reinit() { mass = 0.0; }

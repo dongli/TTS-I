@@ -287,12 +287,12 @@ bool Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
     static const double eps = 1.0e-12;
     mpreal lon[2];
     if (fabs(a) > eps) {
-#ifdef DEBUG
-        if (fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) > 1.0e-10) {
-            cout << fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) << endl;
-            REPORT_WARNING("Unconsistent result!");
-        }
-#endif
+//#ifdef DEBUG
+//        if (fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) > 1.0e-8) {
+//            cout << fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) << endl;
+//            REPORT_WARNING("Unconsistent result!");
+//        }
+//#endif
         lon[0] = atan2(y1, (-b*y1-c*z)/a);
         lon[1] = atan2(y2, (-b*y2-c*z)/a);
     } else {
@@ -349,12 +349,12 @@ bool Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
     static const double eps = 1.0e-12;
     double lon[2];
     if (fabs(a) > eps) {
-#ifdef DEBUG
-        if (fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) > 1.0e-10) {
-            cout << fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) << endl;
-            REPORT_WARNING("Unconsistent result!");
-        }
-#endif
+//#ifdef DEBUG
+//        if (fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) > 1.0e-10) {
+//            cout << fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) << endl;
+//            REPORT_WARNING("Unconsistent result!");
+//        }
+//#endif
         lon[0] = atan2(y1, (-b*y1-c*z)/a);
         lon[1] = atan2(y2, (-b*y2-c*z)/a);
     } else {

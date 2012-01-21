@@ -7,7 +7,7 @@
 #include "PotentialCrossDetector.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 
@@ -18,13 +18,15 @@ using namespace PotentialCrossDetector;
 
 double ApproachDetector::approachTrendThreshold(double distance)
 {
+    // TODO: Put these parameters into config file.
     static const double D0 = 0.001/Rad2Deg*Sphere::radius;
     static const double D1 = 0.5/Rad2Deg*Sphere::radius;
     static const double P0 = 0.4;
     static const double P1 = 0.8;
     static const double dD = D1-D0;
     static const double dP = P1-P0;
-    
+
+    // TODO: Use the threshold function instead.
     if (distance > D0 && distance < D1) {
         double t = (distance-D0)/dD;
         return dP*(4.0-3.0*t)*pow(t, 3.0)+P0;
@@ -37,6 +39,7 @@ double ApproachDetector::approachTrendThreshold(double distance)
 
 bool ApproachDetector::isNeedCheck(double distance)
 {
+    // TODO: Put this parameter into config file.
     static const double distanceThreshold = 5.0/Rad2Deg*Sphere::radius;
     if (distance < distanceThreshold)
         return true;
@@ -46,6 +49,7 @@ bool ApproachDetector::isNeedCheck(double distance)
 
 bool ApproachDetector::isApproaching(Projection *projection)
 {
+    // TODO: Put this parameter into config file.
     static const double smallDistance = 0.05/Rad2Deg*Sphere::radius;
     double oldDistance = projection->getDistance(OldTimeLevel);
     double newDistance = projection->getDistance(NewTimeLevel);
@@ -213,7 +217,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                                      PolygonManager &polygonManager,
                                      Polygon *polygon)
 {
-//    if (TimeManager::getSteps() >= 304 && (polygon->getID() == 12511)) {
+//    if (TimeManager::getSteps() >= 132 && (polygon->getID() == 1007)) {
 //        DebugTools::watch(polygon);
 //        polygon->dump("polygon");
 //        REPORT_DEBUG;
@@ -226,7 +230,6 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     if (polygon->edgePointers.size() == 2) {
         handleLinePolygon(polygonManager, polygon);
-        // TODO: Hand over the tracer mass.
         return;
     }
     // -------------------------------------------------------------------------

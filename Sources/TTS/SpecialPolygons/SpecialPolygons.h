@@ -9,13 +9,16 @@ class FlowManager;
 
 namespace SpecialPolygons
 {
-    void handleLinePolygon(PolygonManager &polygonManager, Polygon *&polygon);
+    void handleLinePolygon(PolygonManager &polygonManager, Polygon *polygon,
+                           bool isKeepMass = false);
 
-    void handlePointPolygon(PolygonManager &polygonManager, Polygon *polygon);
+    void handlePointPolygon(PolygonManager &polygonManager, Polygon *polygon,
+                            bool isKeepMass = false);
 
-    void handleSlimPolygon(MeshManager &meshManager,
+    bool handleSlimPolygon(MeshManager &meshManager,
                            const FlowManager &flowManager,
-                           PolygonManager &polygonManager, Polygon *&polygon);
+                           PolygonManager &polygonManager, Polygon *polygon,
+                           bool isKeepMass = false);
 }
 
 #endif

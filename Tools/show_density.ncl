@@ -19,7 +19,7 @@ begin
             num_tracer = num_tracer+1
         end if
     end do
-    density_name = "q1_mesh"
+    density_name = "q0_mesh"
     if (num_tracer .gt. 1) then
         density_names = new(num_tracer, string)
         i = 0
@@ -51,7 +51,8 @@ begin
         wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+ \
             file_names(l))+"_"+density_name+"_density")
 
-        gsn_define_colormap(wks, "WhBlGrYeRe")
+        ;gsn_define_colormap(wks, "WhBlGrYeRe")
+        gsn_define_colormap(wks, "WhBlReWh")
 
         f = addfile(file_names(l), "r")
 
@@ -64,8 +65,10 @@ begin
         notice("Total mass is "+sprintf("%30.20f", total_mass))
 
         res = True
+        res@lbLabelAngleF = 45.0
         setup_contour(res)
-        set_contour_range(res, 0.0, 1.1, 0.1)
+        ;set_contour_range(res, 0.0, 1.1, 0.1)
+        set_contour_range(res, 0.5, 1.5, 0.05)
 
         res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \
                              "max: "+sprintf("%4.2f", max(f->$density_name$))

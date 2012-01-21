@@ -160,6 +160,8 @@
 		55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		55A1C13F14C40B9C000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
 		55A1C14114C40B9C000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
+		55ADD15B14C845530063C9C0 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55ADD15A14C845530063C9C0 /* init.cpp */; };
+		55ADD15C14C845530063C9C0 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55ADD15A14C845530063C9C0 /* init.cpp */; };
 		55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C9C1491497174F0063230B /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C9C1471497174F0063230B /* CommonTasks.cpp */; };
@@ -402,6 +404,8 @@
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		55ADD15A14C845530063C9C0 /* init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = init.cpp; sourceTree = "<group>"; };
+		55ADD15D14C845870063C9C0 /* TrendThreshold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendThreshold.h; sourceTree = "<group>"; };
 		55C1E3CA142C557D00D83018 /* unit_test_tracers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_tracers.h; sourceTree = "<group>"; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
@@ -524,6 +528,7 @@
 		558A48CC14093757000B7E48 /* ApproachDetector */ = {
 			isa = PBXGroup;
 			children = (
+				55ADD15A14C845530063C9C0 /* init.cpp */,
 				558A48D614093757000B7E48 /* Projection.h */,
 				558A48D514093757000B7E48 /* Projection.cpp */,
 				558A48D814093757000B7E48 /* VertexAgent.h */,
@@ -536,6 +541,7 @@
 				558A48D114093757000B7E48 /* ApproachingVertices.cpp */,
 				558A48D014093757000B7E48 /* ApproachDetector.h */,
 				558A48CF14093757000B7E48 /* ApproachDetector.cpp */,
+				55ADD15D14C845870063C9C0 /* TrendThreshold.h */,
 			);
 			path = ApproachDetector;
 			sourceTree = "<group>";
@@ -1073,6 +1079,7 @@
 				554F970214A84BA7000052E2 /* init.cpp in Sources */,
 				554F970514A84C4F000052E2 /* AngleThreshold.cpp in Sources */,
 				55943B8214C6C6040084B8BB /* CoverMask.cpp in Sources */,
+				55ADD15C14C845530063C9C0 /* init.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1158,6 +1165,7 @@
 				55A1C13B14C40A33000962C4 /* dlmalloc.c in Sources */,
 				55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */,
 				55943B8114C6C6040084B8BB /* CoverMask.cpp in Sources */,
+				55ADD15B14C845530063C9C0 /* init.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1468,6 +1476,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					TTS_REMAP,
 					DEBUG,
 					TTS_ONLINE,
 				);

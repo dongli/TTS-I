@@ -29,12 +29,13 @@ int main(int argc, char **argv)
     char fileName[30], filePattern[50] = "gh_360x180_2562_600_%3.3d.nc";
 #endif
     // -------------------------------------------------------------------------
-    ConfigTools::parse("tts_config");
 #ifdef MOVINGVORTICES_TESTCASE
+    ConfigTools::parse("tts_mv_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(576);
 #endif
 #ifdef DEFORMATION_TESTCASE
+    ConfigTools::parse("tts_config");
     TimeManager::setClock(5.0/600.0);
     TimeManager::setEndStep(600);
 #endif
@@ -58,13 +59,15 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
     sprintf(fileName, filePattern, TimeManager::getSteps());
+#ifdef TTS_OUTPUT
     tracerManager.output(fileName);
+#endif
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         TimeManager::advance();
         testCase.calcVelocityField(flowManager);
-#ifndef DEBUG_TTS
+#ifdef TTS_OUTPUT
         sprintf(fileName, filePattern, TimeManager::getSteps());
         tracerManager.output(fileName);
 #endif

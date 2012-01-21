@@ -77,6 +77,7 @@ void List<T>::reinit(int initPoolSize, int incrementSize)
     IDCounter = 0;
     // Initiate workflow indicators
     isDestroyed = false;
+    isRinged = false;
 }
 
 template <class T>
@@ -87,30 +88,6 @@ void List<T>::create(int size)
     }
     for (int i = 0; i < size; ++i)
         append();
-}
-
-template <class T>
-void List<T>::append(T *elem)
-{
-    ++numElem;
-    ++poolSize;
-    if (numElem != 1) {
-        if (tail != head)
-            tail->endTag = ListElement<T>::Body;
-        T *temp = tail;
-        tail = elem;
-        tail->prev = temp;
-        tail->next = NULL;
-        temp->next = tail;
-        tail->endTag = ListElement<T>::Tail;
-    } else {
-        head = elem;
-        head->prev = NULL;
-        head->endTag = ListElement<T>::Head;
-        tail = head;
-        tail->next = NULL;
-    }
-    elem->setID(++IDCounter);
 }
 
 template <class T>
@@ -125,14 +102,20 @@ void List<T>::append()
 {
     ++numElem;
     if (numElem != 1) {
-        if (tail != head)
+        T *elem = getFreeElem();
+        elem->prev = tail;
+        tail->next = elem;
+        tail = elem;
+        if (!isRing()) {
+            tail->next = NULL;
+            if (tail->prev != head)
+                tail->prev->endTag = ListElement<T>::Body;
+            tail->endTag = ListElement<T>::Tail;
+        } else {
+            tail->next = head;
+            head->prev = tail;
             tail->endTag = ListElement<T>::Body;
-        T *temp = tail;
-        tail = getFreeElem();
-        tail->prev = temp;
-        tail->next = NULL;
-        temp->next = tail;
-        tail->endTag = ListElement<T>::Tail;
+        }
     } else {
         head = getFreeElem();
         head->prev = NULL;
@@ -147,28 +130,36 @@ void List<T>::insert(T* elem1, T** elem)
 {
     ++numElem;
     *elem = getFreeElem();
-    if (elem1->endTag == ListElement<T>::Tail) {
-        (*elem)->next = NULL;
-        (*elem)->endTag = ListElement<T>::Tail;
-        tail = (*elem);
-        elem1->endTag = ListElement<T>::Body;
-    } else {
-        if (numElem != 2) {
-            T *elem2 = (T *) elem1->next;
+    if (!isRing()) {
+        if (elem1 == tail) {
+            (*elem)->next = NULL;
+            (*elem)->prev = elem1;
+            (*elem)->endTag = ListElement<T>::Tail;
+            tail = *elem;
+            elem1->next = *elem;
+            if (elem1 != head)
+                elem1->endTag = ListElement<T>::Body;
+            else
+                elem1->endTag = ListElement<T>::Head;
+        } else {
+            T *elem2 = elem1->next;
             elem2->prev = *elem;
             (*elem)->next = elem2;
+            (*elem)->prev = elem1;
             (*elem)->endTag = ListElement<T>::Body;
-            if (elem1 == tail)
-                // The list has been made as a ring
-                tail = *elem;
-        } else {
-            (*elem)->next = NULL;
-            (*elem)->endTag = ListElement<T>::Tail;
-            tail = (*elem);
+            elem1->next = *elem;
+        }
+    } else {
+        T *elem2 = elem1->next;
+        elem2->prev = *elem;
+        (*elem)->next = elem2;
+        (*elem)->prev = elem1;
+        (*elem)->endTag = ListElement<T>::Body;
+        elem1->next = *elem;
+        if (elem1 == tail) {
+            tail = *elem;
         }
     }
-    elem1->next = *elem;
-    (*elem)->prev = elem1;
 }
 
 template <class T>
@@ -176,98 +167,35 @@ void List<T>::insert(T** elem, T* elem1)
 {
     ++numElem;
     *elem = getFreeElem();
-    if (elem1->endTag == ListElement<T>::Head) {
-        (*elem)->prev = NULL;
-        (*elem)->endTag = ListElement<T>::Head;
-        head = (*elem);
-        elem1->endTag = ListElement<T>::Body;
-    } else {
-        if (numElem != 2) {
-            T *elem2 = (T *) elem1->prev;
+    if (!isRing()) {
+        if (elem1 == head) {
+            (*elem)->prev = NULL;
+            (*elem)->next = elem1;
+            (*elem)->endTag = ListElement<T>::Head;
+            head = *elem;
+            elem1->prev = *elem;
+            if (elem1 != tail)
+                elem1->endTag = ListElement<T>::Body;
+            else
+                elem1->endTag = ListElement<T>::Tail;
+        } else {
+            T *elem2 = elem1->prev;
             elem2->next = *elem;
             (*elem)->prev = elem2;
+            (*elem)->next = elem1;
             (*elem)->endTag = ListElement<T>::Body;
-            if (elem1 == head)
-                // The list has been made as a ring
-                head = *elem;
-        } else {
-            (*elem)->prev = NULL;
-            (*elem)->endTag = ListElement<T>::Head;
-            head = (*elem);
+            elem1->prev = *elem;
         }
-    }
-    elem1->prev = *elem;
-    (*elem)->next = elem1;
-}
-
-template <class T>
-void List<T>::move(T **elem, T *elem1)
-{
-    T *tmp1 = (*elem)->prev;
-    T *tmp2 = (*elem)->next;
-    if (tmp1 != NULL) {
-        tmp1->next = tmp2;
-        if ((*elem)->endTag == ListElement<T>::Tail) {
-            tmp1->endTag = ListElement<T>::Tail;
-            tail = tmp1;
-        } else
-            tmp1->endTag = ListElement<T>::Body;
-    }
-    if (tmp2 != NULL) {
-        tmp2->prev = tmp1;
-        if ((*elem)->endTag == ListElement<T>::Head) {
-            tmp2->endTag = ListElement<T>::Head;
-            head = tmp2;
-        } else
-            tmp2->endTag = ListElement<T>::Body;
-    }
-    // -------------------------------------------------------------------------
-    (*elem)->prev = elem1->prev;
-    elem1->prev = (*elem);
-    (*elem)->next = elem1;
-    if ((*elem)->prev != NULL)
-        (*elem)->prev->next = *elem;
-    if (elem1->endTag == ListElement<T>::Head) {
-        (*elem)->endTag = ListElement<T>::Head;
-        elem1->endTag = ListElement<T>::Body;
-        head = *elem;
     } else {
+        T *elem2 = elem1->prev;
+        elem2->next = *elem;
+        (*elem)->prev = elem2;
+        (*elem)->next = elem1;
         (*elem)->endTag = ListElement<T>::Body;
-    }
-}
-
-template <class T>
-void List<T>::move(T *elem1, T **elem)
-{
-    T *tmp1 = (*elem)->prev;
-    T *tmp2 = (*elem)->next;
-    if (tmp1 != NULL) {
-        tmp1->next = tmp2;
-        if ((*elem)->endTag == ListElement<T>::Tail) {
-            tmp1->endTag = ListElement<T>::Tail;
-            tail = tmp1;
-        } else
-            tmp1->endTag = ListElement<T>::Body;
-    }
-    if (tmp2 != NULL) {
-        tmp2->prev = tmp1;
-        if ((*elem)->endTag == ListElement<T>::Head) {
-            tmp2->endTag = ListElement<T>::Head;
-            head = tmp2;
-        } else
-            tmp2->endTag = ListElement<T>::Body;
-    }
-    // -------------------------------------------------------------------------
-    (*elem)->next = elem1->next;
-    elem1->next = (*elem);
-    (*elem)->prev = elem1;
-    if ((*elem)->next != NULL)
-        (*elem)->next->prev = *elem;
-    if (elem1->endTag == ListElement<T>::Tail) {
-        (*elem)->endTag = ListElement<T>::Tail;
-        elem1->endTag = ListElement<T>::Body;
-    } else {
-        (*elem)->endTag = ListElement<T>::Body;
+        elem1->prev = *elem;
+        if (elem1 == head) {
+            head = *elem;
+        }
     }
 }
 
@@ -278,18 +206,13 @@ void List<T>::ring()
     tail->next = head;
     head->endTag = ListElement<T>::Body;
     tail->endTag = ListElement<T>::Body;
+    isRinged = true;
 }
 
 template <class T>
 bool List<T>::isRing()
 {
-    if (tail->next != head) {
-        return false;
-    }
-    if (head->prev != tail) {
-        return false;
-    }
-    return true;
+    return isRinged;
 }
 
 template <class T>

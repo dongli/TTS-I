@@ -5,7 +5,7 @@
 #include "PolygonManager.h"
 #ifdef TTS_ONLINE
 #include "TTS.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 #endif
@@ -107,9 +107,14 @@ void Polygon::handoverTracers()
 
 void Polygon::handoverTracers(Polygon *polygon, double percent)
 {
+    if (polygon->tracers.size() == 0)
+        // polygon is newly created, no tracer has been added
+        polygon->tracers.resize(tracers.size());
     for (int i = 0; i < tracers.size(); ++i) {
-        double mass = tracers[i].getMass()*percent;
-        polygon->tracers[i].addMass(mass);
+        double mass1 = tracers[i].getMass()*percent;
+        double mass2 = tracers[i].getMass()-mass1;
+        polygon->tracers[i].addMass(mass1);
+        tracers[i].setMass(mass2);
     }
 }
 #endif

@@ -21,6 +21,7 @@ int main(int argc, char **argv)
     ConfigTools::parse("tts_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(576);
+    tts.init();
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;
@@ -37,14 +38,17 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);
     sprintf(fileName, filePattern, TimeManager::getSteps());
+#ifdef TTS_OUTPUT
     tracerManager.output(fileName);
-    tts.init();
+#endif
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
         TimeManager::advance();
         testCase.calcVelocityField(flowManager);
+#ifdef TTS_OUTPUT
         sprintf(fileName, filePattern, TimeManager::getSteps());
         tracerManager.output(fileName);
+#endif
     }
 }

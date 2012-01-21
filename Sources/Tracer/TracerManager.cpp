@@ -138,7 +138,7 @@ void TracerManager::output(const string &fileName)
     // -------------------------------------------------------------------------
     // output polygon stuffs
     polygonManager.output(fileName);
-#ifndef DEBUG_TTS
+#ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     NcFile file(fileName.c_str(), NcFile::Write);
     if (!file.is_valid()) {

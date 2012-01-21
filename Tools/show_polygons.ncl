@@ -83,12 +83,14 @@ begin
             end if
 
             if (is_plot_quantities) then
-                gsn_define_colormap(wks, "WhBlGrYeRe")
+                ;gsn_define_colormap(wks, "WhBlGrYeRe")
+                gsn_define_colormap(wks, "WhBlReWh")
                 cmap = gsn_retrieve_colormap(wks)
                 num_level = 13
                 stride = (dimsizes(cmap(:,0))-3.0)/num_level
                 levels = new(num_level, float)
-                levels = fspan(-0.05, 1.15, num_level)
+                ;levels = fspan(-0.05, 1.15, num_level)
+                levels = fspan(0.5, 1.5, num_level)
                 colors = new((/num_level+3,3/), float)
                 colorlabels = new(num_level, string)
                 colors(0:1,:) = cmap(0:1,:)
@@ -108,13 +110,12 @@ begin
                 res_lb@lbFillColors = colors(2:num_level+2,:)
                 res_lb@lbPerimOn = False
                 res_lb@lbMonoFillPattern = True
-                ;res_lb@lbLabelAlignment = "InteriorEdges"
                 gsn_labelbar_ndc(wks, num_level, colorlabels, 0.13, 0.25, res_lb)
 
                 show_polygon_quantities(wks, map, levels, colors, \
                     f->new_vertex_lon, f->new_vertex_lat, \
                     f->first_point_idx, f->second_point_idx, \
-                    f->edge_num, f->edge_idx, f->edge_ont, f->q1)
+                    f->edge_num, f->edge_idx, f->edge_ont, f->q0)
             end if
 
             if (is_plot_vertices) then

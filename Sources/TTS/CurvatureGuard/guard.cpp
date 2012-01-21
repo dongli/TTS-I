@@ -9,7 +9,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 
@@ -40,38 +40,40 @@ void CurvatureGuard::guard(MeshManager &meshManager,
         TTS::track(meshManager, flowManager, edge->getTestPoint());
         edge = edge->next;
     }
-#ifdef DEBUG_TTS
+#ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG_TTS
+#ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-#ifdef DEBUG_TTS
+#ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG_TTS
+#ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-#ifdef DEBUG_TTS
+#ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
 
+#ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
     if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG_TTS
+#ifdef DEBUG
     DebugTools::dump_watchers();
+#endif
 #endif
 
     // -------------------------------------------------------------------------
@@ -79,7 +81,7 @@ void CurvatureGuard::guard(MeshManager &meshManager,
 
     CommonTasks::resetTasks();
 
-#ifndef DEBUG_TTS
+#ifdef TTS_OUTPUT
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
     if (flag) {

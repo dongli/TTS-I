@@ -45,15 +45,11 @@ public:
 
     void create(int numElem);
 
-    void append(T *);
     void append(T **);
     void append();
 
     void insert(T *elem1, T **elem);
     void insert(T **elem, T *elem1);
-
-    void move(T **elem, T *elem1);
-    void move(T *elem1, T **elem);
 
     void ring();
     bool isRing();
@@ -101,6 +97,7 @@ protected:
 
     // Workflow indicators:
     bool isDestroyed;
+    bool isRinged;
 };
 
 #include "List.cpp"

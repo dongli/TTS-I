@@ -18,7 +18,7 @@ public:
 
     enum MaskType {
         NoOverlap = 0, CrossedByEdges = 1,
-        PotentialCovered = -1, PotentialCoveredChecked = 4,
+        PotentialCovered = -1, PotentialCoveredPassed = 4,
         FullyCovered = 2, FullyCoveredNearPole = 3 
     };    
 
@@ -34,6 +34,7 @@ public:
 
     Array<int, 2> mask;
     Array<int, 1> idxI, idxJ;
+    bool isCycle;
 };
 
 #endif

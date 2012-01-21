@@ -26,7 +26,7 @@ int main(int argc, char **argv)
                    gamilReader.flowManager, tracerManager);
         timeManager.advance();
         gamilReader.getVelocityField();
-#ifndef DEBUG_TTS
+#ifdef TTS_OUTPUT
         sprintf(fileName, filePattern, timeManager.getSteps());
         tracerManager.output(fileName);
 #endif

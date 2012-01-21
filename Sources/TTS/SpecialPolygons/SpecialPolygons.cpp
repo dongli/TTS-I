@@ -14,8 +14,13 @@ using namespace PotentialCrossDetector;
 using namespace CurvatureGuard;
 
 void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
-                                        Polygon *&polygon)
+                                        Polygon *polygon, bool isKeepMass)
 {
+    // -------------------------------------------------------------------------
+    // hand over tracer mass
+    if (!isKeepMass)
+        polygon->handoverTracers();
+    // -------------------------------------------------------------------------
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     EdgePointer *edgePointer2 = polygon->edgePointers.back();
     EdgePointer *edgePointer3, *edgePointer4;
@@ -80,11 +85,16 @@ void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
 }
 
 void SpecialPolygons::handlePointPolygon(PolygonManager &polygonManager,
-                                         Polygon *polygon)
+                                         Polygon *polygon, bool isKeepMass)
 {
 #ifdef DEBUG
     assert(polygon->edgePointers.size() == 1);
 #endif
+    // -------------------------------------------------------------------------
+    // hand over tracer mass
+    if (!isKeepMass)
+        polygon->handoverTracers();
+    // -------------------------------------------------------------------------
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     EdgePointer *edgePointer2;
     Polygon *polygon2;
@@ -106,10 +116,14 @@ void SpecialPolygons::handlePointPolygon(PolygonManager &polygonManager,
     CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
 }
 
-void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
+// TODO: In this function, we call "splitPolygon" where the tracer masses will
+//       be handed over, but the tracer masses of the polygon may should be
+//       preserved, because the caller of this function may need to hand over
+//       them too!!!
+bool SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                                         const FlowManager &flowManager,
                                         PolygonManager &polygonManager,
-                                        Polygon *&polygon)
+                                        Polygon *polygon, bool isKeepMass)
 {
     static const double smallAngle = 10.0/Rad2Deg;
     // Note: Currently, we only deal with triangles.
@@ -184,6 +198,8 @@ void SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
             } else {
                 REPORT_ERROR("Unexpected branch!");
             }
+            return true;
         }
     }
+    return false;
 }

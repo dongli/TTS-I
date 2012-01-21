@@ -67,6 +67,7 @@ begin
     wks = gsn_open_wks("newpdf", file_name)
 
     res_map = True
+    res_map@mpOutlineOn = False
     if (projection .eq. "ST") then
         projection@center_lon = calc_polygon_center_lon(vertex_lon)
         projection@center_lat = avg(vertex_lat)

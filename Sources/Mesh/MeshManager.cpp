@@ -11,7 +11,8 @@ using std::min;
 MeshManager::MeshManager()
 {
     REPORT_ONLINE("MeshManager")
-    this->PoleR = 5.0/Rad2Deg;
+    // TODO: Determine the value of PoleR.
+    this->PoleR = 18.0/Rad2Deg;
 }
 
 MeshManager::~MeshManager()

@@ -8,7 +8,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 

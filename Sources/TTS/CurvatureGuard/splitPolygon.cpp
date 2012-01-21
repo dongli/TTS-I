@@ -11,7 +11,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 
@@ -205,7 +205,8 @@ void CurvatureGuard::splitPolygon
     // -------------------------------------------------------------------------
     // handle degenerate polygons
     if (polygon1 != NULL && polygon1->edgePointers.size() == 1) {
-        handlePointPolygon(polygonManager, polygon1);
+        handlePointPolygon(polygonManager, polygon1, true);
+        polygon1->handoverTracers(polygon3, 1.0);
         polygon1 = NULL;
     }
     if (polygon3 != NULL && polygon3->edgePointers.size() == 1) {
@@ -213,22 +214,42 @@ void CurvatureGuard::splitPolygon
         polygon3 = NULL;
     }
     if (polygon1 != NULL && polygon1->edgePointers.size() == 2) {
-        handleLinePolygon(polygonManager, polygon1);
+        handleLinePolygon(polygonManager, polygon1, true);
+        if (polygon3 != NULL)
+            polygon1->handoverTracers(polygon3, 1.0);
         polygon1 = NULL;
     }
     if (polygon3 != NULL && polygon3->edgePointers.size() == 2) {
         handleLinePolygon(polygonManager, polygon3);
         polygon3 = NULL;
     }
-    if (polygon1 != NULL)
-        handleSlimPolygon(meshManager, flowManager, polygonManager, polygon1);
-    if (polygon3 != NULL)
-        handleSlimPolygon(meshManager, flowManager, polygonManager, polygon3);
+    if (polygon1 != NULL) {
+        if (handleSlimPolygon(meshManager, flowManager,
+                              polygonManager, polygon1, true)) {
+            if (polygon3 != NULL)
+                polygon1->handoverTracers(polygon3, 1.0);
+            polygon1 = NULL;
+        }
+    }
+    if (polygon3 != NULL) {
+        if (handleSlimPolygon(meshManager, flowManager,
+                              polygonManager, polygon3))
+            polygon3 = NULL;
+    }
     if (polygon4 != NULL)
         if (polygon4->edgePointers.size() == 2)
             handleLinePolygon(polygonManager, polygon4);
     // -------------------------------------------------------------------------
     CommonTasks::doTask(CommonTasks::UpdateAngle);
+    // -------------------------------------------------------------------------
+    // hand over tracer mass
+    if (polygon1 != NULL && polygon3 != NULL) {
+        // BUG: The old area may be overwritten by later calling of calcArea.
+        polygon1->calcArea();
+        polygon3->calcArea();
+        double percent = polygon3->getArea()/(polygon1->getArea()+polygon3->getArea());
+        polygon1->handoverTracers(polygon3, percent);
+    }
     // -------------------------------------------------------------------------
     // detect the new vertex for approaching
     linkedEdge = newVertex->linkedEdges.front();
@@ -584,7 +605,14 @@ bool handleBentPolygons(MeshManager &meshManager,
                 newPolygon->edgePointers.ring();
                 newEdge->setEdgePointer(OrientLeft, newEdgePointer1);
                 newEdge->setEdgePointer(OrientRight, newEdgePointer2);
+                // update angles
                 CommonTasks::doTask(CommonTasks::UpdateAngle);
+                // hand over tracer mass
+                polygon->calcArea();
+                newPolygon->calcArea();
+                double percent = newPolygon->getArea()/(polygon->getArea()+newPolygon->getArea());
+                polygon->handoverTracers(newPolygon, percent);
+                // detect the two polygons
                 detectPolygon(meshManager, flowManager, polygonManager, polygon);
                 detectPolygon(meshManager, flowManager, polygonManager, newPolygon);
 #ifndef DEBUG

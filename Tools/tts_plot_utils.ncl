@@ -557,6 +557,7 @@ local res, num_lon, num_lat
 begin
 
     res                         = True
+    res@mpOutlineOn             = False
     res@mpGreatCircleLinesOn    = False
     res@gsLineThicknessF        = 3.0
 

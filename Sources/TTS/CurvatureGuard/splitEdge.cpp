@@ -8,7 +8,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 
@@ -33,10 +33,10 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
         return false;
 
     // TEST: Reset the test point of small edges.
-    if (edge->getLength() < 0.01/Rad2Deg) {
-        edge->getTestPoint()->reset(meshManager);
-//        REPORT_DEBUG;
-    }
+//    if (edge->getLength() < 0.01/Rad2Deg) {
+//        edge->getTestPoint()->reset(meshManager);
+//        return false;
+//    }
 
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
     TestPoint *testPoint = edge->getTestPoint();

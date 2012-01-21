@@ -1,7 +1,7 @@
 #include "AgentPair.h"
 #include "Vertex.h"
 #include "Edge.h"
-#ifdef DEBUG_TTS
+#ifdef DEBUG
 #include "DebugTools.h"
 #endif
 

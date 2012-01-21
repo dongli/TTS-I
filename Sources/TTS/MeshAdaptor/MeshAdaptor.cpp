@@ -5,10 +5,6 @@
 
 #include <map>
 #include <list>
-#ifdef DEBUG
-#include <fstream>
-using std::ofstream;
-#endif
 
 using std::map;
 using std::list;
@@ -26,7 +22,6 @@ MeshAdaptor::~MeshAdaptor()
 void MeshAdaptor::init(const MeshManager &meshManager)
 {
     const PointCounter &pointCounter = meshManager.pointCounter;
-
     overlapAreaList.resize(pointCounter.points.shape());
 }
 
@@ -38,7 +33,6 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
 #ifdef DEBUG
     assert(x1.getLat() == x2.getLat());
 #endif
-
     // -------------------------------------------------------------------------
     // judge in which hemisphere
     // Note: Input "signFlag" is based on the assumption that the area is on the
@@ -48,13 +42,11 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
     if (x1.getLat() < 0.0) {
         signFlag = -signFlag;
     }
-
     // -------------------------------------------------------------------------
     // set two projection on the equator
     Coordinate x3, x4;
     x3.set(x1.getLon(), 0.0);
     x4.set(x2.getLon(), 0.0);
-
     // -------------------------------------------------------------------------
     // calculate two normal vectors of the longitudinal lines
     Vector normVector1, normVector2;
@@ -65,7 +57,6 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
         normVector1 = norm_cross(x1.getCAR(), x3.getCAR());
         normVector2 = norm_cross(x4.getCAR(), x2.getCAR());
     }
-
     // -------------------------------------------------------------------------
     // calculate two angles between the longitudinal lines and the assumed
     // great circel arc x2->x1 which should be latitudinal line
@@ -96,7 +87,6 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
             default:
                 REPORT_ERROR("Unknown sign flag!");
         }
-
     // -------------------------------------------------------------------------
     // calculate two areas with all great circle arc edges and real latitudinal
     // line respectively
@@ -110,12 +100,10 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
         dlon += PI2;
     }
     area2 = Sphere::radius2*dlon*fabs(sin(x1.getLat()));
-
 #ifdef DEBUG
     assert(area1 >= 0.0);
     assert(area2 >= 0.0);
 #endif
-
     // -------------------------------------------------------------------------
     // return the area difference
     if (isInNorthHemisphere)
@@ -136,7 +124,6 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
 #ifdef DEBUG
     assert(from != NullBnd && to != NullBnd);
 #endif
-
     // -------------------------------------------------------------------------
     Location::Pole isPole = Location::Null;
     int i, j;
@@ -146,7 +133,6 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
     Vector *normVectors;
     Coordinate *x;
     double *angles, excess, area;
-
     // -------------------------------------------------------------------------
     // 
     bndDiff = from-to;
@@ -174,14 +160,12 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
                 REPORT_ERROR("Unknown boundary!");
         }
     }
-
     // -------------------------------------------------------------------------
     // mark pole cell
     if (fabs(latBnd1-PI05) < EPS)
         isPole = Location::NorthPole;
     else if (fabs(latBnd2+PI05) < EPS)
         isPole = Location::SouthPole;
-
     // -------------------------------------------------------------------------
     // get the number of cell edges
     switch (bndDiff) {
@@ -212,7 +196,6 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         default:
             REPORT_ERROR("Unknown boundary difference!");
     }
-
     // -------------------------------------------------------------------------
     // get the number of polygon edges
     EdgePointer *edgePointer = edgePointer0;
@@ -220,7 +203,6 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         numPolygonEdge++;
         edgePointer = edgePointer->next;
     }
-
     // -------------------------------------------------------------------------
     // get the normal vector of the cell edges
     normVectors = new Vector[numCellEdge];
@@ -405,18 +387,17 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             numCellEdge--;
     } else
         normVectors[0] = norm_cross(x0.getCAR(), x1.getCAR());
-
     // -------------------------------------------------------------------------
     // get or calculate the internal angles
     numEdge = numCellEdge+numPolygonEdge;
     angles = new double[numEdge];
-
+    //
     edgePointer = edgePointer0->next;
     for (i = 0; i < numPolygonEdge-1; ++i) {
         angles[i] = edgePointer->getAngle(NewTimeLevel);
         edgePointer = edgePointer->next;
     }
-
+    //
     angles[i++] = EdgePointer::calcAngle(normVector1, normVectors[0], x1);
     j = 0;
     for (; i < numEdge-1; ++i) {
@@ -425,15 +406,14 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         j++;
     }
     angles[i] = EdgePointer::calcAngle(normVectors[j], normVector0, x0);
-
     // -------------------------------------------------------------------------
     // numerical tolerance
     const double smallAngle = 1.0/Rad2Deg;
     if (PI2-angles[numPolygonEdge-1] < smallAngle ||
         PI2-angles[numEdge-1] < smallAngle) {
+        REPORT_WARNING("This branch is problematic!");
         return 0.0;
     }
-
     // -------------------------------------------------------------------------
     // calculate the area of overlapping polygon (assuming all great circle
     // arc edges)
@@ -442,7 +422,6 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         excess += angles[i];
     excess -= (numEdge-2)*PI;
     area = excess*Sphere::radius2;
-
     // -------------------------------------------------------------------------
     // correct the area if some edges are latitudinal lines
     switch (bndDiff) {
@@ -580,12 +559,10 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
                     REPORT_ERROR("Unknown boundary!");
             }
     }
-
     // -------------------------------------------------------------------------
     delete [] normVectors;
     delete [] x;
     delete [] angles;
-
     //if (area/Sphere::radius2 < 1.0e-6 || (area < 0.0 && fabs(area) < 1.0e-6))
     if (area < 0.0)
         area = 0.0;
@@ -652,28 +629,26 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
 {
     NOTICE("MeshAdaptor::adapt", "running ...");
     const RLLMesh &mesh = meshManager.getMesh(PointCounter::Bound);
-
     int numLon = mesh.getNumLon()-1;
     int numLat = mesh.getNumLat()-1;
-
     const double areaDiffThreshold = 5.0e-3;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;
-    CoverMask coverMask;
-
+    static CoverMask coverMask;
+    // -------------------------------------------------------------------------
     // reset
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
         for (int j = 0; j < overlapAreaList.extent(1); ++j)
             overlapAreaList(i, j, 0).clear();
-
+    // -------------------------------------------------------------------------
     // calculate the overlap area between polygon and mesh
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int m = 0; m < tracerManager.polygonManager.polygons.size(); ++m) {
 #ifdef DEBUG
         bool debug = false;
         int counter = 0;
-//        if (TimeManager::getSteps() == 84 && polygon->getID() == 1981) {
+//        if (TimeManager::getSteps() == 159 && polygon->getID() == 136) {
 //            polygon->dump("polygon");
 //            REPORT_DEBUG;
 //            debug = true;
@@ -964,16 +939,16 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
     NOTICE("MeshAdaptor::remap", "Remapping "+tracerName+" onto polygons ...");
     int tracerId = tracerManager.getTracerId(tracerName);
     const RLLMesh &mesh = q.getMesh(Field::Bound);
-
+    // -------------------------------------------------------------------------
     // reset tracer mass
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
         polygon->tracers[tracerId].setMass(0.0);
         polygon = polygon->next;
     }
-
-    double totalCellMass = 0.0, totalPolygonMass = 0.0;
+    // -------------------------------------------------------------------------
     // accumulate tracer mass
+    double totalCellMass = 0.0, totalPolygonMass = 0.0;
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
         for (int j = 0; j < overlapAreaList.extent(1); ++j) {
             double totalArea = 0.0;
@@ -992,7 +967,7 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
                 (*itOa).polygon->tracers[tracerId].addMass(cellMass*weight);
             }
         }
-
+    // -------------------------------------------------------------------------
     // calculate tracer density
     polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
@@ -1000,7 +975,7 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
         totalPolygonMass += polygon->tracers[tracerId].getMass();
         polygon = polygon->next;
     }
-
+    // -------------------------------------------------------------------------
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
     double massError = totalCellMass-totalPolygonMass;
@@ -1015,7 +990,7 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
     int tracerId = tracerManager.getTracerId(tracerName);
     Field &q = tracerManager.getTracerDensityField(tracerId);
     const RLLMesh &mesh = q.getMesh(Field::Bound);
-
+    // -------------------------------------------------------------------------
     double totalCellMass = 0.0, totalPolygonMass = 0.0;
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
         for (int j = 0; j < overlapAreaList.extent(1); ++j) {
@@ -1029,12 +1004,13 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
             totalCellMass += q.values(i, j, 0).getNew();
             q.values(i, j, 0) /= mesh.area(i, j);
         }
-
+    // -------------------------------------------------------------------------
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
         totalPolygonMass += polygon->tracers[tracerId].getMass();
         polygon = polygon->next;
     }
+    // -------------------------------------------------------------------------
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
     double massError = totalCellMass-totalPolygonMass;
