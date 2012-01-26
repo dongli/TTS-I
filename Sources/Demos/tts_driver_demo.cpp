@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     TimeManager::setEndStep(576);
 #endif
 #ifdef DEFORMATION_TESTCASE
-    ConfigTools::parse("tts_config");
+    ConfigTools::parse("tts_df_config");
     TimeManager::setClock(5.0/600.0);
     TimeManager::setEndStep(600);
 #endif

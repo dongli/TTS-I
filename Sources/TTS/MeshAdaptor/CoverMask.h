@@ -6,6 +6,9 @@
 #include <blitz/array.h>
 #include "Location.h"
 
+class Polygon;
+class RLLMesh;
+
 using std::map;
 using std::list;
 using blitz::Array;
@@ -22,8 +25,8 @@ public:
         FullyCovered = 2, FullyCoveredNearPole = 3 
     };    
 
-    void init(map<int, list<int> > &bndCellIdx,
-              Location::Pole pole, int numLat, bool debug = false);
+    void init(Polygon *polygon, map<int, list<int> > &bndCellIdx,
+              Location::Pole pole, const RLLMesh &meshBnd, bool debug = false);
     void setMask(int i, int j, MaskType);
     void searchCover(bool debug = false);
 

@@ -7,12 +7,12 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
-    projection@angle = 4.0
-    projection@min_lat = 85.0
-    ;projection@max_lat = -55.0
+    projection@angle = 6.0
+    projection@min_lat = 30.0
+    projection@max_lat = 51.0
     ;projection@center_lon = 0.0
-    line_width = 3.0
-    point_size = 0.05
+    line_width = 0.1
+    point_size = 0.001
 
     if (.not. isdefined("file_name")) then
         system("echo Input the polygon with intersections file:")

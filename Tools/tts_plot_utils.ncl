@@ -559,7 +559,7 @@ begin
     res                         = True
     res@mpOutlineOn             = False
     res@mpGreatCircleLinesOn    = False
-    res@gsLineThicknessF        = 3.0
+    res@gsLineThicknessF        = 0.1
 
     num_lon = dimsizes(lon)
     num_lat = dimsizes(lat)

@@ -192,20 +192,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "348717553.876197"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "415"
-         endingLineNumber = "415"
-         landmarkName = "MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to, int &amp;bndDiff, double lonBnd1, double lonBnd2, double latBnd1, double latBnd2, const Coordinate &amp;x0, EdgePointer *edgePointer0, const Coordinate &amp;x1, EdgePointer *edgePointer1)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Sources/UnitTests/unit_test_sphere.h"
          timestampString = "348384821.713561"
          startingColumnNumber = "9223372036854775807"
@@ -750,11 +736,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "348717553.876197"
+         timestampString = "349101527.27594"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1131"
-         endingLineNumber = "1131">
+         startingLineNumber = "1114"
+         endingLineNumber = "1114">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -762,11 +748,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "348717553.876197"
+         timestampString = "349101527.27594"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "926"
-         endingLineNumber = "926"
+         startingLineNumber = "909"
+         endingLineNumber = "909"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -785,12 +771,12 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "348717553.876197"
+         timestampString = "349020279.885841"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "819"
@@ -840,7 +826,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "348816317.053783"
+               timestampString = "349242922.222871"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "237"
@@ -852,7 +838,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "348816317.054378"
+               timestampString = "349242922.223517"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "237"
@@ -864,7 +850,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Edge&gt;::remove(Edge*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "348816317.054121"
+               timestampString = "349242922.223231"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "237"
@@ -876,13 +862,69 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Polygon&gt;::remove(Polygon*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "348816317.054635"
+               timestampString = "349242922.223784"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "237"
                endingLineNumber = "237">
             </Location>
          </Locations>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/CoverMask.cpp"
+         timestampString = "348851885.26941"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
+         landmarkName = "CoverMask::init(Polygon *polygon, map&lt;int, list&lt;int&gt; &gt; &amp;bndCellIdx, Location::Pole pole, const RLLMesh &amp;meshBnd, bool debug)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/CoverMask.cpp"
+         timestampString = "348851885.26941"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "138"
+         endingLineNumber = "138"
+         landmarkName = "CoverMask::init(Polygon *polygon, map&lt;int, list&lt;int&gt; &gt; &amp;bndCellIdx, Location::Pole pole, const RLLMesh &amp;meshBnd, bool debug)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
+         timestampString = "349111614.010924"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "853"
+         endingLineNumber = "853"
+         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
+         timestampString = "349242908.206484"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "653"
+         endingLineNumber = "653"
+         landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
