@@ -49,8 +49,8 @@ private:
     double calcOverlapArea(int I, int J, Bnd from, Bnd to, int &bndDiff,
                            double lonBnd1, double lonBnd2,
                            double latBnd1, double latBnd2,
-                           const Coordinate &x0, EdgePointer *edgePointer0,
-                           const Coordinate &x1, EdgePointer *edgePointer1);
+                           Coordinate x0, EdgePointer *edgePointer0,
+                           Coordinate x1, EdgePointer *edgePointer1);
 
     typedef struct {
         Polygon *polygon;

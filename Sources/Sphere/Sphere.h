@@ -44,7 +44,7 @@ public:
                                  Coordinate &x);
     static bool calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
                                  double lon1, double lon2, double lat,
-                                 Coordinate &x);
+                                 Coordinate &x, bool useMPFR = false);
 
     static void calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
                                 Coordinate &x);

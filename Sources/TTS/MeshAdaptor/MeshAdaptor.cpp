@@ -116,10 +116,8 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
                                     int &bndDiff,
                                     double lonBnd1, double lonBnd2,
                                     double latBnd1, double latBnd2,
-                                    const Coordinate &x0,
-                                    EdgePointer *edgePointer0,
-                                    const Coordinate &x1,
-                                    EdgePointer *edgePointer1)
+                                    Coordinate x0, EdgePointer *edgePointer0,
+                                    Coordinate x1, EdgePointer *edgePointer1)
 {
 #ifdef DEBUG
     assert(from != NullBnd && to != NullBnd);
@@ -130,9 +128,10 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
     Vector normVector0 = edgePointer0->getNormVector();
     Vector normVector1 = edgePointer1->getNormVector();
     int numCellEdge, numPolygonEdge = 1, numEdge;
-    Vector *normVectors;
-    Coordinate *x;
-    double *angles, excess, area;
+    static Array<Vector, 1> normVectors;
+    static Array<Coordinate, 1> x;
+    static Array<double, 1> polygonAngles, angles;
+    double excess, area;
     // -------------------------------------------------------------------------
     // 
     bndDiff = from-to;
@@ -203,10 +202,16 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         numPolygonEdge++;
         edgePointer = edgePointer->next;
     }
+    polygonAngles.resize(numPolygonEdge-1);
+    edgePointer = edgePointer0->next;
+    for (i = 0; i < numPolygonEdge-1; ++i) {
+        polygonAngles(i) = edgePointer->getAngle(NewTimeLevel);
+        edgePointer = edgePointer->next;
+    }
     // -------------------------------------------------------------------------
     // get the normal vector of the cell edges
-    normVectors = new Vector[numCellEdge];
-    x = new Coordinate[numCellEdge-1];
+    normVectors.resize(numCellEdge);
+    x.resize(numCellEdge-1);
     switch (bndDiff) {
         case 0:
             break;
@@ -214,19 +219,19 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole != Location::SouthPole)
-                        x[0].set(lonBnd2, latBnd2);
+                        x(0).set(lonBnd2, latBnd2);
                     break;
                 case WestBnd:
                     if (isPole != Location::NorthPole)
-                        x[0].set(lonBnd1, latBnd1);
+                        x(0).set(lonBnd1, latBnd1);
                     break;
                 case NorthBnd:
                     if (isPole != Location::NorthPole)
-                        x[0].set(lonBnd2, latBnd1);
+                        x(0).set(lonBnd2, latBnd1);
                     break;
                 case SouthBnd:
                     if (isPole != Location::SouthPole)
-                        x[0].set(lonBnd1, latBnd2);
+                        x(0).set(lonBnd1, latBnd2);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -236,25 +241,25 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole != Location::SouthPole) {
-                        x[0].set(lonBnd1, latBnd2);
-                        x[1].set(lonBnd2, latBnd2);
+                        x(0).set(lonBnd1, latBnd2);
+                        x(1).set(lonBnd2, latBnd2);
                     } else
-                        x[0].set(0.0, -PI05);
+                        x(0).set(0.0, -PI05);
                     break;
                 case WestBnd:
                     if (isPole != Location::NorthPole) {
-                        x[0].set(lonBnd2, latBnd1);
-                        x[1].set(lonBnd1, latBnd1);
+                        x(0).set(lonBnd2, latBnd1);
+                        x(1).set(lonBnd1, latBnd1);
                     } else
-                        x[0].set(0.0, PI05);
+                        x(0).set(0.0, PI05);
                     break;
                 case NorthBnd:
-                    x[0].set(lonBnd2, latBnd2);
-                    x[1].set(lonBnd2, latBnd1);
+                    x(0).set(lonBnd2, latBnd2);
+                    x(1).set(lonBnd2, latBnd1);
                     break;
                 case SouthBnd:
-                    x[0].set(lonBnd1, latBnd1);
-                    x[1].set(lonBnd1, latBnd2);
+                    x(0).set(lonBnd1, latBnd1);
+                    x(1).set(lonBnd1, latBnd2);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -264,42 +269,42 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd1, latBnd1);
-                        x[1].set(lonBnd1, latBnd2);
-                        x[2].set(lonBnd2, latBnd2);
+                        x(0).set(lonBnd1, latBnd1);
+                        x(1).set(lonBnd1, latBnd2);
+                        x(2).set(lonBnd2, latBnd2);
                     } else if (isPole == Location::SouthPole) {
-                        x[0].set(lonBnd1, latBnd1);
-                        x[1].set(0.0, -PI05);
+                        x(0).set(lonBnd1, latBnd1);
+                        x(1).set(0.0, -PI05);
                     }
                     break;
                 case WestBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd2, latBnd2);
-                        x[1].set(lonBnd2, latBnd1);
-                        x[2].set(lonBnd1, latBnd1);
+                        x(0).set(lonBnd2, latBnd2);
+                        x(1).set(lonBnd2, latBnd1);
+                        x(2).set(lonBnd1, latBnd1);
                     } else if (isPole == Location::NorthPole) {
-                        x[0].set(lonBnd2, latBnd2);
-                        x[1].set(0.0, PI05);
+                        x(0).set(lonBnd2, latBnd2);
+                        x(1).set(0.0, PI05);
                     }
                     break;
                 case NorthBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd1, latBnd2);
-                        x[1].set(lonBnd2, latBnd2);
-                        x[2].set(lonBnd2, latBnd1);
+                        x(0).set(lonBnd1, latBnd2);
+                        x(1).set(lonBnd2, latBnd2);
+                        x(2).set(lonBnd2, latBnd1);
                     } else if (isPole == Location::SouthPole) {
-                        x[0].set(0.0, -PI05);
-                        x[1].set(lonBnd2, latBnd1);
+                        x(0).set(0.0, -PI05);
+                        x(1).set(lonBnd2, latBnd1);
                     }
                     break;
                 case SouthBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd2, latBnd1);
-                        x[1].set(lonBnd1, latBnd1);
-                        x[2].set(lonBnd1, latBnd2);
+                        x(0).set(lonBnd2, latBnd1);
+                        x(1).set(lonBnd1, latBnd1);
+                        x(2).set(lonBnd1, latBnd2);
                     } else if (isPole == Location::NorthPole) {
-                        x[0].set(0.0, PI05);
-                        x[1].set(lonBnd1, latBnd2);
+                        x(0).set(0.0, PI05);
+                        x(1).set(lonBnd1, latBnd2);
                     }
                     break;
                 default:
@@ -310,58 +315,58 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd2, latBnd1);
-                        x[1].set(lonBnd1, latBnd1);
-                        x[2].set(lonBnd1, latBnd2);
-                        x[3].set(lonBnd2, latBnd2);
+                        x(0).set(lonBnd2, latBnd1);
+                        x(1).set(lonBnd1, latBnd1);
+                        x(2).set(lonBnd1, latBnd2);
+                        x(3).set(lonBnd2, latBnd2);
                     } else if (isPole == Location::NorthPole) {
-                        x[0].set(0.0, PI05);
-                        x[1].set(lonBnd1, latBnd2);
-                        x[2].set(lonBnd2, latBnd2);
+                        x(0).set(0.0, PI05);
+                        x(1).set(lonBnd1, latBnd2);
+                        x(2).set(lonBnd2, latBnd2);
                     } else if (isPole == Location::SouthPole) {
-                        x[0].set(lonBnd2, latBnd1);
-                        x[1].set(lonBnd1, latBnd1);
-                        x[2].set(0.0, -PI05);
+                        x(0).set(lonBnd2, latBnd1);
+                        x(1).set(lonBnd1, latBnd1);
+                        x(2).set(0.0, -PI05);
                     }
                     break;
                 case WestBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd1, latBnd2);
-                        x[1].set(lonBnd2, latBnd2);
-                        x[2].set(lonBnd2, latBnd1);
-                        x[3].set(lonBnd1, latBnd1);
+                        x(0).set(lonBnd1, latBnd2);
+                        x(1).set(lonBnd2, latBnd2);
+                        x(2).set(lonBnd2, latBnd1);
+                        x(3).set(lonBnd1, latBnd1);
                     } else if (isPole == Location::NorthPole) {
-                        x[0].set(lonBnd1, latBnd2);
-                        x[1].set(lonBnd2, latBnd2);
-                        x[2].set(0.0, PI05);
+                        x(0).set(lonBnd1, latBnd2);
+                        x(1).set(lonBnd2, latBnd2);
+                        x(2).set(0.0, PI05);
                     } else if (isPole == Location::SouthPole) {
-                        x[0].set(0.0, -PI05);
-                        x[1].set(lonBnd2, latBnd1);
-                        x[2].set(lonBnd1, latBnd1);
+                        x(0).set(0.0, -PI05);
+                        x(1).set(lonBnd2, latBnd1);
+                        x(2).set(lonBnd1, latBnd1);
                     }
                     break;
                 case NorthBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd1, latBnd1);
-                        x[1].set(lonBnd1, latBnd2);
-                        x[2].set(lonBnd2, latBnd2);
-                        x[3].set(lonBnd2, latBnd1);
+                        x(0).set(lonBnd1, latBnd1);
+                        x(1).set(lonBnd1, latBnd2);
+                        x(2).set(lonBnd2, latBnd2);
+                        x(3).set(lonBnd2, latBnd1);
                     } else if (isPole == Location::SouthPole) {
-                        x[0].set(lonBnd1, latBnd1);
-                        x[1].set(0.0, -PI05);
-                        x[2].set(lonBnd2, latBnd1);
+                        x(0).set(lonBnd1, latBnd1);
+                        x(1).set(0.0, -PI05);
+                        x(2).set(lonBnd2, latBnd1);
                     }
                     break;
                 case SouthBnd:
                     if (isPole == Location::Null) {
-                        x[0].set(lonBnd2, latBnd2);
-                        x[1].set(lonBnd2, latBnd1);
-                        x[2].set(lonBnd1, latBnd1);
-                        x[3].set(lonBnd1, latBnd2);
+                        x(0).set(lonBnd2, latBnd2);
+                        x(1).set(lonBnd2, latBnd1);
+                        x(2).set(lonBnd1, latBnd1);
+                        x(3).set(lonBnd1, latBnd2);
                     } else if (isPole == Location::NorthPole) {
-                        x[0].set(lonBnd2, latBnd2);
-                        x[1].set(0.0, PI05);
-                        x[2].set(lonBnd1, latBnd2);
+                        x(0).set(lonBnd2, latBnd2);
+                        x(1).set(0.0, PI05);
+                        x(2).set(lonBnd1, latBnd2);
                     }
                     break;
                 default:
@@ -372,54 +377,104 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             REPORT_ERROR("Unknown boundary difference!");
     }
     if (numCellEdge != 1) {
-        if (x1.getLon() != x[0].getLon() || x1.getLat() != x[0].getLat()) {
-            normVectors[0] = norm_cross(x[0].getCAR(), x1.getCAR());
+        if (x1.getLon() != x(0).getLon() || x1.getLat() != x(0).getLat()) {
+            normVectors(0) = norm_cross(x(0).getCAR(), x1.getCAR());
             for (i = 1; i < numCellEdge-1; ++i)
-                normVectors[i] = norm_cross(x[i].getCAR(), x[i-1].getCAR());
+                normVectors(i) = norm_cross(x(i).getCAR(), x(i-1).getCAR());
         } else {
             numCellEdge--;
             for (i = 0; i < numCellEdge-1; ++i)
-                normVectors[i] = norm_cross(x[i+1].getCAR(), x[i].getCAR());
+                normVectors(i) = norm_cross(x(i+1).getCAR(), x(i).getCAR());
         }
-        if (x0.getLon() != x[i-1].getLon() || x0.getLat() != x[i-1].getLat())
-            normVectors[i] = norm_cross(x0.getCAR(), x[i-1].getCAR());
+        if (x0.getLon() != x(i-1).getLon() || x0.getLat() != x(i-1).getLat())
+            normVectors(i) = norm_cross(x0.getCAR(), x(i-1).getCAR());
         else
             numCellEdge--;
     } else
-        normVectors[0] = norm_cross(x0.getCAR(), x1.getCAR());
+        normVectors(0) = norm_cross(x0.getCAR(), x1.getCAR());
+    // -------------------------------------------------------------------------
+numerical_tolerance_label:
     // -------------------------------------------------------------------------
     // get or calculate the internal angles
     numEdge = numCellEdge+numPolygonEdge;
-    angles = new double[numEdge];
+    angles.resize(numEdge);
     //
-    edgePointer = edgePointer0->next;
-    for (i = 0; i < numPolygonEdge-1; ++i) {
-        angles[i] = edgePointer->getAngle(NewTimeLevel);
-        edgePointer = edgePointer->next;
-    }
+    for (i = 0; i < numPolygonEdge-1; ++i)
+        angles(i) = polygonAngles(i);
     //
-    angles[i++] = EdgePointer::calcAngle(normVector1, normVectors[0], x1);
+    angles(i++) = EdgePointer::calcAngle(normVector1, normVectors(0), x1);
     j = 0;
     for (; i < numEdge-1; ++i) {
-        angles[i] = EdgePointer::calcAngle(normVectors[j],
-                                           normVectors[j+1], x[j]);
+        angles(i) = EdgePointer::calcAngle(normVectors(j),
+                                           normVectors(j+1), x(j));
         j++;
     }
-    angles[i] = EdgePointer::calcAngle(normVectors[j], normVector0, x0);
+    angles(i) = EdgePointer::calcAngle(normVectors(j), normVector0, x0);
     // -------------------------------------------------------------------------
     // numerical tolerance
-    const double smallAngle = 1.0/Rad2Deg;
-    if (PI2-angles[numPolygonEdge-1] < smallAngle ||
-        PI2-angles[numEdge-1] < smallAngle) {
-        REPORT_WARNING("This branch is problematic!");
-        return 0.0;
+    static const double smallAngle = 1.0/Rad2Deg;
+    if (PI2-angles(numEdge-1) < smallAngle) {
+        numPolygonEdge--;
+        // set the virtual intersection
+        if (from == NorthBnd || from == SouthBnd)
+            x0.set(edgePointer0->getEndPoint(SecondPoint)
+                   ->getCoordinate().getLon(), x0.getLat());
+        else
+            x0.set(x0.getLon(), edgePointer0->getEndPoint(SecondPoint)
+                   ->getCoordinate().getLat());
+        // calculate the virtual normal vector of the polygon edge
+        edgePointer0 = edgePointer0->next;
+        if (numPolygonEdge == 1) {
+            normVector0 = norm_cross(x1.getCAR(), x0.getCAR());
+            normVector1 = normVector0;
+        } else
+            normVector0 = norm_cross(edgePointer0->getEndPoint(SecondPoint)
+                                     ->getCoordinate().getCAR(), x0.getCAR());
+        // calculate the virtual normal vector of the cell edge
+        if (bndDiff == 0)
+            normVectors(0) = norm_cross(x0.getCAR(), x1.getCAR());
+        else
+            normVectors(numCellEdge-1) = norm_cross(x0.getCAR(),
+                                                    x(numCellEdge-2).getCAR());
+        // set the virtual polygon angles
+        if (edgePointer0 != edgePointer1) {
+            polygonAngles(0) = EdgePointer::calcAngle
+            (normVector0, edgePointer0->next->getNormVector(),
+             edgePointer0->getEndPoint(SecondPoint)->getCoordinate());
+            for (i = 1; i < numPolygonEdge-1; ++i)
+                polygonAngles(i) = polygonAngles(i+1);
+        }
+        goto numerical_tolerance_label;
+    } else if (PI2-angles(numPolygonEdge-1) < smallAngle) {
+        numPolygonEdge--;
+        if (to == NorthBnd || to == SouthBnd)
+            x1.set(edgePointer1->getEndPoint(FirstPoint)
+                   ->getCoordinate().getLon(), x1.getLat());
+        else
+            x1.set(x1.getLon(), edgePointer1->getEndPoint(FirstPoint)
+                   ->getCoordinate().getLat());
+        edgePointer1 = edgePointer1->prev;
+        if (numPolygonEdge == 1) {
+            normVector1 = norm_cross(x1.getCAR(), x0.getCAR());
+            normVector0 = normVector1;
+        } else
+            normVector1 = norm_cross(x1.getCAR(), edgePointer1->
+                                     getEndPoint(FirstPoint)->
+                                     getCoordinate().getCAR());
+        normVectors(0) = norm_cross(x(0).getCAR(), x1.getCAR());
+        if (edgePointer1 != edgePointer0) {
+            polygonAngles(numPolygonEdge-2) = EdgePointer::calcAngle
+            (edgePointer1->prev->getNormVector(), normVector1,
+             edgePointer1->getEndPoint(FirstPoint)->getCoordinate());
+        }
+        goto numerical_tolerance_label;
     }
     // -------------------------------------------------------------------------
     // calculate the area of overlapping polygon (assuming all great circle
     // arc edges)
     excess = 0.0;
     for (i = 0; i < numEdge; ++i)
-        excess += angles[i];
+        excess += angles(i);
     excess -= (numEdge-2)*PI;
     area = excess*Sphere::radius2;
     // -------------------------------------------------------------------------
@@ -432,10 +487,10 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
                 case WestBnd:
                     break;
                 case NorthBnd:
-                    area -= calcCorrectArea(x0, x1, normVectors[0], 1);
+                    area -= calcCorrectArea(x0, x1, normVectors(0), 1);
                     break;
                 case SouthBnd:
-                    area += calcCorrectArea(x1, x0, normVectors[0], -1);
+                    area += calcCorrectArea(x1, x0, normVectors(0), -1);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -445,19 +500,19 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole != Location::SouthPole)
-                        area += calcCorrectArea(x1, x[0], normVectors[0], -1);
+                        area += calcCorrectArea(x1, x(0), normVectors(0), -1);
                     break;
                 case WestBnd:
                     if (isPole != Location::NorthPole)
-                        area -= calcCorrectArea(x[0], x1, normVectors[0], 1);
+                        area -= calcCorrectArea(x(0), x1, normVectors(0), 1);
                     break;
                 case NorthBnd:
                     if (isPole != Location::NorthPole)
-                        area -= calcCorrectArea(x0, x[0], normVectors[1], 1);
+                        area -= calcCorrectArea(x0, x(0), normVectors(1), 1);
                     break;
                 case SouthBnd:
                     if (isPole != Location::SouthPole)
-                        area += calcCorrectArea(x[0], x0, normVectors[1], -1);
+                        area += calcCorrectArea(x(0), x0, normVectors(1), -1);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -467,19 +522,19 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole != Location::SouthPole)
-                        area += calcCorrectArea(x[0], x[1], normVectors[1], -1);
+                        area += calcCorrectArea(x(0), x(1), normVectors(1), -1);
                     break;
                 case WestBnd:
                     if (isPole != Location::NorthPole)
-                        area -= calcCorrectArea(x[1], x[0], normVectors[1], 1);
+                        area -= calcCorrectArea(x(1), x(0), normVectors(1), 1);
                     break;
                 case NorthBnd:
-                    area -= calcCorrectArea(x0, x[1], normVectors[2], 1);
-                    area += calcCorrectArea(x1, x[0], normVectors[0], -1);
+                    area -= calcCorrectArea(x0, x(1), normVectors(2), 1);
+                    area += calcCorrectArea(x1, x(0), normVectors(0), -1);
                     break;
                 case SouthBnd:
-                    area -= calcCorrectArea(x[0], x1, normVectors[0], 1);
-                    area += calcCorrectArea(x[1], x0, normVectors[2], -1);
+                    area -= calcCorrectArea(x(0), x1, normVectors(0), 1);
+                    area += calcCorrectArea(x(1), x0, normVectors(2), -1);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -488,28 +543,28 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
         case -1:
             switch (from) {
                 case EastBnd:
-                    area -= calcCorrectArea(x[0], x1, normVectors[0], 1);
+                    area -= calcCorrectArea(x(0), x1, normVectors(0), 1);
                     if (isPole == Location::Null)
-                        area += calcCorrectArea(x[1], x[2], normVectors[2], -1);
+                        area += calcCorrectArea(x(1), x(2), normVectors(2), -1);
                     break;
                 case WestBnd:
                     if (isPole == Location::Null)
-                        area -= calcCorrectArea(x[2], x[1], normVectors[2], 1);
-                    area += calcCorrectArea(x1, x[0], normVectors[0], -1);
+                        area -= calcCorrectArea(x(2), x(1), normVectors(2), 1);
+                    area += calcCorrectArea(x1, x(0), normVectors(0), -1);
                     break;
                 case NorthBnd:
                     if (isPole == Location::Null) {
-                        area -= calcCorrectArea(x0, x[2], normVectors[3], 1);
-                        area += calcCorrectArea(x[0], x[1], normVectors[1], -1);
+                        area -= calcCorrectArea(x0, x(2), normVectors(3), 1);
+                        area += calcCorrectArea(x(0), x(1), normVectors(1), -1);
                     } else if (isPole == Location::SouthPole)
-                        area -= calcCorrectArea(x0, x[1], normVectors[2], 1);
+                        area -= calcCorrectArea(x0, x(1), normVectors(2), 1);
                     break;
                 case SouthBnd:
                     if (isPole == Location::Null) {
-                        area -= calcCorrectArea(x[1], x[0], normVectors[1], 1);
-                        area += calcCorrectArea(x[2], x0, normVectors[3], -1);
+                        area -= calcCorrectArea(x(1), x(0), normVectors(1), 1);
+                        area += calcCorrectArea(x(2), x0, normVectors(3), -1);
                     } else if (isPole == Location::NorthPole)
-                        area += calcCorrectArea(x[1], x0, normVectors[2], -1);
+                        area += calcCorrectArea(x(1), x0, normVectors(2), -1);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -519,40 +574,40 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole == Location::Null) {
-                        area -= calcCorrectArea(x[1], x[0], normVectors[1], 1);
-                        area += calcCorrectArea(x[2], x[3], normVectors[3], -1);
+                        area -= calcCorrectArea(x(1), x(0), normVectors(1), 1);
+                        area += calcCorrectArea(x(2), x(3), normVectors(3), -1);
                     } else if (isPole == Location::NorthPole) {
-                        area += calcCorrectArea(x[1], x[2], normVectors[2], -1);
+                        area += calcCorrectArea(x(1), x(2), normVectors(2), -1);
                     } else if (isPole == Location::SouthPole)
-                        area -= calcCorrectArea(x[1], x[0], normVectors[1], 1);
+                        area -= calcCorrectArea(x(1), x(0), normVectors(1), 1);
                     break;
                 case WestBnd:
                     if (isPole == Location::Null) {
-                        area -= calcCorrectArea(x[3], x[2], normVectors[3], 1);
-                        area += calcCorrectArea(x[0], x[1], normVectors[1], -1);
+                        area -= calcCorrectArea(x(3), x(2), normVectors(3), 1);
+                        area += calcCorrectArea(x(0), x(1), normVectors(1), -1);
                     } else if (isPole == Location::NorthPole) {
-                        area += calcCorrectArea(x[0], x[1], normVectors[1], -1);
+                        area += calcCorrectArea(x(0), x(1), normVectors(1), -1);
                     } else if (isPole == Location::SouthPole)
-                        area -= calcCorrectArea(x[2], x[1], normVectors[2], 1);
+                        area -= calcCorrectArea(x(2), x(1), normVectors(2), 1);
                     break;
                 case NorthBnd:
                     if (isPole == Location::Null) {
-                        area -= calcCorrectArea(x[0], x1, normVectors[0], 1);
-                        area += calcCorrectArea(x[1], x[2], normVectors[2], -1);
-                        area -= calcCorrectArea(x0, x[3], normVectors[4], 1);
+                        area -= calcCorrectArea(x(0), x1, normVectors(0), 1);
+                        area += calcCorrectArea(x(1), x(2), normVectors(2), -1);
+                        area -= calcCorrectArea(x0, x(3), normVectors(4), 1);
                     } else if (isPole == Location::SouthPole) {
-                        area -= calcCorrectArea(x[0], x1, normVectors[0], 1);
-                        area -= calcCorrectArea(x0, x[2], normVectors[3], 1);
+                        area -= calcCorrectArea(x(0), x1, normVectors(0), 1);
+                        area -= calcCorrectArea(x0, x(2), normVectors(3), 1);
                     }
                     break;
                 case SouthBnd:
                     if (isPole == Location::Null) {
-                        area += calcCorrectArea(x1, x[0], normVectors[0], -1);
-                        area -= calcCorrectArea(x[2], x[1], normVectors[2], 1);
-                        area += calcCorrectArea(x[3], x0, normVectors[4], -1);
+                        area += calcCorrectArea(x1, x(0), normVectors(0), -1);
+                        area -= calcCorrectArea(x(2), x(1), normVectors(2), 1);
+                        area += calcCorrectArea(x(3), x0, normVectors(4), -1);
                     } else if (isPole == Location::NorthPole) {
-                        area += calcCorrectArea(x1, x[0], normVectors[0], -1);
-                        area += calcCorrectArea(x[2], x0, normVectors[3], -1);
+                        area += calcCorrectArea(x1, x(0), normVectors(0), -1);
+                        area += calcCorrectArea(x(2), x0, normVectors(3), -1);
                     }
                     break;
                 default:
@@ -560,9 +615,6 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             }
     }
     // -------------------------------------------------------------------------
-    delete [] normVectors;
-    delete [] x;
-    delete [] angles;
     //if (area/Sphere::radius2 < 1.0e-6 || (area < 0.0 && fabs(area) < 1.0e-6))
     if (area < 0.0)
         area = 0.0;
@@ -670,7 +722,6 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         int I, J, I1, I2, J1, J2, bndDiff;
         double lonBnd1, lonBnd2, latBnd1, latBnd2;
         Coordinate x;
-        bool isForked = false;
         // ---------------------------------------------------------------------
         // search overlapped mesh cell along polygon edges
         EdgePointer *edgePointer = polygon->edgePointers.front();
@@ -686,6 +737,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
             // start from the cell where the first point is at
             I = I1, J = J1, I0 = I1, J0 = J1;
             while (true) {
+                bool useMPFR = false;
                 lonBnd1 = mesh.lon(I);
                 lonBnd2 = mesh.lon(I+1);
                 latBnd1 = mesh.lat(J);
@@ -717,11 +769,12 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                         goto calc_overlap_area;
                     }
                 }
+            calculate_use_mpfr:
                 // northern boundary
                 if ((from != NorthBnd && J > 0) ||
                     edgePointer != edgePointer0) {
                     if (Sphere::calcIntersectLon(x1, x2, lonBnd1, lonBnd2,
-                                                 latBnd1, x)) {
+                                                 latBnd1, x, useMPFR)) {
                         I0 = I; J0 = J;
                         from0 = from; to0 = NorthBnd;
                         J = J-1;
@@ -733,7 +786,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 if ((from != SouthBnd && J < numLat) ||
                     edgePointer != edgePointer0) {
                     if (Sphere::calcIntersectLon(x1, x2, lonBnd1, lonBnd2,
-                                                 latBnd2, x)) {
+                                                 latBnd2, x, useMPFR)) {
                         I0 = I; J0 = J;
                         from0 = from; to0 = SouthBnd;
                         J = J+1;
@@ -742,79 +795,11 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                     }
                 }
                 // -------------------------------------------------------------
-                // numerical tolerance
-                // Note: When the polygon edge (great circle arc) is so close to
-                //       the cell edge (lon/lat line) that numerical calculation
-                //       of intersection may fail, therefore we need add some
-                //       numerical tolerance.
-                double smallAngleDistance;
-                smallAngleDistance = (latBnd1-latBnd2)*0.1;
-                if (!isForked) {
-                    I0 = I; J0 = J; from0 = from;
-                    if (fabs(x0.getLon()-lonBnd1) < smallAngleDistance &&
-                        fabs(x0.getLat()-latBnd1) < smallAngleDistance) {
-                        if (from == WestBnd) {
-                            x.set(lonBnd2, latBnd1);
-                            to0 = EastBnd;
-                            I = I+1; if (I == numLon) I = 0;
-                        } else if (from == NorthBnd) {
-                            x.set(lonBnd1, latBnd2);
-                            to0 = SouthBnd;
-                            J = J+1;
-                        }
-                    } else if (fabs(x0.getLon()-lonBnd1) < smallAngleDistance &&
-                               fabs(x0.getLat()-latBnd2) < smallAngleDistance) {
-                        if (from == WestBnd) {
-                            x.set(lonBnd2, latBnd2);
-                            to0 = EastBnd;
-                            I = I+1; if (I == numLon) I = 0;
-                        } else if (from == SouthBnd) {
-                            x.set(lonBnd1, latBnd1);
-                            to0 = NorthBnd;
-                            J = J-1;
-                        }
-                    } else if (fabs(x0.getLon()-lonBnd2) < smallAngleDistance &&
-                               fabs(x0.getLat()-latBnd1) < smallAngleDistance) {
-                        if (from == EastBnd) {
-                            x.set(lonBnd1, latBnd1);
-                            to0 = WestBnd;
-                            I = I-1; if (I == -1) I = numLon-1;
-                        } else if (from == NorthBnd) {
-                            x.set(lonBnd2, latBnd2);
-                            to0 = SouthBnd;
-                            J = J+1;
-                        }
-                    } else if (fabs(x0.getLon()-lonBnd2) < smallAngleDistance &&
-                               fabs(x0.getLat()-latBnd2) < smallAngleDistance) {
-                        if (from == EastBnd) {
-                            x.set(lonBnd1, latBnd2);
-                            to0 = WestBnd;
-                            I = I-1; if (I == -1) I = numLon-1;
-                        } else if (from == SouthBnd) {
-                            x.set(lonBnd2, latBnd1);
-                            to0 = NorthBnd;
-                            J = J-1;
-                        }
-                    } else
-                        REPORT_ERROR("Can not find a path!");
-                    isForked = true;
-                    goto calc_overlap_area;
-                } else {
-                    if (from == EastBnd || from == WestBnd)
-                        if (x0.getLat() == latBnd1)
-                            J = J-1;
-                        else if (x0.getLat() == latBnd2)
-                            J = J+1;
-                    else if (from == NorthBnd || from == SouthBnd)
-                        if (x0.getLon() == lonBnd1) {
-                            I = I-1; if (I == -1) I = numLon-1;
-                        } else if (x0.getLon() == lonBnd2) {
-                            I = I+1; if (I == numLon) I = 0;
-                        }
-                    isForked = false;
-                    continue;
-                }
-                REPORT_ERROR("Can not find a path!");
+                // Note: Here no intersection has been found under the normal
+                //       double precision floating point calculation, so switch
+                //       to high precision MPFR version.
+                useMPFR = true;
+                goto calculate_use_mpfr;
             calc_overlap_area:
                 if (edgePointer0 != NULL) {
                     double area = calcOverlapArea(I0, J0, from0, to0, bndDiff,

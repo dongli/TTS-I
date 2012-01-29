@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>calc_errors.cpp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>generate_RLLMesh.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -88,6 +93,11 @@
 			<true/>
 		</dict>
 		<key>55B0269B13BA23E100322B59</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55BB084E14D519440050C5EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

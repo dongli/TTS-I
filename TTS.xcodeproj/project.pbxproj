@@ -396,6 +396,7 @@
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		55BB085A14D5195E0050C5EA /* calc_true_solution.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = calc_true_solution.cpp; sourceTree = "<group>"; };
 		55C1E3CA142C557D00D83018 /* unit_test_tracers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_tracers.h; sourceTree = "<group>"; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
@@ -579,6 +580,7 @@
 				5581140413EA4432004AF124 /* tts_gamil_demo.cpp */,
 				5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */,
 				554F970A14A8C264000052E2 /* tts_square_demo.cpp */,
+				55BB085A14D5195E0050C5EA /* calc_true_solution.cpp */,
 			);
 			path = Demos;
 			sourceTree = "<group>";

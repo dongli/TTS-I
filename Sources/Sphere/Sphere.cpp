@@ -2,10 +2,9 @@
 #include "ReportMacros.h"
 #include "Constants.h"
 #include <cmath>
-#ifdef TEST_MPFR
 #include "mpreal.h"
+
 using namespace mpfr;
-#endif
 
 double Sphere::radius = 1.0;
 double Sphere::radius2 = radius*radius;
@@ -261,131 +260,119 @@ bool Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
     return false;
 }
 
-#ifdef TEST_MPFR
 bool Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
                               double lon1, double lon2, double lat,
-                              Coordinate &x)
+                              Coordinate &x, bool useMPFR)
 {
-    mpreal::set_default_prec(128);
-    mpreal a = x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
-    mpreal b = x1.getZ()*x2.getX()-x1.getX()*x2.getZ();
-    mpreal c = x1.getX()*x2.getY()-x1.getY()*x2.getX();
-
-    mpreal z = sin(lat);
-    mpreal z2 = z*z;
-    mpreal a2 = a*a;
-    mpreal a2_plus_b2 = a2+b*b;
-    mpreal d = b*c*z/a2_plus_b2;
-    mpreal e2 = d*d-((z2-1.0)*a2+z2*c*c)/a2_plus_b2;
-    if (e2 < 0.0)
-        return false;
-    mpreal e = sqrt(e2);
-
-    mpreal y1 = -d+e;
-    mpreal y2 = -d-e;
-
     static const double eps = 1.0e-12;
-    mpreal lon[2];
-    if (fabs(a) > eps) {
-//#ifdef DEBUG
-//        if (fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) > 1.0e-8) {
-//            cout << fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) << endl;
-//            REPORT_WARNING("Unconsistent result!");
-//        }
-//#endif
-        lon[0] = atan2(y1, (-b*y1-c*z)/a);
-        lon[1] = atan2(y2, (-b*y2-c*z)/a);
-    } else {
-        lon[0] = atan2(0.0, -b*y1-c*z);
-        lon[1] = atan2(0.0, -b*y2-c*z);
-    }
-    if (lon[0] < 0.0) lon[0] += PI2;
-    if (lon[0] > PI2) lon[0] -= PI2;
-    if (lon[1] < 0.0) lon[1] += PI2;
-    if (lon[1] > PI2) lon[1] -= PI2;
+    if (useMPFR) {
+        mpreal::set_default_prec(128);
+        mpreal a = x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
+        mpreal b = x1.getZ()*x2.getX()-x1.getX()*x2.getZ();
+        mpreal c = x1.getX()*x2.getY()-x1.getY()*x2.getX();
 
-    Coordinate X[2];
-    
-    X[0].set(lon[0].toDouble(), lat);
-    X[1].set(lon[1].toDouble(), lat);
-    
-    Vector tmp1, tmp2;
-    for (int i = 0; i < 2; ++i) {
-        if (fabs(X[i].getLat()-lat) < EPS &&
-            is_lon_between(lon1, lon2, lon[i].toDouble()))
-            if (dot(x1.getCAR(), X[i].getCAR()) > 0.0) {
-                tmp1 = cross(x1.getCAR(), X[i].getCAR());
-                tmp2 = cross(x2.getCAR(), X[i].getCAR());
-                if (dot(tmp1, tmp2) < 0.0) {
-                    x = X[i];
-                    return true;
+        mpreal z = sin(lat);
+        mpreal z2 = z*z;
+        mpreal a2 = a*a;
+        mpreal a2_plus_b2 = a2+b*b;
+        mpreal d = b*c*z/a2_plus_b2;
+        mpreal e2 = d*d-((z2-1.0)*a2+z2*c*c)/a2_plus_b2;
+        if (e2 < 0.0)
+            return false;
+        mpreal e = sqrt(e2);
+
+        mpreal y1 = -d+e;
+        mpreal y2 = -d-e;
+
+        mpreal lon[2];
+        if (fabs(a) > eps) {
+            lon[0] = atan2(y1, (-b*y1-c*z)/a);
+            lon[1] = atan2(y2, (-b*y2-c*z)/a);
+        } else {
+            lon[0] = atan2(0.0, -b*y1-c*z);
+            lon[1] = atan2(0.0, -b*y2-c*z);
+        }
+        if (lon[0] < 0.0) lon[0] += PI2;
+        if (lon[0] > PI2) lon[0] -= PI2;
+        if (lon[1] < 0.0) lon[1] += PI2;
+        if (lon[1] > PI2) lon[1] -= PI2;
+
+        Coordinate X[2];
+
+        X[0].set(lon[0].toDouble(), lat);
+        X[1].set(lon[1].toDouble(), lat);
+
+        Vector tmp1, tmp2;
+        for (int i = 0; i < 2; ++i) {
+            if (fabs(X[i].getLat()-lat) < EPS &&
+                is_lon_between(lon1, lon2, lon[i].toDouble()))
+                if (dot(x1.getCAR(), X[i].getCAR()) > 0.0) {
+                    tmp1 = cross(x1.getCAR(), X[i].getCAR());
+                    tmp2 = cross(x2.getCAR(), X[i].getCAR());
+                    if (dot(tmp1, tmp2) < 0.0) {
+                        x = X[i];
+                        return true;
+                    }
                 }
-            }
-    }
-    return false;
-}
-#else
-bool Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
-                              double lon1, double lon2, double lat,
-                              Coordinate &x)
-{
-    double a = x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
-    double b = x1.getZ()*x2.getX()-x1.getX()*x2.getZ();
-    double c = x1.getX()*x2.getY()-x1.getY()*x2.getX();
-    
-    double z = sin(lat);
-    double z2 = z*z;
-    double a2 = a*a;
-    double a2_plus_b2 = a2+b*b;
-    double d = b*c*z/a2_plus_b2;
-    double e2 = d*d-((z2-1.0)*a2+z2*c*c)/a2_plus_b2;
-    if (e2 < 0.0)
+        }
         return false;
-    double e = sqrt(e2);
-    
-    double y1 = -d+e;
-    double y2 = -d-e;
-    
-    static const double eps = 1.0e-12;
-    double lon[2];
-    if (fabs(a) > eps) {
+    } else {
+        double a = x1.getY()*x2.getZ()-x1.getZ()*x2.getY();
+        double b = x1.getZ()*x2.getX()-x1.getX()*x2.getZ();
+        double c = x1.getX()*x2.getY()-x1.getY()*x2.getX();
+
+        double z = sin(lat);
+        double z2 = z*z;
+        double a2 = a*a;
+        double a2_plus_b2 = a2+b*b;
+        double d = b*c*z/a2_plus_b2;
+        double e2 = d*d-((z2-1.0)*a2+z2*c*c)/a2_plus_b2;
+        if (e2 < 0.0)
+            return false;
+        double e = std::sqrt(e2);
+        
+        double y1 = -d+e;
+        double y2 = -d-e;
+
+        double lon[2];
+        if (fabs(a) > eps) {
 //#ifdef DEBUG
 //        if (fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) > 1.0e-10) {
 //            cout << fabs(pow(cos(lat), 2)-pow(y1, 2)-pow((-b*y1-c*z)/a, 2)) << endl;
 //            REPORT_WARNING("Unconsistent result!");
 //        }
 //#endif
-        lon[0] = atan2(y1, (-b*y1-c*z)/a);
-        lon[1] = atan2(y2, (-b*y2-c*z)/a);
-    } else {
-        lon[0] = atan2(0.0, -b*y1-c*z);
-        lon[1] = atan2(0.0, -b*y2-c*z);
-    }
-    if (lon[0] < 0.0) lon[0] += PI2;
-    if (lon[0] > PI2) lon[0] -= PI2;
-    if (lon[1] < 0.0) lon[1] += PI2;
-    if (lon[1] > PI2) lon[1] -= PI2;
-    
-    Coordinate X[2];
-    
-    X[0].set(lon[0], lat);
-    X[1].set(lon[1], lat);
-    
-    Vector tmp1, tmp2;
-    for (int i = 0; i < 2; ++i) {
-        if (fabs(X[i].getLat()-lat) < EPS && is_lon_between(lon1, lon2, lon[i]))
-            if (dot(x1.getCAR(), X[i].getCAR()) > 0.0) {
-                tmp1 = cross(x1.getCAR(), X[i].getCAR());
-                tmp2 = cross(x2.getCAR(), X[i].getCAR());
-                if (dot(tmp1, tmp2) < 0.0) {
-                    x = X[i];
-                    return true;
+            lon[0] = atan2(y1, (-b*y1-c*z)/a);
+            lon[1] = atan2(y2, (-b*y2-c*z)/a);
+        } else {
+            lon[0] = atan2(0.0, -b*y1-c*z);
+            lon[1] = atan2(0.0, -b*y2-c*z);
+        }
+        if (lon[0] < 0.0) lon[0] += PI2;
+        if (lon[0] > PI2) lon[0] -= PI2;
+        if (lon[1] < 0.0) lon[1] += PI2;
+        if (lon[1] > PI2) lon[1] -= PI2;
+
+        Coordinate X[2];
+
+        X[0].set(lon[0], lat);
+        X[1].set(lon[1], lat);
+
+        Vector tmp1, tmp2;
+        for (int i = 0; i < 2; ++i) {
+            if (fabs(X[i].getLat()-lat) < EPS && is_lon_between(lon1, lon2, lon[i]))
+                if (dot(x1.getCAR(), X[i].getCAR()) > 0.0) {
+                    tmp1 = cross(x1.getCAR(), X[i].getCAR());
+                    tmp2 = cross(x2.getCAR(), X[i].getCAR());
+                    if (dot(tmp1, tmp2) < 0.0) {
+                        x = X[i];
+                        return true;
+                    }
                 }
-            }
+        }
+        return false;
     }
-    return false;
 }
-#endif
 
 OrientStatus Sphere::orient(const Coordinate &x1, const Coordinate &x2,
                             const Coordinate &x3)
