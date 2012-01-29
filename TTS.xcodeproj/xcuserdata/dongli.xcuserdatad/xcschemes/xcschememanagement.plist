@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>calc_errors.cpp.xcscheme</key>
+		<key>calc_true_solution.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
@@ -98,6 +98,11 @@
 			<true/>
 		</dict>
 		<key>55BB084E14D519440050C5EA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55BB085F14D53AEA0050C5EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

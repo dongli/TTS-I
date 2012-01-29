@@ -11,7 +11,9 @@ public:
 
     void calcVelocityField(FlowManager &);
 
+#ifdef TTS_ONLINE
     void calcInitCond(MeshManager &, MeshAdaptor &, TracerManager &);
+#endif
 
     void calcSolution(double time, const Array<double, 1> &lon,
                       const Array<double, 1> &lat, Array<double, 2> &q);

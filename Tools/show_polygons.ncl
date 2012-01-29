@@ -43,16 +43,16 @@ begin
     ; --------------------------------------------------------------------------
     if (is_plot_polygons .or. is_plot_quantities .or. \
         is_plot_vertices .or. is_plot_point_counters) then
-        do i = 0, dimsizes(polygon_file_names)-1
+        do k = 0, dimsizes(polygon_file_names)-1
             wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+ \
-                polygon_file_names(i))+"_"+projection)
+                polygon_file_names(k))+"_"+projection)
 
             system("echo '-----------------------------------------'")
             if (is_plot_point_counters) then
-                system("echo plotting "+polygon_file_names(i)+" and "+ \
-                    counter_file_names(i))
+                system("echo plotting "+polygon_file_names(k)+" and "+ \
+                    counter_file_names(k))
             else
-                system("echo plotting "+polygon_file_names(i))
+                system("echo plotting "+polygon_file_names(k))
             end if
 
             if (projection .eq. "ST") then
@@ -64,10 +64,10 @@ begin
                 
             map = gsn_csm_map(wks, res_map)
 
-            f = addfile(polygon_file_names(i), "r")
+            f = addfile(polygon_file_names(k), "r")
 
             if (is_plot_point_counters) then
-                plot = show_point_counters(wks, counter_file_names(i))
+                plot = show_point_counters(wks, counter_file_names(k))
                 overlay(map, plot)
             end if
 

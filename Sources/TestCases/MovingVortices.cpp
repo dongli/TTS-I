@@ -98,6 +98,7 @@ double MovingVortices::omega(double latR) const
     }
 }
 
+#ifdef TTS_ONLINE
 void MovingVortices::calcInitCond(MeshManager &meshManager,
                                   MeshAdaptor &meshAdaptor,
                                   TracerManager &tracerManager)
@@ -147,35 +148,32 @@ void MovingVortices::calcInitCond(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     meshAdaptor.remap("test tracer", tracerManager);
 }
+#endif
 
 void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
                                   const Array<double, 1> &lat, Array<double, 2> &q)
 {
+    static double angleSpeed = U0/Sphere::radius;
+    static double dlon = angleSpeed*TimeManager::getTimeStep();
     // -------------------------------------------------------------------------
     // calcuate the rotated coordinate of the north vortex center
-    double lon_ = xvr0.getLon()+U0/Sphere::radius*time;
+    double lon_ = xvr0.getLon()+angleSpeed*time;
     if (lon_ > PI2) lon_ -= PI2;
     Coordinate xvr, xv;
     xvr.set(lon_, xvr0.getLat());
     Sphere::inverseRotate(axisPole, xv, xvr);
     // -------------------------------------------------------------------------
     // check if reversal is necessary
-    static bool firstCall = false;
-    static double prevLon;
-    bool doReverse = false;
-    if (firstCall)
-        firstCall = true;
-    else
-        if (fabs(prevLon-lon_) > PI*0.99) {
-            NOTICE("MovingVortices::calcSolution", "Doing reversal");
-            doReverse = !doReverse;
-        }
-    prevLon = lon_;
+    static bool doReverse = false;
+    if (lon_ <= dlon || (lon_ > PI && lon_-PI <= dlon)) {
+        NOTICE("MovingVortices::calcSolution", "Do reverse");
+        doReverse = !doReverse;
+    }
     // -------------------------------------------------------------------------
     Coordinate x, xr;
-    for (int i = 0; i < lon.size(); ++i)
-        for (int j = 0; j < lat.size(); ++j) {
-            x.set(lon(i), lat(j));
+    for (int i = 0; i < q.extent(0); ++i)
+        for (int j = 0; j < q.extent(1); ++j) {
+            x.set(lon(j), lat(i));
             Sphere::rotate(xv, x, xr);
             if (doReverse) {
                 lon_ = xr.getLon()+PI;
@@ -185,5 +183,4 @@ void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
             q(i, j) = 1.0-tanh(rho(xr.getLat())/gamma*
                                sin(xr.getLon()-omega(xr.getLat())*time));
         }
-    
 }
