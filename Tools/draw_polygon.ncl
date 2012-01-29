@@ -7,7 +7,7 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
-    projection@angle = 6.0
+    projection@angle = 1.0
     projection@min_lat = 80.0
     projection@max_lat = -80.0
     line_width = 1.0

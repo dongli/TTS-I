@@ -5,8 +5,8 @@
 
 using namespace std;
 
-static const int numLon = 128;
-static const int numLat = 60;
+static const int numLon = 360;
+static const int numLat = 180;
 static const bool hasPoles = true;
 static const double radius = 6371.229e3;
 static const double radius2 = radius*radius;

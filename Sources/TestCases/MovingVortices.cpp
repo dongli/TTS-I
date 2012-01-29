@@ -112,14 +112,18 @@ void MovingVortices::calcInitCond(MeshManager &meshManager,
     tracerManager.registerTracer("test tracer", "test unit", meshManager);
     Field qt;
     qt.init(meshCnt, meshBnd);
-    Array<double, 2> qtmp(meshCnt.lon.size(), meshCnt.lat.size());
+    Array<double, 2> qtmp(meshCnt.getNumLon(), meshCnt.getNumLat());
 #ifdef DEBUG
     double totalCellMass = 0.0;
 #endif
     calcSolution(0.0, meshCnt.lon, meshCnt.lat, qtmp);
-    for (int i = 0; i < meshCnt.lon.size(); ++i)
-        for (int j = 0; j < meshCnt.lat.size(); ++j)
-            qt.values(i, j) = qtmp(i,j);
+    for (int i = 0; i < meshCnt.getNumLon()-1; ++i)
+        for (int j = 0; j < meshCnt.getNumLat(); ++j) {
+            qt.values(i, j) = qtmp(i, j);
+#ifdef DEBUG
+            totalCellMass += qt.values(i, j).getNew()*meshBnd.area(i, j);
+#endif
+        }
     // -------------------------------------------------------------------------
     // check the location polygon vertices
     Vertex *vertex = tracerManager.polygonManager.vertices.front();
@@ -138,7 +142,7 @@ void MovingVortices::calcInitCond(MeshManager &meshManager,
     double totalPolygonMass = 0.0;
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
-        totalPolygonMass += polygon->tracers[1].getMass();
+        totalPolygonMass += polygon->tracers[0].getMass();
         polygon = polygon->next;
     }
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
@@ -173,7 +177,7 @@ void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
     Coordinate x, xr;
     for (int i = 0; i < q.extent(0); ++i)
         for (int j = 0; j < q.extent(1); ++j) {
-            x.set(lon(j), lat(i));
+            x.set(lon(i), lat(j));
             Sphere::rotate(xv, x, xr);
             if (doReverse) {
                 lon_ = xr.getLon()+PI;

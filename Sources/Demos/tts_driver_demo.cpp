@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     TTS tts;
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
-    char fileName[30], filePattern[50] = "mv_360x180_2562_576_%3.3d.nc";
+    char fileName[30], filePattern[50] = "mv_360x180_10242_576_%3.3d.nc";
 #endif
 #ifdef DEFORMATION_TESTCASE
     Deformation testCase(Deformation::Case4, Deformation::GaussianHills);

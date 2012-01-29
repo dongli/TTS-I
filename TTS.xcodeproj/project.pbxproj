@@ -302,6 +302,7 @@
 /* Begin PBXFileReference section */
 		550A94A214271B4500D97A06 /* Deformation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Deformation.cpp; sourceTree = "<group>"; };
 		550A94A314271B4500D97A06 /* Deformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deformation.h; sourceTree = "<group>"; };
+		550C728E14D581790020559D /* calc_true_solution */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = calc_true_solution; sourceTree = BUILT_PRODUCTS_DIR; };
 		552EEE2D1421C0DB001E8352 /* mergeEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mergeEdge.h; sourceTree = "<group>"; };
 		552EEE2E1421C0DB001E8352 /* splitEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = splitEdge.h; sourceTree = "<group>"; };
 		552EEE2F1421C0DB001E8352 /* splitPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = splitPolygon.h; sourceTree = "<group>"; };
@@ -422,7 +423,6 @@
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55BB085A14D5195E0050C5EA /* calc_true_solution.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = calc_true_solution.cpp; sourceTree = "<group>"; };
-		55BB086014D53AEB0050C5EA /* calc_true_solution */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = calc_true_solution; path = /Users/dongli/Works/TTS/build/Release/calc_true_solution; sourceTree = "<absolute>"; };
 		55C1E3CA142C557D00D83018 /* unit_test_tracers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_tracers.h; sourceTree = "<group>"; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
@@ -534,6 +534,7 @@
 				5581143213EA470B004AF124 /* tts_gamil_demo */,
 				5566C5EB13EC0D010044E352 /* generate_RLLMesh */,
 				5566C5ED13EC0D010044E352 /* generate_square */,
+				550C728E14D581790020559D /* calc_true_solution */,
 			);
 			name = Executables;
 			sourceTree = "<group>";
@@ -949,7 +950,7 @@
 			);
 			name = calc_true_solution;
 			productName = calc_true_solution;
-			productReference = 55BB086014D53AEB0050C5EA /* calc_true_solution */;
+			productReference = 550C728E14D581790020559D /* calc_true_solution */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -1759,6 +1760,7 @@
 				55BB086914D53AEB0050C5EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

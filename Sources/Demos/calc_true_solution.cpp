@@ -10,7 +10,7 @@
 int main(int argc, char **argv)
 {
     MeshManager meshManager;
-    Array<double, 2> q;
+    Array<double, 2> qt;
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
     char fileName[30] = "mv_true_360x180.nc";
@@ -31,41 +31,48 @@ int main(int argc, char **argv)
         lat[j] = PI05-(j+1)*dlat;
     meshManager.init(numLon, numLat, lon, lat);
     const RLLMesh meshCnt = meshManager.getMesh(PointCounter::Center);
-    q.resize(meshCnt.lat.size(), meshCnt.lon.size());
+    qt.resize(meshCnt.getNumLon(), meshCnt.getNumLat());
     // -------------------------------------------------------------------------
     NcFile file(fileName, NcFile::Replace);
     NcDim *timeDim = file.add_dim("time");
-    NcDim *latDim = file.add_dim("lat", q.extent(0));
-    NcDim *lonDim = file.add_dim("lon", q.extent(1));
+    NcDim *lonDim = file.add_dim("lon", qt.extent(0));
+    NcDim *latDim = file.add_dim("lat", qt.extent(1));
     NcVar *timeVar = file.add_var("time", ncDouble, timeDim);
-    NcVar *latVar = file.add_var("lat", ncDouble, latDim);
     NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
+    NcVar *latVar = file.add_var("lat", ncDouble, latDim);
     NcVar *qVar = file.add_var("q", ncDouble, timeDim, latDim, lonDim);
     delete [] lon;
     delete [] lat;
-    lat = new double[q.extent(0)];
-    lon = new double[q.extent(1)];
-    for (int i = 0; i < q.extent(0); ++i)
-        lat[i] = meshCnt.lat(i)*Rad2Deg;
-    for (int i = 0; i < q.extent(1); ++i)
+    lon = new double[qt.extent(0)];
+    lat = new double[qt.extent(1)];
+    for (int i = 0; i < qt.extent(0); ++i)
         lon[i] = meshCnt.lon(i)*Rad2Deg;
-    latVar->put(lat, q.extent(0));
-    lonVar->put(lon, q.extent(1));
+    for (int j = 0; j < qt.extent(1); ++j)
+        lat[j] = meshCnt.lat(j)*Rad2Deg;
+    lonVar->put(lon, qt.extent(0));
+    latVar->put(lat, qt.extent(1));
     // -------------------------------------------------------------------------
     double time = 0.0;
-    testCase.calcSolution(time, meshCnt.lon, meshCnt.lat, q);
+    double q[qt.extent(1)][qt.extent(0)];
+    testCase.calcSolution(time, meshCnt.lon, meshCnt.lat, qt);
+    for (int i = 0; i < qt.extent(0); ++i)
+        for (int j = 0; j < qt.extent(1); ++j)
+            q[j][i] = qt(i, j);
     timeVar->put_rec(&time, TimeManager::getSteps());
     qVar->set_rec(TimeManager::getSteps());
-    qVar->put_rec(q.data());
+    qVar->put_rec(&q[0][0]);
 
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
         TimeManager::advance();
         time = TimeManager::getSeconds();
-        testCase.calcSolution(time, meshCnt.lon, meshCnt.lat, q);
+        testCase.calcSolution(time, meshCnt.lon, meshCnt.lat, qt);
+        for (int i = 0; i < qt.extent(0); ++i)
+            for (int j = 0; j < qt.extent(1); ++j)
+                q[j][i] = qt(i, j);
         timeVar->put_rec(&time, TimeManager::getSteps());
         qVar->set_rec(TimeManager::getSteps());
-        qVar->put_rec(q.data());
+        qVar->put_rec(&q[0][0]);
     }
     file.close();
 }

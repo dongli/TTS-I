@@ -722,7 +722,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/MeshAdaptor/MeshAdaptor.cpp"
-         timestampString = "349494164.865416"
+         timestampString = "349538550.501672"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1084"
@@ -798,7 +798,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Utils/List.cpp"
-         timestampString = "348754565.111756"
+         timestampString = "349538800.525201"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "237"
@@ -875,6 +875,28 @@
          endingLineNumber = "801"
          landmarkName = "MeshAdaptor::adapt(const TracerManager &amp;tracerManager, const MeshManager &amp;meshManager)"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Sources/TTS/CurvatureGuard/splitEdge.h"
+         timestampString = "349539682.579909"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "154"
+         endingLineNumber = "154"
+         landmarkName = "CurvatureGuard::splitEdge(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Edge *edge, bool isChecked, bool isMustSplit)"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p polygon1-&gt;dump(&quot;polygon&quot;)">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
