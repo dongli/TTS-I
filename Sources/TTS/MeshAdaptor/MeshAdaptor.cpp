@@ -856,7 +856,11 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 getCoordinate().getLat() > 0.0 ?
                 Location::NorthPole : Location::SouthPole;
             }
+#ifdef DEBUG
             coverMask.init(polygon, bndCellIdx, checkPole, mesh, debug);
+#else
+            coverMask.init(polygon, bndCellIdx, checkPole, mesh);
+#endif
             // record the fully covered cells from pole to the first or last
             // crossed cell along longitude
             if (checkPole != Location::Null)
@@ -876,7 +880,11 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         // ---------------------------------------------------------------------
         // handle the cells that are fully covered by the polygon
         if (any(coverMask.mask == -1)) {
+#ifdef DEBUG
             coverMask.searchCover(debug);
+#else
+            coverMask.searchCover();
+#endif
             // add the fully covered cells
             for (int i = 0; i < coverMask.mask.extent(0); ++i)
                 for (int j = 0; j < coverMask.mask.extent(1); ++j)

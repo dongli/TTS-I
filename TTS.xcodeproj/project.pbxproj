@@ -176,7 +176,6 @@
 		55D3C79D14104A5100B2B4D4 /* ApproachDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48CF14093757000B7E48 /* ApproachDetector.cpp */; };
 		55D5B1F91491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
-		55DA3E2A13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		55DA3E2B13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		55F30BE114A775370057BBBE /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55F30BE314A775750057BBBE /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
@@ -1135,7 +1134,6 @@
 				5598FAE113D3DA9F00BC1AC4 /* TTS.cpp in Sources */,
 				5598FAE413D3DA9F00BC1AC4 /* TimeManager.cpp in Sources */,
 				556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */,
-				55DA3E2A13F6A34800C565F7 /* DebugTools.cpp in Sources */,
 				553FED97141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */,
 				550A94A414271B4500D97A06 /* Deformation.cpp in Sources */,
 				55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */,
@@ -1460,7 +1458,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TTS_OUTPUT,
 					TTS_REMAP,
-					DEBUG,
 					TTS_ONLINE,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;

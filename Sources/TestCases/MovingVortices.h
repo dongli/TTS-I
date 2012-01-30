@@ -18,6 +18,10 @@ public:
     void calcSolution(double time, const Array<double, 1> &lon,
                       const Array<double, 1> &lat, Array<double, 2> &q);
 
+    void calcSolution(Field &q);
+
+    void calcSolution(MeshManager &, MeshAdaptor &, TracerManager &);
+
 private:
     void calcVelocityField(FlowManager &flowManager, double time);
 

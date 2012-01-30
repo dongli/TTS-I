@@ -12,6 +12,7 @@
 #include "MeshAdaptor.h"
 
 #define MOVINGVORTICES_TESTCASE
+#define TESTCASE_CALC_TRUE_SOLUTION
 
 int main(int argc, char **argv)
 {
@@ -22,7 +23,11 @@ int main(int argc, char **argv)
     TTS tts;
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
-    char fileName[30], filePattern[50] = "mv_360x180_10242_576_%3.3d.nc";
+#ifdef TESTCASE_CALC_TRUE_SOLUTION
+    char fileName[30], filePattern[50] = "mv_true_360x180_2562_576_%3.3d.nc";
+#else
+    char fileName[30], filePattern[50] = "mv_360x180_2562_576_%3.3d.nc";
+#endif
 #endif
 #ifdef DEFORMATION_TESTCASE
     Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
@@ -58,6 +63,9 @@ int main(int argc, char **argv)
     tts.init();
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
+#ifdef TESTCASE_CALC_TRUE_SOLUTION
+    testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
+#endif
     sprintf(fileName, filePattern, TimeManager::getSteps());
 #ifdef TTS_OUTPUT
     tracerManager.output(fileName);
@@ -65,6 +73,9 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
+#ifdef TESTCASE_CALC_TRUE_SOLUTION
+        testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
+#endif
         TimeManager::advance();
         testCase.calcVelocityField(flowManager);
 #ifdef TTS_OUTPUT

@@ -417,7 +417,7 @@ bool handleApproachEvents(MeshManager &meshManager,
         }
 #endif
         // ---------------------------------------------------------------------
-#ifndef DEBUG
+#ifdef DEBUG
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
 #endif

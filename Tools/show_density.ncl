@@ -70,6 +70,15 @@ begin
         ;set_contour_range(res, 0.0, 1.1, 0.1)
         set_contour_range(res, 0.5, 1.5, 0.05)
 
+        res@mpPerimOn = False
+        res@mpProjection = "Orthographic"
+        res@mpGridAndLimbOn = True
+        res@mpFillOn = False
+        res@lbLabelAngleF = 0.0
+        res@lbOrientation = "Vertical"
+        res@mpCenterLonF = 270.0
+        res@mpCenterLatF = -45.0
+
         res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \
                              "max: "+sprintf("%4.2f", max(f->$density_name$))
         plot = gsn_csm_contour_map(wks, f->$density_name$, res)

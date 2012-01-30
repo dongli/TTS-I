@@ -188,3 +188,59 @@ void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
                                sin(xr.getLon()-omega(xr.getLat())*time));
         }
 }
+
+void MovingVortices::calcSolution(Field &q)
+{
+    static double angleSpeed = U0/Sphere::radius;
+    static double dlon = angleSpeed*TimeManager::getTimeStep();
+    // -------------------------------------------------------------------------
+    // calcuate the rotated coordinate of the north vortex center
+    double lon = xvr0.getLon()+angleSpeed*TimeManager::getSeconds();
+    if (lon > PI2) lon -= PI2;
+    Coordinate xvr, xv;
+    xvr.set(lon, xvr0.getLat());
+    Sphere::inverseRotate(axisPole, xv, xvr);
+    // -------------------------------------------------------------------------
+    // check if reversal is necessary
+    static bool doReverse = false;
+    if (lon <= dlon || (lon > PI && lon-PI <= dlon)) {
+        NOTICE("MovingVortices::calcSolution", "Do reverse");
+        doReverse = !doReverse;
+    }
+    // -------------------------------------------------------------------------
+    const RLLMesh &mesh = q.getMesh(Field::Center);
+    Coordinate x, xr;
+    for (int i = 0; i < mesh.getNumLon()-1; ++i)
+        for (int j = 0; j < mesh.getNumLat(); ++j) {
+            x.set(mesh.lon(i), mesh.lat(j));
+            Sphere::rotate(xv, x, xr);
+            if (doReverse) {
+                lon = xr.getLon()+PI;
+                if (lon > PI2) lon -= PI2;
+                xr.set(lon, xr.getLat());
+            }
+            q.values(i, j) = 1.0-tanh(rho(xr.getLat())/gamma*
+                                      sin(xr.getLon()-omega(xr.getLat())*
+                                          TimeManager::getSeconds()));
+        }
+}
+
+void MovingVortices::calcSolution(MeshManager &meshManager,
+                                  MeshAdaptor &meshAdaptor,
+                                  TracerManager &tracerManager)
+{
+    // -------------------------------------------------------------------------
+    // two dual meshes
+    const RLLMesh &meshCnt = meshManager.getMesh(PointCounter::Center);
+    const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
+    // -------------------------------------------------------------------------
+    // evaluate the initial condition on the RLL mesh of point counter
+    Field q0;
+    q0.init(meshCnt, meshBnd);
+    calcSolution(q0);
+    // -------------------------------------------------------------------------
+    meshAdaptor.remap("test tracer", q0, tracerManager);
+    // -------------------------------------------------------------------------
+    meshAdaptor.remap("test tracer", tracerManager);
+    
+}

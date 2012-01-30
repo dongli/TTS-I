@@ -80,13 +80,13 @@ void TTS::advect(MeshManager &meshManager,
     CurvatureGuard::guard(meshManager, flowManager, polygonManager);
     // -------------------------------------------------------------------------
     // update physical quantities
-#ifdef DEBUG
+#ifdef CHECK_AREA_BIAS
     double totalArea = 0.0;
 #endif
     polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
         polygon->calcArea();
-#ifdef DEBUG
+#ifdef CHECK_AREA_BIAS
         totalArea += polygon->getArea();
 #endif
         polygon = polygon->next;

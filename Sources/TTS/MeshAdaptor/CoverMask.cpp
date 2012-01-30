@@ -166,6 +166,7 @@ return_label:
 #ifdef DEBUG
     if (debug) dump();
 #endif
+    return;
 }
 
 void CoverMask::setMask(int i, int j, MaskType type)
