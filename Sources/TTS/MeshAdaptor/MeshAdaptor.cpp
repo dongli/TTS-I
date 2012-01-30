@@ -722,6 +722,10 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         int I, J, I1, I2, J1, J2, bndDiff;
         double lonBnd1, lonBnd2, latBnd1, latBnd2;
         Coordinate x;
+        // Note: The calculation of intersection between great-circle arc and
+        //       latitudinal line may fail under normal double precision
+        //       floating-point calculation, so swith to MPFR if necessary.
+        bool useMPFR;
         // ---------------------------------------------------------------------
         // search overlapped mesh cell along polygon edges
         EdgePointer *edgePointer = polygon->edgePointers.front();
@@ -737,7 +741,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
             // start from the cell where the first point is at
             I = I1, J = J1, I0 = I1, J0 = J1;
             while (true) {
-                bool useMPFR = false;
+                useMPFR = false;
                 lonBnd1 = mesh.lon(I);
                 lonBnd2 = mesh.lon(I+1);
                 latBnd1 = mesh.lat(J);
@@ -798,6 +802,12 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 // Note: Here no intersection has been found under the normal
                 //       double precision floating point calculation, so switch
                 //       to high precision MPFR version.
+                if (useMPFR) {
+                    Message message;
+                    message << "Intersection can not be found for polygon ";
+                    message << polygon->getID() << "!";
+                    REPORT_ERROR(message.str());
+                }
                 useMPFR = true;
                 goto calculate_use_mpfr;
             calc_overlap_area:
