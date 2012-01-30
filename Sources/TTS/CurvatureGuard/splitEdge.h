@@ -29,6 +29,10 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
     double a0;
     Edge *newEdge;
 
+#ifdef DEBUG
+    assert(edge->getLength() != 0.0);
+#endif
+
     if (edge->tags.isSet(SplitChecked))
         return false;
 

@@ -10,20 +10,15 @@ begin
     ; user configurations
     is_plot_polygons = True
     is_plot_quantities = True
-    is_plot_vertices = False
+    is_plot_vertices = True
     is_plot_vertex_number = False
     is_plot_polygon_area = False
     is_plot_testpoint = False
     is_plot_point_counters = False
     projection = "CE"
     projection@angle = 10.0
-    ;projection@move_viewpoint = True
-    ;projection@center_lon = 0.0
-    ;projection@center_lat = 0.0
-    projection@min_lat = 80.0
-    projection@max_lat = -80.0
     line_width = 0.1
-    point_size = 0.005
+    point_size = 0.001
 
     ; --------------------------------------------------------------------------
     file_name_pattern = ask("Input the polygon file name pattern:")
@@ -86,7 +81,8 @@ begin
                 ;gsn_define_colormap(wks, "WhBlGrYeRe")
                 gsn_define_colormap(wks, "WhBlReWh")
                 cmap = gsn_retrieve_colormap(wks)
-                num_level = 13
+                ;num_level = 13
+                num_level = 21
                 stride = (dimsizes(cmap(:,0))-3.0)/num_level
                 levels = new(num_level, float)
                 ;levels = fspan(-0.05, 1.15, num_level)
