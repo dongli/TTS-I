@@ -102,8 +102,10 @@ void PolygonManager::init(const string &fileName)
         newVtxLon[i] /= Rad2Deg;
         newVtxLat[i] /= Rad2Deg;
     }
+    Vertex *vertexMap[vertices.size()];
     Vertex *vertex = vertices.front();
     for (int i = 0; i < vertices.size(); ++i) {
+        vertexMap[i] = vertex;
         vertex->setCoordinate(newVtxLon[i], newVtxLat[i], newVtxLev[i], NewTimeLevel);
         vertex->setCoordinate(oldVtxLon[i], oldVtxLat[i], oldVtxLev[i], OldTimeLevel);
         vertex = vertex->next;
@@ -122,10 +124,12 @@ void PolygonManager::init(const string &fileName)
     int *secondPoint = new int[numEdge];
     file.get_var("first_point_idx")->get(firstPoint, numEdge);
     file.get_var("second_point_idx")->get(secondPoint, numEdge);
+    Edge *edgeMap[edges.size()];
     Edge *edge = edges.front();
     for (int i = 0; i < edges.size(); ++i) {
-        edge->linkEndPoint(FirstPoint, vertices.at(firstPoint[i]-1));
-        edge->linkEndPoint(SecondPoint, vertices.at(secondPoint[i]-1));
+        edgeMap[i] = edge;
+        edge->linkEndPoint(FirstPoint, vertexMap[firstPoint[i]-1]);
+        edge->linkEndPoint(SecondPoint, vertexMap[secondPoint[i]-1]);
         edge->calcNormVector();
         edge = edge->next;
     }
@@ -182,7 +186,7 @@ void PolygonManager::init(const string &fileName)
                 string message = "Invalid edge_ont in file "+fileName+".";
                 REPORT_ERROR(message.c_str());
             }
-            edges.at(edgeIdx[counter]-1)->linkPolygon(orient, polygon);
+            edgeMap[edgeIdx[counter]-1]->linkPolygon(orient, polygon);
             counter++;
         }
         polygon->edgePointers.ring();

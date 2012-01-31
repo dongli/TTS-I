@@ -24,14 +24,14 @@ int main(int argc, char **argv)
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
 #ifdef TESTCASE_CALC_TRUE_SOLUTION
-    char fileName[30], filePattern[50] = "mv_true_360x180_2562_576_%3.3d.nc";
+    char fileName[30], filePattern[50] = "mv_true_360x180_40962_576_%3.3d.nc";
 #else
     char fileName[30], filePattern[50] = "mv_360x180_2562_576_%3.3d.nc";
 #endif
 #endif
 #ifdef DEFORMATION_TESTCASE
     Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
-    char fileName[30], filePattern[50] = "gh_360x180_2562_600_%3.3d.nc";
+    char fileName[30], filePattern[50] = "gh_360x180_10242_600_%3.3d.nc";
 #endif
     // -------------------------------------------------------------------------
 #ifdef MOVINGVORTICES_TESTCASE
@@ -57,7 +57,6 @@ int main(int argc, char **argv)
     meshAdaptor.init(meshManager);
     flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
-    flowManager.output("flow.nc");
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);
     tts.init();

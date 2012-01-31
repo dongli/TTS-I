@@ -879,7 +879,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         }
         // ---------------------------------------------------------------------
         // handle the cells that are fully covered by the polygon
-        if (any(coverMask.mask == -1)) {
+        if (coverMask.mask.size() != 0 && any(coverMask.mask == -1)) {
 #ifdef DEBUG
             coverMask.searchCover(debug);
 #else
