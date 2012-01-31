@@ -24,7 +24,7 @@ begin
     I2_1 = sum((q1_1-q1_0)^2.0*area)
     I2_2 = sum(q1_0^2.0*area)
 
-    L_1 = sqrt(I1_1/I1_2)
+    L_1 = I1_1/I1_2
     L_2 = sqrt(I2_1/I2_2)
     L_inf = max(q1_1-q1_0)/max(q1_0)
 
