@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     TTS tts;
     char fileName[30], filePattern[50] = "gamil_2562_%5.5d.nc";
     // -------------------------------------------------------------------------
-    ConfigTools::parse("tts_config");
+    ConfigTools::parse("tts_gamil_config");
     Sphere::setRadius(6371.299e3);
     // -------------------------------------------------------------------------
     tracerManager.init(argv[1]);

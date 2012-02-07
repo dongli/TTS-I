@@ -22,6 +22,7 @@ TTS::~TTS()
 void TTS::init()
 {
     CurvatureGuard::init();
+    ApproachDetector::init();
 }
 
 #define CHECK_AREA_BIAS

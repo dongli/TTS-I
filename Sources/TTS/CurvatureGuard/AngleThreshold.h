@@ -3,10 +3,8 @@
 
 class Edge;
 
-#include <string>
 #include <blitz/array.h>
 
-using std::string;
 using blitz::Array;
 
 namespace CurvatureGuard

@@ -9,6 +9,7 @@ class PolygonManager;
 class MeshManager;
 class FlowManager;
 
+#include "TrendThreshold.h"
 #include "Projection.h"
 #include "VertexAgent.h"
 #include "EdgeAgent.h"
@@ -17,7 +18,7 @@ class FlowManager;
 
 namespace ApproachDetector
 {
-    double approachTrendThreshold(double distance);
+    void init();
 
     bool isNeedCheck(double distance);
 

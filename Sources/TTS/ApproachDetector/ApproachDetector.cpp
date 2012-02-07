@@ -16,25 +16,9 @@ using namespace SpecialPolygons;
 using namespace CurvatureGuard;
 using namespace PotentialCrossDetector;
 
-double ApproachDetector::approachTrendThreshold(double distance)
+void ApproachDetector::init()
 {
-    // TODO: Put these parameters into config file.
-    static const double D0 = 0.001/Rad2Deg*Sphere::radius;
-    static const double D1 = 0.5/Rad2Deg*Sphere::radius;
-    static const double P0 = 0.4;
-    static const double P1 = 0.8;
-    static const double dD = D1-D0;
-    static const double dP = P1-P0;
-
-    // TODO: Use the threshold function instead.
-    if (distance > D0 && distance < D1) {
-        double t = (distance-D0)/dD;
-        return dP*(4.0-3.0*t)*pow(t, 3.0)+P0;
-    } else if (distance <= D0) {
-        return P0;
-    } else {
-        return P1;
-    }
+    TrendThreshold::init();
 }
 
 bool ApproachDetector::isNeedCheck(double distance)
@@ -55,7 +39,8 @@ bool ApproachDetector::isApproaching(Projection *projection)
     double newDistance = projection->getDistance(NewTimeLevel);
     if (oldDistance != UndefinedDistance && newDistance != UndefinedDistance) {
         projection->calcChangeRate();
-        double rate0 = approachTrendThreshold(oldDistance);
+        double rate0;
+        TrendThreshold::calc(oldDistance, rate0);
         if (projection->getChangeRate() > rate0 || newDistance < smallDistance)
             return true;
     } else if (newDistance != UndefinedDistance && newDistance < smallDistance) {

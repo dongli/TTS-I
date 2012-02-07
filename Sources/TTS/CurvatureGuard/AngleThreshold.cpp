@@ -27,7 +27,7 @@ void AngleThreshold::init()
 void AngleThreshold::calc(Edge *edge, double &a)
 {
     double l = edge->getLength();
-    a = piecewiseCubicThreshold(A.size(), L.data(), A.data(), l);
+    a = ThresholdFunction::piecewiseCubic(A.size(), L.data(), A.data(), l);
 }
 
 void AngleThreshold::calc(Edge *edge1, Edge *edge2, double &a)
@@ -41,5 +41,5 @@ void AngleThreshold::calc(Edge *edge1, Edge *edge2, double &a)
 void AngleThreshold::relax(Edge *edge1, Edge *edge2, double &a)
 {
     double l = fmax(edge1->getLength(), edge2->getLength());
-    a *= piecewiseCubicThreshold(R.size(), L.data(), R.data(), l);
+    a *= ThresholdFunction::piecewiseCubic(R.size(), L.data(), R.data(), l);
 }
