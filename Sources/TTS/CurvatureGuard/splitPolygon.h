@@ -33,7 +33,6 @@ void CurvatureGuard::splitPolygon
     Location loc;
     OrientStatus orient;
     int i;
-
     // -------------------------------------------------------------------------
     // collect information
     edge1 = edgePointer1->edge;
@@ -41,7 +40,6 @@ void CurvatureGuard::splitPolygon
     vertex2 = edgePointer1->getEndPoint(SecondPoint);
     polygon2 = edgePointer1->getPolygon(OrientRight);
     projection = vertex3->detectAgent.getProjection(edge1);
-
     // -------------------------------------------------------------------------
     // set the test point
     switch (mode) {
@@ -62,6 +60,7 @@ void CurvatureGuard::splitPolygon
             testVertex = vertex3;
             break;
         case 6:
+            // TODO: This branch is dead?
             testVertex = &vertex;
             testVertex->setCoordinate
             (projection->getCoordinate(NewTimeLevel), NewTimeLevel);
@@ -85,9 +84,9 @@ void CurvatureGuard::splitPolygon
         // when mode is 1/2/4, vertex3 will be eliminated, and this
         // may cause edge-crossing. If this happens, shift to mode 5
         // by making testVertex be vertex3.
+        // TODO: Whether we should split the polygon at this condition?
         testVertex = vertex3;
         mode = 5;
-        // TODO: Whether we should split the polygon at this condition?
     }
     if (mode == 4) {
         if (detectInsertVertexOnEdge(meshManager, flowManager, polygonManager,
