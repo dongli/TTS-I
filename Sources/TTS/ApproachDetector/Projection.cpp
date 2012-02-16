@@ -1,6 +1,9 @@
 #include "Projection.h"
 #include "Vertex.h"
 #include "Edge.h"
+#ifdef DEBUG
+#include "TimeManager.h"
+#endif
 
 using namespace ApproachDetector;
 

@@ -124,7 +124,7 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
  Vertex *oldVertex, Edge **crossedEdge)
 {
     // -------------------------------------------------------------------------
-    Vertex *vertex1, *vertex2, *vertex3, *vertex4, *vertices[2];
+    Vertex *vertex1, *vertex2, *vertex3, *vertex4, *vertices[3];
     OrientStatus orient;
     static std::list<Projection>::iterator itPrj;
     static std::list<Vertex *>::iterator itVtx;
@@ -139,6 +139,7 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
     vertex2 = oldEdge->getEndPoint(SecondPoint);
     vertices[0] = vertex1;
     vertices[1] = vertex2;
+    vertices[2] = newVertex;
     orient = Sphere::orient(vertex1, vertex2, newVertex);
     if (crossedEdge != NULL)
         *crossedEdge = NULL;
@@ -197,7 +198,7 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
     }
     // =========================================================================
     // paired edges of end points of old edge
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 3; ++i) {
         itPrj = vertices[i]->detectAgent.getProjections().begin();
         while (itPrj != vertices[i]->detectAgent.getProjections().end()) {
             edge3 = (*itPrj).getEdge();

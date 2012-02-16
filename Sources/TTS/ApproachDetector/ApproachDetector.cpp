@@ -350,7 +350,8 @@ int ApproachDetector::chooseMode(EdgePointer *edgePointer1,
     double d4 = projection->getDistance(NewTimeLevel);
     edgePointer1->edge->calcLength();
     // branch-1: avoid wild changes
-    if (d4/edgePointer1->edge->getLength() > 0.1)
+    if (d4/edgePointer1->edge->getLength() > 0.1 &&
+        !vertex3->tags.isSet(MayCrossEdge))
         return -1;
     // branch-2
     if (d1 <= d2) {

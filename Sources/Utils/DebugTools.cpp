@@ -84,6 +84,10 @@ void DebugTools::assert_consistent_projection(const Projection *projection)
     } else {
         timeLevel = NewTimeLevel;
     }
+    if (projection->getDistance(timeLevel) == UndefinedDistance) {
+        REPORT_WARNING("No projection at all!");
+        return;
+    }
     Vertex *vertex1 = projection->getEdge()->getEndPoint(FirstPoint);
     Vertex *vertex2 = projection->getEdge()->getEndPoint(SecondPoint);
     const Coordinate &x1 = vertex1->getCoordinate(timeLevel);
