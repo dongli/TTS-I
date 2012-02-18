@@ -32,6 +32,7 @@ void CurvatureGuard::splitPolygon
     Projection *projection;
     Location loc;
     OrientStatus orient;
+    bool isVertexCross = false;
     int i;
     // -------------------------------------------------------------------------
     // collect information
@@ -58,9 +59,11 @@ void CurvatureGuard::splitPolygon
             break;
         case 5:
             testVertex = vertex3;
+            isVertexCross = true;
             break;
         case 6:
             // TODO: This branch is dead?
+            REPORT_WARNING("Why do I enter this branch?")
             testVertex = &vertex;
             testVertex->setCoordinate
             (projection->getCoordinate(NewTimeLevel), NewTimeLevel);
@@ -74,7 +77,8 @@ void CurvatureGuard::splitPolygon
     }
     // -------------------------------------------------------------------------
     // check if the split operation is ok
-    if (mode != 5 && detectReplaceVertex(edgePointer1, vertex3, testVertex) != NoCross) {
+    if (mode != 5 &&
+        detectReplaceVertex(edgePointer1, vertex3, testVertex) != NoCross) {
         if (mode == 1 || mode == 2) {
             projection->setApproach(false);
             if (vertex3->detectAgent.getActiveProjection() == NULL)
@@ -88,10 +92,20 @@ void CurvatureGuard::splitPolygon
         testVertex = vertex3;
         mode = 5;
     }
-    if (mode == 4) {
+    if (mode > 3) {
         if (detectInsertVertexOnEdge(meshManager, flowManager, polygonManager,
                                      edge1, testVertex, vertex3,
                                      &crossedEdge) != NoCross) {
+            if (!isVertexCross && mode == 5) {
+                projection->setApproach(false);
+                if (vertex3->detectAgent.getActiveProjection() == NULL)
+                    ApproachingVertices::removeVertex(vertex3);
+                return;
+            }
+            if (mode == 5) {
+                testVertex = &vertex;
+                mode = 4;
+            }
             testVertex->setCoordinate
             (projection->getCoordinate(NewTimeLevel), NewTimeLevel);
             testVertex->setCoordinate
@@ -242,13 +256,13 @@ void CurvatureGuard::splitPolygon
     CommonTasks::doTask(CommonTasks::UpdateAngle);
     // -------------------------------------------------------------------------
     // hand over tracer mass
-    if (polygon1 != NULL && polygon3 != NULL) {
-        // BUG: The old area may be overwritten by later calling of calcArea.
-        polygon1->calcArea();
-        polygon3->calcArea();
-        double percent = polygon3->getArea()/(polygon1->getArea()+polygon3->getArea());
-        polygon1->handoverTracers(polygon3, percent);
-    }
+//    if (polygon1 != NULL && polygon3 != NULL) {
+//        // BUG: The old area may be overwritten by later calling of calcArea.
+//        polygon1->calcArea();
+//        polygon3->calcArea();
+//        double percent = polygon3->getArea()/(polygon1->getArea()+polygon3->getArea());
+//        polygon1->handoverTracers(polygon3, percent);
+//    }
     // -------------------------------------------------------------------------
     // detect the new vertex for approaching
     linkedEdge = newVertex->linkedEdges.front();
@@ -288,7 +302,7 @@ bool handleApproachEvents(MeshManager &meshManager,
                           PolygonManager &polygonManager)
 {
     bool isSplit = false;
-    Vertex *vertex3, *vertex4;
+    Vertex *vertex3;
     Edge *edge1;
     EdgePointer *edgePointer1, *edgePointer2;
     Polygon *polygon1;
@@ -302,8 +316,8 @@ bool handleApproachEvents(MeshManager &meshManager,
 
     while (!ApproachingVertices::isEmpty()) {
         vertex3 = ApproachingVertices::vertices.front();
-//        if (TimeManager::getSteps() == 375 && (vertex3->getID() == 620874 ||
-//                                               vertex3->getID() == 612384))
+//        if (TimeManager::getSteps() >= 490 && (vertex3->getID() == 1249422 ||
+//                                               vertex3->getID() == 1289391))
 //            REPORT_DEBUG;
         // ---------------------------------------------------------------------
         // if the vertex3 is a test point, split its edge
@@ -322,53 +336,37 @@ bool handleApproachEvents(MeshManager &meshManager,
         projection = vertex3->detectAgent.getActiveProjection();
         edge1 = projection->getEdge();
         // ---------------------------------------------------------------------
-        // check if there is another approaching vertex whose projection
-        // distance is smaller than vertex3
-        bool hasAnotherVertex = false;
-        list<Vertex *>::const_iterator it = edge1->detectAgent.vertices.begin();
-        for (; it != edge1->detectAgent.vertices.end(); ++it) {
-            vertex4 = *it;
-            if (vertex4->getID() == -1 || vertex3 == vertex4)
-                continue;
-            Projection *projection1 = vertex4->detectAgent.getProjection(edge1);
-            if (projection1->getOrient() != projection->getOrient())
-                continue;
-            if (projection1->getDistance(NewTimeLevel) <
-                projection->getDistance(NewTimeLevel)) {
-                // check if the linked edge of vertex4 will block vertex3 or not
-                linkedEdge = vertex4->linkedEdges.front();
-                for (i = 0; i < vertex4->linkedEdges.size(); ++i) {
-                    Projection *projection2 = vertex3->detectAgent.
-                    getProjection(linkedEdge->edge);
-                    if (projection2 != NULL &&
-                        projection2->getDistance(NewTimeLevel) <
-                        projection->getDistance(NewTimeLevel)) {
-                        if (projection1->isApproaching()) {
-                            ApproachingVertices::jumpVertex(vertex3, vertex4);
-                        } else {
-                            projection->setApproach(false);
-                            if (vertex3->detectAgent.getActiveProjection() == NULL)
-                                ApproachingVertices::removeVertex(vertex3);
-                        }
-                        hasAnotherVertex = true;
-                        break;
-                    }
-                    linkedEdge = linkedEdge->next;
-                }
-                if (!hasAnotherVertex) {
-                    hasAnotherVertex = true;
-                    if (projection1->isApproaching()) {
-                        ApproachingVertices::jumpVertex(vertex3, vertex4);
-                    } else {
-                        projection->setApproach(false);
-                        if (vertex3->detectAgent.getActiveProjection() == NULL)
-                            ApproachingVertices::removeVertex(vertex3);
-                    }
+        // check if there is another edge that blocks the approaching path of
+        // vertex3 and will be crossed if we handle this approaching event
+        bool hasAnotherEdge = false;
+        list<Projection>::iterator itPrj;
+        for (itPrj = vertex3->detectAgent.getProjections().begin();
+             itPrj != vertex3->detectAgent.getProjections().end(); ++itPrj) {
+            Edge *edge2 = (*itPrj).getEdge();
+            if (edge1 == edge2) continue;
+            Vertex *vertex1, *vertex2;
+            vertex1 = edge2->getEndPoint(FirstPoint);
+            vertex2 = edge2->getEndPoint(SecondPoint);
+            Projection *projection1, *projection2;
+            projection1 = vertex1->detectAgent.getProjection(edge1);
+            projection2 = vertex2->detectAgent.getProjection(edge1);
+            if ((projection1 != NULL &&
+                 projection1->getOrient() == projection->getOrient()) ||
+                (projection2 != NULL &&
+                 projection2->getOrient() == projection->getOrient()))
+                if (Sphere::isIntersect(vertex1->getCoordinate(),
+                                        vertex2->getCoordinate(),
+                                        vertex3->getCoordinate(),
+                                        projection->getCoordinate())) {
+                    cout << "[Debug]: Branch 3: " << vertex3->getID() << endl;
+                    assert((*itPrj).getDistance() < projection->getDistance());
+                    (*itPrj).setApproach(true);
+                    vertex3->tags.set(MayCrossEdge);
+                    hasAnotherEdge = true;
                     break;
                 }
-            }
         }
-        if (hasAnotherVertex)
+        if (hasAnotherEdge)
             continue;
         // ---------------------------------------------------------------------
         edgePointer2 = NULL;

@@ -202,11 +202,11 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                                      PolygonManager &polygonManager,
                                      Polygon *polygon)
 {
-//    if (TimeManager::getSteps() >= 132 && (polygon->getID() == 1007)) {
-//        DebugTools::watch(polygon);
-//        polygon->dump("polygon");
-//        REPORT_DEBUG;
-//    }
+    if (TimeManager::getSteps() >= 498 && (polygon->getID() == 295464)) {
+        DebugTools::watch(polygon);
+        polygon->dump("polygon");
+        REPORT_DEBUG;
+    }
     // -------------------------------------------------------------------------
     static std::list<Vertex *> crossVertices;
     Vertex *vertex3;
