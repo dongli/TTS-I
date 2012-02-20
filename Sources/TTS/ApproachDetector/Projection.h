@@ -49,6 +49,9 @@ namespace ApproachDetector
         bool isCalculated() const { return calculated; }
         void setCalculated() { calculated = true; }
         void expire() { calculated = false; }
+        
+        bool isCrossing() const { return crossing; }
+        void setCrossing() { crossing = true; }
 
         Projection &operator=(const Projection &);
 
@@ -61,6 +64,7 @@ namespace ApproachDetector
         double changeRate;
         bool approach;
         bool calculated;
+        bool crossing;
     };
 }
 

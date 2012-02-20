@@ -266,7 +266,7 @@ void CurvatureGuard::splitPolygon
     // -------------------------------------------------------------------------
     // detect the new vertex for approaching
     linkedEdge = newVertex->linkedEdges.front();
-    for (i = 0; i < newVertex->linkedEdges.size(); ++i) {
+    while (linkedEdge != NULL) {
         Edge *edge = linkedEdge->edge;
         if (edge->getEndPoint(FirstPoint) == newVertex)
             orient = OrientLeft;

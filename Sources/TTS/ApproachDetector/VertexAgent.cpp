@@ -133,6 +133,15 @@ Projection *VertexAgent::getActiveProjection()
     return activeProjection;
 }
 
+bool VertexAgent::isCrossing()
+{
+    std::list<Projection>::iterator it = projections.begin();
+    for (; it != projections.end(); ++it)
+        if ((*it).isCrossing())
+            return true;
+    return false;
+}
+
 double VertexAgent::getShortestDistance()
 {
     double distance = UndefinedDistance;

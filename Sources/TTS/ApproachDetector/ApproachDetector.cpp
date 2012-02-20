@@ -52,15 +52,14 @@ bool ApproachDetector::isApproaching(Projection *projection)
 inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager,
                         PolygonManager &polygonManager, Vertex *point,
                         EdgePointer *edgePointer1, EdgePointer *edgePointer2,
-                        bool &isPointCrossEdge)
+                        Projection *&projection)
 {
     static Projection p;
     bool isTestPointHasOldProjection = true; // to check crossing of test point
     Edge *edge = edgePointer1->edge;
-    Projection *projection = point->detectAgent.getProjection(edge);
+    projection = point->detectAgent.getProjection(edge);
     if (projection == NULL && point->getID() == -1)
         isTestPointHasOldProjection = false;
-    isPointCrossEdge = false;
     if (projection == NULL) {
         // ---------------------------------------------------------------------
         // Scenario 1:
@@ -97,6 +96,8 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                 }
                 AgentPair::pair(point, edge, projection);
             }
+        } else {
+            projection = NULL;
         }
     } else {
         // ---------------------------------------------------------------------
@@ -138,7 +139,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
             } else {
                 // TEST: When the point crosses the edge, we should remedy
                 //       this problem insteal of throughing an error.
-                isPointCrossEdge = true;
+                projection->setCrossing();
             }
         }
     }
@@ -209,8 +210,11 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     }
     // -------------------------------------------------------------------------
     static std::list<Vertex *> crossVertices;
+    Edge *edge1;
     Vertex *vertex3;
+    EdgePointer *edgePointer1, *edgePointer2, *nextEdgePointer2;
     EdgePointer *edgePointer3 = NULL, *edgePointer4 = NULL;
+    Projection *projection;
     static bool handleCrossVertices = false;
     // -------------------------------------------------------------------------
     if (polygon->edgePointers.size() == 2) {
@@ -218,11 +222,10 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         return;
     }
     // -------------------------------------------------------------------------
-    bool isPointCrossEdge;
-    EdgePointer *edgePointer1 = polygon->edgePointers.front();
+    edgePointer1 = polygon->edgePointers.front();
     for (int i = 0; i < polygon->edgePointers.size(); ++i) {
-        EdgePointer *edgePointer2 = edgePointer1->next;
-        EdgePointer *nextEdgePointer2;
+        edge1 = edgePointer1->edge;
+        edgePointer2 = edgePointer1->next;
         while (edgePointer2 != edgePointer1) {
             nextEdgePointer2 = edgePointer2->next;
             TestPoint *testPoint;
@@ -232,18 +235,23 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                 if (handleCrossVertices &&
                     find(crossVertices.begin(), crossVertices.end(), vertex3) !=
                     crossVertices.end()) {
-                    crossVertices.remove(vertex3);
-                    if (edgePointer3 != NULL)
-                        splitPolygon(meshManager, flowManager, polygonManager,
-                                     polygon, edgePointer3, edgePointer4, vertex3, 5);
-                    else
-                        splitPolygon(meshManager, flowManager, polygonManager,
-                                     polygon, edgePointer1, edgePointer2, vertex3, 5);
-                    return;
-                } else
-                    detectPoint(meshManager, flowManager, polygonManager, vertex3,
-                                edgePointer1, edgePointer2, isPointCrossEdge);
-                if (isPointCrossEdge) {
+                    projection = vertex3->detectAgent.getProjection(edge1);
+                    if (projection != NULL && projection->isCrossing()) {
+                        crossVertices.remove(vertex3);
+                        if (edgePointer3 != NULL)
+                            splitPolygon(meshManager, flowManager, polygonManager,
+                                         polygon, edgePointer3, edgePointer4, vertex3, 5);
+                        else
+                            splitPolygon(meshManager, flowManager, polygonManager,
+                                         polygon, edgePointer1, edgePointer2, vertex3, 5);
+                        return;
+                    } else if (!vertex3->detectAgent.isCrossing())
+                        crossVertices.remove(vertex3);
+                }
+                detectPoint(meshManager, flowManager, polygonManager, vertex3,
+                            edgePointer1, edgePointer2, projection);
+                if (projection != NULL && projection->isCrossing() &&
+                    !handleCrossVertices) {
                     if (edgePointer3 == NULL) {
                         edgePointer3 = edgePointer1;
                         edgePointer4 = edgePointer2;
@@ -256,7 +264,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
             // -----------------------------------------------------------------
             testPoint = edgePointer2->edge->getTestPoint();
             detectPoint(meshManager, flowManager, polygonManager, testPoint,
-                        edgePointer1, edgePointer2, isPointCrossEdge);
+                        edgePointer1, edgePointer2, projection);
             checkApproachValid(meshManager, flowManager, polygonManager,
                                edgePointer1, edgePointer2, testPoint);
             // -----------------------------------------------------------------

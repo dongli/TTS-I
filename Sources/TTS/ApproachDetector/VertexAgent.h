@@ -30,6 +30,8 @@ namespace ApproachDetector
         Projection *getProjection(Edge *);
         Projection *getActiveProjection();
 
+        bool isCrossing();
+
         double getShortestDistance();
 
         VertexAgent &operator=(const VertexAgent &);

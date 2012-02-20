@@ -37,6 +37,8 @@ namespace PotentialCrossDetector
                                Vector &vector1, Vector &vector2);
 
     Status detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2);
+    
+    Status detectVertex(Vertex *vertex, Edge *edge);
 
     void adjustMergeEdgeAngleThreshold(Edge *edge1, Edge *edge2, double &a0);
 }

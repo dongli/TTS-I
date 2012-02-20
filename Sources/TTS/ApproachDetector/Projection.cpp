@@ -42,6 +42,7 @@ void Projection::reinit()
     edge = NULL;
     approach = false;
     calculated = false;
+    crossing = false;
 }
 
 ProjectionStatus Projection::project(TimeLevel timeLevel)
@@ -52,6 +53,9 @@ ProjectionStatus Projection::project(TimeLevel timeLevel)
         vertex->detectAgent.dump();
         REPORT_ERROR("Old and new distances should not "
                      "be undefined at the same time!")
+    }
+    if (crossing) {
+        REPORT_WARNING("Projection is crossing! Am I called by updateVertex?")
     }
 #endif
 #ifdef TRACK_PROJECTION
@@ -154,6 +158,7 @@ Projection &Projection::operator=(const Projection &that)
         this->changeRate = that.changeRate;
         this->approach = that.approach;
         this->calculated = that.calculated;
+        this->crossing = that.crossing;
     }
     return *this;
 }

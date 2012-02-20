@@ -3,10 +3,12 @@
 #include "Edge.h"
 #include "PolygonManager.h"
 #include "CurvatureGuard.h"
+#include "PotentialCrossDetector.h"
 #include "ReportMacros.h"
 
 using namespace ApproachDetector;
 using namespace CurvatureGuard;
+using namespace PotentialCrossDetector;
 
 EdgeAgent::EdgeAgent()
 {
@@ -107,17 +109,18 @@ void EdgeAgent::handoverVertices(Edge *edge)
 {
     if (edge == host)
         return;
-    Projection p;
-    Vertex *vertex1 = edge->getEndPoint(FirstPoint);
-    Vertex *vertex2 = edge->getEndPoint(SecondPoint);
+    Projection p, *projection;
+    Vertex *vertex1, *vertex2, *vertex3;
+    vertex1 = edge->getEndPoint(FirstPoint);
+    vertex2 = edge->getEndPoint(SecondPoint);
     std::list<Vertex *>::iterator it = vertices.begin();
     for (; it != vertices.end(); ++it) {
-        Vertex *vertex3 = *it;
+        vertex3 = *it;
         if (vertex3 == vertex1 || vertex3 == vertex2 ||
             vertex3->getHostEdge() == edge) {
             continue;
         }
-        Projection *projection = vertex3->detectAgent.getProjection(edge);
+       projection = vertex3->detectAgent.getProjection(edge);
         if (projection == NULL) {
             // -----------------------------------------------------------------
             // Scenario 1
@@ -125,6 +128,13 @@ void EdgeAgent::handoverVertices(Edge *edge)
             projection = &p;
             projection->reinit();
             if (projection->project(vertex3, edge, NewTimeLevel)) {
+                if (vertex3->detectAgent.getProjection(host)->isCrossing()) {
+                    REPORT_WARNING("Vertex is crossing old edge! "
+                                   "Am I called when split problematic polygon?");
+                    if (detectVertex(vertex3, edge) == Cross) {
+                        projection->setCrossing();
+                    }
+                }
                 projection->project(vertex3, edge, OldTimeLevel);
                 projection->checkApproaching();
                 if (projection->isApproaching()) {

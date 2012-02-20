@@ -564,6 +564,23 @@ Status PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1,
     return NoCross;
 }
 
+// TODO: Could this function be used by others to avoid duplicate?
+Status PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge)
+{
+    Vertex *vertex1, *vertex2, *vertex3, *vertex4;
+    vertex1 = edge->getEndPoint(FirstPoint);
+    vertex2 = edge->getEndPoint(SecondPoint);
+    EdgePointer *linkedEdge = vertex->linkedEdges.front();
+    for (int i = 0; i < vertex->linkedEdges.size(); ++i) {
+        vertex3 = linkedEdge->edge->getEndPoint(FirstPoint);
+        vertex4 = linkedEdge->edge->getEndPoint(SecondPoint);
+        if (Sphere::isIntersect(vertex1, vertex2, vertex3, vertex4))
+            return Cross;
+        linkedEdge = linkedEdge->next;
+    }
+    return NoCross;
+}
+
 void PotentialCrossDetector::adjustMergeEdgeAngleThreshold(Edge *edge1,
                                                            Edge *edge2,
                                                            double &a0)
