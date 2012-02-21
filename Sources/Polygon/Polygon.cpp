@@ -54,19 +54,8 @@ void Polygon::calcArea()
         excess -= (edgePointers.size()-2)*PI;
         area = excess*Sphere::radius2;
 #ifdef DEBUG
-        excess = 0.0;
-        edgePointer = edgePointers.front();
-        for (int i = 0; i < edgePointers.size(); ++i) {
-            edgePointer->resetAngle();
-            edgePointer->calcAngle();
-            excess += edgePointer->getAngle();
-            edgePointer = edgePointer->next;
-        }
-        excess -= (edgePointers.size()-2)*PI;
         if (fabs(excess) > 1.0 || excess <= 0.0)
             REPORT_DEBUG;
-        excess = excess*Sphere::radius2;
-        assert(excess == area);
 #endif
     } else
         area = 0.0;

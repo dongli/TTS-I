@@ -36,16 +36,8 @@ void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
             (edge1->getEndPoint(SecondPoint) ==
              edge2->getEndPoint(FirstPoint))));
 #endif
-    if (edgePointer1->orient == OrientLeft) {
-        edgePointer3 = edge1->getEdgePointer(OrientRight);
-    } else {
-        edgePointer3 = edge1->getEdgePointer(OrientLeft);
-    }
-    if (edgePointer2->orient == OrientLeft) {
-        edgePointer4 = edge2->getEdgePointer(OrientRight);
-    } else {
-        edgePointer4 = edge2->getEdgePointer(OrientLeft);
-    }
+    edgePointer3 = edgePointer1->getNeighborEdgePointer();
+    edgePointer4 = edgePointer2->getNeighborEdgePointer();
     Polygon *polygon1 = edge1->getPolygon(edgePointer3->orient);
     Polygon *polygon2 = edge2->getPolygon(edgePointer4->orient);
     if (polygon1 == polygon2) {
@@ -98,13 +90,8 @@ void SpecialPolygons::handlePointPolygon(PolygonManager &polygonManager,
     EdgePointer *edgePointer1 = polygon->edgePointers.front();
     EdgePointer *edgePointer2;
     Polygon *polygon2;
-    if (edgePointer1->orient == OrientLeft) {
-        edgePointer2 = edgePointer1->edge->getEdgePointer(OrientRight);
-        polygon2 = edgePointer1->edge->getPolygon(OrientRight);
-    } else {
-        edgePointer2 = edgePointer1->edge->getEdgePointer(OrientLeft);
-        polygon2 = edgePointer1->edge->getPolygon(OrientLeft);
-    }
+    edgePointer2 = edgePointer1->getNeighborEdgePointer();
+    polygon2 = edgePointer1->getPolygon(OrientRight);
     polygon2->edgePointers.remove(edgePointer2);
 #ifdef DEBUG
     assert(edgePointer1->edge->getEndPoint(FirstPoint) ==
