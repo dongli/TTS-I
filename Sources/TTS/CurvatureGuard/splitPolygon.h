@@ -305,8 +305,8 @@ bool handleApproachEvents(MeshManager &meshManager,
 
     while (!ApproachingVertices::isEmpty()) {
         vertex3 = ApproachingVertices::vertices.front();
-        if (TimeManager::getSteps() >= 661 && (vertex3->getID() == 1671166))
-            REPORT_DEBUG;
+//        if (TimeManager::getSteps() >= 686 && (vertex3->getID() == 1743113))
+//            REPORT_DEBUG;
         // ---------------------------------------------------------------------
         // if the vertex3 is a test point, split its edge
         // TODO: Will there be test points here?

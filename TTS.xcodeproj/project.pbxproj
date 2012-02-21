@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55020B5E14F3AB9B006E35FB /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
+		55020B5F14F3AB9B006E35FB /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		550A94A414271B4500D97A06 /* Deformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550A94A214271B4500D97A06 /* Deformation.cpp */; };
 		5534794D1429CF6800FCC94C /* unit_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5534794C1429CF6800FCC94C /* unit_test_main.cpp */; };
 		553FED97141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
@@ -1080,6 +1082,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55020B5E14F3AB9B006E35FB /* dlmalloc.c in Sources */,
+				55020B5F14F3AB9B006E35FB /* mpreal.cpp in Sources */,
 				55F8350914C1721E00B7AD5C /* TestPoint.cpp in Sources */,
 				5598FB0F13D3DC4F00BC1AC4 /* Location.cpp in Sources */,
 				5598FB0E13D3DC4300BC1AC4 /* TimeManager.cpp in Sources */,
