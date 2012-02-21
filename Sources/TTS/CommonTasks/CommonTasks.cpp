@@ -34,13 +34,6 @@ void CommonTasks::recordTask(TaskType type, EdgePointer *edgePointer)
 void CommonTasks::deleteTask(TaskType type, EdgePointer *edgePointer)
 {
     if (type == UpdateAngle) {
-#ifdef DEBUG
-        if (find(needUpdateAngles.begin(), needUpdateAngles.end(), edgePointer)
-            == needUpdateAngles.end()) {
-            //dumpTask(type);
-            REPORT_WARNING("The edge pointer does not contained in the list.")
-        }
-#endif
         needUpdateAngles.remove(edgePointer);
     }
 }

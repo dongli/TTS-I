@@ -771,8 +771,8 @@
 		55C9C1461497174F0063230B /* CommonTasks */ = {
 			isa = PBXGroup;
 			children = (
-				55C9C1471497174F0063230B /* CommonTasks.cpp */,
 				55C9C1481497174F0063230B /* CommonTasks.h */,
+				55C9C1471497174F0063230B /* CommonTasks.cpp */,
 			);
 			path = CommonTasks;
 			sourceTree = "<group>";

@@ -219,6 +219,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     if (polygon->edgePointers.size() == 2) {
         handleLinePolygon(polygonManager, polygon);
+        CommonTasks::doTask(CommonTasks::UpdateAngle);
         return;
     }
     // -------------------------------------------------------------------------

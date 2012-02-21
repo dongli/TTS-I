@@ -27,7 +27,7 @@ void CurvatureGuard::splitPolygon
 {
     Vertex *vertex1, *vertex2, *testVertex, vertex, *newVertex;
     Edge *edge1, *crossedEdge;
-    Polygon *polygon2, *polygon3, *polygon4;
+    Polygon *polygon2, *polygon3;
     EdgePointer *edgePointer3, *linkedEdge;
     Projection *projection;
     Location loc;
@@ -120,14 +120,6 @@ void CurvatureGuard::splitPolygon
     ApproachDetector::AgentPair::unpair(vertex3, edge1);
     if (vertex3->detectAgent.getActiveProjection() == NULL)
         ApproachingVertices::removeVertex(vertex3);
-    // -------------------------------------------------------------------------
-    // splitPolygon may affect the neightbor polygon, so record it for later
-    // processing
-    polygon4 = NULL;
-    if (mode == 1 && edgePointer1 == edgePointer2->next->next)
-        polygon4 = edgePointer2->next->getPolygon(OrientRight);
-    else if (mode == 2 && edgePointer1 == edgePointer2->prev)
-        polygon4 = edgePointer2->getPolygon(OrientRight);
     // -------------------------------------------------------------------------
     // create a new polygon
     polygonManager.polygons.append(&polygon3);
@@ -249,9 +241,6 @@ void CurvatureGuard::splitPolygon
                               polygonManager, polygon3))
             polygon3 = NULL;
     }
-    if (polygon4 != NULL)
-        if (polygon4->edgePointers.size() == 2)
-            handleLinePolygon(polygonManager, polygon4);
     // -------------------------------------------------------------------------
     CommonTasks::doTask(CommonTasks::UpdateAngle);
     // -------------------------------------------------------------------------
@@ -316,9 +305,8 @@ bool handleApproachEvents(MeshManager &meshManager,
 
     while (!ApproachingVertices::isEmpty()) {
         vertex3 = ApproachingVertices::vertices.front();
-//        if (TimeManager::getSteps() >= 490 && (vertex3->getID() == 1249422 ||
-//                                               vertex3->getID() == 1289391))
-//            REPORT_DEBUG;
+        if (TimeManager::getSteps() >= 661 && (vertex3->getID() == 1671166))
+            REPORT_DEBUG;
         // ---------------------------------------------------------------------
         // if the vertex3 is a test point, split its edge
         // TODO: Will there be test points here?
