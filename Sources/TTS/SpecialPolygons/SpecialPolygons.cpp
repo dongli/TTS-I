@@ -165,8 +165,8 @@ bool SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                 mode = ApproachDetector::chooseMode(edgePointer3, vertex2,
                                                     projection2);
                 assert(mode != -1);
-                if (!projection2->isApproaching()) {
-                    projection2->setApproach(true);
+                if (!projection2->tags.isSet(Approaching)) {
+                    projection2->tags.set(Approaching);
                     ApproachingVertices::recordVertex(vertex2);
                 }
                 splitPolygon(meshManager, flowManager, polygonManager, polygon,
@@ -176,8 +176,8 @@ bool SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                 mode = ApproachDetector::chooseMode(edgePointer1, vertex3,
                                                     projection3);
                 assert(mode != -1);
-                if (!projection3->isApproaching()) {
-                    projection3->setApproach(true);
+                if (!projection3->tags.isSet(Approaching)) {
+                    projection3->tags.set(Approaching);
                     ApproachingVertices::recordVertex(vertex3);
                 }
                 splitPolygon(meshManager, flowManager, polygonManager, polygon,

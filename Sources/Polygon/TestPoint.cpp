@@ -40,7 +40,7 @@ void TestPoint::reset(MeshManager &meshManager)
         (*itPrj).expire();
         if ((*itPrj).project(NewTimeLevel) != HasNoProjection) {
             (*itPrj).project(OldTimeLevel);
-            (*itPrj).setApproach(false);
+            (*itPrj).tags.unset(Approaching);
         } else
             AgentPair::unpair(itPrj);
     }

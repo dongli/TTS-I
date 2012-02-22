@@ -3,6 +3,7 @@
 
 #include "MultiTimeLevel.h"
 #include "Sphere.h"
+#include "ProjectionTags.h"
 
 class Vertex;
 class Edge;
@@ -42,18 +43,13 @@ namespace ApproachDetector
         void calcChangeRate();
         double getChangeRate() const { return changeRate; }
 
-        bool isApproaching() const { return approach; }
         void checkApproaching();
-        void setApproach(bool approach) { this->approach = approach; }
 
-        bool isCalculated() const { return calculated; }
-        void setCalculated() { calculated = true; }
-        void expire() { calculated = false; }
-        
-        bool isCrossing() const { return crossing; }
-        void setCrossing() { crossing = true; }
+        void expire() { tags.unset(Calculated); }
 
         Projection &operator=(const Projection &);
+        
+        ProjectionTags tags;
 
     private:
         Vertex *vertex;
@@ -62,9 +58,6 @@ namespace ApproachDetector
         MultiTimeLevel<double, 2> distance;
         OrientStatus orient;
         double changeRate;
-        bool approach;
-        bool calculated;
-        bool crossing;
     };
 }
 

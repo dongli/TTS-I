@@ -61,17 +61,6 @@ void CurvatureGuard::splitPolygon
             testVertex = vertex3;
             isVertexCross = true;
             break;
-        case 6:
-            // TODO: This branch is dead?
-            REPORT_WARNING("Why do I enter this branch?")
-            testVertex = &vertex;
-            testVertex->setCoordinate
-            (projection->getCoordinate(NewTimeLevel), NewTimeLevel);
-            testVertex->setCoordinate
-            (projection->getCoordinate(OldTimeLevel), OldTimeLevel);
-            meshManager.checkLocation(testVertex->getCoordinate(), loc, testVertex);
-            testVertex->setLocation(loc);
-            break;
         default:
             REPORT_ERROR("Unknown mode!");
     }
@@ -80,7 +69,8 @@ void CurvatureGuard::splitPolygon
     if (mode != 5 &&
         detectReplaceVertex(edgePointer1, vertex3, testVertex) != NoCross) {
         if (mode == 1 || mode == 2) {
-            projection->setApproach(false);
+            projection->tags.unset(Approaching);
+            projection->tags.set(CannotSplitPolygon);
             if (vertex3->detectAgent.getActiveProjection() == NULL)
                 ApproachingVertices::removeVertex(vertex3);
             return;
@@ -97,7 +87,8 @@ void CurvatureGuard::splitPolygon
                                      edge1, testVertex, vertex3,
                                      &crossedEdge) != NoCross) {
             if (!isVertexCross && mode == 5) {
-                projection->setApproach(false);
+                projection->tags.unset(Approaching);
+                projection->tags.set(CannotSplitPolygon);
                 if (vertex3->detectAgent.getActiveProjection() == NULL)
                     ApproachingVertices::removeVertex(vertex3);
                 return;
@@ -281,7 +272,7 @@ void CurvatureGuard::splitPolygon
     if (projection != NULL) {
         if (newVertex->detectAgent.getActiveProjection() == NULL)
             ApproachingVertices::recordVertex(newVertex);
-        projection->setApproach(true);
+        projection->tags.set(Approaching);
         newVertex->tags.set(MayCrossEdge);
     }
 }
@@ -348,8 +339,14 @@ bool handleApproachEvents(MeshManager &meshManager,
                                         projection->getCoordinate())) {
                     cout << "[Debug]: Branch 3: " << vertex3->getID() << endl;
                     assert((*itPrj).getDistance() < projection->getDistance());
-                    (*itPrj).setApproach(true);
-                    vertex3->tags.set(MayCrossEdge);
+                    if ((*itPrj).tags.isSet(CannotSplitPolygon)) {
+                        projection->tags.unset(Approaching);
+                        if (vertex3->detectAgent.getActiveProjection() == NULL)
+                            ApproachingVertices::removeVertex(vertex3);
+                    } else {
+                        (*itPrj).tags.set(Approaching);
+                        vertex3->tags.set(MayCrossEdge);
+                    }
                     hasAnotherEdge = true;
                     break;
                 }
@@ -411,7 +408,7 @@ bool handleApproachEvents(MeshManager &meshManager,
         int mode = ApproachDetector::chooseMode(edgePointer1, vertex3,
                                                 projection);
         if (mode == -1) {
-            vertex3->detectAgent.getProjection(edge1)->setApproach(false);
+            vertex3->detectAgent.getProjection(edge1)->tags.unset(Approaching);
             if (vertex3->detectAgent.getActiveProjection() == NULL)
                 ApproachingVertices::removeVertex(vertex3);
             continue;

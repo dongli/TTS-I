@@ -416,6 +416,7 @@
 		55D5B1F71491E80B008B43B8 /* TestPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestPoint.h; sourceTree = "<group>"; };
 		55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPoint.cpp; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
+		55E5981A14F3DDF300F8C358 /* ProjectionTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectionTags.h; sourceTree = "<group>"; };
 		55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CurvatureGuard.cpp; sourceTree = "<group>"; };
 		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_sphere.h; sourceTree = "<group>"; };
 		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_mesh.h; sourceTree = "<group>"; };
@@ -766,6 +767,7 @@
 				5595604E14A4919400EA93D5 /* Tags.h */,
 				55C9C1431497173A0063230B /* EdgeTags.h */,
 				55C9C1441497173A0063230B /* VertexTags.h */,
+				55E5981A14F3DDF300F8C358 /* ProjectionTags.h */,
 			);
 			path = Tags;
 			sourceTree = "<group>";

@@ -90,7 +90,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                 //   Vertex3 has projection on edge1 at new time step.
                 projection->project(point, edge, OldTimeLevel);
                 projection->checkApproaching();
-                if (projection->isApproaching() &&
+                if (projection->tags.isSet(Approaching) &&
                     point->detectAgent.getActiveProjection() == NULL) {
                     ApproachingVertices::recordVertex(point);
                 }
@@ -108,7 +108,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
         // Scenario 2-1:
         //   The projection of vertex3 on edge1 has already been
         //   calculated by other procedures.
-        if (projection->isCalculated())
+        if (projection->tags.isSet(Calculated))
             return;
         ProjectionStatus status = projection->project(NewTimeLevel);
         if (status == HasProjection) {
@@ -123,7 +123,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                 // Scenario 2-1:
                 //   Vertex3 has projection on edge1 at new time step.
                 projection->checkApproaching();
-                if (projection->isApproaching())
+                if (projection->tags.isSet(Approaching))
                     ApproachingVertices::recordVertex(point);
             }
         } else if (status == HasNoProjection) {
@@ -139,7 +139,7 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
             } else {
                 // TEST: When the point crosses the edge, we should remedy
                 //       this problem insteal of throughing an error.
-                projection->setCrossing();
+                projection->tags.set(Crossing);
             }
         }
     }
@@ -159,7 +159,7 @@ bool ApproachDetector::checkApproachValid(MeshManager &meshManager,
     if (projection == NULL)
         return false;
     // -------------------------------------------------------------------------
-    if (projection->isApproaching()) {
+    if (projection->tags.isSet(Approaching)) {
         if (chooseMode(edgePointer1, vertex3, projection) == -1)
             goto return_invalid_approach;
     } else
@@ -190,7 +190,7 @@ return_reset_test_point:
         return false;
     }
 return_invalid_approach:
-    projection->setApproach(false);
+    projection->tags.unset(Approaching);
     if (vertex3->detectAgent.getActiveProjection() == NULL)
         ApproachingVertices::removeVertex(vertex3);
     return false;
@@ -238,7 +238,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                     find(crossVertices.begin(), crossVertices.end(), vertex3) !=
                     crossVertices.end()) {
                     projection = vertex3->detectAgent.getProjection(edge1);
-                    if (projection != NULL && projection->isCrossing()) {
+                    if (projection != NULL && projection->tags.isSet(Crossing)) {
                         crossVertices.remove(vertex3);
                         if (edgePointer3 != NULL)
                             splitPolygon(meshManager, flowManager, polygonManager,
@@ -252,7 +252,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                 }
                 detectPoint(meshManager, flowManager, polygonManager, vertex3,
                             edgePointer1, edgePointer2, projection);
-                if (projection != NULL && projection->isCrossing() &&
+                if (projection != NULL && projection->tags.isSet(Crossing) &&
                     !handleCrossVertices) {
                     if (edgePointer3 == NULL) {
                         edgePointer3 = edgePointer1;

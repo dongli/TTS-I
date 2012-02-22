@@ -42,7 +42,7 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
                 projection = vertex3->detectAgent.getProjection(edge);
                 orient = Sphere::orient(vertex1, vertex2, vertex3);
                 if (orient != projection->getOrient()) {
-                    if (projection->isApproaching())
+                    if (projection->tags.isSet(Approaching))
                         ApproachingVertices::jumpVertex(oldVertex, vertex3);
                     return Cross;
                 }

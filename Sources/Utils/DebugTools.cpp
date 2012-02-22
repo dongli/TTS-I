@@ -79,7 +79,7 @@ bool DebugTools::is_colinear(const Coordinate &x1, const Coordinate &x2,
 void DebugTools::assert_consistent_projection(const Projection *projection)
 {
     TimeLevel timeLevel;
-    if (projection->isApproaching()) {
+    if (projection->tags.isSet(Approaching)) {
         timeLevel = OldTimeLevel;
     } else {
         timeLevel = NewTimeLevel;
@@ -122,7 +122,7 @@ void DebugTools::dump_watched_vertex()
     for (it = watchedVertex->detectAgent.getProjections().begin();
          it != watchedVertex->detectAgent.getProjections().end(); ++it) {
         const Projection *p = &(*it);
-        if (p->isCalculated())
+        if (p->tags.isSet(Calculated))
             assert_consistent_projection(p);
     }
     REPORT_DEBUG

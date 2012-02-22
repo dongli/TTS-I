@@ -32,16 +32,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/AgentPair.cpp"
-         timestampString = "345562005.609022"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "51"
-         endingLineNumber = "51"
+         startingLineNumber = "49"
+         endingLineNumber = "49"
          landmarkName = "AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -221,11 +221,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "351437703.000024"
+         timestampString = "351530392.445701"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "229"
-         endingLineNumber = "229"
+         startingLineNumber = "230"
+         endingLineNumber = "230"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
@@ -270,11 +270,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "351437703.000024"
+         timestampString = "351530392.445701"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "234"
-         endingLineNumber = "234"
+         startingLineNumber = "235"
+         endingLineNumber = "235"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -284,11 +284,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "351437703.000024"
+         timestampString = "351530392.445701"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "236"
-         endingLineNumber = "236"
+         startingLineNumber = "237"
+         endingLineNumber = "237"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
          <Actions>
@@ -315,58 +315,58 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/AgentPair.cpp"
-         timestampString = "345562005.609022"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "72"
-         endingLineNumber = "72"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
          landmarkName = "AgentPair::unpair(Vertex *vertex, Edge *edge)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/AgentPair.cpp"
-         timestampString = "345562005.609022"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "97"
-         endingLineNumber = "97"
+         startingLineNumber = "95"
+         endingLineNumber = "95"
          landmarkName = "AgentPair::unpair(std::list&lt;Vertex *&gt;::iterator &amp;it, Edge *edge)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/AgentPair.cpp"
-         timestampString = "345562005.609022"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "123"
-         endingLineNumber = "123"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
          landmarkName = "AgentPair::unpair(std::list&lt;Vertex *&gt;::iterator &amp;it, Projection *projection)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/AgentPair.cpp"
-         timestampString = "345562005.609022"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "150"
-         endingLineNumber = "150"
+         startingLineNumber = "148"
+         endingLineNumber = "148"
          landmarkName = "AgentPair::unpair(std::list&lt;Projection&gt;::iterator &amp;it)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -538,11 +538,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/Projection.cpp"
-         timestampString = "351307819.495673"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
+         startingLineNumber = "107"
+         endingLineNumber = "107"
          landmarkName = "Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -552,11 +552,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "351437703.000024"
+         timestampString = "351530392.445701"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "286"
-         endingLineNumber = "286"
+         startingLineNumber = "287"
+         endingLineNumber = "287"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -742,11 +742,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "351437871.05727"
+         timestampString = "351567579.470134"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "350"
-         endingLineNumber = "350"
+         startingLineNumber = "342"
+         endingLineNumber = "342"
          landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -756,11 +756,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/Projection.cpp"
-         timestampString = "351307819.495673"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "93"
-         endingLineNumber = "93"
+         startingLineNumber = "91"
+         endingLineNumber = "91"
          landmarkName = "Projection::project(Vertex *vertex, Edge *edge, TimeLevel timeLevel)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -770,11 +770,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/Projection.cpp"
-         timestampString = "351307819.495673"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "67"
-         endingLineNumber = "67"
+         startingLineNumber = "65"
+         endingLineNumber = "65"
          landmarkName = "Projection::project(TimeLevel timeLevel)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -784,26 +784,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/Projection.cpp"
-         timestampString = "351137428.675578"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
          landmarkName = "Projection::project(TimeLevel timeLevel)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "351437871.05727"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "66"
-         endingLineNumber = "66"
-         landmarkName = "CurvatureGuard::splitPolygon (MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon1, EdgePointer *edgePointer1, EdgePointer *edgePointer2, Vertex *vertex3, int mode)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -826,11 +812,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/Projection.cpp"
-         timestampString = "351313429.675216"
+         timestampString = "351527661.257516"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "58"
-         endingLineNumber = "58"
+         startingLineNumber = "56"
+         endingLineNumber = "56"
          landmarkName = "Projection::project(TimeLevel timeLevel)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -840,11 +826,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
-         timestampString = "351437703.000024"
+         timestampString = "351530392.445701"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "240"
-         endingLineNumber = "240"
+         startingLineNumber = "241"
+         endingLineNumber = "241"
          landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -929,17 +915,16 @@
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
-         condition = "vertex3-&gt;ID == 1591818"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "351494473.450998"
+         filePath = "Sources/TTS/ApproachDetector/ApproachDetector.cpp"
+         timestampString = "351530385.241157"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "419"
-         endingLineNumber = "419"
-         landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "7">
+         startingLineNumber = "211"
+         endingLineNumber = "211"
+         landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

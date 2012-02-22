@@ -69,16 +69,16 @@ void EdgeAgent::updateVertexProjections(MeshManager &meshManager)
               (vertex3->getHostEdge()->getEndPoint(FirstPoint) == vertex2 &&
                vertex3->getHostEdge()->getEndPoint(SecondPoint) == vertex1)))) {
             AgentPair::unpair(it, host);
-            if (projection->isApproaching() &&
+            if (projection->tags.isSet(Approaching) &&
                 vertex3->detectAgent.getActiveProjection() == NULL)
                 ApproachingVertices::removeVertex(vertex3);
         } else {
-            bool isAlreadyApproaching = projection->isApproaching();
+            bool isAlreadyApproaching = projection->tags.isSet(Approaching);
             ProjectionStatus status = projection->project(NewTimeLevel);
             if (status == HasProjection) {
                 projection->project(OldTimeLevel);
                 projection->checkApproaching();
-                if (projection->isApproaching()) {
+                if (projection->tags.isSet(Approaching)) {
                     if (!isAlreadyApproaching)
                         ApproachingVertices::recordVertex(vertex3);
                 } else
@@ -128,16 +128,16 @@ void EdgeAgent::handoverVertices(Edge *edge)
             projection = &p;
             projection->reinit();
             if (projection->project(vertex3, edge, NewTimeLevel)) {
-                if (vertex3->detectAgent.getProjection(host)->isCrossing()) {
+                if (vertex3->detectAgent.getProjection(host)->tags.isSet(Crossing)) {
                     REPORT_WARNING("Vertex is crossing old edge! "
                                    "Am I called when split problematic polygon?");
                     if (detectVertex(vertex3, edge) == Cross) {
-                        projection->setCrossing();
+                        projection->tags.set(Crossing);
                     }
                 }
                 projection->project(vertex3, edge, OldTimeLevel);
                 projection->checkApproaching();
-                if (projection->isApproaching()) {
+                if (projection->tags.isSet(Approaching)) {
                     if (vertex3->detectAgent.getActiveProjection() == NULL)
                         ApproachingVertices::recordVertex(vertex3);
                 }

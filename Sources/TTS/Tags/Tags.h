@@ -12,7 +12,7 @@ public:
 
     void set(TAG tag) { tags[tag] = true; }
     void unset(TAG tag) { tags[tag] = false; }
-    bool isSet(TAG tag) { return tags[tag]; }
+    bool isSet(TAG tag) const { return tags[tag]; }
 
 private:
     bool tags[NUMTAG];

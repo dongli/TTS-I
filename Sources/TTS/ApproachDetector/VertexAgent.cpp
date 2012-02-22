@@ -42,7 +42,7 @@ void VertexAgent::recordProjection(Edge *edge, Projection *projection)
 #endif
     projection->setEdge(edge);
     projection->setVertex(host);
-    projection->setCalculated();
+    projection->tags.set(Calculated);
     projections.push_back(*projection);
 }
 
@@ -122,7 +122,7 @@ Projection *VertexAgent::getActiveProjection()
     double distance = UndefinedDistance;
     std::list<Projection>::iterator it = projections.begin();
     for (; it != projections.end(); ++it) {
-        if ((*it).isApproaching()) {
+        if ((*it).tags.isSet(Approaching)) {
             if ((*it).getDistance(NewTimeLevel) < distance ||
                 distance == UndefinedDistance) {
                 distance = (*it).getDistance(NewTimeLevel);
@@ -137,7 +137,7 @@ bool VertexAgent::isCrossing()
 {
     std::list<Projection>::iterator it = projections.begin();
     for (; it != projections.end(); ++it)
-        if ((*it).isCrossing())
+        if ((*it).tags.isSet(Crossing))
             return true;
     return false;
 }
@@ -161,7 +161,7 @@ VertexAgent &VertexAgent::operator=(const VertexAgent &that)
         projections = that.projections;
         std::list<Projection>::iterator it = projections.begin();
         for (; it != projections.end(); ++it) {
-            if ((*it).isApproaching()) {
+            if ((*it).tags.isSet(Approaching)) {
                 // Note: If the host of "that" is approaching to some edge,
                 //       remember to replace it with "this" host.
                 ApproachingVertices::removeVertex(that.host);
@@ -187,7 +187,7 @@ void VertexAgent::dump()
         cout << "  ** Edge ID: ";
         cout << edge->getID() << " " << edge << endl;
         cout << "     Approaching?: ";
-        if ((*it).isApproaching())
+        if ((*it).tags.isSet(Approaching))
             cout << "yes" << endl;
         else
             cout << "no" << endl;

@@ -40,9 +40,7 @@ void Projection::reinit()
 {
     vertex = NULL;
     edge = NULL;
-    approach = false;
-    calculated = false;
-    crossing = false;
+    tags.reset();
 }
 
 ProjectionStatus Projection::project(TimeLevel timeLevel)
@@ -54,7 +52,7 @@ ProjectionStatus Projection::project(TimeLevel timeLevel)
         REPORT_ERROR("Old and new distances should not "
                      "be undefined at the same time!")
     }
-    if (crossing) {
+    if (tags.isSet(Crossing)) {
         REPORT_WARNING("Projection is crossing! Am I called by updateVertex?")
     }
 #endif
@@ -71,7 +69,7 @@ ProjectionStatus Projection::project(TimeLevel timeLevel)
     if (timeLevel == NewTimeLevel) {
         x.save();
         distance.save();
-        setCalculated();
+        tags.set(Calculated);
     }
     OrientStatus orient = this->orient;
     if (!project(vertex, edge, timeLevel))
@@ -144,7 +142,10 @@ void Projection::calcChangeRate()
 
 void Projection::checkApproaching()
 {
-    approach = ApproachDetector::isApproaching(this);
+    if (ApproachDetector::isApproaching(this))
+        tags.set(Approaching);
+    else
+        tags.unset(Approaching);
 }
 
 Projection &Projection::operator=(const Projection &that)
@@ -156,9 +157,7 @@ Projection &Projection::operator=(const Projection &that)
         this->distance = that.distance;
         this->orient = that.orient;
         this->changeRate = that.changeRate;
-        this->approach = that.approach;
-        this->calculated = that.calculated;
-        this->crossing = that.crossing;
+        this->tags = that.tags;
     }
     return *this;
 }

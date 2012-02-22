@@ -33,8 +33,6 @@ void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
     if (vertex->getID() == PAIR_VERTEX_ID)
 #endif
     {
-//        DebugTools::watch(vertex);
-//        DebugTools::watch(edge);
         cout << endl << endl;
         cout << "*** ApproachDetector::AgentPair::pair ***" << endl;
         cout << "---> Vertex " << vertex->getID() << " is paired with ";
