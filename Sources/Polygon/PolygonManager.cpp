@@ -46,7 +46,6 @@ void PolygonManager::init(const string &fileName)
             TimeManager::setClock(dt, second, steps);
         }
     }
-
     NcDim *numVertexDim = file.get_dim("num_total_vertex");
     if (numVertexDim == NULL) {
         Message message;
@@ -68,11 +67,9 @@ void PolygonManager::init(const string &fileName)
         message << fileName << "\"!";
         REPORT_ERROR(message.str());
     }
-
     int numVertex = static_cast<int>(numVertexDim->size());
     int numEdge = static_cast<int>(numEdgeDim->size());
     int numPolygon = static_cast<int>(numPolygonDim->size());
-
     // -------------------------------------------------------------------------
     // vertices part
     vertices.create(numVertex);
@@ -116,7 +113,6 @@ void PolygonManager::init(const string &fileName)
     delete [] oldVtxLon;
     delete [] oldVtxLat;
     delete [] oldVtxLev;
-
     // -------------------------------------------------------------------------
     // edges part
     edges.create(numEdge);
@@ -135,7 +131,6 @@ void PolygonManager::init(const string &fileName)
     }
     delete [] firstPoint;
     delete [] secondPoint;
-
     // test point
     double *oldTestLon = new double[numEdge];
     double *oldTestLat = new double[numEdge];
@@ -162,7 +157,6 @@ void PolygonManager::init(const string &fileName)
     delete [] oldTestLat;
     delete [] newTestLon;
     delete [] newTestLat;
-
     // -------------------------------------------------------------------------
     // polygons part
     polygons.create(numPolygon);
@@ -201,7 +195,6 @@ void PolygonManager::init(const string &fileName)
     }
     delete [] edgeIdx;
     delete [] edgeOnt;
-
     // -------------------------------------------------------------------------
     file.close();
 }
@@ -215,7 +208,6 @@ void PolygonManager::output(const string &fileName)
         string message = "Failed to open file "+fileName+".";
         REPORT_ERROR(message.c_str());
     }
-
     // -------------------------------------------------------------------------
     // time information
     if (TimeManager::onLine()) {
@@ -223,20 +215,17 @@ void PolygonManager::output(const string &fileName)
         file.add_att("time_step", TimeManager::getTimeStep());
         file.add_att("steps", TimeManager::getSteps());
     }
-
     // -------------------------------------------------------------------------
     // dimensions
     NcDim *numVertexDim = file.add_dim("num_total_vertex", vertices.size());
     NcDim *numEdgeDim = file.add_dim("num_total_edge", edges.size());
     NcDim *numPolygonDim = file.add_dim("num_total_polygon", polygons.size());
-
     // -------------------------------------------------------------------------
     // vertices part
     NcVar *oldVtxLonVar = file.add_var("old_vertex_lon", ncDouble, numVertexDim);
     NcVar *oldVtxLatVar = file.add_var("old_vertex_lat", ncDouble, numVertexDim);
     NcVar *newVtxLonVar = file.add_var("new_vertex_lon", ncDouble, numVertexDim);
     NcVar *newVtxLatVar = file.add_var("new_vertex_lat", ncDouble, numVertexDim);
-
     oldVtxLonVar->add_att("long_name", "old vertex longitude");
     oldVtxLonVar->add_att("units", "degree_east");
     oldVtxLatVar->add_att("long_name", "old vertex latitude");
@@ -245,12 +234,10 @@ void PolygonManager::output(const string &fileName)
     newVtxLonVar->add_att("units", "degree_east");
     newVtxLatVar->add_att("long_name", "new vertex latitude");
     newVtxLatVar->add_att("units", "degree_north");
-
     double *oldVtxLon = new double[vertices.size()];
     double *oldVtxLat = new double[vertices.size()];
     double *newVtxLon = new double[vertices.size()];
     double *newVtxLat = new double[vertices.size()];
-
     Vertex *vertex = vertices.front();
     for (int i = 0; i < vertices.size(); ++i) {
         oldVtxLon[i] = vertex->getCoordinate(OldTimeLevel).getLon()*Rad2Deg;
@@ -259,63 +246,50 @@ void PolygonManager::output(const string &fileName)
         newVtxLat[i] = vertex->getCoordinate(NewTimeLevel).getLat()*Rad2Deg;
         vertex = vertex->next;
     }
-
     oldVtxLonVar->put(oldVtxLon, vertices.size());
     oldVtxLatVar->put(oldVtxLat, vertices.size());
     newVtxLonVar->put(newVtxLon, vertices.size());
     newVtxLatVar->put(newVtxLat, vertices.size());
-
     delete [] oldVtxLon;
     delete [] oldVtxLat;
     delete [] newVtxLon;
     delete [] newVtxLat;
-
     // -------------------------------------------------------------------------
     // edges part
     NcVar *firstPointVar = file.add_var("first_point_idx", ncInt, numEdgeDim);
     NcVar *secondPointVar = file.add_var("second_point_idx", ncInt, numEdgeDim);
-    
     firstPointVar->add_att("long_name", "first point index of edge");
     secondPointVar->add_att("long_name", "second point index of edge");
-    
     int *idx1 = new int[edges.size()];
     int *idx2 = new int[edges.size()];
-    
     Edge *edge = edges.front();
     for (int i = 0; i < edges.size(); ++i) {
         idx1[i] = edge->getEndPoint(FirstPoint)->getID();
         idx2[i] = edge->getEndPoint(SecondPoint)->getID();
         edge = edge->next;
     }
-
     firstPointVar->put(idx1, edges.size());
     secondPointVar->put(idx2, edges.size());
-
     delete [] idx1;
     delete [] idx2;
-
     // test point
     NcVar *oldTestLonVar = file.add_var("old_testpoint_lon", ncDouble, numEdgeDim);
     NcVar *oldTestLatVar = file.add_var("old_testpoint_lat", ncDouble, numEdgeDim);
     NcVar *newTestLonVar = file.add_var("new_testpoint_lon", ncDouble, numEdgeDim);
     NcVar *newTestLatVar = file.add_var("new_testpoint_lat", ncDouble, numEdgeDim);
-
     oldTestLonVar->add_att("long_name", "old test point longitude");
     oldTestLonVar->add_att("units", "degree_east");
     oldTestLatVar->add_att("long_name", "old test point latitude");
     oldTestLatVar->add_att("units", "degree_north");
-
     newTestLonVar->add_att("long_name", "new test point longitude");
     newTestLonVar->add_att("units", "degree_east");
     newTestLatVar->add_att("long_name", "new test point latitude");
     newTestLatVar->add_att("units", "degree_north");
-
 #if defined TTS_ONLINE || PREPROCESS
     double *oldTestLon = new double[edges.size()];
     double *oldTestLat = new double[edges.size()];
     double *newTestLon = new double[edges.size()];
     double *newTestLat = new double[edges.size()];
-
     edge = edges.front();
     for (int i = 0; i < edges.size(); ++i) {
         Vertex *testPoint = edge->getTestPoint();
@@ -325,29 +299,23 @@ void PolygonManager::output(const string &fileName)
         newTestLat[i] = testPoint->getCoordinate(NewTimeLevel).getLat()*Rad2Deg;
         edge = edge->next;
     }
-
     oldTestLonVar->put(oldTestLon, edges.size());
     oldTestLatVar->put(oldTestLat, edges.size());
     newTestLonVar->put(newTestLon, edges.size());
     newTestLatVar->put(newTestLat, edges.size());
-
     delete [] oldTestLon;
     delete [] oldTestLat;
     delete [] newTestLon;
     delete [] newTestLat;
 #endif
-
     // -------------------------------------------------------------------------
     // polygons part
     NcVar *edgeNumVar = file.add_var("edge_num", ncInt, numPolygonDim);
     NcVar *areaVar = file.add_var("area", ncDouble, numPolygonDim);
-
     edgeNumVar->add_att("long_name", "edge number of polygon");
     areaVar->add_att("long_name", "polygon area");
-
     int edgeNum[polygons.size()];
     double area[polygons.size()];
-
     int counter = 0;
     Polygon *polygon = polygons.front();
     for (int i = 0; i < polygons.size(); ++i) {
@@ -357,17 +325,13 @@ void PolygonManager::output(const string &fileName)
         polygon = polygon->next;
     }
     int numEdgeIdx = counter;
-
     NcDim *numEdgeIdxDim = file.add_dim("num_edge_idx", numEdgeIdx);
     NcVar *edgeIdxVar = file.add_var("edge_idx", ncInt, numEdgeIdxDim);
     NcVar *edgeOntVar = file.add_var("edge_ont", ncInt, numEdgeIdxDim);
-
     edgeIdxVar->add_att("long_name", "edge index of polygon");
     edgeOntVar->add_att("long_name", "edge orientation of polygon");
-
     int *edgeIdx = new int[counter];
     int *edgeOnt = new int[counter];
-    
     counter = 0;
     polygon = polygons.front();
     for (int i = 0; i < polygons.size(); ++i) {
@@ -380,15 +344,12 @@ void PolygonManager::output(const string &fileName)
         }
         polygon = polygon->next;
     }
-
     edgeNumVar->put(edgeNum, polygons.size());
     areaVar->put(area, polygons.size());
     edgeIdxVar->put(edgeIdx, numEdgeIdx);
     edgeOntVar->put(edgeOnt, numEdgeIdx);
-
     delete [] edgeIdx;
     delete [] edgeOnt;
-
     // -------------------------------------------------------------------------
     file.close();
 }

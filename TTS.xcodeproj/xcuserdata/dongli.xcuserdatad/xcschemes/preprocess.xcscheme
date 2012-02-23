@@ -77,26 +77,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "C02562.global.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "polygons_2562.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "RLLMesh_360x180.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "polygons_360x180.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "RLLMesh_128x60.nc"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "polygons_128x60.nc"
+            argument = "polygons_2562.nc"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
