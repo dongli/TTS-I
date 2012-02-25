@@ -12,8 +12,6 @@ using std::string;
 class DelaunayDriver
 {
 public:
-    friend class VoronoiDriver;
-
     DelaunayDriver();
     virtual ~DelaunayDriver();
 

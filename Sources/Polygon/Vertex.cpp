@@ -25,6 +25,7 @@ Vertex::~Vertex()
 void Vertex::reinit()
 {
     Point::reinit();
+    linkedEdges.recycle();
 #ifdef TTS_ONLINE
     detectAgent.reinit();
     hostEdge = NULL;
@@ -43,7 +44,6 @@ void Vertex::clean()
             REPORT_ERROR("Unlinked edge!");
         linkedEdge = linkedEdge->next;
     }
-    linkedEdges.recycle();
 #ifdef TTS_ONLINE
     detectAgent.clean();
 #endif

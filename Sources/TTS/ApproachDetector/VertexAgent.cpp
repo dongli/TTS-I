@@ -21,6 +21,7 @@ void VertexAgent::checkin(Vertex *vertex)
 
 void VertexAgent::reinit()
 {
+    projections.clear();
 }
 
 void VertexAgent::clean()

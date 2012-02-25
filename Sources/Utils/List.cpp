@@ -323,6 +323,8 @@ inline void List<T>::recycle()
 template <class T>
 void List<T>::destroy()
 {
+    if (isDestroyed)
+        return;
     // Destroy the list contents
     T *temp;
     for (int i = 0; i < numElem; ++i) {

@@ -1,6 +1,7 @@
 #include "PolygonManager.h"
 #include "Constants.h"
 #include "TimeManager.h"
+#include "DelaunayDriver.h"
 #include <netcdfcpp.h>
 
 PolygonManager::PolygonManager()
@@ -21,6 +22,92 @@ PolygonManager::~PolygonManager()
 #ifndef UNIT_TEST
     REPORT_OFFLINE("PolygonManager")
 #endif
+}
+
+void PolygonManager::reinit()
+{
+    vertices.recycle();
+    edges.recycle();
+    polygons.recycle();
+}
+
+void PolygonManager::init(const DelaunayDriver &driver)
+{
+    // -------------------------------------------------------------------------
+    polygons.create(driver.DVT->size());
+    vertices.create(driver.DT->size());
+    Polygon *polygonMap[polygons.size()];
+    Polygon *polygon = polygons.front();
+    for (int i = 0; i < polygons.size(); ++i) {
+        polygonMap[i] = polygon;
+        polygon = polygon->next;
+    }
+    Vertex *vertexMap[vertices.size()];
+    Vertex *vertex = vertices.front();
+    for (int i = 0; i < vertices.size(); ++i) {
+        vertexMap[i] = vertex;
+        vertex = vertex->next;
+    }
+    bool checked[driver.DVT->size()];
+    memset(checked, 0, polygons.size()*sizeof(bool));
+    DelaunayVertex *DVT = driver.DVT->front();
+    polygon = polygons.front();
+    for (int i = 0; i < driver.DVT->size(); ++i) {
+        DelaunayVertexPointer *linkDVT = DVT->topology.linkDVT->front();
+        DelaunayTrianglePointer *incidentDT = DVT->topology.incidentDT->front();
+        for (int j = 0; j < DVT->topology.linkDVT->size(); ++j) {
+            if (checked[linkDVT->ptr->getID()-1]) {
+                Polygon *p = polygonMap[linkDVT->ptr->getID()-1];
+                EdgePointer *edgePointer = p->edgePointers.front();
+                for (int k = 0; k < p->edgePointers.size(); ++k) {
+                    if (edgePointer->edge->getEndPoint(FirstPoint)->getID() ==
+                        incidentDT->ptr->getID() &&
+                        edgePointer->edge->getEndPoint(SecondPoint)->getID() ==
+                        incidentDT->prev->ptr->getID()) break;
+                    edgePointer = edgePointer->next;
+                }
+                // use old edge
+                edgePointer->edge->linkPolygon(OrientRight, polygon);
+            } else {
+                // set vertices
+                Vertex *v1, *v2;
+                Point *center;
+                v1 = vertexMap[incidentDT->prev->ptr->getID()-1];
+                v2 = vertexMap[incidentDT->ptr->getID()-1];
+                center = &(incidentDT->prev->ptr->circumcenter);
+                v1->setCoordinate(center->getCoordinate().getLon(),
+                                  center->getCoordinate().getLat());
+                center = &(incidentDT->ptr->circumcenter);
+                v2->setCoordinate(center->getCoordinate().getLon(),
+                                  center->getCoordinate().getLat());
+                // create new edge
+                Edge *edge;
+                edges.append(&edge);
+                edge->linkEndPoint(FirstPoint, v1);
+                edge->linkEndPoint(SecondPoint, v2);
+                edge->linkPolygon(OrientLeft, polygon);
+                edge->calcNormVector();
+                edge->calcLength();
+            }
+            linkDVT = linkDVT->next;
+            incidentDT = incidentDT->next;
+        }
+        checked[i] = true;
+        DVT = DVT->next;
+        polygon->edgePointers.ring();
+        polygon = polygon->next;
+    }
+    // -------------------------------------------------------------------------
+    polygon = polygons.front();
+    for (int i = 0; i < polygons.size(); ++i) {
+        EdgePointer *edgePointer = polygon->edgePointers.front();
+        for (int j = 0; j < polygon->edgePointers.size(); ++j) {
+            edgePointer->calcAngle();
+            edgePointer = edgePointer->next;
+        }
+        polygon->calcArea();
+        polygon = polygon->next;
+    }
 }
 
 #ifdef TTS_ONLINE

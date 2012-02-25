@@ -28,6 +28,7 @@ void EdgeAgent::checkin(Edge *edge)
 
 void EdgeAgent::reinit()
 {
+    vertices.clear();
 }
 
 void EdgeAgent::clean()

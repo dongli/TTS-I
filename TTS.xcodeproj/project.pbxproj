@@ -56,6 +56,14 @@
 		554F977F14A8C566000052E2 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
 		554F978014A8C566000052E2 /* SystemCalls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581142A13EA4631004AF124 /* SystemCalls.cpp */; };
 		554F978114A8C566000052E2 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
+		5555E8F914F7CE990066DBB6 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
+		5555E8FA14F7CE990066DBB6 /* DelaunayTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */; };
+		5555E8FB14F7CE990066DBB6 /* DelaunayVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */; };
+		5555E8FC14F7CE990066DBB6 /* FakeVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */; };
+		5555E8FD14F7CE990066DBB6 /* PointManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */; };
+		5555E8FE14F7CE990066DBB6 /* PointTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */; };
+		5555E8FF14F7CE990066DBB6 /* Topology.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */; };
+		5555E90014F7CEB50066DBB6 /* CocircularDTGroups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */; };
 		556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		5581143C13EA474C004AF124 /* tts_gamil_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581140413EA4432004AF124 /* tts_gamil_demo.cpp */; };
@@ -160,6 +168,8 @@
 		5598FB1713D3DC8200BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
 		5598FB1813D3DC8F00BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
 		5598FB1913D3DC9A00BC1AC4 /* Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8113D3DA9F00BC1AC4 /* Location.cpp */; };
+		55A048C514F61CA40030C0FB /* PolygonRezoner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */; };
+		55A048C614F61CA40030C0FB /* PolygonRezoner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */; };
 		55A1C13B14C40A33000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
 		55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		55A1C13F14C40B9C000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
@@ -396,6 +406,8 @@
 		5598FAC013D3DA9F00BC1AC4 /* ReportMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportMacros.h; sourceTree = "<group>"; };
 		5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeManager.cpp; sourceTree = "<group>"; };
 		5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
+		55A048C314F61BC20030C0FB /* PolygonRezoner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonRezoner.h; sourceTree = "<group>"; };
+		55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonRezoner.cpp; sourceTree = "<group>"; };
 		55A1C13414C40A33000962C4 /* dlmalloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dlmalloc.c; sourceTree = "<group>"; };
 		55A1C13514C40A33000962C4 /* dlmalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dlmalloc.h; sourceTree = "<group>"; };
 		55A1C13914C40A33000962C4 /* mpreal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mpreal.cpp; sourceTree = "<group>"; };
@@ -682,6 +694,7 @@
 		5598FAAE13D3DA9F00BC1AC4 /* TTS */ = {
 			isa = PBXGroup;
 			children = (
+				55A048C114F61BA80030C0FB /* PolygonRezoner */,
 				55C9C1461497174F0063230B /* CommonTasks */,
 				55C9C1421497173A0063230B /* Tags */,
 				55D26478146E116200753BC0 /* SpecialPolygons */,
@@ -730,6 +743,15 @@
 				554F970714A8B437000052E2 /* ConfigTools.cpp */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		55A048C114F61BA80030C0FB /* PolygonRezoner */ = {
+			isa = PBXGroup;
+			children = (
+				55A048C314F61BC20030C0FB /* PolygonRezoner.h */,
+				55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */,
+			);
+			path = PolygonRezoner;
 			sourceTree = "<group>";
 		};
 		55A1C13114C40A33000962C4 /* mpfrc++ */ = {
@@ -1036,6 +1058,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5555E90014F7CEB50066DBB6 /* CocircularDTGroups.cpp in Sources */,
+				5555E8F914F7CE990066DBB6 /* DelaunayDriver.cpp in Sources */,
+				5555E8FA14F7CE990066DBB6 /* DelaunayTriangle.cpp in Sources */,
+				5555E8FB14F7CE990066DBB6 /* DelaunayVertex.cpp in Sources */,
+				5555E8FC14F7CE990066DBB6 /* FakeVertices.cpp in Sources */,
+				5555E8FD14F7CE990066DBB6 /* PointManager.cpp in Sources */,
+				5555E8FE14F7CE990066DBB6 /* PointTriangle.cpp in Sources */,
+				5555E8FF14F7CE990066DBB6 /* Topology.cpp in Sources */,
 				55971A4714DF64C000DB293B /* dlmalloc.c in Sources */,
 				55971A4814DF64C000DB293B /* mpreal.cpp in Sources */,
 				5541C98214A99F710052D2A2 /* ConfigTools.cpp in Sources */,
@@ -1077,6 +1107,7 @@
 				55F39F0914CA863D00CF3310 /* CurvatureGuard.cpp in Sources */,
 				55971A4C14DF686600DB293B /* TrendThreshold.cpp in Sources */,
 				55971A4F14DF6DED00DB293B /* ThresholdFunction.cpp in Sources */,
+				55A048C614F61CA40030C0FB /* PolygonRezoner.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,6 +1195,7 @@
 				55F39F0814CA863D00CF3310 /* CurvatureGuard.cpp in Sources */,
 				55971A4B14DF686600DB293B /* TrendThreshold.cpp in Sources */,
 				55971A4E14DF6DED00DB293B /* ThresholdFunction.cpp in Sources */,
+				55A048C514F61CA40030C0FB /* PolygonRezoner.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1308,6 +1340,8 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					TTS_OUTPUT,
+					TTS_REZONE,
 					TTS_CGA_SPLIT_POLYGONS,
 					TTS_ONLINE,
 					DEBUG,

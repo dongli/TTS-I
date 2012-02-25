@@ -8,12 +8,16 @@
 
 using std::string;
 
+class DelaunayDriver;
+
 class PolygonManager
 {
 public:
     PolygonManager();
     virtual ~PolygonManager();
-
+    
+    void reinit();
+    void init(const DelaunayDriver &);
 #ifdef TTS_ONLINE
     void init(const string &fileName);
 #endif

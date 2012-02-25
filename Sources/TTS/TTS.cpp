@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "Sphere.h"
 #include "CurvatureGuard.h"
+#include "PolygonRezoner.h"
 #ifdef DEBUG
 #include "DebugTools.h"
 #endif
@@ -120,6 +121,10 @@ void TTS::advect(MeshManager &meshManager,
     meshAdaptor.adapt(tracerManager, meshManager);
     for (int i = 0; i < tracerManager.getTracerNum(); ++i)
         meshAdaptor.remap(tracerManager.getTracerName(i), tracerManager);
+#endif
+#ifdef TTS_REZONE
+    if (TimeManager::getSteps()%18 == 17)
+        PolygonRezoner::rezone(meshManager, flowManager, polygonManager);
 #endif
 }
 
