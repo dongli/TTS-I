@@ -20,6 +20,8 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
     gamilReader.init("gamil_data", "tts.gamil.suv.*.nc");
     gamilReader.getVelocityField();
+    // TEST: Test PolygonRezoner
+    TimeManager::setEndStep(72);
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
         tts.advect(gamilReader.meshManager, gamilReader.meshAdaptor,

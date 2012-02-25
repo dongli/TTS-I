@@ -17,7 +17,7 @@ begin
     is_plot_point_counters = False
     projection = "CE"
     projection@angle = 10.0
-    line_width = 0.1
+    line_width = 1.0
     point_size = 0.001
 
     ; --------------------------------------------------------------------------
