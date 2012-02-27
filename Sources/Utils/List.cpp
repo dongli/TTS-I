@@ -73,6 +73,7 @@ void List<T>::reinit(int initPoolSize, int incrementSize)
     head = NULL;
     tail = NULL;
     numElem = 0;
+    nextElem = NULL;
     // Zero counters
     IDCounter = 0;
     // Initiate workflow indicators
@@ -235,6 +236,8 @@ void List<T>::remove(T *elem)
 {
     if (elem->endTag == ListElement<T>::Null)
         REPORT_ERROR("Element has already been removed.");
+    if (elem == nextElem)
+        nextElem = nextElem->next;
     --numElem;
     if (elem->endTag != ListElement<T>::Head) {
         elem->prev->next = elem->next;
@@ -272,6 +275,10 @@ void List<T>::remove(T *elem)
 template <class T>
 void List<T>::erase(T *elem)
 {
+    if (elem->endTag == ListElement<T>::Null)
+        REPORT_ERROR("Element has already been erased.");
+    if (elem == nextElem)
+        nextElem = nextElem->next;
     --numElem;
     --poolSize;
     if (elem->endTag != ListElement<T>::Head) {
@@ -414,6 +421,34 @@ T *List<T>::at(int idx) const
         }
     }
     return elem;
+}
+
+template <class T>
+void List<T>::startLoop(T *&iterator)
+{
+    if (nextElem == NULL) {
+        iterator = head;
+        nextElem = front()->next;
+    } else {
+        // continue outer loop
+        iterator = nextElem;
+        nextElem = nextElem->next;
+    }
+}
+
+template <class T>
+void List<T>::endLoop()
+{
+    nextElem = NULL;
+}
+
+template <class T>
+T *List<T>::getNextElem()
+{
+    T *tmp = nextElem;
+    if (tmp != NULL)
+        nextElem = tmp->next;
+    return tmp;
 }
 
 template <class T>

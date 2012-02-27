@@ -25,8 +25,9 @@ public:
     DelaunayVertex();
     virtual ~DelaunayVertex();
     
-    void
-    reinit();
+    void reinit();
+
+    void dump();
 
     Point *point;
     bool inserted;
@@ -42,10 +43,7 @@ public:
     }
     virtual ~DelaunayVertexPointer() {}
     
-    void
-    reinit() {
-        ptr = NULL;
-    }
+    void reinit() { ptr = NULL; }
     
     DelaunayVertex *ptr;
 };

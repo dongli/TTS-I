@@ -8,7 +8,6 @@
 #include "CommonTasks.h"
 #include "DelaunayDriver.h"
 #include "PointManager.h"
-#include "process_cocircularDT.h"
 #include "TimeManager.h"
 
 using namespace ApproachDetector;
@@ -187,13 +186,13 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         polygon = polygon->next;
     }
     // -------------------------------------------------------------------------
+    // 
     PointManager pointManager;
     DelaunayDriver driver;
     pointManager.init(numPoint, lon, lat);
     driver.linkPoint(pointManager);
     driver.init();
-    driver.calcircum();
-    process_cocircularDT(driver);
+    driver.calcCircumcenter();
     // -------------------------------------------------------------------------
     // clear the polygon manager for new polygons
     polygonManager.reinit();

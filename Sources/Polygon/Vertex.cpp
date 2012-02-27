@@ -75,6 +75,19 @@ void Vertex::unlinkEdge(Edge *edge)
     REPORT_ERROR("Edge is not linked with vertex.")
 }
 
+void Vertex::handoverEdges(Vertex *newVertex, PolygonManager &polygonManager)
+{
+    EdgePointer *linkedEdge = linkedEdges.front();
+    while (linkedEdge != NULL) {
+        if (linkedEdge->edge->getEndPoint(FirstPoint) == this) {
+            linkedEdge->edge->changeEndPoint(FirstPoint, newVertex);
+        } else {
+            linkedEdge->edge->changeEndPoint(SecondPoint, newVertex);
+        }
+        linkedEdge = linkedEdge->next;
+    }
+}
+
 #ifdef TTS_ONLINE
 void Vertex::handoverEdges(Vertex *newVertex, MeshManager &meshManager,
                            const FlowManager &flowManager,

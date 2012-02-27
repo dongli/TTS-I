@@ -63,7 +63,6 @@
 		5555E8FD14F7CE990066DBB6 /* PointManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */; };
 		5555E8FE14F7CE990066DBB6 /* PointTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */; };
 		5555E8FF14F7CE990066DBB6 /* Topology.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */; };
-		5555E90014F7CEB50066DBB6 /* CocircularDTGroups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */; };
 		556E49C013D54DCF00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		5581143C13EA474C004AF124 /* tts_gamil_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5581140413EA4432004AF124 /* tts_gamil_demo.cpp */; };
@@ -149,7 +148,6 @@
 		5598FB0413D3DC0F00BC1AC4 /* PointTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */; };
 		5598FB0513D3DC0F00BC1AC4 /* Topology.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */; };
 		5598FB0613D3DC0F00BC1AC4 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
-		5598FB0713D3DC0F00BC1AC4 /* CocircularDTGroups.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */; };
 		5598FB0813D3DC0F00BC1AC4 /* preprocess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */; };
 		5598FB0913D3DC2700BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
 		5598FB0A13D3DC3600BC1AC4 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
@@ -375,12 +373,9 @@
 		5598FA9513D3DA9F00BC1AC4 /* PolygonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonManager.h; sourceTree = "<group>"; };
 		5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vertex.cpp; sourceTree = "<group>"; };
 		5598FA9713D3DA9F00BC1AC4 /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
-		5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CocircularDTGroups.cpp; sourceTree = "<group>"; };
-		5598FA9A13D3DA9F00BC1AC4 /* CocircularDTGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocircularDTGroups.h; sourceTree = "<group>"; };
 		5598FA9B13D3DA9F00BC1AC4 /* generate_RLLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate_RLLMesh.cpp; sourceTree = "<group>"; };
 		5598FA9C13D3DA9F00BC1AC4 /* generate_square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate_square.cpp; sourceTree = "<group>"; };
 		5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = preprocess.cpp; sourceTree = "<group>"; };
-		5598FA9E13D3DA9F00BC1AC4 /* process_cocircularDT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = process_cocircularDT.h; sourceTree = "<group>"; };
 		5598FAA013D3DA9F00BC1AC4 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
 		5598FAA213D3DA9F00BC1AC4 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
@@ -652,12 +647,9 @@
 		5598FA9813D3DA9F00BC1AC4 /* Preprocess */ = {
 			isa = PBXGroup;
 			children = (
-				5598FA9913D3DA9F00BC1AC4 /* CocircularDTGroups.cpp */,
-				5598FA9A13D3DA9F00BC1AC4 /* CocircularDTGroups.h */,
 				5598FA9B13D3DA9F00BC1AC4 /* generate_RLLMesh.cpp */,
 				5598FA9C13D3DA9F00BC1AC4 /* generate_square.cpp */,
 				5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */,
-				5598FA9E13D3DA9F00BC1AC4 /* process_cocircularDT.h */,
 			);
 			path = Preprocess;
 			sourceTree = "<group>";
@@ -1058,7 +1050,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5555E90014F7CEB50066DBB6 /* CocircularDTGroups.cpp in Sources */,
 				5555E8F914F7CE990066DBB6 /* DelaunayDriver.cpp in Sources */,
 				5555E8FA14F7CE990066DBB6 /* DelaunayTriangle.cpp in Sources */,
 				5555E8FB14F7CE990066DBB6 /* DelaunayVertex.cpp in Sources */,
@@ -1133,7 +1124,6 @@
 				5598FB0413D3DC0F00BC1AC4 /* PointTriangle.cpp in Sources */,
 				5598FB0513D3DC0F00BC1AC4 /* Topology.cpp in Sources */,
 				5598FB0613D3DC0F00BC1AC4 /* Point.cpp in Sources */,
-				5598FB0713D3DC0F00BC1AC4 /* CocircularDTGroups.cpp in Sources */,
 				5598FB0813D3DC0F00BC1AC4 /* preprocess.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1340,7 +1330,6 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					TTS_OUTPUT,
 					TTS_REZONE,
 					TTS_CGA_SPLIT_POLYGONS,
 					TTS_ONLINE,

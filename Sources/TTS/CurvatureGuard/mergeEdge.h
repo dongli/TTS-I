@@ -121,14 +121,12 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             // adjust edges
             if (vertex1 == edge1->getEndPoint(FirstPoint)) {
                 edge1->setEdgePointer(OrientLeft, newEdgePointer1);
-                edge1->changeEndPoint(SecondPoint, vertex3, &testPoint,
-                                      meshManager, flowManager);
+                edge1->changeEndPoint(SecondPoint, vertex3, &testPoint);
                 if (newEdgePointer2 != NULL)
                     edge1->setEdgePointer(OrientRight, newEdgePointer2);
             } else {
                 edge1->setEdgePointer(OrientRight, newEdgePointer1);
-                edge1->changeEndPoint(FirstPoint, vertex3, &testPoint,
-                                      meshManager, flowManager);
+                edge1->changeEndPoint(FirstPoint, vertex3, &testPoint);
                 if (newEdgePointer2 != NULL)
                     edge1->setEdgePointer(OrientLeft, newEdgePointer2);
             }

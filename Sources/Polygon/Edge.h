@@ -35,12 +35,13 @@ public:
 
     void linkEndPoint(PointOrder, Vertex *, bool isSetTestPoint = true);
     Vertex *getEndPoint(PointOrder order) const { return endPoints[order]; }
+    void changeEndPoint(PointOrder, Vertex *point);
 #ifdef TTS_ONLINE
     void changeEndPoint(PointOrder, Vertex *point,
                         MeshManager &, const FlowManager &);
-    void changeEndPoint(PointOrder, Vertex *point, Vertex *testPoint,
-                        MeshManager &, const FlowManager &);
+    void changeEndPoint(PointOrder, Vertex *point, Vertex *testPoint);
 #endif
+    // TODO: clarify the macros
 #if defined TTS_ONLINE || PREPROCESS
     TestPoint *getTestPoint() { return &testPoint; }
 #endif

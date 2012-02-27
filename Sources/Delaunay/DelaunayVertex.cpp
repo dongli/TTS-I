@@ -18,3 +18,9 @@ void DelaunayVertex::reinit()
     topology.reinit();
     pit.reinit();
 }
+
+void DelaunayVertex::dump()
+{
+    cout << "Delaunay vertex (" << getID() << "):" << endl;
+    topology.dump();
+}

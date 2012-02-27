@@ -83,6 +83,15 @@ void Edge::linkEndPoint(PointOrder order, Vertex *point, bool isSetTestPoint)
 #endif
 }
 
+void Edge::changeEndPoint(PointOrder order, Vertex *point)
+{
+    if (endPoints[order] != NULL)
+        endPoints[order]->unlinkEdge(this);
+    linkEndPoint(order, point, true);
+    calcNormVector();
+    calcLength();
+}
+
 #ifdef TTS_ONLINE
 void Edge::changeEndPoint(PointOrder order, Vertex *point,
                           MeshManager &meshManager,
@@ -104,9 +113,7 @@ void Edge::changeEndPoint(PointOrder order, Vertex *point,
     TTS::track(meshManager, flowManager, &testPoint);
 }
 
-void Edge::changeEndPoint(PointOrder order, Vertex *point, Vertex *testPoint,
-                          MeshManager &meshManager,
-                          const FlowManager &flowManager)
+void Edge::changeEndPoint(PointOrder order, Vertex *point, Vertex *testPoint)
 {
     if (endPoints[order] != NULL)
         endPoints[order]->unlinkEdge(this);

@@ -51,15 +51,17 @@ void DelaunayDriver::init()
     int idx[3];
     
     getThreeRandomIndices(idx);
+    // TEST: for convenient tracking polygons, remove it after debugging
+    idx[0] = 0; idx[1] = 1; idx[2] = 2;
     initDelaunayTriangle(idx);
     initPIT();
     insertRestPoints();
-    DT->reindex();
     extractTopology();
     deleteFake();
+    DT->reindex();
 }
 
-void DelaunayDriver::calcircum()
+void DelaunayDriver::calcCircumcenter()
 {
     DelaunayTriangle *DT = this->DT->front();
     for (int i = 0; i < this->DT->size(); ++i) {
@@ -818,18 +820,18 @@ inline void DelaunayDriver::outputNetCDF(const string &fileName)
         lonFakeDVTVar->put(lonFakeDVT, fake.num);
         latFakeDVTVar->put(latFakeDVT, fake.num);
     }
-    
-    NcDim *numIdxDVTDim = file->add_dim("numIdxDVT", this->DT->size()*3);
-    NcVar *idxDVTVar = file->add_var("idxDVT", ncInt, numIdxDVTDim);
-    int idxDVT[DT->size()*3];
+    // -------------------------------------------------------------------------
+    NcDim *numDTDim = file->add_dim("numDT", this->DT->size());
+    NcDim *threeDim = file->add_dim("three", 3);
+    NcVar *idxDVTVar = file->add_var("idxDVT", ncInt, numDTDim, threeDim);
+    int idxDVT[this->DT->size()][3];
     DelaunayTriangle *DT = this->DT->front();
-    int k = -1;
     for (int i = 0; i < this->DT->size(); ++i) {
         for (int j = 0; j < 3; ++j)
-            idxDVT[++k] = DT->DVT[j]->getID();
+            idxDVT[i][j] = DT->DVT[j]->getID();
         DT = DT->next;
     }
-    idxDVTVar->put(idxDVT, this->DT->size()*3);
+    idxDVTVar->put(&idxDVT[0][0], this->DT->size(), 3);
     
     file->close();
     delete file;

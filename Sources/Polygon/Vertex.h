@@ -25,6 +25,7 @@ public:
 
     void linkEdge(Edge *);
     void unlinkEdge(Edge *);
+    void handoverEdges(Vertex *, PolygonManager &);
 #ifdef TTS_ONLINE
     void handoverEdges(Vertex *, MeshManager &, const FlowManager &,
                        PolygonManager &);

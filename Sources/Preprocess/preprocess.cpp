@@ -1,6 +1,5 @@
 #include "DelaunayDriver.h"
 #include "PointManager.h"
-#include "process_cocircularDT.h"
 #include "PolygonManager.h"
 #include <netcdfcpp.h>
 #include <string>
@@ -40,9 +39,7 @@ int main(int argc, char **argv)
     driver.calcircum();
     driver.output("delaunay");
 
-    // -------------------------------------------------------------------------
-    NOTICE("preprocess", "Processing cocircular Delaunay triangles.")
-    process_cocircularDT(driver);
+    // TODO: How to improve the quality of the Voronoi diagram?
 
     // -------------------------------------------------------------------------
     NOTICE("preprocess", "Organizing data for outputting.")

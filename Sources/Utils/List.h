@@ -71,6 +71,10 @@ public:
     T *back() const;
     T *at(int) const;
 
+    void startLoop(T *&);
+    void endLoop();
+    T *getNextElem();
+
 protected:
     string name;
 
@@ -91,6 +95,9 @@ protected:
     // List contents
     int numElem;
     T *head, *tail;
+
+    // Loop control variables
+    T *nextElem;
 
     // Counters
     int IDCounter; // For setting the element ID

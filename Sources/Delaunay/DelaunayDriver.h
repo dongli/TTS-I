@@ -19,7 +19,7 @@ public:
 
     void init();
 
-    void calcircum();
+    void calcCircumcenter();
 
     void output(const string &);
     

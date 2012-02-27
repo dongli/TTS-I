@@ -2,6 +2,8 @@
 #include "Constants.h"
 #include "TimeManager.h"
 #include "DelaunayDriver.h"
+// TODO: Do we need to handle line polygons?
+#include "SpecialPolygons.h"
 #include <netcdfcpp.h>
 
 PolygonManager::PolygonManager()
@@ -31,13 +33,51 @@ void PolygonManager::reinit()
     polygons.recycle();
 }
 
+void removeShortEdges(PolygonManager &polygonManager,
+                      Edge *edge, Vertex *vertex = NULL)
+{
+    static const double shortLength = 0.05/Rad2Deg*Sphere::radius;
+    if (edge->getLength() > shortLength)
+        return;
+    Vertex *vertex1, *vertex2;
+    // keep the first end point and remove the second as the default, but if
+    // argument vertex is given, then that vertex will be removed
+    vertex1 = edge->getEndPoint(FirstPoint);
+    vertex2 = edge->getEndPoint(SecondPoint);
+    edge->getPolygon(OrientLeft)->edgePointers.remove(edge->getEdgePointer(OrientLeft));
+    edge->getPolygon(OrientRight)->edgePointers.remove(edge->getEdgePointer(OrientRight));
+    polygonManager.edges.remove(edge);
+    if (vertex != NULL)
+        assert(vertex == vertex1 || vertex == vertex2);
+    if (vertex == vertex2) {
+        vertex1->handoverEdges(vertex2, polygonManager);
+        polygonManager.vertices.remove(vertex1);
+        vertex = vertex2;
+    } else {
+        vertex2->handoverEdges(vertex1, polygonManager);
+        polygonManager.vertices.remove(vertex2);
+        vertex = vertex1;
+    }
+    EdgePointer *linkedEdge;
+    vertex->linkedEdges.startLoop(linkedEdge);
+    while (linkedEdge != NULL) {
+        if (linkedEdge->edge->getLength() < shortLength)
+            removeShortEdges(polygonManager, linkedEdge->edge, vertex);
+        linkedEdge = vertex->linkedEdges.getNextElem();
+    }
+    vertex->linkedEdges.endLoop();
+}
+
 void PolygonManager::init(const DelaunayDriver &driver)
 {
+    Vertex *vertex1, *vertex2;
+    Edge *edge;
+    Polygon *polygon;
     // -------------------------------------------------------------------------
     polygons.create(driver.DVT->size());
     vertices.create(driver.DT->size());
     Polygon *polygonMap[polygons.size()];
-    Polygon *polygon = polygons.front();
+    polygon = polygons.front();
     for (int i = 0; i < polygons.size(); ++i) {
         polygonMap[i] = polygon;
         polygon = polygon->next;
@@ -59,32 +99,34 @@ void PolygonManager::init(const DelaunayDriver &driver)
             if (checked[linkDVT->ptr->getID()-1]) {
                 Polygon *p = polygonMap[linkDVT->ptr->getID()-1];
                 EdgePointer *edgePointer = p->edgePointers.front();
-                for (int k = 0; k < p->edgePointers.size(); ++k) {
+                int k;
+                for (k = 0; k < p->edgePointers.size(); ++k) {
                     if (edgePointer->edge->getEndPoint(FirstPoint)->getID() ==
                         incidentDT->ptr->getID() &&
                         edgePointer->edge->getEndPoint(SecondPoint)->getID() ==
                         incidentDT->prev->ptr->getID()) break;
                     edgePointer = edgePointer->next;
                 }
+#ifdef DEBUG
+                assert(k < p->edgePointers.size());
+#endif
                 // use old edge
                 edgePointer->edge->linkPolygon(OrientRight, polygon);
             } else {
                 // set vertices
-                Vertex *v1, *v2;
                 Point *center;
-                v1 = vertexMap[incidentDT->prev->ptr->getID()-1];
-                v2 = vertexMap[incidentDT->ptr->getID()-1];
+                vertex1 = vertexMap[incidentDT->prev->ptr->getID()-1];
+                vertex2 = vertexMap[incidentDT->ptr->getID()-1];
                 center = &(incidentDT->prev->ptr->circumcenter);
-                v1->setCoordinate(center->getCoordinate().getLon(),
-                                  center->getCoordinate().getLat());
+                vertex1->setCoordinate(center->getCoordinate().getLon(),
+                                       center->getCoordinate().getLat());
                 center = &(incidentDT->ptr->circumcenter);
-                v2->setCoordinate(center->getCoordinate().getLon(),
-                                  center->getCoordinate().getLat());
+                vertex2->setCoordinate(center->getCoordinate().getLon(),
+                                       center->getCoordinate().getLat());
                 // create new edge
-                Edge *edge;
                 edges.append(&edge);
-                edge->linkEndPoint(FirstPoint, v1);
-                edge->linkEndPoint(SecondPoint, v2);
+                edge->linkEndPoint(FirstPoint, vertex1);
+                edge->linkEndPoint(SecondPoint, vertex2);
                 edge->linkPolygon(OrientLeft, polygon);
                 edge->calcNormVector();
                 edge->calcLength();
@@ -98,16 +140,36 @@ void PolygonManager::init(const DelaunayDriver &driver)
         polygon = polygon->next;
     }
     // -------------------------------------------------------------------------
-    polygon = polygons.front();
-    for (int i = 0; i < polygons.size(); ++i) {
-        EdgePointer *edgePointer = polygon->edgePointers.front();
-        for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-            edgePointer->calcAngle();
-            edgePointer = edgePointer->next;
+    // remove short edges
+//    edges.startLoop(edge);
+//    while (edge != NULL) {
+//        removeShortEdges(*this, edge);
+//        edge = edges.getNextElem();
+//    }
+//    edges.endLoop();
+#ifdef TTS_OUTPUT
+    // -------------------------------------------------------------------------
+    // reindex the vertices and edges for outputting
+    vertices.reindex();
+    edges.reindex();
+#endif
+    // -------------------------------------------------------------------------
+    polygons.startLoop(polygon);
+    while (polygon != NULL) {
+        if (polygon->edgePointers.size() == 2) {
+            // TODO: Do we need to handle line polygons?
+            SpecialPolygons::handleLinePolygon(*this, polygon);
+        } else {
+            EdgePointer *edgePointer = polygon->edgePointers.front();
+            for (int j = 0; j < polygon->edgePointers.size(); ++j) {
+                edgePointer->calcAngle();
+                edgePointer = edgePointer->next;
+            }
+            polygon->calcArea();
         }
-        polygon->calcArea();
-        polygon = polygon->next;
+        polygon = polygons.getNextElem();
     }
+    polygons.endLoop();
 }
 
 #ifdef TTS_ONLINE
