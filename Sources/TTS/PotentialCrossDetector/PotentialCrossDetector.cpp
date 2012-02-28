@@ -15,7 +15,7 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
 {
     static std::list<Vertex *>::const_iterator itVtx;
     static std::list<Projection>::const_iterator itPrj;
-    Vertex *vertex1, *vertex2, *vertex3;
+    Vertex *vertex1, *vertex2, *vertex3, *vertex4;
     Projection *projection;
     OrientStatus orient;
     Edge *edge;
@@ -52,15 +52,16 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
             continue;
         }
         // ---------------------------------------------------------------------
-        // check the paired vertices of other linked edges
+        // check other linked edges
         if (edge->getEndPoint(FirstPoint) == oldVertex)
             vertex1 = edge->getEndPoint(SecondPoint);
-        else if (edge->getEndPoint(SecondPoint) == oldVertex)
+        else
             vertex1 = edge->getEndPoint(FirstPoint);
         EdgePointer *otherLinkedEdge = oldVertex->linkedEdges.front();
         for (int j = 0; j < oldVertex->linkedEdges.size(); ++j) {
             if (otherLinkedEdge != linkedEdge) {
                 edge = otherLinkedEdge->edge;
+                // check linked edges of paired vertices
                 for (itVtx = edge->detectAgent.vertices.begin();
                      itVtx != edge->detectAgent.vertices.end(); ++itVtx) {
                     if ((*itVtx)->getID() == -1) continue;
@@ -89,6 +90,24 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
                         }
                         vertexLinkedEdge = vertexLinkedEdge->next;
                     }
+                }
+                // check the edge itself
+                if (edge->getEndPoint(FirstPoint) == oldVertex)
+                    vertex2 = edge->getEndPoint(SecondPoint);
+                else
+                    vertex2 = edge->getEndPoint(FirstPoint);
+                EdgePointer *vertexLinkedEdge = vertex2->linkedEdges.front();
+                for (int k = 0; k < vertex2->linkedEdges.size(); ++k) {
+                    if (vertexLinkedEdge->edge != edge &&
+                        vertexLinkedEdge->edge != edgePointer->edge) {
+                        vertex3 = vertexLinkedEdge->edge->getEndPoint(FirstPoint);
+                        vertex4 = vertexLinkedEdge->edge->getEndPoint(SecondPoint);
+                        if (vertex3 != newVertex && vertex4 != newVertex &&
+                            vertex3 != vertex1 && vertex4 != vertex1 &&
+                            Sphere::isIntersect(vertex1, newVertex, vertex3, vertex4))
+                            return Cross;
+                    }
+                    vertexLinkedEdge = vertexLinkedEdge->next;
                 }
             }
             otherLinkedEdge = otherLinkedEdge->next;
