@@ -32,6 +32,24 @@ void Polygon::reinit()
     isAreaSet = false;
 }
 
+void Polygon::removeEdge(EdgePointer *edgePointer,
+                         PolygonManager &polygonManager)
+{
+#ifdef DEBUG
+    assert(edgePointer->getPolygon(OrientLeft) == this);
+#endif
+    Vertex *vertex1 = edgePointer->getEndPoint(FirstPoint);
+    Vertex *vertex2 = edgePointer->getEndPoint(SecondPoint);
+    Edge *edge = edgePointer->edge;
+    Polygon *neighborPolygon = edgePointer->getPolygon(OrientRight);
+    // keep first end point
+    neighborPolygon->edgePointers.remove(edgePointer->getNeighborEdgePointer());
+    this->edgePointers.remove(edgePointer);
+    polygonManager.edges.remove(edge);
+    vertex2->handoverEdges(vertex1, polygonManager);
+    polygonManager.vertices.remove(vertex2);
+}
+
 void Polygon::calcArea()
 {
     double excess = 0.0;

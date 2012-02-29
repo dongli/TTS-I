@@ -428,12 +428,31 @@ void List<T>::startLoop(T *&iterator)
 {
     if (nextElem == NULL) {
         iterator = head;
-        nextElem = front()->next;
+        nextElem = head->next;
     } else {
         // continue outer loop
         iterator = nextElem;
         nextElem = nextElem->next;
     }
+    isHeadPassed = false;
+}
+
+template <class T>
+bool List<T>::isLoopEnd()
+{
+    if (isRinged) {
+        if (isHeadPassed && nextElem->prev == head) {
+            nextElem = NULL;
+            return true;
+        }
+        if (!isHeadPassed && nextElem->prev != head) {
+            isHeadPassed = true;
+        }
+    } else {
+        if (nextElem == NULL)
+            return true;
+    }
+    return false;
 }
 
 template <class T>

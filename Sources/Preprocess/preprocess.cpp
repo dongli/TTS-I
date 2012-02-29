@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     pointManager.init(numPoint, lon, lat);
     driver.linkPoint(pointManager);
     driver.init();
-    driver.calcircum();
+    driver.calcCircumcenter();
     driver.output("delaunay");
 
     // TODO: How to improve the quality of the Voronoi diagram?

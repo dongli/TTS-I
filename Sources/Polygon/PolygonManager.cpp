@@ -2,7 +2,7 @@
 #include "Constants.h"
 #include "TimeManager.h"
 #include "DelaunayDriver.h"
-// TODO: Do we need to handle line polygons?
+#include "ReportMacros.h"
 #include "SpecialPolygons.h"
 #include <netcdfcpp.h>
 
@@ -33,47 +33,14 @@ void PolygonManager::reinit()
     polygons.recycle();
 }
 
-void removeShortEdges(PolygonManager &polygonManager,
-                      Edge *edge, Vertex *vertex = NULL)
-{
-    static const double shortLength = 0.05/Rad2Deg*Sphere::radius;
-    if (edge->getLength() > shortLength)
-        return;
-    Vertex *vertex1, *vertex2;
-    // keep the first end point and remove the second as the default, but if
-    // argument vertex is given, then that vertex will be removed
-    vertex1 = edge->getEndPoint(FirstPoint);
-    vertex2 = edge->getEndPoint(SecondPoint);
-    edge->getPolygon(OrientLeft)->edgePointers.remove(edge->getEdgePointer(OrientLeft));
-    edge->getPolygon(OrientRight)->edgePointers.remove(edge->getEdgePointer(OrientRight));
-    polygonManager.edges.remove(edge);
-    if (vertex != NULL)
-        assert(vertex == vertex1 || vertex == vertex2);
-    if (vertex == vertex2) {
-        vertex1->handoverEdges(vertex2, polygonManager);
-        polygonManager.vertices.remove(vertex1);
-        vertex = vertex2;
-    } else {
-        vertex2->handoverEdges(vertex1, polygonManager);
-        polygonManager.vertices.remove(vertex2);
-        vertex = vertex1;
-    }
-    EdgePointer *linkedEdge;
-    vertex->linkedEdges.startLoop(linkedEdge);
-    while (linkedEdge != NULL) {
-        if (linkedEdge->edge->getLength() < shortLength)
-            removeShortEdges(polygonManager, linkedEdge->edge, vertex);
-        linkedEdge = vertex->linkedEdges.getNextElem();
-    }
-    vertex->linkedEdges.endLoop();
-}
-
 void PolygonManager::init(const DelaunayDriver &driver)
 {
     Vertex *vertex1, *vertex2;
     Edge *edge;
+    EdgePointer *edgePointer;
     Polygon *polygon;
     // -------------------------------------------------------------------------
+    // convert the Voronoi diagram into polygon representation
     polygons.create(driver.DVT->size());
     vertices.create(driver.DT->size());
     Polygon *polygonMap[polygons.size()];
@@ -98,7 +65,7 @@ void PolygonManager::init(const DelaunayDriver &driver)
         for (int j = 0; j < DVT->topology.linkDVT->size(); ++j) {
             if (checked[linkDVT->ptr->getID()-1]) {
                 Polygon *p = polygonMap[linkDVT->ptr->getID()-1];
-                EdgePointer *edgePointer = p->edgePointers.front();
+                edgePointer = p->edgePointers.front();
                 int k;
                 for (k = 0; k < p->edgePointers.size(); ++k) {
                     if (edgePointer->edge->getEndPoint(FirstPoint)->getID() ==
@@ -141,12 +108,33 @@ void PolygonManager::init(const DelaunayDriver &driver)
     }
     // -------------------------------------------------------------------------
     // remove short edges
-//    edges.startLoop(edge);
-//    while (edge != NULL) {
-//        removeShortEdges(*this, edge);
-//        edge = edges.getNextElem();
-//    }
-//    edges.endLoop();
+    static const double minRatio = 0.05;
+    polygons.startLoop(polygon);
+    while (polygon != NULL) {
+        // find out the maximum edge length and use it as a ruler
+        double minLength = 1.0e34, maxLength = -1.0e34;
+        edgePointer = polygon->edgePointers.front();
+        for (int i = 0; i < polygon->edgePointers.size(); ++i) {
+            if (minLength > edgePointer->edge->getLength())
+                minLength = edgePointer->edge->getLength();
+            if (maxLength < edgePointer->edge->getLength())
+                maxLength = edgePointer->edge->getLength();
+            edgePointer = edgePointer->next;
+        }
+        if (minLength/maxLength < minRatio) {
+            polygon->dump("polygon");
+            polygon->edgePointers.startLoop(edgePointer);
+            do {
+                if (edgePointer->edge->getLength()/maxLength < minRatio) {
+                    // remove this edge
+                    polygon->removeEdge(edgePointer, *this);
+                }
+                edgePointer = polygon->edgePointers.getNextElem();
+            } while (!polygon->edgePointers.isLoopEnd());
+        }
+        polygon = polygon->next;
+    }
+    polygons.endLoop();
 #ifdef TTS_OUTPUT
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting

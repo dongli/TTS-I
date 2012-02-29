@@ -72,6 +72,7 @@ public:
     T *at(int) const;
 
     void startLoop(T *&);
+    bool isLoopEnd();
     void endLoop();
     T *getNextElem();
 
@@ -98,6 +99,7 @@ protected:
 
     // Loop control variables
     T *nextElem;
+    bool isHeadPassed;
 
     // Counters
     int IDCounter; // For setting the element ID

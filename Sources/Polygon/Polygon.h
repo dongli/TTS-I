@@ -21,6 +21,8 @@ public:
 
     void reinit();
 
+    void removeEdge(EdgePointer *, PolygonManager &);
+
     void calcArea();
     double getArea(TimeLevel timeLevel = NewTimeLevel) const {
         return area.get(timeLevel);

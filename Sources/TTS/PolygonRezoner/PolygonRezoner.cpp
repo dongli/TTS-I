@@ -168,21 +168,46 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     handleBentPolygons(meshManager, flowManager, polygonManager);
     // -------------------------------------------------------------------------
     // extract the centroids of each polygon for later Voronoi diagram
-    int numPoint = polygonManager.polygons.size();
+    int numPoint = polygonManager.polygons.size(), k = -1;
     double *lon = new double[numPoint];
     double *lat = new double[numPoint];
+    memset(lon, 0, numPoint*sizeof(double));
+    memset(lat, 0, numPoint*sizeof(double));
     Polygon *polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-        lon[i] = 0.0;
-        lat[i] = 0.0;
+        bool isSkip = false;
+        // skip the small polygon
+        double minArea = 1.0e34, maxArea = -1.0e34, avgArea = 0.0;
         EdgePointer *edgePointer = polygon->edgePointers.front();
         for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-            lon[i] += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getLon();
-            lat[i] += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getLat();
+            if (minArea > edgePointer->getPolygon(OrientRight)->getArea()) {
+                minArea = edgePointer->getPolygon(OrientRight)->getArea();
+            }
+            if (maxArea < edgePointer->getPolygon(OrientRight)->getArea()) {
+                maxArea = edgePointer->getPolygon(OrientRight)->getArea();
+            }
+            avgArea += edgePointer->getPolygon(OrientRight)->getArea();
             edgePointer = edgePointer->next;
         }
-        lon[i] /= polygon->edgePointers.size();
-        lat[i] /= polygon->edgePointers.size();
+        avgArea /= polygon->edgePointers.size();
+        if (polygon->getArea()/avgArea < 0.05) {
+            isSkip = true;
+            REPORT_DEBUG;
+        }
+        // calculate the centroid
+        if (isSkip) {
+            numPoint--;
+        } else {
+            k++;
+            edgePointer = polygon->edgePointers.front();
+            for (int j = 0; j < polygon->edgePointers.size(); ++j) {
+                lon[k] += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getLon();
+                lat[k] += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getLat();
+                edgePointer = edgePointer->next;
+            }
+            lon[k] /= polygon->edgePointers.size();
+            lat[k] /= polygon->edgePointers.size();
+        }
         polygon = polygon->next;
     }
     // -------------------------------------------------------------------------

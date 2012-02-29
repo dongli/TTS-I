@@ -118,11 +118,11 @@ void Sphere::rotate(const Coordinate &xp, const Coordinate &xo, Coordinate &xr)
     if (tmp3 < -1.0 || tmp3 > 1.0) {
         if (fabs(tmp3)-1.0 < EPS) {
             REPORT_WARNING("tmp3 is out of range [-1, 1]!");
-            tmp3 = fmin(1.0, fmax(-1.0, tmp3));
         } else
             REPORT_ERROR("tmp3 is out of range [-1, 1]!");
     }
 #endif
+    tmp3 = fmin(1.0, fmax(-1.0, tmp3));
     double lat = asin(tmp3);
 
     xr.set(lon, lat, xo.getLev());
@@ -157,10 +157,10 @@ void Sphere::inverseRotate(const Coordinate &xp, Coordinate &xo,
     tmp2 = cosLatR*cosLatP*cosLonR;
     tmp3 = tmp1-tmp2;
 #ifdef DEBUG
-    if (tmp3 < -1.0 || tmp3 > 1.0) {
-        REPORT_ERROR("tmp3 is out of range [-1,1]!")
-    }
+    if (tmp3 < -1.0 || tmp3 > 1.0)
+        REPORT_ERROR("tmp3 is out of range [-1,1]!");
 #endif
+    tmp3 = fmin(1.0, fmax(-1.0, tmp3));
     double lat = asin(tmp3);
     xo.set(lon, lat, xr.getLev());
 }

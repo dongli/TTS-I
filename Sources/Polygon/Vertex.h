@@ -3,10 +3,10 @@
 
 #include "Point.h"
 #include "List.h"
+class PolygonManager;
 #ifdef TTS_ONLINE
 class MeshManager;
 class FlowManager;
-class PolygonManager;
 #include "ApproachDetector.h"
 #include "VertexTags.h"
 #endif
