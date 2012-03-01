@@ -199,14 +199,21 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
             numPoint--;
         } else {
             k++;
+            double x = 0.0, y = 0.0, z = 0.0;
             edgePointer = polygon->edgePointers.front();
             for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-                lon[k] += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getLon();
-                lat[k] += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getLat();
+                x += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getX();
+                y += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getY();
+                z += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getZ();
                 edgePointer = edgePointer->next;
             }
-            lon[k] /= polygon->edgePointers.size();
-            lat[k] /= polygon->edgePointers.size();
+            x /= polygon->edgePointers.size();
+            y /= polygon->edgePointers.size();
+            z /= polygon->edgePointers.size();
+            lon[k] = atan2(y, x);
+            lat[k] = asin(z);
+            if (lon[k] < 0.0) lon[k] += PI2;
+            if (lon[k] > PI2) lon[k] -= PI2;
         }
         polygon = polygon->next;
     }

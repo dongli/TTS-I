@@ -23,7 +23,7 @@ public:
         sph(0) = lon;
         sph(1) = lat;
         sph(2) = lev;
-        // Convert spherical coordinate to Cartesian coordinate
+        // convert spherical coordinate to Cartesian coordinate
         double cosLat = cos(lat);
         // TODO: Do we need to multiply sphere radius?
         car(0) = cosLat*cos(lon);
