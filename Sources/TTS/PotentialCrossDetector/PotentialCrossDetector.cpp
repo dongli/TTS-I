@@ -593,7 +593,9 @@ Status PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge)
     for (int i = 0; i < vertex->linkedEdges.size(); ++i) {
         vertex3 = linkedEdge->edge->getEndPoint(FirstPoint);
         vertex4 = linkedEdge->edge->getEndPoint(SecondPoint);
-        if (Sphere::isIntersect(vertex1, vertex2, vertex3, vertex4))
+        if (vertex1 != vertex3 && vertex2 != vertex3 &&
+            vertex1 != vertex4 && vertex2 != vertex4 &&
+            Sphere::isIntersect(vertex1, vertex2, vertex3, vertex4))
             return Cross;
         linkedEdge = linkedEdge->next;
     }
