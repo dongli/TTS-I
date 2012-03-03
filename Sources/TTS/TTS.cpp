@@ -123,7 +123,7 @@ void TTS::advect(MeshManager &meshManager,
         meshAdaptor.remap(tracerManager.getTracerName(i), tracerManager);
 #endif
 #ifdef TTS_REZONE
-    if (TimeManager::getSteps()%18 == 17)
+    if (TimeManager::getSteps()%9 == 8)
         PolygonRezoner::rezone(meshManager, flowManager, polygonManager);
 #endif
 }

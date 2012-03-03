@@ -388,7 +388,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;DelaunayTriangle&gt;::remove(DelaunayTriangle*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "352465422.478296"
+               timestampString = "352477292.459564"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -400,7 +400,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "352465422.484238"
+               timestampString = "352477292.459911"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -412,7 +412,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Edge&gt;::remove(Edge*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "352465422.484519"
+               timestampString = "352477292.460155"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -424,7 +424,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "352465422.484931"
+               timestampString = "352477292.460469"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -436,13 +436,26 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Polygon&gt;::remove(Polygon*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "352465422.485244"
+               timestampString = "352477292.46072"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
                endingLineNumber = "238">
             </Location>
          </Locations>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "352479590.883735"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "611"
+         endingLineNumber = "611"
+         landmarkName = "PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge, bool needExtraCheck, OrientStatus referOrient)"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
