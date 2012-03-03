@@ -96,7 +96,8 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                 }
                 AgentPair::pair(point, edge, projection);
                 // Note: Check if the point has already crossed the edge
-                if (detectVertex(point, edge) == Cross) {
+                if (point->getID() != -1 &&
+                    detectVertex(point, edge) == Cross) {
                     projection = point->detectAgent.getProjection(edge);
                     // judge whether point crosses edge, or edge's end point
                     // cross the linked edge of point

@@ -8,6 +8,7 @@ class Polygon;
 class MeshManager;
 class FlowManager;
 class PolygonManager;
+#include "Sphere.h"
 #include "Vector.h"
 
 namespace PotentialCrossDetector
@@ -38,7 +39,9 @@ namespace PotentialCrossDetector
 
     Status detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2);
     
-    Status detectVertex(Vertex *vertex, Edge *edge);
+    Status detectVertex(Vertex *vertex, Edge *edge,
+                        bool needExtraCheck = false,
+                        OrientStatus referOrient = OrientOn);
 
     void adjustMergeEdgeAngleThreshold(Edge *edge1, Edge *edge2, double &a0);
 }

@@ -567,7 +567,6 @@ Status PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1,
     Vertex *vertex1, *vertex2, *vertex3, *vertex4;
     TestPoint *testPoint;
     // -------------------------------------------------------------------------
-    // collect information
     vertex1 = edgePointer1->edge->getEndPoint(FirstPoint);
     vertex2 = edgePointer1->edge->getEndPoint(SecondPoint);
     vertex3 = edgePointer2->edge->getEndPoint(FirstPoint);
@@ -584,9 +583,12 @@ Status PotentialCrossDetector::detectTestPoint(EdgePointer *edgePointer1,
 }
 
 // TODO: Could this function be used by others to avoid duplicate?
-Status PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge)
+Status PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge,
+                                            bool needExtraCheck,
+                                            OrientStatus referOrient)
 {
     Vertex *vertex1, *vertex2, *vertex3, *vertex4;
+    // -------------------------------------------------------------------------
     vertex1 = edge->getEndPoint(FirstPoint);
     vertex2 = edge->getEndPoint(SecondPoint);
     EdgePointer *linkedEdge = vertex->linkedEdges.front();
@@ -598,6 +600,15 @@ Status PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge)
             Sphere::isIntersect(vertex1, vertex2, vertex3, vertex4))
             return Cross;
         linkedEdge = linkedEdge->next;
+    }
+    // -------------------------------------------------------------------------
+    if (needExtraCheck) {
+        OrientStatus orient;
+        orient = Sphere::orient(vertex1->getCoordinate(OldTimeLevel),
+                                vertex2->getCoordinate(OldTimeLevel),
+                                vertex->getCoordinate(OldTimeLevel));
+        if (orient != OrientOn && referOrient != orient)
+            return Cross;
     }
     return NoCross;
 }

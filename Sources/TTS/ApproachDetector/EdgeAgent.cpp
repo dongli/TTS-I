@@ -132,7 +132,8 @@ void EdgeAgent::handoverVertices(Edge *edge)
                 if (vertex3->detectAgent.getProjection(host)->tags.isSet(Crossing)) {
                     REPORT_WARNING("Vertex is crossing old edge! "
                                    "Am I called when split problematic polygon?");
-                    if (detectVertex(vertex3, edge) == Cross) {
+                    if (detectVertex(vertex3, edge, true,
+                                     projection->getOrient()) == Cross) {
                         projection->tags.set(Crossing);
                     }
                 }
