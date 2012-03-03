@@ -13,13 +13,13 @@ using std::setprecision;
 class Coordinate
 {
 public:
-	Coordinate() {}
+	Coordinate() { isSet_ = false; }
     Coordinate(double lon, double lat, double lev = 0.0) {
-        set(lon, lat, lev);
+        setSPH(lon, lat, lev);
     }
 	virtual ~Coordinate() {}
 
-	void set(double lon, double lat, double lev = 0.0) {
+	void setSPH(double lon, double lat, double lev = 0.0) {
         sph(0) = lon;
         sph(1) = lat;
         sph(2) = lev;
@@ -29,7 +29,20 @@ public:
         car(0) = cosLat*cos(lon);
         car(1) = cosLat*sin(lon);
         car(2) = sin(lat);
+        isSet_ = true;
     }
+    void setCAR(double x, double y, double z) {
+        sph(0) = x;
+        sph(1) = y;
+        sph(2) = z;
+        // TODO: Consider the vertical coordinate!
+        sph(0) = atan2(y, x);
+        sph(1) = asin(z);
+        if (sph(0) < 0.0) sph(0) += PI2;
+        if (sph(0) > PI2) sph(0) -= PI2;
+        isSet_ = true;
+    }
+    bool isSet() const { return isSet_; }
 
     const Vector &getSPH() const { return sph; }
 	double getLon() const { return sph(0); }
@@ -69,6 +82,7 @@ public:
 private:
     Vector sph; // spherical coordinate
     Vector car; // Cartesian coordinate
+    bool isSet_;
 };
 
 #endif

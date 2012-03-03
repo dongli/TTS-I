@@ -24,7 +24,7 @@ void test_checkLocation()
     Coordinate x;
     Location loc;
 
-    x.set(6.2826213232128572, 65.0/Rad2Deg);
+    x.setSPH(6.2826213232128572, 65.0/Rad2Deg);
     point.setCoordinate(x);
 
     meshManager.checkLocation(point.getCoordinate(), loc, &point);

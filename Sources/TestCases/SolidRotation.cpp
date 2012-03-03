@@ -8,7 +8,7 @@ SolidRotation::SolidRotation()
 {
     U0 = PI2*Sphere::radius/12.0/86400.0;
     alpha = PI05;
-    axisPole.set(PI, PI05-alpha);
+    axisPole.setSPH(PI, PI05-alpha);
 }
 
 SolidRotation::~SolidRotation()
@@ -27,7 +27,7 @@ void SolidRotation::calcVelocityField(FlowManager &flowManager)
     for (int i = 1; i < umesh.getNumLon()-1; ++i)
         for (int j = 0; j < umesh.getNumLat(); ++j) {
             Coordinate x;
-            x.set(umesh.lon(i), umesh.lat(j));
+            x.setSPH(umesh.lon(i), umesh.lat(j));
             double tmp1, tmp2;
             tmp1 = cos(x.getLat())*cos(alpha);
             tmp2 = sin(x.getLat())*cos(x.getLon())*sin(alpha);
@@ -38,7 +38,7 @@ void SolidRotation::calcVelocityField(FlowManager &flowManager)
     for (int i = 0; i < vmesh.getNumLon()-1; ++i)
         for (int j = 0; j < vmesh.getNumLat(); ++j) {
             Coordinate x;
-            x.set(vmesh.lon(i), vmesh.lat(j));
+            x.setSPH(vmesh.lon(i), vmesh.lat(j));
             double rotatePart = -U0*sin(x.getLon())*sin(alpha);
             v[i][j][0] = rotatePart;
         }

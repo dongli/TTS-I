@@ -30,7 +30,7 @@ bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
     double lon;
     // find the rotating north pole that make arc x1->x2 equator
     rotate(x1, x2, x2r);
-    xpr.set(x2r.getLon()-PI05, 0.0);
+    xpr.setSPH(x2r.getLon()-PI05, 0.0);
     inverseRotate(x1, xp, xpr);
     // rotate according to rotating north pole
     rotate(xp, x1, x1r);
@@ -42,7 +42,7 @@ bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
     if (x1r.getLon() < x2r.getLon()) {
         if (x3r.getLon() >= x2r.getLon() || x3r.getLon() <= x1r.getLon()) {
             distance = fabs(x3r.getLat())*Sphere::radius;
-            x4r.set(x3r.getLon(), 0.0);
+            x4r.setSPH(x3r.getLon(), 0.0);
             inverseRotate(xp, x4, x4r);
             return true;
         }
@@ -51,14 +51,14 @@ bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
             lon += PI2;
         if (lon >= x2r.getLon() || lon <= x1r.getLon()) {
             distance = (PI-fabs(x3r.getLat()))*Sphere::radius;
-            x4r.set(lon, 0.0);
+            x4r.setSPH(lon, 0.0);
             inverseRotate(xp, x4, x4r);
             return true;
         }
     } else {
         if (x3r.getLon() >= x2r.getLon() && x3r.getLon() <= x1r.getLon()) {
             distance = fabs(x3r.getLat())*Sphere::radius;
-            x4r.set(x3r.getLon(), 0.0);
+            x4r.setSPH(x3r.getLon(), 0.0);
             inverseRotate(xp, x4, x4r);
             return true;
         }
@@ -67,7 +67,7 @@ bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
             lon += PI2;
         if (lon >= x2r.getLon() && lon <= x1r.getLon()) {
             distance = (PI-fabs(x3r.getLat()))*Sphere::radius;
-            x4r.set(lon, 0.0);
+            x4r.setSPH(lon, 0.0);
             inverseRotate(xp, x4, x4r);
             return true;
         }
@@ -125,7 +125,7 @@ void Sphere::rotate(const Coordinate &xp, const Coordinate &xo, Coordinate &xr)
     tmp3 = fmin(1.0, fmax(-1.0, tmp3));
     double lat = asin(tmp3);
 
-    xr.set(lon, lat, xo.getLev());
+    xr.setSPH(lon, lat, xo.getLev());
 }
 
 void Sphere::inverseRotate(const Coordinate &xp, Coordinate &xo,
@@ -162,7 +162,7 @@ void Sphere::inverseRotate(const Coordinate &xp, Coordinate &xo,
 #endif
     tmp3 = fmin(1.0, fmax(-1.0, tmp3));
     double lat = asin(tmp3);
-    xo.set(lon, lat, xr.getLev());
+    xo.setSPH(lon, lat, xr.getLev());
 }
 
 void Sphere::calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
@@ -171,7 +171,7 @@ void Sphere::calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
     Coordinate xr;
     Sphere::rotate(x1, x2, xr);
     double dlat = (PI05-xr.getLat())*0.5;
-    xr.set(xr.getLon(), PI05-dlat);
+    xr.setSPH(xr.getLon(), PI05-dlat);
     Sphere::inverseRotate(x1, x, xr);
 }
 
@@ -229,8 +229,8 @@ bool Sphere::calcIntersect(const Coordinate &x1, const Coordinate &x2,
     if (lon2 < 0.0) lon2 += PI2;
     if (lon2 > PI2) lon2 -= PI2;
 
-    x5.set(lon1, lat1);
-    x6.set(lon2, lat2);
+    x5.setSPH(lon1, lat1);
+    x6.setSPH(lon2, lat2);
 
     return true;
 }
@@ -240,8 +240,8 @@ bool Sphere::calcIntersectLat(const Coordinate &x1, const Coordinate &x2,
                               Coordinate &x)
 {
     Coordinate x3, x4, X[2];
-    x3.set(lon, 0.0);
-    x4.set(lon, PI05);
+    x3.setSPH(lon, 0.0);
+    x4.setSPH(lon, PI05);
     if (calcIntersect(x1, x2, x3, x4, X[0], X[1])) {
         Vector tmp1, tmp2;
         for (int i = 0; i < 2; ++i) {
@@ -299,8 +299,8 @@ bool Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
 
         Coordinate X[2];
 
-        X[0].set(lon[0].toDouble(), lat);
-        X[1].set(lon[1].toDouble(), lat);
+        X[0].setSPH(lon[0].toDouble(), lat);
+        X[1].setSPH(lon[1].toDouble(), lat);
 
         Vector tmp1, tmp2;
         for (int i = 0; i < 2; ++i) {
@@ -355,8 +355,8 @@ bool Sphere::calcIntersectLon(const Coordinate &x1, const Coordinate &x2,
 
         Coordinate X[2];
 
-        X[0].set(lon[0], lat);
-        X[1].set(lon[1], lat);
+        X[0].setSPH(lon[0], lat);
+        X[1].setSPH(lon[1], lat);
 
         Vector tmp1, tmp2;
         for (int i = 0; i < 2; ++i) {

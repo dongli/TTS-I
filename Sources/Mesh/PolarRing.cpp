@@ -137,7 +137,7 @@ Velocity PolarRingVelocity::interp(const Coordinate &x, const Location &loc,
     Coordinate x1;
     double distance;
     for (int i = 0; i < getNumLon(); ++i) {
-        x1.set(getLon(i), getLat(loc.pole), x.getLev());
+        x1.setSPH(getLon(i), getLat(loc.pole), x.getLev());
         distance = Sphere::calcDistance(x1, x);
         if (distance < eps) {
             velocity.ut = ut[loc.pole](i, loc.k).get(timeLevel);

@@ -24,7 +24,7 @@ void test_TestCase(double timeStep, int steps)
                 Location loc;
                 Coordinate x;
                 Velocity velocity;
-                x.set(evalWindField.lon[i], evalWindField.lat[j]);
+                x.setSPH(evalWindField.lon[i], evalWindField.lat[j]);
                 velocityField.meshManager.checkLocation(x, loc);
                 velocityField.flowManager.getVelocity(x, loc, NewTimeLevel,
                                                       velocity, Velocity::LonLatSpace);

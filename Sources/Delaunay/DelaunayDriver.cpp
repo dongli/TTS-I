@@ -109,7 +109,7 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
     // 1. Set the three fake vertices that are antipodal to the corresponding
     //    vertices of the first three inserted ones
     Coordinate southPole, x;
-    southPole.set(0.0, -PI05);
+    southPole.setSPH(0.0, -PI05);
     for (int i = 0; i < 3; ++i) {
         DVT[3+i] = &(fake.DVT[i]);
         Sphere::inverseRotate(DVT[i]->point->getCoordinate(), x, southPole);

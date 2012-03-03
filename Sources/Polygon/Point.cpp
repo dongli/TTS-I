@@ -19,7 +19,7 @@ void Point::reinit()
 void Point::setCoordinate(double lon, double lat, double lev, TimeLevel level)
 {
     Coordinate x;
-    x.set(lon, lat, lev);
+    x.setSPH(lon, lat, lev);
     if (level == NewTimeLevel) {
         if (isCoordinateSet)
             this->x.save();

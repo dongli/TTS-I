@@ -9,10 +9,10 @@ MovingVortices::MovingVortices()
     U0 = PI2*Sphere::radius/12.0/86400.0;
     alpha = PI05;
     rho0 = 3.0;
-    axisPole.set(PI, PI05-alpha);
+    axisPole.setSPH(PI, PI05-alpha);
 
     gamma = 5.0;
-    xv0.set(PI05, 0.0);
+    xv0.setSPH(PI05, 0.0);
     Sphere::rotate(axisPole, xv0, xvr0);
 }
 
@@ -35,7 +35,7 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
     Coordinate xvr;
     double lon = xvr0.getLon()+U0/Sphere::radius*time;
     if (lon > PI2) lon -= PI2;
-    xvr.set(lon, xvr0.getLat());
+    xvr.setSPH(lon, xvr0.getLat());
     Coordinate xv;
     Sphere::inverseRotate(axisPole, xv, xvr);
 
@@ -49,7 +49,7 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
     for (int i = 1; i < umesh.getNumLon()-1; ++i)
         for (int j = 0; j < umesh.getNumLat(); ++j) {
             Coordinate x, xr;
-            x.set(umesh.lon(i), umesh.lat(j));
+            x.setSPH(umesh.lon(i), umesh.lat(j));
             Sphere::rotate(xv, x, xr);
             double ReOmega = Sphere::radius*omega(xr.getLat());
             double dlon = x.getLon()-xv.getLon();
@@ -66,7 +66,7 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
     for (int i = 0; i < vmesh.getNumLon()-1; ++i)
         for (int j = 0; j < vmesh.getNumLat(); ++j) {
             Coordinate x, xr;
-            x.set(vmesh.lon(i), vmesh.lat(j));
+            x.setSPH(vmesh.lon(i), vmesh.lat(j));
             Sphere::rotate(xv, x, xr);
             double ReOmega = Sphere::radius*omega(xr.getLat());
             double dlon = x.getLon()-xv.getLon();
@@ -164,7 +164,7 @@ void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
     double lon_ = xvr0.getLon()+angleSpeed*time;
     if (lon_ > PI2) lon_ -= PI2;
     Coordinate xvr, xv;
-    xvr.set(lon_, xvr0.getLat());
+    xvr.setSPH(lon_, xvr0.getLat());
     Sphere::inverseRotate(axisPole, xv, xvr);
     // -------------------------------------------------------------------------
     // check if reversal is necessary
@@ -177,12 +177,12 @@ void MovingVortices::calcSolution(double time, const Array<double, 1> &lon,
     Coordinate x, xr;
     for (int i = 0; i < q.extent(0); ++i)
         for (int j = 0; j < q.extent(1); ++j) {
-            x.set(lon(i), lat(j));
+            x.setSPH(lon(i), lat(j));
             Sphere::rotate(xv, x, xr);
             if (doReverse) {
                 lon_ = xr.getLon()+PI;
                 if (lon_ > PI2) lon_ -= PI2;
-                xr.set(lon_, xr.getLat());
+                xr.setSPH(lon_, xr.getLat());
             }
             q(i, j) = 1.0-tanh(rho(xr.getLat())/gamma*
                                sin(xr.getLon()-omega(xr.getLat())*time));
@@ -198,7 +198,7 @@ void MovingVortices::calcSolution(Field &q)
     double lon = xvr0.getLon()+angleSpeed*TimeManager::getSeconds();
     if (lon > PI2) lon -= PI2;
     Coordinate xvr, xv;
-    xvr.set(lon, xvr0.getLat());
+    xvr.setSPH(lon, xvr0.getLat());
     Sphere::inverseRotate(axisPole, xv, xvr);
     // -------------------------------------------------------------------------
     // check if reversal is necessary
@@ -212,12 +212,12 @@ void MovingVortices::calcSolution(Field &q)
     Coordinate x, xr;
     for (int i = 0; i < mesh.getNumLon()-1; ++i)
         for (int j = 0; j < mesh.getNumLat(); ++j) {
-            x.set(mesh.lon(i), mesh.lat(j));
+            x.setSPH(mesh.lon(i), mesh.lat(j));
             Sphere::rotate(xv, x, xr);
             if (doReverse) {
                 lon = xr.getLon()+PI;
                 if (lon > PI2) lon -= PI2;
-                xr.set(lon, xr.getLat());
+                xr.setSPH(lon, xr.getLat());
             }
             q.values(i, j) = 1.0-tanh(rho(xr.getLat())/gamma*
                                       sin(xr.getLon()-omega(xr.getLat())*

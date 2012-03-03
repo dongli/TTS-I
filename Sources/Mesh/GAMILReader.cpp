@@ -95,7 +95,7 @@ void GAMILReader::checkVelocityField()
     for (int j = 0; j < numLat; ++j)
         for (int i = 0; i < numLon; ++i) {
             Coordinate x;
-            x.set(lon[i], lat[j]);
+            x.setSPH(lon[i], lat[j]);
             Location loc;
             meshManager.checkLocation(x, loc);
             Velocity velocity;

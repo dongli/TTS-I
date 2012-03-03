@@ -45,8 +45,8 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
     // -------------------------------------------------------------------------
     // set two projection on the equator
     Coordinate x3, x4;
-    x3.set(x1.getLon(), 0.0);
-    x4.set(x2.getLon(), 0.0);
+    x3.setSPH(x1.getLon(), 0.0);
+    x4.setSPH(x2.getLon(), 0.0);
     // -------------------------------------------------------------------------
     // calculate two normal vectors of the longitudinal lines
     Vector normVector1, normVector2;
@@ -219,19 +219,19 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole != Location::SouthPole)
-                        x(0).set(lonBnd2, latBnd2);
+                        x(0).setSPH(lonBnd2, latBnd2);
                     break;
                 case WestBnd:
                     if (isPole != Location::NorthPole)
-                        x(0).set(lonBnd1, latBnd1);
+                        x(0).setSPH(lonBnd1, latBnd1);
                     break;
                 case NorthBnd:
                     if (isPole != Location::NorthPole)
-                        x(0).set(lonBnd2, latBnd1);
+                        x(0).setSPH(lonBnd2, latBnd1);
                     break;
                 case SouthBnd:
                     if (isPole != Location::SouthPole)
-                        x(0).set(lonBnd1, latBnd2);
+                        x(0).setSPH(lonBnd1, latBnd2);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -241,25 +241,25 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole != Location::SouthPole) {
-                        x(0).set(lonBnd1, latBnd2);
-                        x(1).set(lonBnd2, latBnd2);
+                        x(0).setSPH(lonBnd1, latBnd2);
+                        x(1).setSPH(lonBnd2, latBnd2);
                     } else
-                        x(0).set(0.0, -PI05);
+                        x(0).setSPH(0.0, -PI05);
                     break;
                 case WestBnd:
                     if (isPole != Location::NorthPole) {
-                        x(0).set(lonBnd2, latBnd1);
-                        x(1).set(lonBnd1, latBnd1);
+                        x(0).setSPH(lonBnd2, latBnd1);
+                        x(1).setSPH(lonBnd1, latBnd1);
                     } else
-                        x(0).set(0.0, PI05);
+                        x(0).setSPH(0.0, PI05);
                     break;
                 case NorthBnd:
-                    x(0).set(lonBnd2, latBnd2);
-                    x(1).set(lonBnd2, latBnd1);
+                    x(0).setSPH(lonBnd2, latBnd2);
+                    x(1).setSPH(lonBnd2, latBnd1);
                     break;
                 case SouthBnd:
-                    x(0).set(lonBnd1, latBnd1);
-                    x(1).set(lonBnd1, latBnd2);
+                    x(0).setSPH(lonBnd1, latBnd1);
+                    x(1).setSPH(lonBnd1, latBnd2);
                     break;
                 default:
                     REPORT_ERROR("Unknown boundary!");
@@ -269,42 +269,42 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd1, latBnd1);
-                        x(1).set(lonBnd1, latBnd2);
-                        x(2).set(lonBnd2, latBnd2);
+                        x(0).setSPH(lonBnd1, latBnd1);
+                        x(1).setSPH(lonBnd1, latBnd2);
+                        x(2).setSPH(lonBnd2, latBnd2);
                     } else if (isPole == Location::SouthPole) {
-                        x(0).set(lonBnd1, latBnd1);
-                        x(1).set(0.0, -PI05);
+                        x(0).setSPH(lonBnd1, latBnd1);
+                        x(1).setSPH(0.0, -PI05);
                     }
                     break;
                 case WestBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd2, latBnd2);
-                        x(1).set(lonBnd2, latBnd1);
-                        x(2).set(lonBnd1, latBnd1);
+                        x(0).setSPH(lonBnd2, latBnd2);
+                        x(1).setSPH(lonBnd2, latBnd1);
+                        x(2).setSPH(lonBnd1, latBnd1);
                     } else if (isPole == Location::NorthPole) {
-                        x(0).set(lonBnd2, latBnd2);
-                        x(1).set(0.0, PI05);
+                        x(0).setSPH(lonBnd2, latBnd2);
+                        x(1).setSPH(0.0, PI05);
                     }
                     break;
                 case NorthBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd1, latBnd2);
-                        x(1).set(lonBnd2, latBnd2);
-                        x(2).set(lonBnd2, latBnd1);
+                        x(0).setSPH(lonBnd1, latBnd2);
+                        x(1).setSPH(lonBnd2, latBnd2);
+                        x(2).setSPH(lonBnd2, latBnd1);
                     } else if (isPole == Location::SouthPole) {
-                        x(0).set(0.0, -PI05);
-                        x(1).set(lonBnd2, latBnd1);
+                        x(0).setSPH(0.0, -PI05);
+                        x(1).setSPH(lonBnd2, latBnd1);
                     }
                     break;
                 case SouthBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd2, latBnd1);
-                        x(1).set(lonBnd1, latBnd1);
-                        x(2).set(lonBnd1, latBnd2);
+                        x(0).setSPH(lonBnd2, latBnd1);
+                        x(1).setSPH(lonBnd1, latBnd1);
+                        x(2).setSPH(lonBnd1, latBnd2);
                     } else if (isPole == Location::NorthPole) {
-                        x(0).set(0.0, PI05);
-                        x(1).set(lonBnd1, latBnd2);
+                        x(0).setSPH(0.0, PI05);
+                        x(1).setSPH(lonBnd1, latBnd2);
                     }
                     break;
                 default:
@@ -315,58 +315,58 @@ double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
             switch (from) {
                 case EastBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd2, latBnd1);
-                        x(1).set(lonBnd1, latBnd1);
-                        x(2).set(lonBnd1, latBnd2);
-                        x(3).set(lonBnd2, latBnd2);
+                        x(0).setSPH(lonBnd2, latBnd1);
+                        x(1).setSPH(lonBnd1, latBnd1);
+                        x(2).setSPH(lonBnd1, latBnd2);
+                        x(3).setSPH(lonBnd2, latBnd2);
                     } else if (isPole == Location::NorthPole) {
-                        x(0).set(0.0, PI05);
-                        x(1).set(lonBnd1, latBnd2);
-                        x(2).set(lonBnd2, latBnd2);
+                        x(0).setSPH(0.0, PI05);
+                        x(1).setSPH(lonBnd1, latBnd2);
+                        x(2).setSPH(lonBnd2, latBnd2);
                     } else if (isPole == Location::SouthPole) {
-                        x(0).set(lonBnd2, latBnd1);
-                        x(1).set(lonBnd1, latBnd1);
-                        x(2).set(0.0, -PI05);
+                        x(0).setSPH(lonBnd2, latBnd1);
+                        x(1).setSPH(lonBnd1, latBnd1);
+                        x(2).setSPH(0.0, -PI05);
                     }
                     break;
                 case WestBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd1, latBnd2);
-                        x(1).set(lonBnd2, latBnd2);
-                        x(2).set(lonBnd2, latBnd1);
-                        x(3).set(lonBnd1, latBnd1);
+                        x(0).setSPH(lonBnd1, latBnd2);
+                        x(1).setSPH(lonBnd2, latBnd2);
+                        x(2).setSPH(lonBnd2, latBnd1);
+                        x(3).setSPH(lonBnd1, latBnd1);
                     } else if (isPole == Location::NorthPole) {
-                        x(0).set(lonBnd1, latBnd2);
-                        x(1).set(lonBnd2, latBnd2);
-                        x(2).set(0.0, PI05);
+                        x(0).setSPH(lonBnd1, latBnd2);
+                        x(1).setSPH(lonBnd2, latBnd2);
+                        x(2).setSPH(0.0, PI05);
                     } else if (isPole == Location::SouthPole) {
-                        x(0).set(0.0, -PI05);
-                        x(1).set(lonBnd2, latBnd1);
-                        x(2).set(lonBnd1, latBnd1);
+                        x(0).setSPH(0.0, -PI05);
+                        x(1).setSPH(lonBnd2, latBnd1);
+                        x(2).setSPH(lonBnd1, latBnd1);
                     }
                     break;
                 case NorthBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd1, latBnd1);
-                        x(1).set(lonBnd1, latBnd2);
-                        x(2).set(lonBnd2, latBnd2);
-                        x(3).set(lonBnd2, latBnd1);
+                        x(0).setSPH(lonBnd1, latBnd1);
+                        x(1).setSPH(lonBnd1, latBnd2);
+                        x(2).setSPH(lonBnd2, latBnd2);
+                        x(3).setSPH(lonBnd2, latBnd1);
                     } else if (isPole == Location::SouthPole) {
-                        x(0).set(lonBnd1, latBnd1);
-                        x(1).set(0.0, -PI05);
-                        x(2).set(lonBnd2, latBnd1);
+                        x(0).setSPH(lonBnd1, latBnd1);
+                        x(1).setSPH(0.0, -PI05);
+                        x(2).setSPH(lonBnd2, latBnd1);
                     }
                     break;
                 case SouthBnd:
                     if (isPole == Location::Null) {
-                        x(0).set(lonBnd2, latBnd2);
-                        x(1).set(lonBnd2, latBnd1);
-                        x(2).set(lonBnd1, latBnd1);
-                        x(3).set(lonBnd1, latBnd2);
+                        x(0).setSPH(lonBnd2, latBnd2);
+                        x(1).setSPH(lonBnd2, latBnd1);
+                        x(2).setSPH(lonBnd1, latBnd1);
+                        x(3).setSPH(lonBnd1, latBnd2);
                     } else if (isPole == Location::NorthPole) {
-                        x(0).set(lonBnd2, latBnd2);
-                        x(1).set(0.0, PI05);
-                        x(2).set(lonBnd1, latBnd2);
+                        x(0).setSPH(lonBnd2, latBnd2);
+                        x(1).setSPH(0.0, PI05);
+                        x(2).setSPH(lonBnd1, latBnd2);
                     }
                     break;
                 default:
@@ -417,10 +417,10 @@ numerical_tolerance_label:
         numPolygonEdge--;
         // set the virtual intersection
         if (from == NorthBnd || from == SouthBnd)
-            x0.set(edgePointer0->getEndPoint(SecondPoint)
+            x0.setSPH(edgePointer0->getEndPoint(SecondPoint)
                    ->getCoordinate().getLon(), x0.getLat());
         else
-            x0.set(x0.getLon(), edgePointer0->getEndPoint(SecondPoint)
+            x0.setSPH(x0.getLon(), edgePointer0->getEndPoint(SecondPoint)
                    ->getCoordinate().getLat());
         // calculate the virtual normal vector of the polygon edge
         edgePointer0 = edgePointer0->next;
@@ -448,10 +448,10 @@ numerical_tolerance_label:
     } else if (PI2-angles(numPolygonEdge-1) < smallAngle) {
         numPolygonEdge--;
         if (to == NorthBnd || to == SouthBnd)
-            x1.set(edgePointer1->getEndPoint(FirstPoint)
+            x1.setSPH(edgePointer1->getEndPoint(FirstPoint)
                    ->getCoordinate().getLon(), x1.getLat());
         else
-            x1.set(x1.getLon(), edgePointer1->getEndPoint(FirstPoint)
+            x1.setSPH(x1.getLon(), edgePointer1->getEndPoint(FirstPoint)
                    ->getCoordinate().getLat());
         edgePointer1 = edgePointer1->prev;
         if (numPolygonEdge == 1) {

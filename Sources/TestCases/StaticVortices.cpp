@@ -9,9 +9,9 @@ StaticVortices::StaticVortices()
     U0 = PI2*Sphere::radius/T0;
     alpha = PI05;
     rho0 = 3.0;
-    axisPole.set(PI, PI05-alpha);
+    axisPole.setSPH(PI, PI05-alpha);
 
-    vortexPos.set(0.0, 0.0);
+    vortexPos.setSPH(0.0, 0.0);
 }
 
 StaticVortices::~StaticVortices()
@@ -31,7 +31,7 @@ void StaticVortices::calcVelocityField(FlowManager &flowManager)
     for (int i = 1; i < umesh.getNumLon()-1; ++i)
         for (int j = 0; j < umesh.getNumLat(); ++j) {
             Coordinate x, xr;
-            x.set(umesh.lon(i), umesh.lat(j));
+            x.setSPH(umesh.lon(i), umesh.lat(j));
             Sphere::rotate(vortexPos, x, xr);
             double ReOmega = Sphere::radius*omega(xr.getLat());
             double dlon = x.getLon()-vortexPos.getLon();
@@ -45,7 +45,7 @@ void StaticVortices::calcVelocityField(FlowManager &flowManager)
     for (int i = 0; i < vmesh.getNumLon()-1; ++i)
         for (int j = 0; j < vmesh.getNumLat(); ++j) {
             Coordinate x, xr;
-            x.set(vmesh.lon(i), vmesh.lat(j));
+            x.setSPH(vmesh.lon(i), vmesh.lat(j));
             Sphere::rotate(vortexPos, x, xr);
             double ReOmega = Sphere::radius*omega(xr.getLat());
             double dlon = x.getLon()-vortexPos.getLon();
