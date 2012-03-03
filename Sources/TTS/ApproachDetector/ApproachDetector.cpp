@@ -95,6 +95,20 @@ inline void detectPoint(MeshManager &meshManager, const FlowManager &flowManager
                     ApproachingVertices::recordVertex(point);
                 }
                 AgentPair::pair(point, edge, projection);
+                // Note: Check if the point has already crossed the edge
+                if (detectVertex(point, edge) == Cross) {
+                    projection = point->detectAgent.getProjection(edge);
+                    // judge whether point crosses edge, or edge's end point
+                    // cross the linked edge of point
+                    Vertex *vertex1 = edge->getEndPoint(FirstPoint);
+                    Vertex *vertex2 = edge->getEndPoint(SecondPoint);
+                    OrientStatus orient;
+                    orient = Sphere::orient(vertex1->getCoordinate(OldTimeLevel),
+                                            vertex2->getCoordinate(OldTimeLevel),
+                                            point->getCoordinate(OldTimeLevel));
+                    if (projection->getOrient() != orient)
+                        projection->tags.set(Crossing);
+                }
             }
         } else {
             projection = NULL;
