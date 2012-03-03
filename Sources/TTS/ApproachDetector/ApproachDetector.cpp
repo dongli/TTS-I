@@ -304,10 +304,17 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         splitPolygon(meshManager, flowManager, polygonManager,
                      polygon, edgePointer3, edgePointer4, vertex3, 5);
         handleCrossVertices = false;
-    }
 #ifdef DEBUG
-    assert(crossVertices.size() == 0);
+        if (crossVertices.size() != 0) {
+            cout << "Skipped vertices:" << endl;
+            std::list<Vertex *>::const_iterator it;
+            for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {
+                cout << "  * " << (*it)->getID() << endl;
+            }
+        }
 #endif
+        crossVertices.clear();
+    }
 #ifdef DIAG_EDGE_LENGTH
     double minEdgeLength = 1.0e34, maxEdgeLength = -1.0e34;
     edgePointer1 = polygon->edgePointers.front();
