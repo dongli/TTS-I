@@ -20,7 +20,8 @@ double Sphere::calcDistance(const Coordinate &x1, const Coordinate &x2)
     double dlon = x1.getLon()-x2.getLon();
     double tmp1 = sin(x1.getLat())*sin(x2.getLat());
     double tmp2 = cos(x1.getLat())*cos(x2.getLat())*cos(dlon);
-    return radius*acos(tmp1+tmp2);
+    double tmp3 = fmin(1.0, fmax(-1.0, tmp1+tmp2));
+    return radius*acos(tmp3);
 }
 
 bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
