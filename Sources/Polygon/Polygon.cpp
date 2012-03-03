@@ -30,6 +30,7 @@ void Polygon::reinit()
         tracers[i].reinit();
 #endif
     isAreaSet = false;
+    centroid.reinit();
 }
 
 void Polygon::removeEdge(EdgePointer *edgePointer,
@@ -85,6 +86,22 @@ void Polygon::calcArea()
         this->area.save();
         isAreaSet = true;
     }
+}
+
+void Polygon::calcCentroid()
+{
+    double x = 0.0, y = 0.0, z = 0.0;
+    EdgePointer *edgePointer = edgePointers.front();
+    for (int j = 0; j < edgePointers.size(); ++j) {
+        x += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getX();
+        y += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getY();
+        z += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getZ();
+        edgePointer = edgePointer->next;
+    }
+    x /= edgePointers.size();
+    y /= edgePointers.size();
+    z /= edgePointers.size();
+    centroid.setCAR(x, y, z);
 }
 
 #ifdef TTS_ONLINE

@@ -168,15 +168,11 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     handleBentPolygons(meshManager, flowManager, polygonManager);
     // -------------------------------------------------------------------------
     // extract the centroids of each polygon for later Voronoi diagram
-    int numPoint = polygonManager.polygons.size(), k = -1;
-    double *lon = new double[numPoint];
-    double *lat = new double[numPoint];
-    memset(lon, 0, numPoint*sizeof(double));
-    memset(lat, 0, numPoint*sizeof(double));
+    // =========================================================================
+    int numPoint = polygonManager.polygons.size();
     Polygon *polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-        bool isSkip = false;
-        // skip the small polygon
+        // skip small polygon
         double minArea = 1.0e34, maxArea = -1.0e34, avgArea = 0.0;
         EdgePointer *edgePointer = polygon->edgePointers.front();
         for (int j = 0; j < polygon->edgePointers.size(); ++j) {
@@ -190,30 +186,49 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
             edgePointer = edgePointer->next;
         }
         avgArea /= polygon->edgePointers.size();
-        if (polygon->getArea()/avgArea < 0.05) {
-            isSkip = true;
-            REPORT_DEBUG;
+        if (polygon->getArea()/avgArea < 0.5) {
+            numPoint--;
+            polygon = polygon->next;
+            continue;
         }
         // calculate the centroid
-        if (isSkip) {
-            numPoint--;
-        } else {
-            k++;
-            double x = 0.0, y = 0.0, z = 0.0;
-            edgePointer = polygon->edgePointers.front();
+        polygon->calcCentroid();
+        polygon = polygon->next;
+    }
+    // =========================================================================
+    int k = -1, maxNumPoint = numPoint+numPoint/10;
+    double *lon = new double[maxNumPoint];
+    double *lat = new double[maxNumPoint];
+    static const double largeArea = 1.0/Rad2Deg*Sphere::radius2;
+    polygon = polygonManager.polygons.front();
+    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+        if (!polygon->getCentroid().isSet()) {
+            polygon = polygon->next;
+            continue;
+        }
+        k++;
+        lon[k] = polygon->getCentroid().getLon();
+        lat[k] = polygon->getCentroid().getLat();
+        // split large polygon
+        if (polygon->getArea() > largeArea) {
+            EdgePointer *edgePointer = polygon->edgePointers.front();
+            Polygon *polygon1 = NULL;
             for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-                x += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getX();
-                y += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getY();
-                z += edgePointer->getEndPoint(FirstPoint)->getCoordinate().getZ();
+                Polygon *polygon2 = edgePointer->getPolygon(OrientRight);
+                if (polygon1 != polygon2 && polygon2->getCentroid().isSet()) {
+                    k++;
+                    numPoint++;
+                    assert(numPoint <= maxNumPoint);
+                    Coordinate x;
+                    Sphere::calcMiddlePoint(polygon->getCentroid(),
+                                            polygon2->getCentroid(), x);
+                    lon[k] = x.getLon();
+                    lat[k] = x.getLat();
+                }
+                polygon1 = polygon2;
                 edgePointer = edgePointer->next;
             }
-            x /= polygon->edgePointers.size();
-            y /= polygon->edgePointers.size();
-            z /= polygon->edgePointers.size();
-            lon[k] = atan2(y, x);
-            lat[k] = asin(z);
-            if (lon[k] < 0.0) lon[k] += PI2;
-            if (lon[k] > PI2) lon[k] -= PI2;
+            polygon->getCentroid().reinit();
         }
         polygon = polygon->next;
     }
@@ -222,6 +237,8 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     PointManager pointManager;
     DelaunayDriver driver;
     pointManager.init(numPoint, lon, lat);
+    delete [] lon;
+    delete [] lat;
     driver.linkPoint(pointManager);
     driver.init();
     driver.calcCircumcenter();

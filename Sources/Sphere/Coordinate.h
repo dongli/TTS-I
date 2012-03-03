@@ -13,11 +13,13 @@ using std::setprecision;
 class Coordinate
 {
 public:
-	Coordinate() { isSet_ = false; }
+	Coordinate() { reinit(); }
     Coordinate(double lon, double lat, double lev = 0.0) {
         setSPH(lon, lat, lev);
     }
 	virtual ~Coordinate() {}
+
+    void reinit() { isSet_ = false; }
 
 	void setSPH(double lon, double lat, double lev = 0.0) {
         sph(0) = lon;
