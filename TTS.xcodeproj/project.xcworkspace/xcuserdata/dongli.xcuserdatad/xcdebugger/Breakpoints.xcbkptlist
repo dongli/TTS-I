@@ -4,46 +4,6 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../Sources/TTS/PolygonRezoner/PolygonRezoner.cpp"
-         timestampString = "352450260.075487"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "214"
-         endingLineNumber = "214"
-         landmarkName = "PolygonRezoner::rezone(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../Sources/TTS/PolygonRezoner/PolygonRezoner.cpp"
-         timestampString = "352450260.075487"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "225"
-         endingLineNumber = "225"
-         landmarkName = "PolygonRezoner::rezone(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "5">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
-               <ActionContent
-                  consoleCommand = "p polygon2-&gt;centroid.dump(0)">
-               </ActionContent>
-            </BreakpointActionProxy>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
-               <ActionContent
-                  consoleCommand = "p x.dump(0)">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -67,6 +27,86 @@
          startingLineNumber = "65"
          endingLineNumber = "65"
          landmarkName = "SpecialPolygons::handleLinePolygon(PolygonManager &amp;polygonManager, Polygon *polygon, bool isKeepMass)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../Sources/TTS/ApproachDetector/ApproachDetector.cpp"
+         timestampString = "352464897.21454"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "234"
+         endingLineNumber = "234"
+         landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p edgePointer1-&gt;getEndPoint(FirstPoint)-&gt;ID">
+               </ActionContent>
+            </BreakpointActionProxy>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p edgePointer1-&gt;getEndPoint(SecondPoint)-&gt;ID">
+               </ActionContent>
+            </BreakpointActionProxy>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p edgePointer1-&gt;angle.getNew()*Rad2Deg">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../Sources/TTS/ApproachDetector/ApproachDetector.cpp"
+         timestampString = "352464897.21454"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "241"
+         endingLineNumber = "241"
+         landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent
+                  consoleCommand = "p vertex3-&gt;ID">
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../Sources/TTS/ApproachDetector/ApproachDetector.cpp"
+         timestampString = "352464897.21454"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "214"
+         endingLineNumber = "214"
+         landmarkName = "ApproachDetector::detectPolygon(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *polygon)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../Sources/TTS/PotentialCrossDetector/PotentialCrossDetector.cpp"
+         timestampString = "352465076.952928"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "609"
+         endingLineNumber = "609"
+         landmarkName = "PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge, bool needExtraCheck, OrientStatus referOrient)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

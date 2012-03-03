@@ -292,6 +292,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         return;
     if (crossVertices.size() != 0) {
 #ifdef DEBUG
+        cout << "Bad polygon " << polygon->getID() << endl;
         cout << "Crossing vertex number: " << crossVertices.size() << endl;
         std::list<Vertex *>::const_iterator it;
         for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {

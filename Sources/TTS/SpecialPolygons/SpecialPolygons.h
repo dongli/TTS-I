@@ -19,6 +19,11 @@ namespace SpecialPolygons
                            const FlowManager &flowManager,
                            PolygonManager &polygonManager, Polygon *polygon,
                            bool isKeepMass = false);
+
+    bool handlBentPolygon(MeshManager &meshManager,
+                          const FlowManager &flowManager,
+                          PolygonManager &polygonManager, Polygon *polygon,
+                          bool isKeepMass = false);
 }
 
 #endif
