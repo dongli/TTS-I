@@ -40,6 +40,7 @@ void Edge::reinit()
 #ifdef TTS_ONLINE
     detectAgent.reinit();
     tags.reset();
+    testPoint.reinit();
 #endif
 }
 

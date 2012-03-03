@@ -18,6 +18,7 @@ TestPoint::~TestPoint()
 
 void TestPoint::reinit()
 {
+    Point::reinit();
 }
 
 #ifdef TTS_ONLINE
