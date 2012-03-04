@@ -929,6 +929,9 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
     // reset tracer mass
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int i = 0; i < tracerManager.polygonManager.polygons.size(); ++i) {
+        if (polygon->tracers.size() == 0)
+            // new polygon
+            polygon->tracers.resize(tracerManager.getTracerNum());
         polygon->tracers[tracerId].setMass(0.0);
         polygon = polygon->next;
     }

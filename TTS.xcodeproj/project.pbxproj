@@ -11,6 +11,14 @@
 		55020B5F14F3AB9B006E35FB /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		550A94A414271B4500D97A06 /* Deformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550A94A214271B4500D97A06 /* Deformation.cpp */; };
 		5534794D1429CF6800FCC94C /* unit_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5534794C1429CF6800FCC94C /* unit_test_main.cpp */; };
+		553979271502EA2D00FC3EC2 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
+		553979281502EA2D00FC3EC2 /* DelaunayTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */; };
+		553979291502EA2D00FC3EC2 /* DelaunayVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */; };
+		5539792A1502EA2D00FC3EC2 /* FakeVertices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */; };
+		5539792B1502EA2D00FC3EC2 /* PointManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */; };
+		5539792C1502EA2D00FC3EC2 /* PointTriangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */; };
+		5539792D1502EA2D00FC3EC2 /* Topology.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */; };
+		5539792E1502EC4A00FC3EC2 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
 		553FED97141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		553FED98141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		5541C98114A998950052D2A2 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
@@ -1140,6 +1148,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5539792E1502EC4A00FC3EC2 /* DebugTools.cpp in Sources */,
+				553979271502EA2D00FC3EC2 /* DelaunayDriver.cpp in Sources */,
+				553979281502EA2D00FC3EC2 /* DelaunayTriangle.cpp in Sources */,
+				553979291502EA2D00FC3EC2 /* DelaunayVertex.cpp in Sources */,
+				5539792A1502EA2D00FC3EC2 /* FakeVertices.cpp in Sources */,
+				5539792B1502EA2D00FC3EC2 /* PointManager.cpp in Sources */,
+				5539792C1502EA2D00FC3EC2 /* PointTriangle.cpp in Sources */,
+				5539792D1502EA2D00FC3EC2 /* Topology.cpp in Sources */,
 				5541C98314A99F790052D2A2 /* ConfigTools.cpp in Sources */,
 				55D2647F146E9D5C00753BC0 /* splitEdge.h in Sources */,
 				55D26480146E9D5D00753BC0 /* mergeEdge.h in Sources */,
@@ -1334,6 +1350,7 @@
 					TTS_CGA_SPLIT_POLYGONS,
 					TTS_ONLINE,
 					DEBUG,
+					TTS_OUTPUT,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1498,8 +1515,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TTS_OUTPUT,
-					TTS_REMAP,
+					TTS_REZONE,
 					TTS_ONLINE,
+					DEBUG,
+					TTS_REMAP,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;

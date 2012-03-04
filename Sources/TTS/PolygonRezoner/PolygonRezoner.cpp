@@ -116,7 +116,7 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     Vertex *vertex = polygonManager.vertices.front();
     for (int i = 0; i < polygonManager.vertices.size(); ++i) {
         Location loc;
-        meshManager.checkLocation(vertex->getCoordinate(), loc);
+        meshManager.checkLocation(vertex->getCoordinate(), loc, vertex);
         vertex->setLocation(loc);
         vertex = vertex->next;
     }
