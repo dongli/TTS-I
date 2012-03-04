@@ -27,7 +27,7 @@ void CurvatureGuard::splitPolygon
 {
     Vertex *vertex1, *vertex2, *testVertex, vertex, *newVertex;
     Edge *edge1, *crossedEdge;
-    Polygon *polygon2, *polygon3;
+    Polygon *polygon2, *polygon3, *polygon4, *polygon5;
     EdgePointer *edgePointer3, *linkedEdge;
     Projection *projection;
     Location loc;
@@ -106,6 +106,43 @@ void CurvatureGuard::splitPolygon
         }
     } else {
         crossedEdge = NULL;
+    }
+    // -------------------------------------------------------------------------
+    // check if this polygon splitting will cause enclosed polygon
+    polygon4 = NULL;
+    polygon5 = NULL;
+    edgePointer3 = edgePointer2->prev;
+    polygon3 = edgePointer2->getPolygon(OrientRight);
+    if (polygon2 == polygon3) {
+        while (edgePointer3 != edgePointer1) {
+            if (polygon3 != edgePointer3->getPolygon(OrientRight)) {
+                polygon3 = edgePointer3->getPolygon(OrientRight);
+                break;
+            }
+            edgePointer3 = edgePointer3->prev;
+        }
+        if (polygon3 == edgePointer2->getPolygon(OrientRight) &&
+            mode != 2 && // point polygon
+            edgePointer2->prev != edgePointer1) { // line polygon
+            // enclosed or enclosing polygon is found
+            polygon4 = polygon3;
+        }
+    }
+    edgePointer3 = edgePointer2->next;
+    polygon3 = edgePointer3->getPolygon(OrientRight);
+    if (polygon2 == polygon3) {
+        while (edgePointer3 != edgePointer1) {
+            if (polygon3 != edgePointer3->getPolygon(OrientRight)) {
+                polygon3 = edgePointer3->getPolygon(OrientRight);
+                break;
+            }
+            edgePointer3 = edgePointer3->next;
+        }
+        if (polygon3 == edgePointer2->next->getPolygon(OrientRight) &&
+            mode != 1 && // point polygon
+            edgePointer2->next != edgePointer1) { // line polygon
+            polygon5 = polygon3;
+        }
     }
     // -------------------------------------------------------------------------
     ApproachDetector::AgentPair::unpair(vertex3, edge1);
@@ -199,6 +236,42 @@ void CurvatureGuard::splitPolygon
         edge1->detectAgent.updateVertexProjections(meshManager);
     }
     // -------------------------------------------------------------------------
+    // handle enclosed polygons (delete them!)
+    if (polygon4 != NULL) {
+        edgePointer1 = polygon1->edgePointers.front();
+        for (int i = 0; i < polygon1->edgePointers.size(); ++i) {
+            edgePointer2 = edgePointer1->getNeighborEdgePointer();
+            if (edgePointer2->getEndPoint(SecondPoint) == newVertex)
+                CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2->next);
+            else
+                polygonManager.vertices.remove(edgePointer2->getEndPoint(SecondPoint));
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer1);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
+            polygonManager.edges.remove(edgePointer2->edge);
+            polygon4->edgePointers.remove(edgePointer2);
+            edgePointer1 = edgePointer1->next;
+        }
+        polygonManager.polygons.remove(polygon1);
+        polygon1 = NULL;
+    }
+    if (polygon5 != NULL) {
+        edgePointer3 = polygon3->edgePointers.front();
+        for (int i = 0; i < polygon3->edgePointers.size(); ++i) {
+            edgePointer2 = edgePointer3->getNeighborEdgePointer();
+            if (edgePointer2->getEndPoint(SecondPoint) == newVertex)
+                CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2->next);
+            else
+                polygonManager.vertices.remove(edgePointer2->getEndPoint(SecondPoint));
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer3);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer2);
+            polygonManager.edges.remove(edgePointer2->edge);
+            polygon5->edgePointers.remove(edgePointer2);
+            edgePointer3 = edgePointer3->next;
+        }
+        polygonManager.polygons.remove(polygon3);
+        polygon3 = NULL;
+    }
+    // -------------------------------------------------------------------------
     // handle degenerate polygons
     if (polygon1 != NULL && polygon1->edgePointers.size() == 1) {
         handlePointPolygon(polygonManager, polygon1, true);
@@ -236,6 +309,7 @@ void CurvatureGuard::splitPolygon
     CommonTasks::doTask(CommonTasks::UpdateAngle);
     // -------------------------------------------------------------------------
     // hand over tracer mass
+    // TODO: remember to handle over the enclosed polygon
 //    if (polygon1 != NULL && polygon3 != NULL) {
 //        // BUG: The old area may be overwritten by later calling of calcArea.
 //        polygon1->calcArea();
