@@ -23,32 +23,23 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     sprintf(fileName, "before_rezone_%d.nc", TimeManager::getSteps());
     polygonManager.output(fileName);
 #endif
-    Polygon *polygon;
     // -------------------------------------------------------------------------
-    // split the bent polygons to ensure the centroids within the polygons
-//    polygon = polygonManager.polygons.front();
-//    Polygon *endPolygon = polygonManager.polygons.back();
-//    do {
-//        SpecialPolygons::handlBentPolygon(meshManager, flowManager,
-//                                          polygonManager, polygon);
-//        polygon = polygon->next;
-//    } while (polygon->prev != endPolygon);
+    Polygon *polygon;
+    EdgePointer *edgePointer;
     // -------------------------------------------------------------------------
     // extract the centroids of each polygon for later Voronoi diagram
-    // =========================================================================
     int numPoint = polygonManager.polygons.size();
+    // =========================================================================
+    // skip small polygons
     polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-        // skip small polygon
         double minArea = 1.0e34, maxArea = -1.0e34, avgArea = 0.0;
-        EdgePointer *edgePointer = polygon->edgePointers.front();
+        edgePointer = polygon->edgePointers.front();
         for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-            if (minArea > edgePointer->getPolygon(OrientRight)->getArea()) {
+            if (minArea > edgePointer->getPolygon(OrientRight)->getArea())
                 minArea = edgePointer->getPolygon(OrientRight)->getArea();
-            }
-            if (maxArea < edgePointer->getPolygon(OrientRight)->getArea()) {
+            if (maxArea < edgePointer->getPolygon(OrientRight)->getArea())
                 maxArea = edgePointer->getPolygon(OrientRight)->getArea();
-            }
             avgArea += edgePointer->getPolygon(OrientRight)->getArea();
             edgePointer = edgePointer->next;
         }
@@ -63,6 +54,8 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         polygon = polygon->next;
     }
     // =========================================================================
+    // =========================================================================
+    // split large polygons
     int k = -1, maxNumPoint = numPoint+numPoint/10;
     double *lon = new double[maxNumPoint];
     double *lat = new double[maxNumPoint];
@@ -76,9 +69,8 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         k++;
         lon[k] = polygon->getCentroid().getLon();
         lat[k] = polygon->getCentroid().getLat();
-        // split large polygon
         if (polygon->getArea() > largeArea) {
-            EdgePointer *edgePointer = polygon->edgePointers.front();
+            edgePointer = polygon->edgePointers.front();
             Polygon *polygon1 = NULL;
             for (int j = 0; j < polygon->edgePointers.size(); ++j) {
                 Polygon *polygon2 = edgePointer->getPolygon(OrientRight);

@@ -227,8 +227,9 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     static std::list<Vertex *> crossVertices;
     Edge *edge1;
-    Vertex *vertex3;
-    EdgePointer *edgePointer1, *edgePointer2, *nextEdgePointer2;
+    Vertex *vertex1, *vertex3;
+    EdgePointer *edgePointer1, *edgePointer2;
+    EdgePointer *prevEdgePointer1, *nextEdgePointer2;
     EdgePointer *edgePointer3 = NULL, *edgePointer4 = NULL;
     Projection *projection;
     static bool handleCrossVertices = false;
@@ -239,9 +240,12 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         return;
     }
     // -------------------------------------------------------------------------
-    edgePointer1 = polygon->edgePointers.front();
-    for (int i = 0; i < polygon->edgePointers.size(); ++i) {
+    polygon->edgePointers.startLoop(edgePointer1);
+    assert(edgePointer1 == polygon->edgePointers.front());
+    do {
+        prevEdgePointer1 = edgePointer1->prev;
         edge1 = edgePointer1->edge;
+        vertex1 = edgePointer1->getEndPoint(FirstPoint);
         edgePointer2 = edgePointer1->next;
         while (edgePointer2 != edgePointer1) {
             nextEdgePointer2 = edgePointer2->next;
@@ -249,6 +253,29 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
             // -----------------------------------------------------------------
             if (edgePointer2 != edgePointer1->prev) {
                 vertex3 = edgePointer2->getEndPoint(SecondPoint);
+                // -------------------------------------------------------------
+                // handle enclosed polygons
+                if (vertex3 == vertex1) {
+                    int numEdge = 0;
+                    EdgePointer *edgePointer = edgePointer1;
+                    do {
+                        numEdge++;
+                        edgePointer = edgePointer->next;
+                    } while (edgePointer != edgePointer2);
+                    if (numEdge < polygon->edgePointers.size()-numEdge)
+                        handleEnclosedPolygons(edgePointer1->prev,
+                                               edgePointer2->next,
+                                               polygonManager);
+                    else
+                        handleEnclosedPolygons(edgePointer2,
+                                               edgePointer1,
+                                               polygonManager);
+                    CommonTasks::doTask(CommonTasks::UpdateAngle);
+                    edgePointer1 = prevEdgePointer1;
+                    break;
+                }
+                // -------------------------------------------------------------
+                // detect vertex and record crossing vertex or split polygon
                 if (handleCrossVertices &&
                     find(crossVertices.begin(), crossVertices.end(), vertex3) !=
                     crossVertices.end()) {
@@ -287,8 +314,8 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
             // -----------------------------------------------------------------
             edgePointer2 = nextEdgePointer2;
         }
-        edgePointer1 = edgePointer1->next;
-    }
+        edgePointer1 = polygon->edgePointers.getNextElem();
+    } while (!polygon->edgePointers.isLoopEnd());
     if (handleCrossVertices)
         return;
     if (crossVertices.size() != 0) {
@@ -336,6 +363,7 @@ void ApproachDetector::detectPolygons(MeshManager &meshManager,
                                       const FlowManager &flowManager,
                                       PolygonManager &polygonManager)
 {
+    // TODO: use new loop control blocks
     Polygon *polygon = polygonManager.polygons.front();
     Polygon *nextPolygon;
     while (polygon != NULL) {

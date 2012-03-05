@@ -36,12 +36,6 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
     if (edge->tags.isSet(SplitChecked))
         return false;
 
-    // TEST: Reset the test point of small edges.
-//    if (edge->getLength() < 0.01/Rad2Deg) {
-//        edge->getTestPoint()->reset(meshManager);
-//        return false;
-//    }
-
     Vertex *vertex1 = edge->getEndPoint(FirstPoint);
     TestPoint *testPoint = edge->getTestPoint();
     Vertex *vertex2 = edge->getEndPoint(SecondPoint);

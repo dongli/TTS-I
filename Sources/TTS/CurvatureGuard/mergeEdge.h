@@ -18,25 +18,20 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
                       PolygonManager &polygonManager, Polygon *polygon)
 {
     bool isMerged = false;
-
+    EdgePointer *edgePointer;
     Edge *edge1, *edge2;
     double a0;
 
+#ifdef DEBUG
     assert(CommonTasks::getTaskNumber(CommonTasks::UpdateAngle) == 0);
-
-//    if (TimeManager::getSteps() >= 420 && (polygon->getID() == 124665)) {
-//        polygon->dump("polygon");
-//        REPORT_DEBUG;
-//    }
+#endif
 
     // TODO: Handle the slim triangle!
     if (polygon->edgePointers.size() == 3)
         return isMerged;
 
-    EdgePointer *edgePointer = polygon->edgePointers.front();
-    EdgePointer *nextEdgePointer;
-    while (edgePointer != NULL && edgePointer != polygon->edgePointers.back()) {
-        nextEdgePointer = edgePointer->next;
+    polygon->edgePointers.startLoop(edgePointer);
+    do {
         if (edgePointer->prev->getPolygon(OrientRight) != NULL &&
             edgePointer->prev->getPolygon(OrientRight)->getID() < polygon->getID())
             goto next_edge;
@@ -49,10 +44,24 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             fabs(edgePointer->getAngle(NewTimeLevel)-PI) < a0) {
             isMerged = true;
             // -----------------------------------------------------------------
+            Polygon *polygon1 = polygon;
+            Polygon *polygon2 = edgePointer->getPolygon(OrientRight);
             Vertex *vertex1, *vertex2, *vertex3;  // vertex2 is to be deleted
             vertex1 = edgePointer->prev->getEndPoint(FirstPoint);
             vertex2 = edgePointer->getEndPoint(FirstPoint);
             vertex3 = edgePointer->getEndPoint(SecondPoint);
+            EdgePointer *oldEdgePointer1, *oldEdgePointer2;
+            if (vertex2 == edge2->getEndPoint(FirstPoint)) {
+                oldEdgePointer1 = edge2->getEdgePointer(OrientLeft);
+                oldEdgePointer2 = edge2->getEdgePointer(OrientRight);
+            } else {
+                oldEdgePointer1 = edge2->getEdgePointer(OrientRight);
+                oldEdgePointer2 = edge2->getEdgePointer(OrientLeft);
+            }            
+#ifdef DEBUG
+            assert(oldEdgePointer1 == edgePointer);
+#endif
+            // -----------------------------------------------------------------
             // Note: If the vertex is connected by more than two edges, that is
             //       a joint, then do not merge the edges.
             if (vertex2->isJoint())
@@ -78,30 +87,6 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             if (detectRemoveVertexOnEdges(meshManager, edgePointer,
                                           &testPoint, polygon) != NoCross)
                 goto next_edge;
-            // -----------------------------------------------------------------
-            EdgePointer *oldEdgePointer1, *oldEdgePointer2;
-            if (vertex2 == edge2->getEndPoint(FirstPoint)) {
-                oldEdgePointer1 = edge2->getEdgePointer(OrientLeft);
-                oldEdgePointer2 = edge2->getEdgePointer(OrientRight);
-            } else {
-                oldEdgePointer1 = edge2->getEdgePointer(OrientRight);
-                oldEdgePointer2 = edge2->getEdgePointer(OrientLeft);
-            }            
-#ifdef DEBUG
-            assert(oldEdgePointer1 == edgePointer);
-#endif
-            // -----------------------------------------------------------------
-            Polygon *polygon1, *polygon2;
-            if (vertex1 == edge1->getEndPoint(FirstPoint)) {
-                polygon1 = edge1->getPolygon(OrientLeft);
-                polygon2 = edge1->getPolygon(OrientRight);
-            } else {
-                polygon1 = edge1->getPolygon(OrientRight);
-                polygon2 = edge1->getPolygon(OrientLeft);
-            }
-#ifdef DEBUG
-            assert(polygon1 == polygon);
-#endif
             // -----------------------------------------------------------------
             EdgePointer *newEdgePointer1, *newEdgePointer2;
             polygon1->edgePointers.insert(oldEdgePointer1, &newEdgePointer1);
@@ -136,8 +121,8 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             // -----------------------------------------------------------------
             CommonTasks::doTask(CommonTasks::UpdateAngle);
         }
-    next_edge: edgePointer = nextEdgePointer;
-    }
+    next_edge: edgePointer = polygon->edgePointers.getNextElem();
+    } while (!polygon->edgePointers.isLoopEnd());
     return isMerged;
 }
 

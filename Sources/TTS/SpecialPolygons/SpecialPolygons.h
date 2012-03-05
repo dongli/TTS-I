@@ -3,6 +3,7 @@
 
 class PolygonManager;
 class Polygon;
+class Vertex;
 class EdgePointer;
 class MeshManager;
 class FlowManager;
@@ -10,7 +11,7 @@ class FlowManager;
 namespace SpecialPolygons
 {
     void handleLinePolygon(PolygonManager &polygonManager, Polygon *polygon,
-                           bool isKeepMass = false);
+                           Vertex *keepVertex = 0x0, bool isKeepMass = false);
 
     void handlePointPolygon(PolygonManager &polygonManager, Polygon *polygon,
                             bool isKeepMass = false);
@@ -20,10 +21,9 @@ namespace SpecialPolygons
                            PolygonManager &polygonManager, Polygon *polygon,
                            bool isKeepMass = false);
 
-    bool handlBentPolygon(MeshManager &meshManager,
-                          const FlowManager &flowManager,
-                          PolygonManager &polygonManager, Polygon *polygon,
-                          bool isKeepMass = false);
+    void handleEnclosedPolygons(EdgePointer *edgePointer1,
+                                EdgePointer *edgePointer2,
+                                PolygonManager &polygonManager);
 }
 
 #endif

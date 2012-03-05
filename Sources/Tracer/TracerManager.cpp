@@ -146,6 +146,7 @@ void TracerManager::output(const string &fileName)
         message << fileName << "\" for appending meshed density field!";
         REPORT_ERROR(message.str());
     }
+#ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     // output tracer densities on the polygons
     NcDim *numPolygonDim = file.get_dim("num_total_polygon");
@@ -161,7 +162,6 @@ void TracerManager::output(const string &fileName)
         }
         qVar->put(q0, polygonManager.polygons.size());
     }
-#ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     // output tracer densities on the mesh
     int numLon = tracerDensities[0].values.extent(0);
@@ -200,8 +200,8 @@ void TracerManager::output(const string &fileName)
                 q[j][i] = tracerDensities[l].values(i, j, 0).getNew();
         qVar->put(&q[0][0], numLat, numLon);
     }
-#endif
     // -------------------------------------------------------------------------
     file.close();
+#endif
     NOTICE("TracerManager", fileName+" is generated.");
 }

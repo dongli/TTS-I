@@ -5,6 +5,7 @@
 #include "PolygonManager.h"
 #ifdef TTS_ONLINE
 #include "TTS.h"
+#include "CommonTasks.h"
 #ifdef DEBUG
 #include "DebugTools.h"
 #endif
@@ -31,6 +32,16 @@ void Polygon::reinit()
 #endif
     isAreaSet = false;
     centroid.reinit();
+}
+
+void Polygon::destroy()
+{
+    EdgePointer *edgePointer = edgePointers.front();
+    for (int i = 0; i < edgePointers.size(); ++i) {
+        CommonTasks::recordTask(CommonTasks::RemoveObject, edgePointer->edge);
+        CommonTasks::recordTask(CommonTasks::RemoveObject, edgePointer->getEndPoint(FirstPoint));
+        edgePointer = edgePointer->next;
+    }
 }
 
 void Polygon::removeEdge(EdgePointer *edgePointer,

@@ -426,14 +426,8 @@ T *List<T>::at(int idx) const
 template <class T>
 void List<T>::startLoop(T *&iterator)
 {
-    if (nextElem == NULL) {
-        iterator = head;
-        nextElem = head->next;
-    } else {
-        // continue outer loop
-        iterator = nextElem;
-        nextElem = nextElem->next;
-    }
+    iterator = head;
+    nextElem = head->next;
     isHeadPassed = false;
 }
 

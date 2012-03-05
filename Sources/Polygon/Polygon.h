@@ -20,6 +20,7 @@ public:
     virtual ~Polygon();
 
     void reinit();
+    void destroy();
 
     void removeEdge(EdgePointer *, PolygonManager &);
 

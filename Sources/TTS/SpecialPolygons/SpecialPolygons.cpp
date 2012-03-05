@@ -7,6 +7,7 @@
 #include "CurvatureGuard.h"
 #include "TTS.h"
 #include "CommonTasks.h"
+#include <set>
 
 using namespace SpecialPolygons;
 using namespace ApproachDetector;
@@ -14,7 +15,8 @@ using namespace PotentialCrossDetector;
 using namespace CurvatureGuard;
 
 void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
-                                        Polygon *polygon, bool isKeepMass)
+                                        Polygon *polygon, Vertex *keepVertex,
+                                        bool isKeepMass)
 {
     // -------------------------------------------------------------------------
     // hand over tracer mass
@@ -49,8 +51,6 @@ void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
             CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer4->next); 
             polygon1->edgePointers.remove(edgePointer3);
             polygon1->edgePointers.remove(edgePointer4);
-            polygonManager.edges.remove(edge1);
-            polygonManager.edges.remove(edge2);
             polygonManager.vertices.remove(edgePointer4->getEndPoint(FirstPoint));
         } else if (edgePointer4->next == edgePointer3) {
             CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer3);
@@ -58,13 +58,47 @@ void SpecialPolygons::handleLinePolygon(PolygonManager &polygonManager,
             CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer3->next);
             polygon1->edgePointers.remove(edgePointer3);
             polygon1->edgePointers.remove(edgePointer4);
-            polygonManager.edges.remove(edge1);
-            polygonManager.edges.remove(edge2);
             polygonManager.vertices.remove(edgePointer3->getEndPoint(FirstPoint));
         } else {
-            REPORT_ERROR("Line polygon is enclosed and there is "
-                         "another polygon on the other end!");
+            assert(keepVertex != NULL);
+            EdgePointer *edgePointer5, *edgePointer6;
+            Polygon *polygon5, *polygon6;
+            if (edgePointer3->getEndPoint(SecondPoint) == keepVertex) {
+                edgePointer5 = edgePointer3;
+                edgePointer3 = edgePointer4;
+                edgePointer4 = edgePointer5;
+            }
+            std::set<Polygon *> badPolygons;
+            edgePointer3 = edgePointer3->next;
+            while (edgePointer3 != edgePointer4) {
+                badPolygons.insert(edgePointer3->getPolygon(OrientRight));
+                edgePointer3 = edgePointer3->next;
+            }
+            std::set<Polygon *>::iterator it;
+            for (it = badPolygons.begin(); it != badPolygons.end(); ++it) {
+                polygon5 = *it;
+                edgePointer5 = polygon5->edgePointers.front();
+                for (int i = 0; i < polygon5->edgePointers.size(); ++i) {
+                    polygon6 = edgePointer5->getPolygon(OrientRight);
+                    edgePointer6 = edgePointer5->getNeighborEdgePointer();
+                    polygonManager.vertices.remove(edgePointer6->getEndPoint(SecondPoint));
+                    CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer5);
+                    CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer6);
+                    polygonManager.edges.remove(edgePointer6->edge);
+                    polygon6->edgePointers.remove(edgePointer6);
+                    edgePointer5 = edgePointer5->next;
+                }
+                // TODO: handle over the tracer mass
+                polygonManager.polygons.remove(polygon5);
+            }
+            CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer4->next);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer4->prev);
+            CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer4);
+            polygon1->edgePointers.remove(edgePointer4->prev);
+            polygon1->edgePointers.remove(edgePointer4);
         }
+        polygonManager.edges.remove(edge1);
+        polygonManager.edges.remove(edge2);
     } else {
         edge1->setPolygon(edgePointer1->orient, polygon2);
         edge1->setEdgePointer(edgePointer1->orient, edgePointer4);
@@ -183,7 +217,8 @@ bool SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
                 splitPolygon(meshManager, flowManager, polygonManager, polygon,
                              edgePointer1, edgePointer2, vertex3, mode);
             } else {
-                REPORT_ERROR("Unexpected branch!");
+                // the projections have not yet been calculated!
+                return false;
             }
             return true;
         }
@@ -191,137 +226,51 @@ bool SpecialPolygons::handleSlimPolygon(MeshManager &meshManager,
     return false;
 }
 
-bool SpecialPolygons::handlBentPolygon(MeshManager &meshManager,
-                                       const FlowManager &flowManager,
-                                       PolygonManager &polygonManager,
-                                       Polygon *polygon, bool isKeepMass)
+void SpecialPolygons::handleEnclosedPolygons(EdgePointer *edgePointer1,
+                                             EdgePointer *edgePointer2,
+                                             PolygonManager &polygonManager)
 {
-    static const double a0 = 250.0/Rad2Deg;
-    std::list<Projection>::const_iterator itPrj;
-    std::list<Vertex *>::const_iterator itVtx;
-    Vertex *vertex1;
-    Edge *markEdge, *newEdge;
-    EdgePointer *edgePointer;
-    EdgePointer *markEdgePointer1, *markEdgePointer2;
-    EdgePointer *newEdgePointer1, *newEdgePointer2;
-    Polygon *newPolygon;
-    const Projection *projection;
-    Vector vector1, vector2;
-    double distance, angle1, angle2, angle3, angle4;
-    bool isConnectOk1, isConnectOk2;
-    int mode;
-    Location loc;
-    bool isHandled = false;
-    markEdgePointer1 = polygon->edgePointers.front();
-    do {
-        markEdgePointer2 = NULL; distance = 1.0e33;
-        // ---------------------------------------------------------------------
-        if (markEdgePointer1->getAngle() > a0) {
-            vertex1 = markEdgePointer1->getEndPoint(FirstPoint);
-            for (itPrj = vertex1->detectAgent.getProjections().begin();
-                 itPrj != vertex1->detectAgent.getProjections().end(); ++itPrj) {
-                projection = &*itPrj;
-                // Note: Find the most close edge to split the polygon
-                if (distance < projection->getDistance(NewTimeLevel))
-                    continue;
-                markEdge = projection->getEdge();
-                if (markEdge != markEdgePointer1->prev->prev->edge &&
-                    markEdge != markEdgePointer1->next->edge) {
-                    if (markEdge->getPolygon(OrientLeft) == polygon) {
-                        markEdgePointer2 = markEdge->getEdgePointer(OrientLeft);
-                        distance = projection->getDistance(NewTimeLevel);
-                    } else if (markEdge->getPolygon(OrientRight) == polygon) {
-                        markEdgePointer2 = markEdge->getEdgePointer(OrientRight);
-                        distance = projection->getDistance(NewTimeLevel);
-                    } else
-                        continue;
-                    if (projection->getOrient() != markEdgePointer2->orient) {
-                        markEdgePointer2 = NULL; distance = 1.0e33;
-                        continue;
-                    }
-                    ;
-                    if (detectAddConnection(polygon, markEdgePointer1,
-                                            markEdgePointer2, isConnectOk1,
-                                            isConnectOk2, vector1,
-                                            vector2) == Cross) {
-                        markEdgePointer2 = NULL; distance = 1.0e33;
-                    }
-                }
-            }
-        }
-        // ---------------------------------------------------------------------
-        if (markEdgePointer2 != NULL) {
-            // choose which vertex to connect
-            if (isConnectOk1 && isConnectOk2) {
-                angle1 = EdgePointer::calcAngle
-                (markEdgePointer1->prev->getNormVector(), -vector1, *vertex1);
-                angle2 = EdgePointer::calcAngle
-                (vector1, markEdgePointer1->getNormVector(), *vertex1);
-                angle3 = EdgePointer::calcAngle
-                (markEdgePointer1->prev->getNormVector(), -vector2, *vertex1);
-                angle4 = EdgePointer::calcAngle
-                (vector2, markEdgePointer1->getNormVector(), *vertex1);
-#ifndef DEBUG
-                assert(fabs(angle1+angle2-angle3-angle4) < EPS);
-                assert(fabs(angle1+angle2-markEdgePointer1->getAngle()) < EPS);
+#ifdef DEBUG
+    assert(CommonTasks::getTaskNumber(CommonTasks::RemoveObject) == 0);
 #endif
-                if (fmax(angle1, angle2) < fmax(angle3, angle4)) {
-                    mode = 1;
-                } else {
-                    mode = 2;
-                }
-            } else {
-                if (isConnectOk1)
-                    mode = 1;
-                if (isConnectOk2)
-                    mode = 2;
-            }
-            // create new polygon
-            polygonManager.polygons.append(&newPolygon);
-            if (mode == 2)
-                markEdgePointer2 = markEdgePointer2->next;
-            edgePointer = markEdgePointer1;
-            while (edgePointer != markEdgePointer2) {
-                newPolygon->edgePointers.append(&newEdgePointer2);
-                newEdgePointer2->replace(edgePointer);
-                newEdgePointer2->edge->setPolygon(newEdgePointer2->orient,
-                                                  newPolygon);
-                edgePointer = edgePointer->next;
-                polygon->edgePointers.remove(edgePointer->prev);
-            }
-            // create new edge
-            polygonManager.edges.append(&newEdge);
-            newEdge->linkEndPoint(FirstPoint, vertex1);
-            newEdge->linkEndPoint(SecondPoint,
-                                  markEdgePointer2->getEndPoint(FirstPoint));
-            newEdge->calcNormVector();
-            newEdge->calcLength();
-            Vertex *testPoint = newEdge->getTestPoint();
-            meshManager.checkLocation(testPoint->getCoordinate(), loc);
-            testPoint->setLocation(loc);
-            TTS::track(meshManager, flowManager, testPoint);
-            newEdge->setPolygon(OrientLeft, polygon);
-            newEdge->setPolygon(OrientRight, newPolygon);
-            polygon->edgePointers.insert(&newEdgePointer1, markEdgePointer2);
-            newPolygon->edgePointers.append(&newEdgePointer2);
-            newPolygon->edgePointers.ring();
-            newEdge->setEdgePointer(OrientLeft, newEdgePointer1);
-            newEdge->setEdgePointer(OrientRight, newEdgePointer2);
-            // update angles
-            CommonTasks::doTask(CommonTasks::UpdateAngle);
-            // hand over tracer mass
-            polygon->calcArea();
-            newPolygon->calcArea();
-            double percent = newPolygon->getArea()/(polygon->getArea()+newPolygon->getArea());
-            polygon->handoverTracers(newPolygon, percent);
-            // detect the two polygons
-            detectPolygon(meshManager, flowManager, polygonManager, polygon);
-            detectPolygon(meshManager, flowManager, polygonManager, newPolygon);
-            isHandled = true;
-            handlBentPolygon(meshManager, flowManager, polygonManager, polygon);
-            handlBentPolygon(meshManager, flowManager, polygonManager, newPolygon);
-        } else
-            markEdgePointer1 = markEdgePointer1->next;
-    } while (markEdgePointer1 != polygon->edgePointers.back()->next);
-    return isHandled;
+    std::set<Polygon *> enclosedPolygons;
+    std::set<Polygon *>::iterator it;
+    Polygon *enclosingPolygon;
+    Vertex *keepVertex;
+    EdgePointer *edgePointer;
+    // -------------------------------------------------------------------------
+    enclosingPolygon = edgePointer1->next->getPolygon(OrientLeft);
+    keepVertex = edgePointer1->next->getEndPoint(FirstPoint);
+    // -------------------------------------------------------------------------
+    // find out the enclosed polygons
+    // record periphery enclosed polygon
+    edgePointer = edgePointer1->next;
+    while (edgePointer != edgePointer2) {
+        enclosedPolygons.insert(edgePointer->getPolygon(OrientRight));
+        edgePointer = edgePointer->next;
+    }
+    // record inner enclosed polygons
+    for (it = enclosedPolygons.begin(); it != enclosedPolygons.end(); ++it) {
+        edgePointer = (*it)->edgePointers.front();
+        for (int i = 0; i < (*it)->edgePointers.size(); ++i) {
+            if (edgePointer->getPolygon(OrientRight) != enclosingPolygon)
+                enclosedPolygons.insert(edgePointer->getPolygon(OrientRight));
+            edgePointer = edgePointer->next;
+        }
+    }
+    // -------------------------------------------------------------------------
+    // destroy the enclosed polygons
+    for (it = enclosedPolygons.begin(); it != enclosedPolygons.end(); ++it) {
+        (*it)->destroy();
+        polygonManager.polygons.remove(*it);
+    }
+    CommonTasks::deleteTask(CommonTasks::RemoveObject, keepVertex);
+    CommonTasks::recordTask(CommonTasks::UpdateAngle, edgePointer2);
+    edgePointer = edgePointer1->next;
+    while (edgePointer != edgePointer2) {
+        enclosingPolygon->edgePointers.remove(edgePointer);
+        CommonTasks::deleteTask(CommonTasks::UpdateAngle, edgePointer);
+        edgePointer = edgePointer1->next;
+    }
+    CommonTasks::doTask(CommonTasks::RemoveObject, polygonManager);
 }
