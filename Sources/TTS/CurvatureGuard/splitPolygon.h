@@ -253,6 +253,8 @@ void CurvatureGuard::splitPolygon
             orient = OrientLeft;
         else if (edge->getEndPoint(SecondPoint) == newVertex)
             orient = OrientRight;
+        else
+            REPORT_ERROR("New vertex has been removed!");
 #ifndef DEBUG
         cout << "Detecting polygon ";
         cout << edge->getPolygon(orient)->getID() << endl;
