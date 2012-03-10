@@ -122,45 +122,39 @@ void CoverMask::init(Polygon *polygon, map<int, list<int> > &bndCellIdx,
     // =========================================================================
     // set the cells that will be determined to be covered due the coverage of
     // pole by the polygon
-    // Note: We must check if the pole is really covered by the polygon!
-    static EdgePointer *edgePointer;
-    static Coordinate NorthPole(0.0, PI05), SouthPole(0.0, -PI05);
-    static Coordinate x;
-    static double distance;
-    if (pole == Location::NorthPole) {
-        edgePointer = polygon->edgePointers.front();
+    // Note: use "ray casting algorithm" to test if pole is covered
+    if (pole != Location::Null) {
+        bool isPoleCovered = false;
+        EdgePointer *edgePointer = polygon->edgePointers.front();
         for (int i = 0; i < polygon->edgePointers.size(); ++i) {
-            const Coordinate &x1 = edgePointer->getEndPoint(FirstPoint)->getCoordinate();
-            const Coordinate &x2 = edgePointer->getEndPoint(SecondPoint)->getCoordinate();
-            if (Sphere::orient(x1, x2, NorthPole) == OrientRight &&
-                Sphere::project(x1, x2, NorthPole, x, distance))
-                if (distance > meshBnd.dlat(0))
-                    goto return_label;
+            Vertex *vertex1 = edgePointer->getEndPoint(FirstPoint);
+            Vertex *vertex2 = edgePointer->getEndPoint(SecondPoint);
+            double x1 = vertex1->getCoordinate().getX();
+            double y1 = vertex1->getCoordinate().getY();
+            double x2 = vertex2->getCoordinate().getX();
+            double y2 = vertex2->getCoordinate().getY();
+            if (((y1 > 0.0) != (y2 > 0.0)) &&
+                ((x2-x1)*(-y1)/(y2-y1)+x1 > 0.0))
+                isPoleCovered = !isPoleCovered;
             edgePointer = edgePointer->next;
         }
-        for (int i = 0; i < mask.extent(0); ++i)
-            for (int j = 0; j < mask.extent(1); ++j)
-                if (mask(i, j) == NoOverlap)
-                    mask(i, j) = FullyCoveredNearPole;
-                else
-                    break;
-    } else if (pole == Location::SouthPole) {
-        edgePointer = polygon->edgePointers.front();
-        for (int i = 0; i < polygon->edgePointers.size(); ++i) {
-            const Coordinate &x1 = edgePointer->getEndPoint(FirstPoint)->getCoordinate();
-            const Coordinate &x2 = edgePointer->getEndPoint(SecondPoint)->getCoordinate();
-            if (Sphere::orient(x1, x2, SouthPole) == OrientRight &&
-                Sphere::project(x1, x2, SouthPole, x, distance))
-                if (distance > meshBnd.dlat(meshBnd.dlat.size()-1))
-                    goto return_label;
-            edgePointer = edgePointer->next;
+        if (isPoleCovered) {
+            if (pole == Location::NorthPole) {
+                for (int i = 0; i < mask.extent(0); ++i)
+                    for (int j = 0; j < mask.extent(1); ++j)
+                        if (mask(i, j) == NoOverlap)
+                            mask(i, j) = FullyCoveredNearPole;
+                        else
+                            break;
+            } else {
+                for (int i = 0; i < mask.extent(0); ++i)
+                    for (int j = mask.extent(1)-1; j >= 0; --j)
+                        if (mask(i, j) == NoOverlap)
+                            mask(i, j) = FullyCoveredNearPole;
+                        else
+                            break;
+            }
         }
-        for (int i = 0; i < mask.extent(0); ++i)
-            for (int j = mask.extent(1)-1; j >= 0; --j)
-                if (mask(i, j) == NoOverlap)
-                    mask(i, j) = FullyCoveredNearPole;
-                else
-                    break;
     }
 return_label:
 #ifdef DEBUG
