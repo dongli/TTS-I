@@ -256,13 +256,37 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                 // -------------------------------------------------------------
                 // handle enclosed polygons
                 if (vertex3 == vertex1) {
+                    // Note: use area to judge which side is enclosed
                     int numEdge = 0;
-                    EdgePointer *edgePointer = edgePointer1;
+                    double area1, area2;
+                    EdgePointer *edgePointer;
+                    //
+                    area1 = EdgePointer::calcAngle
+                    (edgePointer2->getNormVector(),
+                     edgePointer1->getNormVector(),
+                     edgePointer1->getEndPoint(FirstPoint)->getCoordinate());
+                    edgePointer = edgePointer1->next;
                     do {
                         numEdge++;
+                        area1 += edgePointer->getAngle();
                         edgePointer = edgePointer->next;
-                    } while (edgePointer != edgePointer2);
-                    if (numEdge < polygon->edgePointers.size()-numEdge)
+                    } while (edgePointer != edgePointer2->next);
+                    numEdge += 1;
+                    area1 -= (numEdge-2)*PI;
+                    //
+                    numEdge = polygon->edgePointers.size()-numEdge;
+                    area2 = EdgePointer::calcAngle
+                    (edgePointer1->prev->getNormVector(),
+                     edgePointer2->next->getNormVector(),
+                     edgePointer2->next->getEndPoint(FirstPoint)->getCoordinate());
+                    edgePointer = edgePointer2->next;
+                    do {
+                        area2 += edgePointer->getAngle();
+                        edgePointer = edgePointer->next;
+                    } while (edgePointer != edgePointer1->next);
+                    area2 -= (numEdge-2)*PI;
+                    //
+                    if (area1 > area2)
                         handleEnclosedPolygons(edgePointer1->prev,
                                                edgePointer2->next,
                                                polygonManager);
