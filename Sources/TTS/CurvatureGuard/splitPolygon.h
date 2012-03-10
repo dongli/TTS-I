@@ -219,19 +219,6 @@ void CurvatureGuard::splitPolygon
         handleLinePolygon(polygonManager, polygon3, newVertex);
         polygon3 = NULL;
     }
-    if (polygon1 != NULL) {
-        if (handleSlimPolygon(meshManager, flowManager,
-                              polygonManager, polygon1, true)) {
-            if (polygon3 != NULL)
-                polygon1->handoverTracers(polygon3, 1.0);
-            polygon1 = NULL;
-        }
-    }
-    if (polygon3 != NULL) {
-        if (handleSlimPolygon(meshManager, flowManager,
-                              polygonManager, polygon3))
-            polygon3 = NULL;
-    }
     // -------------------------------------------------------------------------
     CommonTasks::doTask(CommonTasks::UpdateAngle);
     // -------------------------------------------------------------------------
