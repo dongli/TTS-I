@@ -294,6 +294,9 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                         handleEnclosedPolygons(edgePointer2,
                                                edgePointer1,
                                                polygonManager);
+#ifdef DEBUG
+                    DebugTools::assert_polygon_mass_constant(polygonManager);
+#endif
                     CommonTasks::doTask(CommonTasks::UpdateAngle);
                     edgePointer1 = prevEdgePointer1;
                     break;
@@ -358,6 +361,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                      polygon, edgePointer3, edgePointer4, vertex3, 5);
         handleCrossVertices = false;
 #ifdef DEBUG
+        DebugTools::assert_polygon_mass_constant(polygonManager);
         if (crossVertices.size() != 0) {
             cout << "Skipped vertices:" << endl;
             std::list<Vertex *>::const_iterator it;

@@ -27,7 +27,7 @@ void CurvatureGuard::splitPolygon
 {
     Vertex *vertex1, *vertex2, *testVertex, vertex, *newVertex;
     Edge *edge1, *crossedEdge;
-    Polygon *polygon2, *polygon3, *polygon4, *polygon5;
+    Polygon *polygon2, *polygon3;
     EdgePointer *edgePointer3, *linkedEdge;
     Projection *projection;
     Location loc;
@@ -201,8 +201,8 @@ void CurvatureGuard::splitPolygon
     // -------------------------------------------------------------------------
     // handle degenerate polygons
     if (polygon1 != NULL && polygon1->edgePointers.size() == 1) {
-        handlePointPolygon(polygonManager, polygon1, true);
         polygon1->handoverTracers(polygon3, 1.0);
+        handlePointPolygon(polygonManager, polygon1, true);
         polygon1 = NULL;
     }
     if (polygon3 != NULL && polygon3->edgePointers.size() == 1) {
@@ -210,9 +210,12 @@ void CurvatureGuard::splitPolygon
         polygon3 = NULL;
     }
     if (polygon1 != NULL && polygon1->edgePointers.size() == 2) {
-        handleLinePolygon(polygonManager, polygon1, newVertex, true);
-        if (polygon3 != NULL)
+        if (polygon3 != NULL) {
             polygon1->handoverTracers(polygon3, 1.0);
+            handleLinePolygon(polygonManager, polygon1, newVertex, true);
+        } else {
+            handleLinePolygon(polygonManager, polygon1, newVertex);
+        }
         polygon1 = NULL;
     }
     if (polygon3 != NULL && polygon3->edgePointers.size() == 2) {
@@ -224,13 +227,16 @@ void CurvatureGuard::splitPolygon
     // -------------------------------------------------------------------------
     // hand over tracer mass
     // TODO: remember to handle over the enclosed polygon
-//    if (polygon1 != NULL && polygon3 != NULL) {
-//        // BUG: The old area may be overwritten by later calling of calcArea.
-//        polygon1->calcArea();
-//        polygon3->calcArea();
-//        double percent = polygon3->getArea()/(polygon1->getArea()+polygon3->getArea());
-//        polygon1->handoverTracers(polygon3, percent);
-//    }
+    if (polygon1 != NULL && polygon3 != NULL) {
+        // BUG: The old area may be overwritten by later calling of calcArea.
+        polygon1->calcArea();
+        polygon3->calcArea();
+        double percent = polygon3->getArea()/(polygon1->getArea()+polygon3->getArea());
+        polygon1->handoverTracers(polygon3, percent);
+    }
+#ifdef DEBUG
+    DebugTools::assert_polygon_mass_constant(polygonManager);
+#endif
     // -------------------------------------------------------------------------
     // detect the new vertex for approaching
     linkedEdge = newVertex->linkedEdges.front();

@@ -41,7 +41,6 @@ void MeshManager::init(int numLon, int numLat, double *lon, double *lat)
     mesh[meshSpec.type].init(meshSpec, numLon, numLat, lon, lat);
     meshSpec.type = BothHalf;
     mesh[meshSpec.type].init(meshSpec, numLon, numLat, lon, lat);
-
     // -------------------------------------------------------------------------
     pointCounter.init(mesh[BothHalf].lon, mesh[BothHalf].lat, 1, 1);
 }
@@ -63,11 +62,9 @@ void MeshManager::init(int numLon, int numLat, int numLev,
     mesh[meshSpec.type].init(meshSpec, numLon, numLat, lon, lat);
     meshSpec.type = BothHalf;
     mesh[meshSpec.type].init(meshSpec, numLon, numLat, lon, lat);
-
     // -------------------------------------------------------------------------
     layers[Layers::Full].init(Layers::Full, numLev, lev);
     layers[Layers::Half].init(Layers::Half, numLev, lev);
-
     // -------------------------------------------------------------------------
 }
 
@@ -87,10 +84,8 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
         REPORT_ERROR(message.str());
     }
 #endif
-
     double ratio;
     int j;
-
     // -------------------------------------------------------------------------
     // full mesh location index
     // Note: The zonal grids are equidistant.
@@ -158,13 +153,11 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
                 loc.j[Full] = mesh[Full].getNumLat()-1;
         }
     }
-
     // -------------------------------------------------------------------------
     // longitude half mesh location index
     ratio = x.getLon()/mesh[LonHalf].dlon+0.5;
     loc.i[LonHalf] = min(int(floor(ratio)), mesh[LonHalf].getNumLon()-2);
     loc.j[LonHalf] = loc.j[Full];
-
     // -------------------------------------------------------------------------
     // latitude half mesh location index
     loc.i[LatHalf] = loc.i[Full];
@@ -218,7 +211,6 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
                 loc.j[LatHalf] = mesh[LatHalf].getNumLat()-1;
         }
     }
-
     // -------------------------------------------------------------------------
     // both half mesh location index
     loc.i[BothHalf] = loc.i[LonHalf];
@@ -230,7 +222,6 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
         assert(loc.j[i] > -2 && loc.j[i] < mesh[i].getNumLat());
     }
 #endif
-
     // -------------------------------------------------------------------------
     // check whether in the polar cap
     if (loc.j[Full] == -1) {
@@ -243,7 +234,6 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
         loc.inPolarCap = false;
         loc.pole = Location::Null;
     }
-
     // -------------------------------------------------------------------------
     // check whether on the pole
     double R = PI05-fabs(x.getLat());
@@ -253,13 +243,11 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
     } else {
         loc.onPole = false;
     }
-
     // -------------------------------------------------------------------------
     // vertical layer index
     if (!hasLayers()) {
         loc.k = 0;
     }
-
     // -------------------------------------------------------------------------
     // count
     // TODO: This part is duplicate with "countPoint" functionally, try to

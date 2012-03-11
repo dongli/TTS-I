@@ -683,11 +683,11 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     const RLLMesh &mesh = meshManager.getMesh(PointCounter::Bound);
     int numLon = mesh.getNumLon()-1;
     int numLat = mesh.getNumLat()-1;
-    const double areaDiffThreshold = 1.0e-3;
+    const double areaDiffThreshold = 1.0e-2;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;
-    static CoverMask coverMask;
+    static CoverMask coverMask(meshManager.getMesh(PointCounter::Center));
     // -------------------------------------------------------------------------
     // reset
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
@@ -881,9 +881,9 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         // handle the cells that are fully covered by the polygon
         if (coverMask.mask.size() != 0 && any(coverMask.mask == -1)) {
 #ifdef DEBUG
-            coverMask.searchCover(debug);
+            coverMask.searchCover(polygon, debug);
 #else
-            coverMask.searchCover();
+            coverMask.searchCover(polygon);
 #endif
             // add the fully covered cells
             for (int i = 0; i < coverMask.mask.extent(0); ++i)
@@ -967,8 +967,8 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
     // -------------------------------------------------------------------------
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
-    double massError = totalCellMass-totalPolygonMass;
-    cout << "Mass error is " << massError << endl;
+    double massError = (totalCellMass-totalPolygonMass)/totalPolygonMass;
+    cout << "Mass error is " << massError << "%" << endl;
     if (fabs(massError) > 1.0e-10)
         REPORT_ERROR("Mass error is too large!");
 }
@@ -1002,8 +1002,8 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
     // -------------------------------------------------------------------------
     cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
     cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
-    double massError = totalCellMass-totalPolygonMass;
-    cout << "Mass error is " << massError << endl;
+    double massError = (totalPolygonMass-totalCellMass)/totalCellMass;
+    cout << "Mass error is " << massError << "%" << endl;
     if (fabs(massError) > 1.0e-10)
         REPORT_ERROR("Mass error is too large!");
 }

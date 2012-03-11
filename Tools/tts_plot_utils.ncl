@@ -91,47 +91,6 @@ begin
 
 end
 
-function calc_polygon_center_lon(lon)
-begin
-
-    if (lon(0) .lt. 360.0-lon(0)) then
-        sign = -1.0
-    else
-        sign = 1.0
-    end if
-    center_lon = lon(0)
-    prev_lon = lon(0)
-    do i = 1, dimsizes(lon)-1
-        center_lon = center_lon+lon(i)
-        prev_lon = lon(i)
-        dist1 = abs(lon(i)-prev_lon)
-        dist2 = 360.0-dist1
-        if (dist1 .gt. dist2) then
-            center_lon = center_lon+sign*360.0
-        end if
-        if (sign .eq. -1.0) then
-            if (lon(i) .gt. 360.0-lon(i)) then
-                prev_lon = prev_lon-360.0
-            end if
-        else
-            if (lon(i) .lt. 360.0-lon(i)) then
-                prev_lon = prev_lon+360.0
-            end if
-        end if
-    end do
-    center_lon = center_lon/dimsizes(lon)
-
-    if (center_lon .lt. 0.0) then
-        center_lon = center_lon+360.0
-    end if
-    if (center_lon .gt. 360.0) then
-        center_lon = center_lon-360.0
-    end if
-
-    return center_lon
-
-end
-
 procedure get_viewpoint(lon, lat)
 begin
 

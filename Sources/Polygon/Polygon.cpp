@@ -131,12 +131,22 @@ void Polygon::updateTracers()
 void Polygon::handoverTracers()
 {
     for (int i = 0; i < tracers.size(); ++i) {
-        double mass = tracers[i].getMass()/edgePointers.size();
+        int count = 0;
+        Polygon *polygons[edgePointers.size()];
         EdgePointer *edgePointer = edgePointers.front();
         for (int j = 0; j < edgePointers.size(); ++j) {
-            edgePointer->getPolygon(OrientRight)->tracers[i].addMass(mass);
+            // exclude NULL and removed polygons
+            if (edgePointer->getPolygon(OrientRight) != NULL &&
+                edgePointer->getPolygon(OrientRight)->endTag != Null) {
+                polygons[count++] = edgePointer->getPolygon(OrientRight);
+            }
             edgePointer = edgePointer->next;
         }
+        double mass = tracers[i].getMass()/count;
+        for (int j = 0; j < count; ++j) {
+            polygons[j]->tracers[i].addMass(mass);
+        }
+        tracers[i].setMass(0.0);
     }
 }
 

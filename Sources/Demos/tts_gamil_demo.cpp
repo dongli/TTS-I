@@ -19,7 +19,12 @@ int main(int argc, char **argv)
     tts.init();
     // -------------------------------------------------------------------------
     gamilReader.init("gamil_data", "tts.gamil.suv.*.nc");
+    gamilReader.getTracerField(tracerManager);
     gamilReader.getVelocityField();
+#ifdef TTS_OUTPUT
+    sprintf(fileName, filePattern, timeManager.getSteps());
+    tracerManager.output(fileName);
+#endif
     // -------------------------------------------------------------------------
     while (!timeManager.isFinished()) {
         tts.advect(gamilReader.meshManager, gamilReader.meshAdaptor,

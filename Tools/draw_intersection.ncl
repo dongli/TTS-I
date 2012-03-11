@@ -7,10 +7,9 @@ load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
 begin
 
     projection = "ST"
-    projection@angle = 6.0
-    projection@min_lat = 30.0
-    projection@max_lat = 51.0
-    ;projection@center_lon = 0.0
+    projection@angle = 7.0
+    projection@min_lat = 80.0
+    projection@max_lat = 90.0
     line_width = 0.1
     point_size = 0.001
 
@@ -69,8 +68,10 @@ begin
     res_map = True
     res_map@mpOutlineOn = False
     if (projection .eq. "ST") then
-        projection@center_lon = calc_polygon_center_lon(vertex_lon)
-        projection@center_lat = avg(vertex_lat)
+        projection@center_lon = new(1, double)
+        projection@center_lat = new(1, double)
+        calc_polygon_center(vertex_lon, vertex_lat, \
+                            projection@center_lon, projection@center_lat)
     end if
     setup_map(projection, res_map)
     map = gsn_csm_map(wks, res_map)
@@ -81,10 +82,10 @@ begin
     ; draw point counter mesh
     f = addfile("point_counter_bound_mesh.nc", "r")
     if (projection .eq. "ST") then
-        min_lon = res_map@mpCenterLonF-10.0
-        max_lon = res_map@mpCenterLonF+10.0
-        min_lat = res_map@mpCenterLatF-10.0
-        max_lat = res_map@mpCenterLatF+10.0
+        min_lon = res_map@mpCenterLonF-20.0
+        max_lon = res_map@mpCenterLonF+20.0
+        min_lat = res_map@mpCenterLatF-20.0
+        max_lat = res_map@mpCenterLatF+20.0
     else
         min_lon = 0.0d0
         max_lon = 360.0d0

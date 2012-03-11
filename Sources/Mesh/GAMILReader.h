@@ -4,6 +4,7 @@
 #include "MeshManager.h"
 #include "MeshAdaptor.h"
 #include "FlowManager.h"
+#include "TracerManager.h"
 
 class GAMILReader
 {
@@ -12,7 +13,7 @@ public:
     virtual ~GAMILReader();
 
     void init(const string &dir, const string &filePattern);
-
+    void getTracerField(TracerManager &);
     void getVelocityField();
 
 #ifdef DEBUG

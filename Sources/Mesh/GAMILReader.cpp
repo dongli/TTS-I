@@ -20,8 +20,10 @@ GAMILReader::~GAMILReader()
 
 void GAMILReader::init(const string &dir, const string &filePattern)
 {
+    // -------------------------------------------------------------------------
+    // get all the file names
     SystemCalls::getFiles(dir, filePattern, fileNames);
-
+    // -------------------------------------------------------------------------
     NcFile file(fileNames[0].c_str(), NcFile::ReadOnly);
     // get the mesh information
     int numLon = static_cast<int>(file.get_dim("lon_full")->size());
@@ -37,10 +39,58 @@ void GAMILReader::init(const string &dir, const string &filePattern)
     TimeManager::setClock(1200, time*86400.0);
     TimeManager::setEndStep(static_cast<int>(fileNames.size())-1);
     file.close();
-
+    // -------------------------------------------------------------------------
     meshManager.init(numLon, numLat, lon.data(), lat.data());
     meshAdaptor.init(meshManager);
     flowManager.init(meshManager);
+}
+
+void GAMILReader::getTracerField(TracerManager &tracerManager)
+{
+    // -------------------------------------------------------------------------
+    // moisture field
+    const RLLMesh &meshCnt = meshManager.getMesh(PointCounter::Center);
+    const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
+    Field q0; q0.init(meshCnt, meshBnd);
+    // -------------------------------------------------------------------------
+    // read in moisture
+    if (false) {
+        NcFile file("gamil_data/q.nc", NcFile::ReadOnly);
+        if (!file.is_valid()) {
+            ostringstream message;
+            message << "Failed to open file q.nc";
+            REPORT_ERROR(message.str())
+        }
+        int numLon = static_cast<int>(file.get_dim("lon")->size());
+        int numLat = static_cast<int>(file.get_dim("lat")->size());
+        int numLev = static_cast<int>(file.get_dim("lev")->size());
+        Array<double, 3> q(numLat, numLev, numLon);
+        file.get_var("q")->get(q.data(), 1, numLat, numLev, numLon);
+        file.close();
+        for (int i = 0; i < meshCnt.getNumLon(); ++i)
+            for (int j = 0; j < meshCnt.getNumLat(); ++j)
+                q0.values(i, j) = q(j, 12, i);
+    } else {
+        // ideal unity field
+        for (int i = 0; i < meshCnt.getNumLon(); ++i)
+            for (int j = 0; j < meshCnt.getNumLat(); ++j)
+                q0.values(i, j) = 1.0;
+    }
+    // -------------------------------------------------------------------------
+    tracerManager.registerTracer("moisture", "", meshManager);
+    // check the location polygon vertices
+    Vertex *vertex = tracerManager.polygonManager.vertices.front();
+    for (int i = 0; i < tracerManager.polygonManager.vertices.size(); ++i) {
+        Location loc;
+        meshManager.checkLocation(vertex->getCoordinate(), loc, vertex);
+        vertex->setLocation(loc);
+        vertex = vertex->next;
+    }
+    // -------------------------------------------------------------------------
+    // remap the air density onto the polygons
+    meshAdaptor.adapt(tracerManager, meshManager);
+    meshAdaptor.remap("moisture", q0, tracerManager);
+    meshAdaptor.remap("moisture", tracerManager);
 }
 
 void GAMILReader::getVelocityField()

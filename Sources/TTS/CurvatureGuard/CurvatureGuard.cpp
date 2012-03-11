@@ -57,11 +57,11 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     DebugTools::dump_watchers();
 #endif
     
-    // -------------------------------------------------------------------------
-    ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-#ifdef DEBUG
-    DebugTools::dump_watchers();
-#endif
+//    // -------------------------------------------------------------------------
+//    ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
+//#ifdef DEBUG
+//    DebugTools::dump_watchers();
+//#endif
     
     // -------------------------------------------------------------------------
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;

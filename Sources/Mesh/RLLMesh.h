@@ -6,6 +6,7 @@
 
 using std::string;
 using blitz::Array;
+using blitz::Range;
 
 enum MeshType {
     Full = 0, LonHalf = 1, LatHalf = 2, BothHalf = 3
@@ -35,10 +36,6 @@ public:
 
     int getNumLon() const { return static_cast<int>(lon.size()); }
     int getNumLat() const { return static_cast<int>(lat.size()); }
-
-    void getBoundBox(int i1, int i2, int j1, int j2, int ii, int jj,
-                     int &I1, int &I2, int &J1, int &J2) const;
-    bool isInBoundBox(int I1, int I2, int J1, int J2, int i, int j) const;
 
     void dump() const;
     void output(const string &fileName) const;

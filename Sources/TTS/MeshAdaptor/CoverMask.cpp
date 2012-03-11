@@ -4,8 +4,9 @@
 #include "Sphere.h"
 #include "ReportMacros.h"
 
-CoverMask::CoverMask()
+CoverMask::CoverMask(const RLLMesh &mesh)
 {
+    this->mesh = &mesh;
 }
 
 CoverMask::~CoverMask()
@@ -163,25 +164,22 @@ return_label:
     return;
 }
 
-void CoverMask::setMask(int i, int j, MaskType type)
-{
-    mask(i, j) = type;
-}
-
-void CoverMask::searchCover(bool debug)
+void CoverMask::searchCover(Polygon *polygon, bool debug)
 {
     // set the cell that has been fully covered
-    int i, j;
-    for (i = 0; i < mask.extent(0); ++i)
-        for (j = 0; j < mask.extent(1); ++j) {
-            isCovered(-1, -1, i, j);
+    bool isFirstCoveredCell;
+    for (int i = 0; i < mask.extent(0); ++i)
+        for (int j = 0; j < mask.extent(1); ++j) {
+            isFirstCoveredCell = true;
+            isCovered(polygon, -1, -1, i, j, isFirstCoveredCell);
 #ifdef DEBUG
             if (debug) dump(i, j);
 #endif
         }
 }
 
-bool CoverMask::isCovered(int i0, int j0, int i, int j)
+bool CoverMask::isCovered(Polygon *polygon, int i0, int j0, int i, int j,
+                          bool &isFirstCoveredCell)
 {
     // -------------------------------------------------------------------------
     if (mask(i, j) > 0)
@@ -209,7 +207,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (ii == i0 && jj == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, ii, jj))
+            if (!isCovered(polygon, i, j, ii, jj, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -233,7 +231,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (ii == i0 && j == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, ii, j))
+            if (!isCovered(polygon, i, j, ii, j, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -259,7 +257,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (ii == i0 && jj == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, ii, jj))
+            if (!isCovered(polygon, i, j, ii, jj, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -278,7 +276,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (i == i0 && jj == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, i, jj))
+            if (!isCovered(polygon, i, j, i, jj, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -297,7 +295,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (i == i0 && jj == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, i, jj))
+            if (!isCovered(polygon, i, j, i, jj, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -321,7 +319,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (ii == i0 && jj == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, ii, jj))
+            if (!isCovered(polygon, i, j, ii, jj, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -343,7 +341,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (ii == i0 && j == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, ii, j))
+            if (!isCovered(polygon, i, j, ii, j, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -367,7 +365,7 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
             if (ii == i0 && jj == j0)
                 break;
             mask(i, j) = PotentialCoveredPassed;
-            if (!isCovered(i, j, ii, jj))
+            if (!isCovered(polygon, i, j, ii, jj, isFirstCoveredCell))
                 goto return_not_covered;
             else
                 break;
@@ -375,8 +373,40 @@ bool CoverMask::isCovered(int i0, int j0, int i, int j)
         ++ii, ++jj;
     }
     // -------------------------------------------------------------------------
-    mask(i, j) = FullyCovered;
-    return true;
+    if (isFirstCoveredCell) {
+        // use "ray casting algorithm" to ensure the cell is truely covered
+        Coordinate X0(mesh->lon(idxI(i)), mesh->lat(idxJ(j)));
+        bool isCovered = false;
+        EdgePointer *edgePointer = polygon->edgePointers.front();
+        for (int k = 0; k < polygon->edgePointers.size(); ++k) {
+            Vertex *vertex1 = edgePointer->getEndPoint(FirstPoint);
+            Vertex *vertex2 = edgePointer->getEndPoint(SecondPoint);
+            const Coordinate X1 = vertex1->getCoordinate();
+            const Coordinate X2 = vertex2->getCoordinate();
+            Coordinate X1r, X2r;
+            Sphere::rotate(X0, X1, X1r);
+            Sphere::rotate(X0, X2, X2r);
+            double x1 = X1r.getX();
+            double y1 = X1r.getY();
+            double x2 = X2r.getX();
+            double y2 = X2r.getY();
+            if (((y1 > 0.0) != (y2 > 0.0)) &&
+                ((x2-x1)*(-y1)/(y2-y1)+x1 > 0.0))
+                isCovered = !isCovered;
+            edgePointer = edgePointer->next;
+        }
+        isFirstCoveredCell = false;
+        if (isCovered) {
+            mask(i, j) = FullyCovered;
+            return true;
+        } else {
+            mask(i, j) = NoOverlap;
+            return false;
+        }
+    } else {
+        mask(i, j) = FullyCovered;
+        return true;
+    }
 return_not_covered:
     // Note: The search route may forks, and some of the forked may return true,
     //       some may return false, and the order of the forked routes may cause

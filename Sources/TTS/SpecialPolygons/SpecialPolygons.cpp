@@ -127,6 +127,8 @@ void SpecialPolygons::handlePointPolygon(PolygonManager &polygonManager,
     edgePointer2 = edgePointer1->getNeighborEdgePointer();
     polygon2 = edgePointer1->getPolygon(OrientRight);
     polygon2->edgePointers.remove(edgePointer2);
+    if (polygon2->edgePointers.size() == 2)
+        handleLinePolygon(polygonManager, polygon2);
 #ifdef DEBUG
     assert(edgePointer1->edge->getEndPoint(FirstPoint) ==
            edgePointer1->edge->getEndPoint(SecondPoint));
@@ -173,6 +175,7 @@ void SpecialPolygons::handleEnclosedPolygons(EdgePointer *edgePointer1,
     // destroy the enclosed polygons
     for (it = enclosedPolygons.begin(); it != enclosedPolygons.end(); ++it) {
         (*it)->destroy();
+        (*it)->handoverTracers();
         polygonManager.polygons.remove(*it);
     }
     CommonTasks::deleteTask(CommonTasks::RemoveObject, keepVertex);
