@@ -142,6 +142,9 @@ void Polygon::handoverTracers()
             }
             edgePointer = edgePointer->next;
         }
+#ifdef DEBUG
+        assert(count != 0);
+#endif
         double mass = tracers[i].getMass()/count;
         for (int j = 0; j < count; ++j) {
             polygons[j]->tracers[i].addMass(mass);

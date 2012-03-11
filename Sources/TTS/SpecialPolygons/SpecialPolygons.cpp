@@ -175,7 +175,7 @@ void SpecialPolygons::handleEnclosedPolygons(EdgePointer *edgePointer1,
     // destroy the enclosed polygons
     for (it = enclosedPolygons.begin(); it != enclosedPolygons.end(); ++it) {
         (*it)->destroy();
-        (*it)->handoverTracers();
+        (*it)->handoverTracers(enclosingPolygon, 1.0);
         polygonManager.polygons.remove(*it);
     }
     CommonTasks::deleteTask(CommonTasks::RemoveObject, keepVertex);
