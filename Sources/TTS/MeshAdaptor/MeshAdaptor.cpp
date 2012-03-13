@@ -431,7 +431,7 @@ numerical_tolerance_label:
             normVector0 = norm_cross(edgePointer0->getEndPoint(SecondPoint)
                                      ->getCoordinate().getCAR(), x0.getCAR());
         // calculate the virtual normal vector of the cell edge
-        if (bndDiff == 0)
+        if (numCellEdge == 1)
             normVectors(0) = norm_cross(x0.getCAR(), x1.getCAR());
         else
             normVectors(numCellEdge-1) = norm_cross(x0.getCAR(),
@@ -461,7 +461,10 @@ numerical_tolerance_label:
             normVector1 = norm_cross(x1.getCAR(), edgePointer1->
                                      getEndPoint(FirstPoint)->
                                      getCoordinate().getCAR());
-        normVectors(0) = norm_cross(x(0).getCAR(), x1.getCAR());
+        if (numCellEdge == 1)
+            normVectors(0) = norm_cross(x0.getCAR(), x1.getCAR());
+        else
+            normVectors(0) = norm_cross(x(0).getCAR(), x1.getCAR());
         if (edgePointer1 != edgePointer0) {
             polygonAngles(numPolygonEdge-2) = EdgePointer::calcAngle
             (edgePointer1->prev->getNormVector(), normVector1,
