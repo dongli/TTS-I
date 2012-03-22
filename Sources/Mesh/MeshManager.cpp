@@ -12,7 +12,7 @@ MeshManager::MeshManager()
 {
     REPORT_ONLINE("MeshManager")
     // TODO: Determine the value of PoleR.
-    this->PoleR = 5.0/Rad2Deg;
+    this->PoleR = 18.0/Rad2Deg;
 }
 
 MeshManager::~MeshManager()

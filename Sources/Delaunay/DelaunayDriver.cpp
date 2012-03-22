@@ -51,8 +51,10 @@ void DelaunayDriver::init()
     int idx[3];
     
     getThreeRandomIndices(idx);
+#if defined (TTS_ONLINE) && defined (DEBUG)
     // TEST: for convenient tracking polygons, remove it after debugging
     idx[0] = 0; idx[1] = 1; idx[2] = 2;
+#endif
     initDelaunayTriangle(idx);
     initPIT();
     insertRestPoints();

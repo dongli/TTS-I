@@ -10,7 +10,8 @@ SolidRotation::SolidRotation()
     U0 = Sphere::radius*angleSpeed;
     alpha = PI05;
     axisPole.setSPH(PI, PI05-alpha);
-    CR0.setSPH(PI05, PI05);
+    C0.setSPH(PI15, 0.0);
+    Sphere::rotate(axisPole, C0, CR0);
     R = Sphere::radius/3.0;
     H0 = 1000.0;
 }

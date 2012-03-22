@@ -39,7 +39,7 @@ begin
     if (is_plot_polygons .or. is_plot_quantities .or. \
         is_plot_vertices .or. is_plot_point_counters) then
         do k = 0, dimsizes(polygon_file_names)-1
-            wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+ \
+            wks = gsn_open_wks("pdf", systemfunc("basename -s .nc "+ \
                 polygon_file_names(k))+"_"+projection)
 
             system("echo '-----------------------------------------'")

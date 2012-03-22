@@ -3,7 +3,6 @@
 #include "TimeManager.h"
 #include "DelaunayDriver.h"
 #include "ReportMacros.h"
-#include "SpecialPolygons.h"
 #include <netcdfcpp.h>
 
 PolygonManager::PolygonManager()
@@ -144,17 +143,12 @@ void PolygonManager::init(const DelaunayDriver &driver)
     // -------------------------------------------------------------------------
     polygons.startLoop(polygon);
     while (polygon != NULL) {
-        if (polygon->edgePointers.size() == 2) {
-            // TODO: Do we need to handle line polygons?
-            SpecialPolygons::handleLinePolygon(*this, polygon);
-        } else {
-            EdgePointer *edgePointer = polygon->edgePointers.front();
-            for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-                edgePointer->calcAngle();
-                edgePointer = edgePointer->next;
-            }
-            polygon->calcArea();
+        EdgePointer *edgePointer = polygon->edgePointers.front();
+        for (int j = 0; j < polygon->edgePointers.size(); ++j) {
+            edgePointer->calcAngle();
+            edgePointer = edgePointer->next;
         }
+        polygon->calcArea();
         polygon = polygons.getNextElem();
     }
     polygons.endLoop();

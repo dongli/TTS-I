@@ -18,7 +18,9 @@ using namespace PotentialCrossDetector;
 
 void ApproachDetector::init()
 {
+#ifdef TTS_CGA_SPLIT_POLYGONS
     TrendThreshold::init();
+#endif
 }
 
 bool ApproachDetector::isNeedCheck(double distance)
@@ -211,8 +213,6 @@ return_invalid_approach:
     return false;
 }
 
-//#define DIAG_EDGE_LENGTH
-
 void ApproachDetector::detectPolygon(MeshManager &meshManager,
                                      const FlowManager &flowManager,
                                      PolygonManager &polygonManager,
@@ -372,19 +372,6 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
 #endif
         crossVertices.clear();
     }
-#ifdef DIAG_EDGE_LENGTH
-    double minEdgeLength = 1.0e34, maxEdgeLength = -1.0e34;
-    edgePointer1 = polygon->edgePointers.front();
-    for (int i = 0; i < polygon->edgePointers.size(); ++i) {
-        if (edgePointer1->edge->getLength() > maxEdgeLength)
-            maxEdgeLength = edgePointer1->edge->getLength();
-        if (edgePointer1->edge->getLength() < minEdgeLength)
-            minEdgeLength = edgePointer1->edge->getLength();
-        edgePointer1 = edgePointer1->next;
-    }
-    cout << "Min edge length: " << minEdgeLength*Rad2Deg/Sphere::radius << endl;
-    cout << "Max edge length: " << maxEdgeLength*Rad2Deg/Sphere::radius << endl;
-#endif
 }
 
 void ApproachDetector::detectPolygons(MeshManager &meshManager,

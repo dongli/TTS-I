@@ -24,7 +24,7 @@ void StaticVortices::calcVelocityField(FlowManager &flowManager)
     const RLLMesh &vmesh = flowManager.v.getMesh();
     double u[umesh.getNumLon()-2][umesh.getNumLat()][1];
     double v[vmesh.getNumLon()-1][vmesh.getNumLat()][1];
-    double timeRatio = cos(PI*TimeManager::getSeconds()/T0);
+    double timeRatio = cos(PI*TimeManager::getSeconds()/(2*T0));
 
     // -------------------------------------------------------------------------
     // normal regions

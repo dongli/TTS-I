@@ -73,9 +73,10 @@ begin
         res@pmLabelBarOrthogonalPosF = 0.1
         res@gsnMaximize = True
         setup_contour(res)
-        set_contour_range(res, 0.0, 5.0, 0.25, "%4.2f")
+        ;set_contour_range(res, 0.0, 5.0, 0.25, "%4.2f")
         ;set_contour_range(res, 0.0, 1.1, 0.1)
         ;set_contour_range(res, 0.5, 1.5, 0.05)
+        set_contour_range(res, 0.0, 1000.0, 100.0, "%6.1f")
 
         res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \
                              "max: "+sprintf("%4.2f", max(f->$density_name$))

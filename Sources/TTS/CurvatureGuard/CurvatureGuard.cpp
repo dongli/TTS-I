@@ -25,7 +25,6 @@ void CurvatureGuard::guard(MeshManager &meshManager,
                            PolygonManager &polygonManager)
 {
     bool flag = false;
-    
     // -------------------------------------------------------------------------
     // some operations at the first step
     if (TimeManager::isFirstStep()) {
@@ -39,7 +38,6 @@ void CurvatureGuard::guard(MeshManager &meshManager,
             edge = edge->next;
         }
     }
-    
     // -------------------------------------------------------------------------
     // advect test points
     Edge *edge = polygonManager.edges.front();
@@ -47,47 +45,22 @@ void CurvatureGuard::guard(MeshManager &meshManager,
         TTS::track(meshManager, flowManager, edge->getTestPoint());
         edge = edge->next;
     }
-#ifdef DEBUG
-    DebugTools::dump_watchers();
-#endif
-    
     // -------------------------------------------------------------------------
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG
-    DebugTools::dump_watchers();
-#endif
-    
-//    // -------------------------------------------------------------------------
-//    ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-//#ifdef DEBUG
-//    DebugTools::dump_watchers();
-//#endif
-    
     // -------------------------------------------------------------------------
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG
-    DebugTools::dump_watchers();
-#endif
-    
+#ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
 #ifdef DEBUG
     DebugTools::dump_watchers();
 #endif
-    
-#ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
     if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef DEBUG
-    DebugTools::dump_watchers();
 #endif
-#endif
-    
     // -------------------------------------------------------------------------
     ApproachDetector::reset(polygonManager);
-    
     CommonTasks::resetTasks();
-    
 #ifdef TTS_OUTPUT
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting

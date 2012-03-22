@@ -82,31 +82,11 @@ void TTS::advect(MeshManager &meshManager,
     CurvatureGuard::guard(meshManager, flowManager, polygonManager);
     // -------------------------------------------------------------------------
     // update physical quantities
-#ifdef CHECK_AREA_BIAS
-    double totalArea = 0.0;
-#endif
     polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
         polygon->calcArea();
-#ifdef CHECK_AREA_BIAS
-        totalArea += polygon->getArea();
-#endif
         polygon = polygon->next;
     }
-#ifdef CHECK_AREA_BIAS
-    static const double trueTotalArea = 4.0*PI*Sphere::radius2;
-    double bias = fabs(totalArea-trueTotalArea)/trueTotalArea;
-    cout << "Total area bias: " << setw(30) << setprecision(16);
-    cout << bias << endl;
-    if (bias > 1.0e-6) {
-        polygon = polygonManager.polygons.front();
-        for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-            cout << polygon->getID() << ": " << polygon->getArea() << endl;
-            polygon = polygon->next;
-        }
-        REPORT_ERROR("Area bias is too large!");
-    }
-#endif
     cout << "Total vertex number: " << setw(10);
     cout << polygonManager.vertices.size() << endl;
     cout << "Total edge number: " << setw(10);
@@ -114,6 +94,9 @@ void TTS::advect(MeshManager &meshManager,
     cout << "Total polygon number: " << setw(10);
     cout << polygonManager.polygons.size() << endl;
     tracerManager.update();
+#ifdef CHECK_AREA_BIAS
+    DebugTools::assert_polygon_area_constant(polygonManager);
+#endif
 #ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     // adapt the quantities carried by parcels (polygons)

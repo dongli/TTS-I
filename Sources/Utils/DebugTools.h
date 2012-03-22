@@ -24,6 +24,7 @@ public:
 #ifdef TTS_ONLINE
     static void assert_consistent_projection(const Projection *projection);
     static void assert_polygon_mass_constant(const PolygonManager &);
+    static void assert_polygon_area_constant(const PolygonManager &);
 #endif
 
     static void watch(Vertex *vertex) { watchedVertex = vertex; }

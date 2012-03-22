@@ -75,19 +75,6 @@ bool DebugTools::is_colinear(const Coordinate &x1, const Coordinate &x2,
     return true;
 }
 
-void DebugTools::assert_polygon_mass_constant(const PolygonManager &polygonManager)
-{
-    double totalMass = 0.0;
-    Polygon *polygon = polygonManager.polygons.front();
-    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-        if (polygon->tracers.size() != 0)
-            totalMass += polygon->tracers[0].getMass();
-        polygon = polygon->next;
-    }
-    double errorMass = totalMass-510112349120850.625;
-    assert(fabs(errorMass) < 10.0);
-}
-
 #ifdef TTS_ONLINE
 void DebugTools::assert_consistent_projection(const Projection *projection)
 {
@@ -113,6 +100,34 @@ void DebugTools::assert_consistent_projection(const Projection *projection)
         message << " is not consistent!";
         REPORT_ERROR(message.str());
     }
+}
+
+void DebugTools::assert_polygon_mass_constant(const PolygonManager &polygonManager)
+{
+    double totalMass = 0.0;
+    Polygon *polygon = polygonManager.polygons.front();
+    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+        if (polygon->tracers.size() != 0)
+            totalMass += polygon->tracers[0].getMass();
+        polygon = polygon->next;
+    }
+    double errorMass = totalMass-510112349120850.625;
+    assert(fabs(errorMass) < 10.0);
+}
+
+void DebugTools::assert_polygon_area_constant(const PolygonManager &polygonManager)
+{
+    static const double trueTotalArea = 4.0*PI*Sphere::radius2;
+    double totalArea = 0.0;
+    Polygon *polygon = polygonManager.polygons.front();
+    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
+        if (!polygon->isAreaSet())
+            polygon->calcArea();
+        totalArea += polygon->getArea();
+        polygon = polygon->next;
+    }
+    double errorArea = fabs(totalArea-trueTotalArea)/trueTotalArea;
+    assert(errorArea < 1.0e-6);
 }
 #endif
 
