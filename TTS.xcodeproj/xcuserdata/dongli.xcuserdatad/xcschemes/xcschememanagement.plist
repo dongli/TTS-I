@@ -29,11 +29,6 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>tts_square_demo.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
 		<key>unit_test_main.xcscheme</key>
 		<dict>
 			<key>orderHint</key>

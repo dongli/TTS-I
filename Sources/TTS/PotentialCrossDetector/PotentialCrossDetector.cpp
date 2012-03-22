@@ -22,6 +22,8 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
     EdgePointer *linkedEdge = oldVertex->linkedEdges.front();
     for (int i = 0; i < oldVertex->linkedEdges.size(); ++i) {
         // ---------------------------------------------------------------------
+        // branch-1
+        // =====================================================================
         // check the paired vertices of the linked edge
         edge = linkedEdge->edge;
         vertex1 = NULL, vertex2 = NULL;
@@ -51,7 +53,7 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
             linkedEdge = linkedEdge->next;
             continue;
         }
-        // ---------------------------------------------------------------------
+        // =====================================================================
         // check other linked edges
         if (edge->getEndPoint(FirstPoint) == oldVertex)
             vertex1 = edge->getEndPoint(SecondPoint);
@@ -113,6 +115,7 @@ Status PotentialCrossDetector::detectReplaceVertex(EdgePointer *edgePointer,
             otherLinkedEdge = otherLinkedEdge->next;
         }
         // ---------------------------------------------------------------------
+        // branch-2
         // check the paired edges of the old vertex
         for (itPrj = oldVertex->detectAgent.getProjections().begin();
              itPrj != oldVertex->detectAgent.getProjections().end(); ++itPrj) {
@@ -466,98 +469,6 @@ return_nocross_but_reset_testpoint:
     testPoint->setCoordinate(x2, NewTimeLevel);
     testPoint->setLocation(loc);
     testPoint->setCoordinate(x1, OldTimeLevel);
-    return NoCross;
-}
-
-Status PotentialCrossDetector::detectAddConnection(Polygon *polygon,
-                                                   EdgePointer *edgePointer1,
-                                                   EdgePointer *&edgePointer2,
-                                                   bool &isConnectOk1,
-                                                   bool &isConnectOk2,
-                                                   Vector &vector1,
-                                                   Vector &vector2)
-{
-    Vertex *vertex1, *vertex3, *vertex4, *vertex5, *vertex6;
-    EdgePointer *edgePointer;
-    static std::list<Vertex *>::const_iterator itVtx;
-    static std::list<Projection>::const_iterator itPrj;
-    double angle;
-
-    // -------------------------------------------------------------------------
-    // collect information
-    vertex1 = edgePointer1->getEndPoint(FirstPoint);
-    vertex3 = edgePointer2->getEndPoint(FirstPoint);
-    vertex4 = edgePointer2->getEndPoint(SecondPoint);
-    isConnectOk1 = true;
-    isConnectOk2 = true;
-    // -------------------------------------------------------------------------
-    edgePointer = edgePointer1->next;
-    while (edgePointer != edgePointer2) {
-        vertex5 = edgePointer->edge->getEndPoint(FirstPoint);
-        vertex6 = edgePointer->edge->getEndPoint(SecondPoint);
-        if (vertex5 == vertex1 ||  vertex6 == vertex1) {
-            edgePointer = edgePointer->next;
-            continue;
-        }
-        if (isConnectOk1 && vertex5 != vertex3 && vertex6 != vertex3 &&
-            Sphere::isIntersect(vertex1, vertex3, vertex5, vertex6))
-            isConnectOk1 = false;
-        if (isConnectOk2 && vertex5 != vertex4 && vertex6 != vertex4 &&
-            Sphere::isIntersect(vertex1, vertex4, vertex5, vertex6))
-            isConnectOk2 = false;
-        if (!isConnectOk1 && !isConnectOk2)
-            return Cross;
-        edgePointer = edgePointer->next;
-    }
-    edgePointer = edgePointer1->prev;
-    while (edgePointer != edgePointer2) {
-        vertex5 = edgePointer->edge->getEndPoint(FirstPoint);
-        vertex6 = edgePointer->edge->getEndPoint(SecondPoint);
-        if (vertex5 == vertex1 ||  vertex6 == vertex1) {
-            edgePointer = edgePointer->prev;
-            continue;
-        }
-        if (isConnectOk1 && vertex5 != vertex3 && vertex6 != vertex3 &&
-            Sphere::isIntersect(vertex1, vertex3, vertex5, vertex6))
-            isConnectOk1 = false;
-        if (isConnectOk2 && vertex5 != vertex4 && vertex6 != vertex4 &&
-            Sphere::isIntersect(vertex1, vertex4, vertex5, vertex6))
-            isConnectOk2 = false;
-        if (!isConnectOk1 && !isConnectOk2)
-            return Cross;
-        edgePointer = edgePointer->prev;
-    }
-    // -------------------------------------------------------------------------
-    if (isConnectOk1) {
-        vector1 = norm_cross(vertex1->getCoordinate().getCAR(),
-                             vertex3->getCoordinate().getCAR());
-        angle = EdgePointer::calcAngle
-        (-vector1, edgePointer2->getNormVector(), *vertex3);
-        if (angle >= edgePointer2->getAngle())
-            isConnectOk1 = false;
-    }
-    if (isConnectOk2) {
-        vector2 = norm_cross(vertex1->getCoordinate().getCAR(),
-                             vertex4->getCoordinate().getCAR());
-        angle = EdgePointer::calcAngle
-        (edgePointer2->getNormVector(), vector2, *vertex4);
-        if (angle >= edgePointer2->next->getAngle())
-            isConnectOk2 = false;
-    }
-    if (!isConnectOk1 && !isConnectOk2)
-        return Cross;
-    // -------------------------------------------------------------------------
-    if (isConnectOk1)
-        if (Sphere::isIntersect(vertex1, vertex3,
-                                edgePointer2->edge->getTestPoint(), vertex4))
-            isConnectOk1 = false;
-    if (isConnectOk2)
-        if (Sphere::isIntersect(vertex1, vertex4,
-                                edgePointer2->edge->getTestPoint(), vertex3))
-            isConnectOk2 = false;
-    if (!isConnectOk1 && !isConnectOk2)
-        return Cross;
-    // -------------------------------------------------------------------------
     return NoCross;
 }
 

@@ -138,6 +138,7 @@ void TracerManager::output(const string &fileName)
     // -------------------------------------------------------------------------
     // output polygon stuffs
     polygonManager.output(fileName);
+#ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     NcFile file(fileName.c_str(), NcFile::Write);
     if (!file.is_valid()) {
@@ -146,7 +147,6 @@ void TracerManager::output(const string &fileName)
         message << fileName << "\" for appending meshed density field!";
         REPORT_ERROR(message.str());
     }
-#ifdef TTS_REMAP
     // -------------------------------------------------------------------------
     // output tracer densities on the polygons
     NcDim *numPolygonDim = file.get_dim("num_total_polygon");

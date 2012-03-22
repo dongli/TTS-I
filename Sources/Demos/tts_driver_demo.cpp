@@ -11,8 +11,11 @@
 #include "TTS.h"
 #include "MeshAdaptor.h"
 
-#define MOVINGVORTICES_TESTCASE
-#define TESTCASE_CALC_TRUE_SOLUTION
+//#define MOVINGVORTICES_TESTCASE
+//#define TESTCASE_CALC_TRUE_SOLUTION
+//#define DEFORMATION_TESTCASE
+//#define STATICVORTICES_TESTCASE
+#define SOLIDROTATION_TESTCASE
 
 int main(int argc, char **argv)
 {
@@ -21,6 +24,7 @@ int main(int argc, char **argv)
     FlowManager flowManager;
     TracerManager tracerManager;
     TTS tts;
+    // -------------------------------------------------------------------------
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
 #ifdef TESTCASE_CALC_TRUE_SOLUTION
@@ -28,21 +32,33 @@ int main(int argc, char **argv)
 #else
     char fileName[30], filePattern[50] = "mv_360x180_2562_576_%3.3d.nc";
 #endif
-#endif
-#ifdef DEFORMATION_TESTCASE
-    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
-    char fileName[30], filePattern[50] = "gh_360x180_10242_600_%3.3d.nc";
-#endif
-    // -------------------------------------------------------------------------
-#ifdef MOVINGVORTICES_TESTCASE
     ConfigTools::parse("tts_mv_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(576);
 #endif
+    // -------------------------------------------------------------------------
 #ifdef DEFORMATION_TESTCASE
+    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
+    char fileName[30], filePattern[50] = "gh_360x180_10242_600_%3.3d.nc";
     ConfigTools::parse("tts_df_config");
     TimeManager::setClock(5.0/600.0);
     TimeManager::setEndStep(600);
+#endif
+    // -------------------------------------------------------------------------
+#ifdef STATICVORTICES_TESTCASE
+    StaticVortices testCase;
+    char fileName[30], filePattern[50] = "square_%4.4d.nc";
+    ConfigTools::parse("tts_sv_config");
+    TimeManager::setClock(1800.0);
+    TimeManager::setEndStep(1152);
+#endif
+    // -------------------------------------------------------------------------
+#ifdef SOLIDROTATION_TESTCASE
+    SolidRotation testCase;
+    char fileName[30], filePattern[50] = "sr_360x180_10242_%4.4d.nc";
+    ConfigTools::parse("tts_sr_config");
+    TimeManager::setClock(1800.0);
+    TimeManager::setEndStep(0);
 #endif
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;

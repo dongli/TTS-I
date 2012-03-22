@@ -31,12 +31,6 @@ namespace PotentialCrossDetector
                                     Vertex *oldVertex = 0x0,
                                     Edge **crossedEdge = 0x0);
 
-    Status detectAddConnection(Polygon *polygon,
-                               EdgePointer *edgePointer1,
-                               EdgePointer *&edgePointer2,
-                               bool &isConnectOk1, bool &isConnectOk2,
-                               Vector &vector1, Vector &vector2);
-
     Status detectTestPoint(EdgePointer *edgePointer1, EdgePointer *edgePointer2);
     
     Status detectVertex(Vertex *vertex, Edge *edge,
