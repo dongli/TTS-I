@@ -2,6 +2,7 @@
 #define _Sphere_h_
 
 #include "Point.h"
+class Polygon;
 
 enum OrientStatus {
     OrientLeft = 0, OrientRight = 1, OrientOn = 2
@@ -48,6 +49,7 @@ public:
 
     static void calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
                                 Coordinate &x);
+    static void calcCentroid(Polygon const *polygon, Coordinate &x);
 
     static bool is_lon_between(double lon1, double lon2, double lon);
     static bool is_lon_gt(double lon1, double lon2);

@@ -1,6 +1,7 @@
 #include "Sphere.h"
 #include "ReportMacros.h"
 #include "Constants.h"
+#include "Polygon.h"
 #include <cmath>
 #include "mpreal.h"
 
@@ -174,6 +175,20 @@ void Sphere::calcMiddlePoint(const Coordinate &x1, const Coordinate &x2,
     double dlat = (PI05-xr.getLat())*0.5;
     xr.setSPH(xr.getLon(), PI05-dlat);
     Sphere::inverseRotate(x1, x, xr);
+}
+
+void Sphere::calcCentroid(Polygon const *polygon, Coordinate &x)
+{
+    double X = 0.0, Y = 0.0, Z = 0.0;
+    EdgePointer *edgePointer = polygon->edgePointers.front();
+    for (int i = 0; i < polygon->edgePointers.size(); ++i) {
+        Vertex *vertex = edgePointer->getEndPoint(FirstPoint);
+        X += vertex->getCoordinate().getX();
+        Y += vertex->getCoordinate().getY();
+        Z += vertex->getCoordinate().getZ();
+        edgePointer = edgePointer->next;
+    }
+    x.setCAR(X, Y, Z);
 }
 
 inline bool Sphere::isIntersect(const Coordinate &x1, const Coordinate &x2,
