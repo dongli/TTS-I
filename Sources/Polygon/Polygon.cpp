@@ -30,7 +30,7 @@ void Polygon::reinit()
     for (int i = 0; i < tracers.size(); ++i)
         tracers[i].reinit();
 #endif
-    isAreaSet = false;
+    areaSet = false;
     centroid.reinit();
 }
 
@@ -38,8 +38,10 @@ void Polygon::destroy()
 {
     EdgePointer *edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
+#ifdef TTS_ONLINE
         CommonTasks::recordTask(CommonTasks::RemoveObject, edgePointer->edge);
         CommonTasks::recordTask(CommonTasks::RemoveObject, edgePointer->getEndPoint(FirstPoint));
+#endif
         edgePointer = edgePointer->next;
     }
 }
@@ -89,13 +91,12 @@ void Polygon::calcArea()
 #endif
     } else
         area = 0.0;
-    if (isAreaSet) {
+    if (areaSet)
         this->area.save();
-    }
     this->area.setNew(area);
-    if (!isAreaSet) {
+    if (!areaSet) {
         this->area.save();
-        isAreaSet = true;
+        areaSet = true;
     }
 }
 

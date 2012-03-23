@@ -28,6 +28,7 @@ public:
     double getArea(TimeLevel timeLevel = NewTimeLevel) const {
         return area.get(timeLevel);
     }
+    bool isAreaSet() { return areaSet; }
 
     void calcCentroid();
     Coordinate &getCentroid() {
@@ -48,7 +49,7 @@ public:
     List<EdgePointer> edgePointers;
 
 private:
-    bool isAreaSet;
+    bool areaSet;
     MultiTimeLevel<double, 2> area;
     Coordinate centroid;
 };

@@ -56,7 +56,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "169"
          endingLineNumber = "169"
-         landmarkName = "DebugTools::dump_watched_polygon()"
+         landmarkName = "DebugTools::dump_watched_edge()"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -106,7 +106,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "157"
          endingLineNumber = "157"
-         landmarkName = "DebugTools::dump_watched_edge()"
+         landmarkName = "DebugTools::dump_watched_vertex()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -152,16 +152,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Polygon/Polygon.cpp"
-         timestampString = "352606794.899226"
+         timestampString = "354158359.968453"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "78"
-         endingLineNumber = "78"
+         startingLineNumber = "80"
+         endingLineNumber = "80"
          landmarkName = "Polygon::calcArea()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -171,11 +171,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Sources/Polygon/Polygon.cpp"
-         timestampString = "352606794.899226"
+         timestampString = "354158357.204404"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "88"
-         endingLineNumber = "88"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
          landmarkName = "Polygon::calcArea()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -246,7 +246,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "165"
          endingLineNumber = "165"
-         landmarkName = "DebugTools::dump_watched_polygon()"
+         landmarkName = "DebugTools::dump_watched_edge()"
          landmarkType = "5">
          <Actions>
             <BreakpointActionProxy
@@ -346,7 +346,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "354093218.426943"
+               timestampString = "354158344.743348"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -358,7 +358,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Edge&gt;::remove(Edge*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "354093218.427392"
+               timestampString = "354158344.743912"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -370,7 +370,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "354093218.4278"
+               timestampString = "354158344.744294"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -553,7 +553,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "83"
          endingLineNumber = "83"
-         landmarkName = "DebugTools::assert_polygon_mass_constant(const PolygonManager &amp;polygonManager)"
+         landmarkName = "DebugTools::assert_consistent_projection(const Projection *projection)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

@@ -74,6 +74,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "polygons_40962.nc"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "polygons_360x180.nc"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
