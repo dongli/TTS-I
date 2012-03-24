@@ -67,7 +67,7 @@ void DelaunayDriver::calcCircumcenter()
 {
     DelaunayTriangle *DT = this->DT->front();
     for (int i = 0; i < this->DT->size(); ++i) {
-        DT->calcircum();
+        DT->calcCircumcenter();
         DT = DT->next;
     }
 }
@@ -101,13 +101,13 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
 {
     DT = new List<DelaunayTriangle>(1000, 100);
     DT->setName("Delaunay triangles");
-
+    // -------------------------------------------------------------------------
     // 0. Use an array to uniformly access the three vertices
     DelaunayVertex *DVT[6];
     DVT[0] = this->DVT->at(threeIdx[0]);
     DVT[1] = this->DVT->at(threeIdx[1]);
     DVT[2] = this->DVT->at(threeIdx[2]);
-    
+    // -------------------------------------------------------------------------
     // 1. Set the three fake vertices that are antipodal to the corresponding
     //    vertices of the first three inserted ones
     Coordinate southPole, x;
@@ -117,13 +117,13 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
         Sphere::inverseRotate(DVT[i]->point->getCoordinate(), x, southPole);
         fake.DVT[i].point->setCoordinate(x);
     }
-    
+    // -------------------------------------------------------------------------
     // 2. Create the first eight triangles and  Use an array 
     //    to uniformly access them
     DelaunayTriangle *DT[8];
     for (int i = 0; i < 8; ++i)
         this->DT->append(&DT[i]);
-    
+    // -------------------------------------------------------------------------
     // 3. Link the triangles with their adjacent triangles
     static int idx1[24] = {4,1,3, 5,2,0, 6,3,1, 7,0,2, 0,7,5, 1,4,6, 2,5,7, 3,6,4};
     int* idx = idx1;
@@ -133,7 +133,7 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
         DT[i]->adjDT[1] = DT[idx[++j]];
         DT[i]->adjDT[2] = DT[idx[++j]];
     }
-    
+    // -------------------------------------------------------------------------
     // 4. Link triangles with their vertices
     int ret;
     ret = Sphere::orient(DVT[0]->point, DVT[1]->point, DVT[2]->point);
@@ -152,7 +152,7 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
         DT[i]->DVT[1] = DVT[idx[++j]];
         DT[i]->DVT[2] = DVT[idx[++j]];
     }
-    
+    // -------------------------------------------------------------------------
     //  5. Link vertices with one of its incident triangles
     //     Note:  Any one is ok, the full list will be extracted at the end of
     //            the Delaunay triangulation
@@ -168,7 +168,8 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
     DVT[4]->topology.incidentDT->front()->ptr = DT[6];
     DVT[5]->topology.incidentDT->append();
     DVT[5]->topology.incidentDT->front()->ptr = DT[6];
-    
+    // -------------------------------------------------------------------------
+    // 6. Mark the first three vertices as inserted
     DVT[0]->inserted = true;
     DVT[1]->inserted = true;
     DVT[2]->inserted = true;
@@ -179,7 +180,7 @@ void DelaunayDriver::initPIT()
     DelaunayVertex *DVT;
     DelaunayTriangle *DT;
     int i, j;
-    
+    // -------------------------------------------------------------------------
     // Loop for each point
     DVT = this->DVT->front();
     for (i = 0; i < this->DVT->size(); ++i) {
@@ -324,7 +325,7 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
     DelaunayTriangle *DT1, *DT2, *DT3;
     DelaunayVertex *DVT1, *DVT2, *DVT3;
     int i, j, k, ret;
-    
+    // -------------------------------------------------------------------------
     while (DVT->topology.incidentDT->size() > 3) {
         DVT1 = DVTptr->ptr;
         DVT2 = DVTptr->next->ptr;
@@ -377,7 +378,7 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
         DT->remove(DT1);
         DT->remove(DT2);
     }
-    
+    // -------------------------------------------------------------------------
     // Here, there are only three triangles
     DTptr = DVT->topology.incidentDT->front();
     DT1 = DTptr->ptr;
@@ -430,9 +431,10 @@ void DelaunayDriver::validate(DelaunayTriangle *DT)
     DelaunayTriangle *oppositeDT;
     DelaunayVertex *oppositeDVT;
     int idx;
-    
+    // -------------------------------------------------------------------------
     // 1. Get opposite triangle
     oppositeDT = DT->adjDT[2];
+    // -------------------------------------------------------------------------
     // 2. Get the opposite vertex
     for (idx = 0; idx < 3; ++idx) {
         if (oppositeDT->adjDT[idx] == DT) {
@@ -445,6 +447,7 @@ void DelaunayDriver::validate(DelaunayTriangle *DT)
         REPORT_ERROR("No matched opposite Delaunay vertex.")
     }
 #endif
+    // -------------------------------------------------------------------------
     // 3. Check if the opposite vertex is in the circumcircle of triangle
     int ret = Sphere::inCircle(DT->DVT[0]->point, DT->DVT[1]->point,
                                DT->DVT[2]->point, oppositeDVT->point);
@@ -476,6 +479,7 @@ void DelaunayDriver::validate(DelaunayTriangle *DT)
 
 void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
 {
+    // -------------------------------------------------------------------------
     // 0. Make short-hand
     DelaunayVertex *DVT[3];
     for (int i = 0; i < 3; ++i)
@@ -484,11 +488,14 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
     adjDT[0] = oldDT->adjDT[2];
     adjDT[1] = oldDT->adjDT[0];
     adjDT[2] = oldDT->adjDT[1];
+    // -------------------------------------------------------------------------
     // 1. Subdivide the old triangle into three new ones
     DelaunayTriangle *newDT[3];
     for (int i = 0; i < 3; ++i)
         this->DT->append(&newDT[i]);
+    // -------------------------------------------------------------------------
     // 2. Set up the topology of the three triangles
+    // =========================================================================
     // 2.1 New triangle 1
     newDT[0]->DVT[0] = DVT[0];
     newDT[0]->DVT[1] = DVT[1];
@@ -496,6 +503,7 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
     newDT[0]->adjDT[0] = newDT[1];
     newDT[0]->adjDT[1] = newDT[2];
     newDT[0]->adjDT[2] = adjDT[0];
+    // =========================================================================
      // 2.2 New triangle 2
     newDT[1]->DVT[0] = DVT[1];
     newDT[1]->DVT[1] = DVT[2];
@@ -503,6 +511,7 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
     newDT[1]->adjDT[0] = newDT[2];
     newDT[1]->adjDT[1] = newDT[0];
     newDT[1]->adjDT[2] = adjDT[1];
+    // =========================================================================
     // 2.3 New triangle 3
     newDT[2]->DVT[0] = DVT[2];
     newDT[2]->DVT[1] = DVT[0];
@@ -510,9 +519,11 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
     newDT[2]->adjDT[0] = newDT[0];
     newDT[2]->adjDT[1] = newDT[1];
     newDT[2]->adjDT[2] = adjDT[2];
+    // -------------------------------------------------------------------------
     // 3. Link the newly inserted point to one of its incident triangles
     point->topology.incidentDT->append();
     point->topology.incidentDT->back()->ptr = newDT[0];
+    // -------------------------------------------------------------------------
     // 4. Make change to the vertices and adjacent triangles of the old triangle
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j)
@@ -523,9 +534,11 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
         if (DVT[i]->topology.incidentDT->front()->ptr == oldDT)
             DVT[i]->topology.incidentDT->front()->ptr = newDT[i];
     }
+    // -------------------------------------------------------------------------
     // 5. Validate the new triangles
     for (int i = 0; i < 3; ++i)
         validate(newDT[i]);
+    // -------------------------------------------------------------------------
     // 6. Record the new triangles as the subdivided triangles
     for (int i = 0; i < 3; ++i)
         oldDT->subDT[i] = newDT[i];
@@ -547,11 +560,14 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     adjDT2 = oldDT1->adjDT[im1[point->pit.edgeIdx]];
     adjDT3 = oldDT2->adjDT[ip1[idx]];
     adjDT4 = oldDT2->adjDT[im1[idx]];
+    // -------------------------------------------------------------------------
     // 1. Subdivide the two triangles into four new ones
     DelaunayTriangle *newDT[4];
     for (int i = 0; i < 4; ++i)
         this->DT->append(&newDT[i]);
+    // -------------------------------------------------------------------------
     // 2. Set up the topology of the four triangles
+    // =========================================================================
     // 2.1 New triangle 1
     newDT[0]->DVT[0] = DVT3;
     newDT[0]->DVT[1] = DVT1;
@@ -559,6 +575,7 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     newDT[0]->adjDT[0] = newDT[1];
     newDT[0]->adjDT[1] = newDT[3];
     newDT[0]->adjDT[2] = adjDT1;
+    // =========================================================================
     // 2.2 New triangle 2
     newDT[1]->DVT[0] = DVT1;
     newDT[1]->DVT[1] = DVT2;
@@ -566,6 +583,7 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     newDT[1]->adjDT[0] = newDT[2];
     newDT[1]->adjDT[1] = newDT[0];
     newDT[1]->adjDT[2] = adjDT2;
+    // =========================================================================
     // 2.3 New triangle 3
     newDT[2]->DVT[0] = DVT2;
     newDT[2]->DVT[1] = DVT4;
@@ -573,6 +591,7 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     newDT[2]->adjDT[0] = newDT[3];
     newDT[2]->adjDT[1] = newDT[1];
     newDT[2]->adjDT[2] = adjDT3;
+    // =========================================================================
     // 2.4 New triangle 4
     newDT[3]->DVT[0] = DVT4;
     newDT[3]->DVT[1] = DVT3;
@@ -580,9 +599,11 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     newDT[3]->adjDT[0] = newDT[0];
     newDT[3]->adjDT[1] = newDT[2];
     newDT[3]->adjDT[2] = adjDT4;
+    // -------------------------------------------------------------------------
     // 3. Link the newly inserted point to one of its incident triangles
     point->topology.incidentDT->append();
     point->topology.incidentDT->front()->ptr = newDT[0];
+    // -------------------------------------------------------------------------
     // 4. Make change to the vertices and adjacent triangles of the old 
     //    triangle
     for (int i = 0; i < 3; ++i)
@@ -616,9 +637,11 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
         DVT3->topology.incidentDT->front()->ptr = newDT[3];
     if (DVT4->topology.incidentDT->front()->ptr == oldDT2)
         DVT4->topology.incidentDT->front()->ptr = newDT[0];
+    // -------------------------------------------------------------------------
     // 5. Validate the four triangles
     for (int i = 0; i < 4; ++i)
         validate(newDT[i]);
+    // -------------------------------------------------------------------------
     // 6. Record the new triangles as the subdivided triangles
     oldDT1->subDT[0] = newDT[0];
     oldDT1->subDT[1] = newDT[1];
@@ -630,6 +653,7 @@ void DelaunayDriver::flip22(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
                             DelaunayTriangle **newDT1, DelaunayTriangle **newDT2,
                             int idxMap[])
 {
+    // -------------------------------------------------------------------------
     // 0. Make short-hand
     DelaunayVertex *DVT1, *DVT2, *DVT3, *DVT4;
     DVT1 = oldDT1->DVT[idxMap[0]];
@@ -641,6 +665,7 @@ void DelaunayDriver::flip22(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     adjDT2 = oldDT1->adjDT[idxMap[1]];
     adjDT3 = oldDT2->adjDT[ip1[idxMap[3]]];
     adjDT4 = oldDT2->adjDT[im1[idxMap[3]]];
+    // -------------------------------------------------------------------------
     // 1. Create two new triangles and set up their topology
     DT->append(newDT1);
     DT->append(newDT2);
@@ -656,6 +681,7 @@ void DelaunayDriver::flip22(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     (*newDT2)->adjDT[0] = adjDT1;
     (*newDT2)->adjDT[1] = *newDT1;
     (*newDT2)->adjDT[2] = adjDT4;
+    // -------------------------------------------------------------------------
     // 2. Make change to the old triangles
     for (int i = 0; i < 3; ++i)
         if (adjDT1->adjDT[i] == oldDT1) {
@@ -698,6 +724,7 @@ void DelaunayDriver::flip31(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
                             DelaunayTriangle *oldDT3, DelaunayTriangle **newDT,
                             int idxMap[])
 {
+    // -------------------------------------------------------------------------
     // 0. Make short-hand
     DelaunayVertex *DVT1, *DVT2, *DVT3, *DVT4;
     DVT1 = oldDT1->DVT[idxMap[0]];
@@ -708,6 +735,7 @@ void DelaunayDriver::flip31(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     adjDT1 = oldDT1->adjDT[idxMap[2]];
     adjDT2 = oldDT2->adjDT[idxMap[3]];
     adjDT3 = oldDT3->adjDT[idxMap[4]];
+    // -------------------------------------------------------------------------
     // 1. Create one new triangles and set up their topology
     DT->append(newDT);
     (*newDT)->DVT[0] = DVT1;
@@ -716,6 +744,7 @@ void DelaunayDriver::flip31(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     (*newDT)->adjDT[0] = adjDT2;
     (*newDT)->adjDT[1] = adjDT3;
     (*newDT)->adjDT[2] = adjDT1;
+    // -------------------------------------------------------------------------
     // 2. Make change to the old triangle
     for (int i = 0; i < 3; ++i)
         if (adjDT1->adjDT[i] == oldDT1) {
@@ -784,7 +813,7 @@ inline void DelaunayDriver::outputAscii(const string &fileName)
 inline void DelaunayDriver::outputNetCDF(const string &fileName)
 {
     NcFile *file = new NcFile(string(fileName+".nc").c_str(), NcFile::Replace);
-    
+    // -------------------------------------------------------------------------
     // Output Delaunay vertices
     NcDim *numDVTDim = file->add_dim("numDVT", this->DVT->size());
     NcVar *lonDVTVar = file->add_var("lonDVT", ncDouble, numDVTDim);
@@ -798,7 +827,7 @@ inline void DelaunayDriver::outputNetCDF(const string &fileName)
     }
     lonDVTVar->put(lonDVT, this->DVT->size());
     latDVTVar->put(latDVT, this->DVT->size());
-    
+    // -------------------------------------------------------------------------
     // Output the remaining fake vertices
     bool hasFakeDVT = false;
     for (int i = 0; i < fake.num; ++i)

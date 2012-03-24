@@ -26,7 +26,7 @@ public:
     
     void reinit();
     
-    void calcircum();
+    void calcCircumcenter();
     
     void dump();
 

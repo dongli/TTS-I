@@ -27,7 +27,7 @@ void DelaunayTriangle::reinit()
     tip.points->recycle();
 }
 
-void DelaunayTriangle::calcircum()
+void DelaunayTriangle::calcCircumcenter()
 {
     double E2[3], E3[3], N[3];
     double L;
