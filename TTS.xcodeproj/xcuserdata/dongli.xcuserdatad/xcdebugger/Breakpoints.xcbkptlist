@@ -339,44 +339,6 @@
          endingLineNumber = "238"
          landmarkName = "remove(T *elem)"
          landmarkType = "7">
-         <Locations>
-            <Location
-               shouldBeEnabled = "Yes"
-               ignoreCount = "0"
-               continueAfterRunningActions = "No"
-               symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
-               urlString = "file://localhost/List.cpp"
-               timestampString = "354158344.743348"
-               startingColumnNumber = "9223372036854775807"
-               endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "238"
-               endingLineNumber = "238">
-            </Location>
-            <Location
-               shouldBeEnabled = "Yes"
-               ignoreCount = "0"
-               continueAfterRunningActions = "No"
-               symbolName = "List&lt;Edge&gt;::remove(Edge*)"
-               urlString = "file://localhost/List.cpp"
-               timestampString = "354158344.743912"
-               startingColumnNumber = "9223372036854775807"
-               endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "238"
-               endingLineNumber = "238">
-            </Location>
-            <Location
-               shouldBeEnabled = "Yes"
-               ignoreCount = "0"
-               continueAfterRunningActions = "No"
-               symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
-               urlString = "file://localhost/List.cpp"
-               timestampString = "354158344.744294"
-               startingColumnNumber = "9223372036854775807"
-               endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "238"
-               endingLineNumber = "238">
-            </Location>
-         </Locations>
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -389,19 +351,6 @@
          startingLineNumber = "520"
          endingLineNumber = "520"
          landmarkName = "PotentialCrossDetector::detectVertex(Vertex *vertex, Edge *edge, bool needExtraCheck, OrientStatus referOrient)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Sources/Polygon/PolygonManager.cpp"
-         timestampString = "352534140.787563"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "149"
-         endingLineNumber = "149"
-         landmarkName = "PolygonManager::init(const DelaunayDriver &amp;driver)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -568,27 +517,6 @@
          endingLineNumber = "131"
          landmarkName = "SpecialPolygons::handlePointPolygon(PolygonManager &amp;polygonManager, Polygon *polygon, bool isKeepMass)"
          landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "354028469.156903"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "412"
-         endingLineNumber = "412"
-         landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "7">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
-               <ActionContent
-                  consoleCommand = "p polygon1-&gt;dump(&quot;polygon&quot;)">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"

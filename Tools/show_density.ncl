@@ -6,6 +6,11 @@ load "$GEODIAG_UTILS/geodiag_plot_utils.ncl"
 
 begin
 
+    projection = "CE"
+    ;projection@center_lon = 0.0
+    ;projection@center_lat = 90.0
+    projection@angle = 10.0
+
     notice("Input file name pattern:")
     file_name_pattern = get_answer()
     file_names = systemfunc("ls "+file_name_pattern)
@@ -47,24 +52,24 @@ begin
         end do
     end if
 
+    f = addfile(file_names(0), "r")
+    idx_j = ispan(0, dimsizes(f->lat)-1, 1)
+    idx_i = ispan(0, dimsizes(f->lon)-2, 1)
+
     do l = 0, dimsizes(file_names)-1
         notice("Plotting "+file_names(l)+" ...")
 
-        wks = gsn_open_wks("newpdf", systemfunc("basename -s .nc "+ \
+        wks = gsn_open_wks("pdf", systemfunc("basename -s .nc "+ \
             file_names(l))+"_"+density_name+"_density")
 
-        gsn_define_colormap(wks, "BlueYellowRed")
-        ;gsn_define_colormap(wks, "WhBlGrYeRe")
+        ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
+        ;gsn_define_colormap(wks, "BlueYellowRed")
+        gsn_define_colormap(wks, "WhBlGrYeRe")
         ;gsn_define_colormap(wks, "WhBlReWh")
 
         f = addfile(file_names(l), "r")
 
-        total_mass = 0.0d0
-        do j = 0, dimsizes(f->lat)-1
-            do i = 0, dimsizes(f->lon)-2
-                total_mass = total_mass+f->area_mesh(j,i)*f->$density_name$(j,i)
-            end do
-        end do
+        total_mass = sum(f->area_mesh(idx_j,idx_i)*f->$density_name$(idx_j,idx_i))
         notice("Total mass is "+sprintf("%30.20f", total_mass))
 
         res = True
@@ -72,18 +77,21 @@ begin
         res@gsnAddCyclic = False
         res@pmLabelBarOrthogonalPosF = 0.1
         res@gsnMaximize = True
+
+        setup_map(projection, res)
         setup_contour(res)
         ;set_contour_range(res, 0.0, 5.0, 0.25, "%4.2f")
-        ;set_contour_range(res, 0.0, 1.1, 0.1)
-        ;set_contour_range(res, 0.5, 1.5, 0.05)
-        set_contour_range(res, 0.0, 1000.0, 100.0, "%6.1f")
+        set_contour_range(res, 0.0, 1.1, 0.1, "%4.2f")
+        ;set_contour_range(res, 0.5, 1.5, 0.05, "%4.2f")
+        ;set_contour_range(res, 0.0, 1000.0, 100.0, "%8.2f")
 
         res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \
                              "max: "+sprintf("%4.2f", max(f->$density_name$))
         plot = gsn_csm_contour_map(wks, f->$density_name$, res)
 
+        draw(plot)
         frame(wks)
-
+        delete(wks)
     end do
 
 end

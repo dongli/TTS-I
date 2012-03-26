@@ -134,7 +134,7 @@ void PolygonManager::init(const DelaunayDriver &driver)
         polygon = polygon->next;
     }
     polygons.endLoop();
-#ifdef TTS_OUTPUT
+#if defined (TTS_OUTPUT) || defined (PREPROCESS)
     // -------------------------------------------------------------------------
     // reindex the vertices and edges for outputting
     vertices.reindex();
