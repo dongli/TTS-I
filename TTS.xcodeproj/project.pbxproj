@@ -155,6 +155,8 @@
 		55D5B1F91491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55DA3E2B13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
+		55EA5AFB1521A55400B05ADB /* SCVT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AF91521A55400B05ADB /* SCVT.cpp */; };
+		55EA5AFC1521A55400B05ADB /* SCVT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AF91521A55400B05ADB /* SCVT.cpp */; };
 		55EA5AFF1521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
 		55EA5B001521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
 		55EA5B011521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
@@ -380,6 +382,8 @@
 		55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPoint.cpp; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
 		55E5981A14F3DDF300F8C358 /* ProjectionTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectionTags.h; sourceTree = "<group>"; };
+		55EA5AF91521A55400B05ADB /* SCVT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCVT.cpp; sourceTree = "<group>"; };
+		55EA5AFA1521A55400B05ADB /* SCVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVT.h; sourceTree = "<group>"; };
 		55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomNumber.cpp; sourceTree = "<group>"; };
 		55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CurvatureGuard.cpp; sourceTree = "<group>"; };
 		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_sphere.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -690,6 +694,8 @@
 		55A048C114F61BA80030C0FB /* PolygonRezoner */ = {
 			isa = PBXGroup;
 			children = (
+				55EA5AFA1521A55400B05ADB /* SCVT.h */,
+				55EA5AF91521A55400B05ADB /* SCVT.cpp */,
 				55A048C314F61BC20030C0FB /* PolygonRezoner.h */,
 				55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */,
 			);
@@ -982,6 +988,7 @@
 				55971A4F14DF6DED00DB293B /* ThresholdFunction.cpp in Sources */,
 				55A048C614F61CA40030C0FB /* PolygonRezoner.cpp in Sources */,
 				55397933150459C800FC3EC2 /* CommonTasks.cpp in Sources */,
+				55EA5AFB1521A55400B05ADB /* SCVT.cpp in Sources */,
 				55EA5B001521F82000B05ADB /* RandomNumber.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1076,6 +1083,7 @@
 				55971A4E14DF6DED00DB293B /* ThresholdFunction.cpp in Sources */,
 				55A048C514F61CA40030C0FB /* PolygonRezoner.cpp in Sources */,
 				55397932150459C800FC3EC2 /* CommonTasks.cpp in Sources */,
+				55EA5AFC1521A55400B05ADB /* SCVT.cpp in Sources */,
 				55EA5B011521F82000B05ADB /* RandomNumber.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
