@@ -45,6 +45,7 @@ public:
     void handoverTracers();
     void handoverTracers(Polygon *polygon, double percent);
     vector<Tracer> tracers;
+    double tracerDiff;
 #endif
     List<EdgePointer> edgePointers;
 

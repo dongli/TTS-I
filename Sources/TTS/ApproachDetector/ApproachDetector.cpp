@@ -255,13 +255,15 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                 vertex3 = edgePointer2->getEndPoint(SecondPoint);
                 // -------------------------------------------------------------
                 // handle enclosed polygons
+                // TODO: Check if the following codes are still needed after
+                //       applying polygon rezoning or not.
                 if (vertex3 == vertex1) {
                     // Note: use area to judge which side is enclosed
                     int numEdge = 0;
                     double area1, area2;
                     EdgePointer *edgePointer;
                     //
-                    area1 = EdgePointer::calcAngle
+                    area1 = Sphere::calcAngle
                     (edgePointer2->getNormVector(),
                      edgePointer1->getNormVector(),
                      edgePointer1->getEndPoint(FirstPoint)->getCoordinate());
@@ -275,7 +277,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                     area1 -= (numEdge-2)*PI;
                     //
                     numEdge = polygon->edgePointers.size()-numEdge;
-                    area2 = EdgePointer::calcAngle
+                    area2 = Sphere::calcAngle
                     (edgePointer1->prev->getNormVector(),
                      edgePointer2->next->getNormVector(),
                      edgePointer2->next->getEndPoint(FirstPoint)->getCoordinate());

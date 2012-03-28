@@ -64,12 +64,12 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
     if (isInNorthHemisphere)
         switch (signFlag) {
             case 1:
-                angle1 = EdgePointer::calcAngle(normVector, normVector1, x1);
-                angle2 = EdgePointer::calcAngle(normVector2, normVector, x2);
+                angle1 = Sphere::calcAngle(normVector, normVector1, x1);
+                angle2 = Sphere::calcAngle(normVector2, normVector, x2);
                 break;
             case -1:
-                angle1 = EdgePointer::calcAngle(-normVector, normVector1, x1);
-                angle2 = EdgePointer::calcAngle(normVector2, -normVector, x2);
+                angle1 = Sphere::calcAngle(-normVector, normVector1, x1);
+                angle2 = Sphere::calcAngle(normVector2, -normVector, x2);
                 break;
             default:
                 REPORT_ERROR("Unknown sign flag!");
@@ -77,12 +77,12 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
     else
         switch (signFlag) {
             case 1:
-                angle1 = EdgePointer::calcAngle(normVector1, normVector, x1);
-                angle2 = EdgePointer::calcAngle(normVector, normVector2, x2);
+                angle1 = Sphere::calcAngle(normVector1, normVector, x1);
+                angle2 = Sphere::calcAngle(normVector, normVector2, x2);
                 break;
             case -1:
-                angle1 = EdgePointer::calcAngle(normVector1, -normVector, x1);
-                angle2 = EdgePointer::calcAngle(-normVector, normVector2, x2);
+                angle1 = Sphere::calcAngle(normVector1, -normVector, x1);
+                angle2 = Sphere::calcAngle(-normVector, normVector2, x2);
                 break;
             default:
                 REPORT_ERROR("Unknown sign flag!");
@@ -402,14 +402,13 @@ numerical_tolerance_label:
     for (i = 0; i < numPolygonEdge-1; ++i)
         angles(i) = polygonAngles(i);
     //
-    angles(i++) = EdgePointer::calcAngle(normVector1, normVectors(0), x1);
+    angles(i++) = Sphere::calcAngle(normVector1, normVectors(0), x1);
     j = 0;
     for (; i < numEdge-1; ++i) {
-        angles(i) = EdgePointer::calcAngle(normVectors(j),
-                                           normVectors(j+1), x(j));
+        angles(i) = Sphere::calcAngle(normVectors(j), normVectors(j+1), x(j));
         j++;
     }
-    angles(i) = EdgePointer::calcAngle(normVectors(j), normVector0, x0);
+    angles(i) = Sphere::calcAngle(normVectors(j), normVector0, x0);
     // -------------------------------------------------------------------------
     // numerical tolerance
     static const double smallAngle = 1.0/Rad2Deg;
@@ -438,7 +437,7 @@ numerical_tolerance_label:
                                                     x(numCellEdge-2).getCAR());
         // set the virtual polygon angles
         if (edgePointer0 != edgePointer1) {
-            polygonAngles(0) = EdgePointer::calcAngle
+            polygonAngles(0) = Sphere::calcAngle
             (normVector0, edgePointer0->next->getNormVector(),
              edgePointer0->getEndPoint(SecondPoint)->getCoordinate());
             for (i = 1; i < numPolygonEdge-1; ++i)
@@ -466,7 +465,7 @@ numerical_tolerance_label:
         else
             normVectors(0) = norm_cross(x(0).getCAR(), x1.getCAR());
         if (edgePointer1 != edgePointer0) {
-            polygonAngles(numPolygonEdge-2) = EdgePointer::calcAngle
+            polygonAngles(numPolygonEdge-2) = Sphere::calcAngle
             (edgePointer1->prev->getNormVector(), normVector1,
              edgePointer1->getEndPoint(FirstPoint)->getCoordinate());
         }

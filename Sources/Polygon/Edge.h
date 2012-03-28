@@ -100,10 +100,6 @@ public:
 
     Vector getNormVector(TimeLevel timeLevel = NewTimeLevel) const;
 
-    static double calcAngle(const Vector &, const Vector &);
-    static double calcAngle(const Vector &, const Vector &, const Coordinate &);
-    static double calcAngle(const Vector &, const Vector &, const Vertex &);
-
     void calcAngle();
     void resetAngle();
     double getAngle(TimeLevel timeLevel = NewTimeLevel) const {

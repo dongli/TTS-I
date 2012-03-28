@@ -22,6 +22,13 @@ public:
 
     static double calcDistance(const Coordinate &x1, const Coordinate &x2);
 
+    static double calcAngle(const Vector &vector1, const Vector &vector2);
+    static double calcAngle(const Vector &vector1, const Vector &vector2,
+                            const Coordinate &x);
+
+    static double calcArea(const Coordinate &x1, const Coordinate &x2,
+                           const Coordinate &x3);
+
     static bool project(const Coordinate &x1, const Coordinate &x2,
                         const Coordinate &x3, Coordinate &x4, double &distance);
     static bool isProject(const Coordinate &x1, const Coordinate &x2,

@@ -59,9 +59,9 @@ void PolygonManager::init(const DelaunayDriver &driver)
     DelaunayVertex *DVT = driver.DVT->front();
     polygon = polygons.front();
     for (int i = 0; i < driver.DVT->size(); ++i) {
-        DelaunayVertexPointer *linkDVT = DVT->topology.linkDVT->front();
-        DelaunayTrianglePointer *incidentDT = DVT->topology.incidentDT->front();
-        for (int j = 0; j < DVT->topology.linkDVT->size(); ++j) {
+        DelaunayVertexPointer *linkDVT = DVT->topology.linkDVT.front();
+        DelaunayTrianglePointer *incidentDT = DVT->topology.incidentDT.front();
+        for (int j = 0; j < DVT->topology.linkDVT.size(); ++j) {
             if (checked[linkDVT->ptr->getID()-1]) {
                 Polygon *p = polygonMap[linkDVT->ptr->getID()-1];
                 edgePointer = p->edgePointers.front();

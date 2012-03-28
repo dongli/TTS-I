@@ -146,9 +146,6 @@
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
 		55D2647D146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
-		55D2647F146E9D5C00753BC0 /* splitEdge.h in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.h */; };
-		55D26480146E9D5D00753BC0 /* mergeEdge.h in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.h */; };
-		55D26481146E9D5D00753BC0 /* splitPolygon.h in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.h */; };
 		55D3C79814104A5100B2B4D4 /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		55D3C79914104A5100B2B4D4 /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
 		55D3C79A14104A5100B2B4D4 /* EdgeAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D314093757000B7E48 /* EdgeAgent.cpp */; };
@@ -158,6 +155,9 @@
 		55D5B1F91491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55D5B1FA1491E9E7008B43B8 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55DA3E2B13F6A34800C565F7 /* DebugTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DA3E2913F6A34800C565F7 /* DebugTools.cpp */; };
+		55EA5AFF1521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
+		55EA5B001521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
+		55EA5B011521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
 		55F30BE114A775370057BBBE /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55F30BE314A775750057BBBE /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
 		55F30BE414A775750057BBBE /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
@@ -380,6 +380,7 @@
 		55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPoint.cpp; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
 		55E5981A14F3DDF300F8C358 /* ProjectionTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectionTags.h; sourceTree = "<group>"; };
+		55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomNumber.cpp; sourceTree = "<group>"; };
 		55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CurvatureGuard.cpp; sourceTree = "<group>"; };
 		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_sphere.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_mesh.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -673,6 +674,7 @@
 				5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */,
 				5598FABE13D3DA9F00BC1AC4 /* MultiTimeLevel.h */,
 				5598FABF13D3DA9F00BC1AC4 /* RandomNumber.h */,
+				55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */,
 				5581142B13EA4631004AF124 /* SystemCalls.h */,
 				5581142A13EA4631004AF124 /* SystemCalls.cpp */,
 				55C4AF4513F2BF5A00B2C331 /* DebugTools.h */,
@@ -980,6 +982,7 @@
 				55971A4F14DF6DED00DB293B /* ThresholdFunction.cpp in Sources */,
 				55A048C614F61CA40030C0FB /* PolygonRezoner.cpp in Sources */,
 				55397933150459C800FC3EC2 /* CommonTasks.cpp in Sources */,
+				55EA5B001521F82000B05ADB /* RandomNumber.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +1009,7 @@
 				5598FB0513D3DC0F00BC1AC4 /* Topology.cpp in Sources */,
 				5598FB0613D3DC0F00BC1AC4 /* Point.cpp in Sources */,
 				5598FB0813D3DC0F00BC1AC4 /* preprocess.cpp in Sources */,
+				55EA5AFF1521F82000B05ADB /* RandomNumber.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1030,9 +1034,6 @@
 				5539792C1502EA2D00FC3EC2 /* PointTriangle.cpp in Sources */,
 				5539792D1502EA2D00FC3EC2 /* Topology.cpp in Sources */,
 				5541C98314A99F790052D2A2 /* ConfigTools.cpp in Sources */,
-				55D2647F146E9D5C00753BC0 /* splitEdge.h in Sources */,
-				55D26480146E9D5D00753BC0 /* mergeEdge.h in Sources */,
-				55D26481146E9D5D00753BC0 /* splitPolygon.h in Sources */,
 				55D3C79814104A5100B2B4D4 /* Projection.cpp in Sources */,
 				55D3C79914104A5100B2B4D4 /* VertexAgent.cpp in Sources */,
 				55D3C79A14104A5100B2B4D4 /* EdgeAgent.cpp in Sources */,
@@ -1075,6 +1076,7 @@
 				55971A4E14DF6DED00DB293B /* ThresholdFunction.cpp in Sources */,
 				55A048C514F61CA40030C0FB /* PolygonRezoner.cpp in Sources */,
 				55397932150459C800FC3EC2 /* CommonTasks.cpp in Sources */,
+				55EA5B011521F82000B05ADB /* RandomNumber.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1170,8 +1172,6 @@
 					TTS_ONLINE,
 					DEBUG,
 					TTS_REZONE,
-					TTS_REMAP,
-					TTS_OUTPUT,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1337,9 +1337,9 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TTS_ONLINE,
 					DEBUG,
-					TTS_REMAP,
 					TTS_REZONE,
 					TTS_OUTPUT,
+					TTS_REMAP,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;

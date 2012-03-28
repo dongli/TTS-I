@@ -34,8 +34,8 @@ int main(int argc, char **argv)
     PointManager pointManager;
     DelaunayDriver driver;
     pointManager.init(numPoint, lon, lat);
-    driver.linkPoint(pointManager);
-    driver.init();
+    driver.init(pointManager);
+    driver.run();
     driver.calcCircumcenter();
     driver.output("delaunay");
 

@@ -54,7 +54,7 @@ void TestPoint::calcAngle()
     const Coordinate &x3 = hostEdge->getEndPoint(SecondPoint)->getCoordinate();
     Vector vector1 = norm_cross(x2.getCAR(), x1.getCAR());
     Vector vector2 = norm_cross(x3.getCAR(), x2.getCAR());
-    angle = EdgePointer::calcAngle(vector1, vector2);
+    angle = Sphere::calcAngle(vector1, vector2);
 }
 
 void TestPoint::calcOrient()

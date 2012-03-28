@@ -316,38 +316,6 @@ EdgePointer *EdgePointer::getNeighborEdgePointer() const
     }
 }
 
-double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2)
-{
-    double tmp = dot(vector1, vector2);
-    tmp = fmax(-1.0, fmin(1.0, tmp));
-    return acos(-tmp);
-}
-
-double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2,
-                              const Coordinate &x)
-{
-    double angle;
-
-    // -------------------------------------------------------------------------
-    double tmp = dot(vector1, vector2);
-    tmp = fmax(-1.0, fmin(1.0, tmp));
-    angle = acos(-tmp);
-
-    // -------------------------------------------------------------------------
-    // handle obtuse angle
-    Vector judge = cross(vector1, vector2);
-    if (dot(x.getCAR(), judge) < 0.0)
-        angle = PI2-angle;
-    
-    return angle;
-}
-
-double EdgePointer::calcAngle(const Vector &vector1, const Vector &vector2,
-                              const Vertex &vertex)
-{
-    return calcAngle(vector1, vector2, vertex.getCoordinate());
-}
-
 Vector EdgePointer::getNormVector(TimeLevel timeLevel) const
 {
     if (orient == OrientLeft) {
@@ -373,11 +341,13 @@ void EdgePointer::calcAngle()
     if (isAngleSet)
         this->angle.save();
     Vertex *point = getEndPoint(FirstPoint);
-    double angle = calcAngle(prev->getNormVector(), getNormVector(), *point);
+    double angle = Sphere::calcAngle(prev->getNormVector(), getNormVector(),
+                                     point->getCoordinate());
     this->angle.setNew(angle);
     if (!isAngleSet) {
-        angle = calcAngle(prev->getNormVector(OldTimeLevel),
-                          getNormVector(OldTimeLevel), *point);
+        angle = Sphere::calcAngle(prev->getNormVector(OldTimeLevel),
+                                  getNormVector(OldTimeLevel),
+                                  point->getCoordinate(OldTimeLevel));
         this->angle.setOld(angle);
         isAngleSet = true;
     }

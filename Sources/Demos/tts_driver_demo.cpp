@@ -13,9 +13,9 @@
 
 //#define MOVINGVORTICES_TESTCASE
 //#define TESTCASE_CALC_TRUE_SOLUTION
-//#define DEFORMATION_TESTCASE
+#define DEFORMATION_TESTCASE
 //#define STATICVORTICES_TESTCASE
-#define SOLIDROTATION_TESTCASE
+//#define SOLIDROTATION_TESTCASE
 
 int main(int argc, char **argv)
 {
@@ -38,8 +38,8 @@ int main(int argc, char **argv)
 #endif
     // -------------------------------------------------------------------------
 #ifdef DEFORMATION_TESTCASE
-    Deformation testCase(Deformation::Case4, Deformation::GaussianHills);
-    char fileName[30], filePattern[50] = "gh_360x180_10242_600_%3.3d.nc";
+    Deformation testCase(Deformation::Case4, Deformation::SlottedCylinders);
+    char fileName[30], filePattern[50] = "sc_360x180_2562_600_%3.3d.nc";
     ConfigTools::parse("tts_df_config");
     TimeManager::setClock(5.0/600.0);
     TimeManager::setEndStep(600);
@@ -55,10 +55,10 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
 #ifdef SOLIDROTATION_TESTCASE
     SolidRotation testCase;
-    char fileName[30], filePattern[50] = "sr_360x180_10242_%4.4d.nc";
+    char fileName[30], filePattern[50] = "sr_360x180_360x180_%4.4d.nc";
     ConfigTools::parse("tts_sr_config");
     TimeManager::setClock(1800.0);
-    TimeManager::setEndStep(0);
+    TimeManager::setEndStep(100);
 #endif
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;

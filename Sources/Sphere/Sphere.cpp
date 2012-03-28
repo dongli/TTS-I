@@ -25,6 +25,39 @@ double Sphere::calcDistance(const Coordinate &x1, const Coordinate &x2)
     return radius*acos(tmp3);
 }
 
+double Sphere::calcAngle(const Vector &vector1, const Vector &vector2)
+{
+    double tmp = dot(vector1, vector2);
+    tmp = fmax(-1.0, fmin(1.0, tmp));
+    return acos(-tmp);
+}
+
+double Sphere::calcAngle(const Vector &vector1, const Vector &vector2,
+                         const Coordinate &x)
+{
+    double angle = calcAngle(vector1, vector2);
+    // handle obtuse angle
+    Vector judge = cross(vector1, vector2);
+    if (dot(x.getCAR(), judge) < 0.0)
+        angle = PI2-angle;
+    return angle;
+}
+
+double Sphere::calcArea(const Coordinate &x1, const Coordinate &x2,
+                        const Coordinate &x3)
+{
+    Vector vector1, vector2, vector3;
+    vector1 = norm_cross(x1.getCAR(), x3.getCAR());
+    vector2 = norm_cross(x2.getCAR(), x1.getCAR());
+    vector3 = norm_cross(x3.getCAR(), x2.getCAR());
+    double excess = 0.0;
+    excess += calcAngle(vector3, vector1, x3);
+    excess += calcAngle(vector1, vector2, x1);
+    excess += calcAngle(vector2, vector3, x2);
+    excess -= PI;
+    return excess*radius2;
+}
+
 bool Sphere::project(const Coordinate &x1, const Coordinate &x2,
                      const Coordinate &x3, Coordinate &x4, double &distance)
 {
