@@ -236,6 +236,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Polygon::removeEdge(EdgePointer*, PolygonManager&amp;):Polygon.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "vertex1-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex2-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "DebugTools::dump_watched_vertex():DebugTools.cpp">
          <PersistentStrings>
             <PersistentString

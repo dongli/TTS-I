@@ -525,8 +525,8 @@
 		5598FA6913D3DA9F00BC1AC4 /* Delaunay */ = {
 			isa = PBXGroup;
 			children = (
-				5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */,
 				5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */,
+				5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */,
 				5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */,
 				5598FA6D13D3DA9F00BC1AC4 /* DelaunayTriangle.h */,
 				5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */,

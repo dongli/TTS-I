@@ -6,6 +6,8 @@
 #include "DelaunayDriver.h"
 #include "SCVT.h"
 #include "TimeManager.h"
+#include "ApproachDetector.h"
+#include "CommonTasks.h"
 #include <netcdfcpp.h>
 
 void PolygonRezoner::rezone(MeshManager &meshManager,
@@ -13,12 +15,11 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
                             const FlowManager &flowManager,
                             PolygonManager &polygonManager)
 {
-    const RLLMesh &meshCnt = meshManager.getMesh(PointCounter::Center);
-    const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
     // -------------------------------------------------------------------------
     // 0. Initialize SCVT
     static bool isFirstCall = true;
     if (isFirstCall) {
+        const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
         SCVT::init(meshBnd.getNumLon(), meshBnd.getNumLat(),
                    meshBnd.lon.data(),  meshBnd.lat.data());
         isFirstCall = false;
@@ -70,17 +71,42 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
             p*0.25*(rho(im1, j)+rho(i, jm1)+rho(ip1, j)+rho(i, jp1))+
             q*0.25*(rho(im1, jm1)+rho(im1, jp1)+rho(ip1, jp1)+rho(ip1, jm1));
         }
+        // TODO: How to handle pole boundaries?
         // north pole
-        
+        smoothedRho(i, 0) = rho(i, 0);
         // south pole
+        smoothedRho(i, rho.extent(1)-1) = rho(i, rho.extent(1)-1);
     }
     rho = smoothedRho;
-    cout << min(rho) << endl;
     SCVT::outputDensityFunction("scvt_rho.nc");
     // -------------------------------------------------------------------------
     // 2. Generate SCVT according to the previous density function
     int numPoint = 3000;
     DelaunayDriver driver;
     SCVT::run(numPoint, driver);
-    exit(0);
+    // -------------------------------------------------------------------------
+    // 3. Replace the polygons with SCVT
+    polygonManager.reinit();
+    polygonManager.init(driver);
+    Vertex *vertex = polygonManager.vertices.front();
+    for (int i = 0; i < polygonManager.vertices.size(); ++i) {
+        Location loc;
+        meshManager.checkLocation(vertex->getCoordinate(), loc, vertex);
+        vertex->setLocation(loc);
+        vertex = vertex->next;
+    }
+    Edge *edge = polygonManager.edges.front();
+    for (int i = 0; i < polygonManager.edges.size(); ++i) {
+        Vertex *testPoint = edge->getTestPoint();
+        Location loc;
+        meshManager.checkLocation(testPoint->getCoordinate(), loc);
+        testPoint->setLocation(loc);
+        edge = edge->next;
+    }
+#ifdef TTS_CGA_SPLIT_POLYGONS
+    ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
+    ApproachDetector::ApproachingVertices::vertices.clear();
+    ApproachDetector::reset(polygonManager);
+#endif
+    CommonTasks::resetTasks();
 }

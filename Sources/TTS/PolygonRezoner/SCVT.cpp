@@ -27,7 +27,7 @@ void SCVT::init(int numLon, int numLat, const double *lon, const double *lat)
         latBnd(j) = lat[j];
     // -------------------------------------------------------------------------
     // Set running controls
-    maxIteration = 500;
+    maxIteration = 50;
     eps = 1.0e-6;
 }
 
@@ -70,6 +70,8 @@ double getDensity(double lon, double lat)
     return rho(i, j);
 }
 
+//#define SCVT_OUTPUT_ITERATION
+
 void SCVT::run(int numPoint, DelaunayDriver &driver)
 {
     // -------------------------------------------------------------------------
@@ -109,14 +111,12 @@ void SCVT::run(int numPoint, DelaunayDriver &driver)
         driver.reinit();
         driver.run();
         driver.calcCircumcenter();
-#ifdef DEBUG
-        {
-            PolygonManager pm;
-            char fileName[30];
-            sprintf(fileName, "scvt_it%4.4d.nc", k);
-            pm.init(driver);
-            pm.output(fileName);
-        }
+#ifdef SCVT_OUTPUT_ITERATION
+        PolygonManager pm;
+        char fileName[30];
+        sprintf(fileName, "scvt_it%4.4d.nc", k);
+        pm.init(driver);
+        pm.output(fileName);
 #endif
         // =====================================================================
         // Calculate centroids of Voronoi cells (approximated)

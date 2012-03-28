@@ -25,6 +25,7 @@ Vertex::~Vertex()
 void Vertex::reinit()
 {
     Point::reinit();
+    linkedEdges.recycle();
 #ifdef TTS_ONLINE
     detectAgent.reinit();
     hostEdge = NULL;
@@ -81,9 +82,10 @@ void Vertex::handoverEdges(Vertex *newVertex, PolygonManager &polygonManager)
     while (linkedEdge != NULL) {
         if (linkedEdge->edge->getEndPoint(FirstPoint) == this) {
             linkedEdge->edge->changeEndPoint(FirstPoint, newVertex);
-        } else {
+        } else if (linkedEdge->edge->getEndPoint(SecondPoint) == this) {
             linkedEdge->edge->changeEndPoint(SecondPoint, newVertex);
-        }
+        } else
+            REPORT_ERROR("Edge and end points are not inconsistent!");
         linkedEdge = linkedEdge->next;
     }
 }
