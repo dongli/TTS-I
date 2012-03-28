@@ -16,7 +16,8 @@ class FakeVertices
 public:
     FakeVertices();
     virtual ~FakeVertices();
-    
+
+    void reinit();
     void erase(int);
     
     int num;

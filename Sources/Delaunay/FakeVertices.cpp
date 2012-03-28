@@ -16,18 +16,27 @@ FakeVertices::FakeVertices()
     for (int i = 0; i < num; ++i) {
         DVT[i].setID(-(i+1));
         DVT[i].point = new Point;
-        deleted[i] = false;
     }
+    reinit();
 }
 
 FakeVertices::~FakeVertices()
 {
     delete [] deleted;
+    for (int i = 0; i < num; ++i)
+        delete DVT[i].point;
     delete [] DVT;
+}
+
+void FakeVertices::reinit()
+{
+    for (int i = 0; i < num; ++i) {
+        deleted[i] = false;
+        DVT[i].reinit();
+    }
 }
 
 void FakeVertices::erase(int i)
 {
-    delete DVT[i].point;
     deleted[i] = true;
 }

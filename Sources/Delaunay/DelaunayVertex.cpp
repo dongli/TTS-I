@@ -4,6 +4,7 @@ DelaunayVertex::DelaunayVertex()
 {
     topology.DVT = this;
     pit.DVT = this;
+    point = NULL;
     reinit();
 }
 
@@ -13,7 +14,6 @@ DelaunayVertex::~DelaunayVertex()
 
 void DelaunayVertex::reinit()
 {
-    point = NULL;
     inserted = false;
     topology.reinit();
     pit.reinit();

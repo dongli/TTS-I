@@ -1,26 +1,13 @@
 #ifndef _RandomNumber_h_
 #define _RandomNumber_h_
 
-#include <cstdlib>
-#include <ctime>
-
-class RandomNumber
+namespace RandomNumber
 {
-public:
-    RandomNumber() {}
-    virtual ~RandomNumber() {}
+    void setRandomSeed();
 
-    static double getRandomNumber(double a, double b) {
-        const long max_rand = 1000000L;
-        srand(clock());
-        return a+(b-a)*(rand()%max_rand)/max_rand;
-    }
+    double getRandomNumber(double a, double b);
 
-    static int getRandomNumber(int a, int b)
-    {
-        srand(clock());
-        return rand()%(b-a)+a;
-    }
-};
+    int getRandomNumber(int a, int b);
+}
 
 #endif

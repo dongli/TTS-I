@@ -41,8 +41,8 @@ public:
 
     DelaunayVertex *DVT;
     bool isComplete; 
-    List<DelaunayTrianglePointer> *incidentDT;                    
-    List<DelaunayVertexPointer> *linkDVT;
+    List<DelaunayTrianglePointer> incidentDT;                    
+    List<DelaunayVertexPointer> linkDVT;
 };
 
 #endif

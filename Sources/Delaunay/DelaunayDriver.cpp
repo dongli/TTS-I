@@ -18,10 +18,8 @@ DelaunayDriver::DelaunayDriver()
 {
     DVT = NULL;
     DT = NULL;
-    obsoleteDT = new List<DelaunayTrianglePointer>(10, 10);
-    obsoleteDT->setName("Obsolete Delaunay triangles");
-    temporalDT = new List<DelaunayTrianglePointer>(10, 10);
-    temporalDT->setName("Temporal Delaunay triangles");
+    obsoleteDT.setName("Obsolete Delaunay triangles");
+    temporalDT.setName("Temporal Delaunay triangles");
     REPORT_ONLINE("DelaunayDriver")
 }
 
@@ -29,12 +27,10 @@ DelaunayDriver::~DelaunayDriver()
 {
     if (DVT != NULL) DVT->destroy(), delete DVT;
     if (DT != NULL) DT->destroy(), delete DT;
-    obsoleteDT->destroy(), delete obsoleteDT;
-    temporalDT->destroy(), delete temporalDT;
     REPORT_OFFLINE("DelaunayDriver")
 }
 
-void DelaunayDriver::linkPoint(const PointManager &pointManager)
+void DelaunayDriver::init(const PointManager &pointManager)
 {
     DVT = new List<DelaunayVertex>(pointManager.points.size());
     DVT->setName("Delaunay vertices");
@@ -44,17 +40,28 @@ void DelaunayDriver::linkPoint(const PointManager &pointManager)
         DVT->back()->point = point->ptr;
         point = point->next;
     }
+    DT = new List<DelaunayTriangle>(1000, 100);
+    DT->setName("Delaunay triangles");
 }
 
-void DelaunayDriver::init()
+void DelaunayDriver::reinit()
+{
+    DT->recycle();
+    DelaunayVertex *DVT = this->DVT->front();
+    for (int i = 0; i < this->DVT->size(); ++i) {
+        DVT->reinit();
+        DVT = DVT->next;
+    }
+    obsoleteDT.recycle();
+    temporalDT.recycle();
+    fake.reinit();
+}
+
+void DelaunayDriver::run()
 {
     int idx[3];
     
     getThreeRandomIndices(idx);
-#if defined (TTS_ONLINE) && defined (DEBUG)
-    // TEST: for convenient tracking polygons, remove it after debugging
-    idx[0] = 0; idx[1] = 1; idx[2] = 2;
-#endif
     initDelaunayTriangle(idx);
     initPIT();
     insertRestPoints();
@@ -88,6 +95,7 @@ void DelaunayDriver::getThreeRandomIndices(int idx[])
         idx[0] = 0; idx[1] = 1; idx[2] = 2;
         return;
     }
+    RandomNumber::setRandomSeed();
     bool success = false;
     while (!success) {
         for (int i = 0; i < 3; ++i)
@@ -99,8 +107,6 @@ void DelaunayDriver::getThreeRandomIndices(int idx[])
 
 void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
 {
-    DT = new List<DelaunayTriangle>(1000, 100);
-    DT->setName("Delaunay triangles");
     // -------------------------------------------------------------------------
     // 0. Use an array to uniformly access the three vertices
     DelaunayVertex *DVT[6];
@@ -156,18 +162,18 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
     //  5. Link vertices with one of its incident triangles
     //     Note:  Any one is ok, the full list will be extracted at the end of
     //            the Delaunay triangulation
-    DVT[0]->topology.incidentDT->append();
-    DVT[0]->topology.incidentDT->front()->ptr = DT[0];
-    DVT[1]->topology.incidentDT->append();
-    DVT[1]->topology.incidentDT->front()->ptr = DT[0];
-    DVT[2]->topology.incidentDT->append();
-    DVT[2]->topology.incidentDT->front()->ptr = DT[0];
-    DVT[3]->topology.incidentDT->append();
-    DVT[3]->topology.incidentDT->front()->ptr = DT[6];
-    DVT[4]->topology.incidentDT->append();
-    DVT[4]->topology.incidentDT->front()->ptr = DT[6];
-    DVT[5]->topology.incidentDT->append();
-    DVT[5]->topology.incidentDT->front()->ptr = DT[6];
+    DVT[0]->topology.incidentDT.append();
+    DVT[0]->topology.incidentDT.front()->ptr = DT[0];
+    DVT[1]->topology.incidentDT.append();
+    DVT[1]->topology.incidentDT.front()->ptr = DT[0];
+    DVT[2]->topology.incidentDT.append();
+    DVT[2]->topology.incidentDT.front()->ptr = DT[0];
+    DVT[3]->topology.incidentDT.append();
+    DVT[3]->topology.incidentDT.front()->ptr = DT[6];
+    DVT[4]->topology.incidentDT.append();
+    DVT[4]->topology.incidentDT.front()->ptr = DT[6];
+    DVT[5]->topology.incidentDT.append();
+    DVT[5]->topology.incidentDT.front()->ptr = DT[6];
     // -------------------------------------------------------------------------
     // 6. Mark the first three vertices as inserted
     DVT[0]->inserted = true;
@@ -215,13 +221,13 @@ void DelaunayDriver::initPIT()
                     // The vertex is fake
                     DVT1->topology.extract();
                     // Record the first incident triangle
-                    DVT->topology.incidentDT->append();
-                    DVT->topology.incidentDT->front()->ptr = 
-                        DVT1->topology.incidentDT->front()->ptr;
+                    DVT->topology.incidentDT.append();
+                    DVT->topology.incidentDT.front()->ptr = 
+                        DVT1->topology.incidentDT.front()->ptr;
                     // Replace the fake vertex with the real one
                     DelaunayTrianglePointer *DTptr;
-                    DTptr = DVT1->topology.incidentDT->front();
-                    for (int k = 0; k < DVT1->topology.incidentDT->size(); ++k) {
+                    DTptr = DVT1->topology.incidentDT.front();
+                    for (int k = 0; k < DVT1->topology.incidentDT.size(); ++k) {
                         int l;
                         for (l = 0; l < 3; ++l)
                             if (DTptr->ptr->DVT[l] == DVT1) break;
@@ -236,14 +242,12 @@ void DelaunayDriver::initPIT()
                             break;
                         }
                     break;
-                } else {
-                    REPORT_ERROR("Encounter coincided vertices.")
-                }
+                } else
+                    REPORT_ERROR("Encounter coincided vertices.");
             }
         }
-        if (j == 8) {
-            REPORT_ERROR("Point is not covered by any of the eight triangles.")
-        }
+        if (j == 8)
+            REPORT_ERROR("Point is not covered by any of the eight triangles.");
         DVT = DVT->next;
     }
 }
@@ -269,17 +273,17 @@ void DelaunayDriver::insertPoint(DelaunayVertex *point)
     if (point->pit.DT[1] == NULL) {
         DelaunayTriangle *oldDT = point->pit.DT[0];
         flip13(oldDT, point);
-        obsoleteDT->append();
-        obsoleteDT->back()->ptr = oldDT;
+        obsoleteDT.append();
+        obsoleteDT.back()->ptr = oldDT;
         PointTriangle::removePoint(point);
     } else {
         DelaunayTriangle *oldDT1 = point->pit.DT[0];
         DelaunayTriangle *oldDT2 = point->pit.DT[1];
         flip24(oldDT1, oldDT2, point);
-        obsoleteDT->append();
-        obsoleteDT->back()->ptr = oldDT1;
-        obsoleteDT->append();
-        obsoleteDT->back()->ptr = oldDT2;
+        obsoleteDT.append();
+        obsoleteDT.back()->ptr = oldDT1;
+        obsoleteDT.append();
+        obsoleteDT.back()->ptr = oldDT2;
         PointTriangle::removePoint(point);
     }
     point->inserted = true;
@@ -287,46 +291,44 @@ void DelaunayDriver::insertPoint(DelaunayVertex *point)
 
 void DelaunayDriver::updatePIT()
 {
-    DelaunayTrianglePointer *DT = obsoleteDT->front();
-    for (int i = 0; i < obsoleteDT->size(); ++i) {
-        while (DT->ptr->tip.points->size() != 0) {
-            if (!DT->ptr->tip.handover(DT->ptr->tip.points->front()->ptr)) {
-                REPORT_ERROR("Point hasn't been handed over!")
-            }
-        }
+    DelaunayTrianglePointer *DT = obsoleteDT.front();
+    for (int i = 0; i < obsoleteDT.size(); ++i) {
+        while (DT->ptr->tip.points->size() != 0)
+            if (!DT->ptr->tip.handover(DT->ptr->tip.points->front()->ptr))
+                REPORT_ERROR("Point hasn't been handed over!");
         DT = DT->next;
     }
 }
 
 void DelaunayDriver::deleteObsoleteDT()
 {
-    DelaunayTrianglePointer *DT = obsoleteDT->front();
-    for (int i = 0; i < obsoleteDT->size(); ++i) {
+    DelaunayTrianglePointer *DT = obsoleteDT.front();
+    for (int i = 0; i < obsoleteDT.size(); ++i) {
         this->DT->remove(DT->ptr);
         DT = DT->next;
     }
-    obsoleteDT->recycle();
+    obsoleteDT.recycle();
 }
 
 void DelaunayDriver::deleteTemporalDT()
 {
-    DelaunayTrianglePointer *DT = temporalDT->front();
-    for (int i = 0; i < temporalDT->size(); ++i) {
+    DelaunayTrianglePointer *DT = temporalDT.front();
+    for (int i = 0; i < temporalDT.size(); ++i) {
         this->DT->remove(DT->ptr);
         DT = DT->next;
     }
-    temporalDT->recycle();
+    temporalDT.recycle();
 }
 
 void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
 {
-    DelaunayTrianglePointer *DTptr = DVT->topology.incidentDT->front();
-    DelaunayVertexPointer *DVTptr = DVT->topology.linkDVT->front();
+    DelaunayTrianglePointer *DTptr = DVT->topology.incidentDT.front();
+    DelaunayVertexPointer *DVTptr = DVT->topology.linkDVT.front();
     DelaunayTriangle *DT1, *DT2, *DT3;
     DelaunayVertex *DVT1, *DVT2, *DVT3;
     int i, j, k, ret;
     // -------------------------------------------------------------------------
-    while (DVT->topology.incidentDT->size() > 3) {
+    while (DVT->topology.incidentDT.size() > 3) {
         DVT1 = DVTptr->ptr;
         DVT2 = DVTptr->next->ptr;
         DVT3 = DVTptr->next->next->ptr;
@@ -347,15 +349,14 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
         // Check 3: Does potential triangle satisfy empty-circumcircle rule?
         bool empty = true;
         DelaunayVertexPointer *restDVT = DVTptr->next->next->next;
-        for (i = 0; i < DVT->topology.incidentDT->size()-3; ++i) {
+        for (i = 0; i < DVT->topology.incidentDT.size()-3; ++i) {
             ret = Sphere::inCircle(DVT1->point, DVT2->point, DVT3->point,
                                    restDVT->ptr->point);
             if (ret == InsideCircle) {
                 empty = false;
                 break;
-            } else if (ret == OnCircle) {
-                REPORT_ERROR("Encounter cocircular vertices.")
-            }
+            } else if (ret == OnCircle)
+                REPORT_ERROR("Encounter cocircular vertices.");
             restDVT = restDVT->next;
         }
         if (!empty) {
@@ -380,11 +381,11 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
     }
     // -------------------------------------------------------------------------
     // Here, there are only three triangles
-    DTptr = DVT->topology.incidentDT->front();
+    DTptr = DVT->topology.incidentDT.front();
     DT1 = DTptr->ptr;
     DT2 = DTptr->next->ptr;
     DT3 = DTptr->next->next->ptr;
-    DVTptr = DVT->topology.linkDVT->front();
+    DVTptr = DVT->topology.linkDVT.front();
     DVT1 = DVTptr->ptr;
     DVT2 = DVTptr->next->ptr;
     DVT3 = DVTptr->next->next->ptr;
@@ -443,9 +444,8 @@ void DelaunayDriver::validate(DelaunayTriangle *DT)
         }
     }
 #ifdef DEBUG
-    if (idx == 3) {
-        REPORT_ERROR("No matched opposite Delaunay vertex.")
-    }
+    if (idx == 3)
+        REPORT_ERROR("No matched opposite Delaunay vertex.");
 #endif
     // -------------------------------------------------------------------------
     // 3. Check if the opposite vertex is in the circumcircle of triangle
@@ -461,13 +461,13 @@ void DelaunayDriver::validate(DelaunayTriangle *DT)
         validate(newDT1);
         validate(newDT2);
         // Record the temporal triangle
-        temporalDT->append();
-        temporalDT->back()->ptr = DT;
+        temporalDT.append();
+        temporalDT.back()->ptr = DT;
         DT->subDT[0] = newDT1;
         DT->subDT[1] = newDT2;
         // Record the obsolete triangle
-        obsoleteDT->append();
-        obsoleteDT->back()->ptr = oppositeDT;
+        obsoleteDT.append();
+        obsoleteDT.back()->ptr = oppositeDT;
         oppositeDT->subDT[0] = newDT1;
         oppositeDT->subDT[1] = newDT2;
     } else {
@@ -521,8 +521,8 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
     newDT[2]->adjDT[2] = adjDT[2];
     // -------------------------------------------------------------------------
     // 3. Link the newly inserted point to one of its incident triangles
-    point->topology.incidentDT->append();
-    point->topology.incidentDT->back()->ptr = newDT[0];
+    point->topology.incidentDT.append();
+    point->topology.incidentDT.back()->ptr = newDT[0];
     // -------------------------------------------------------------------------
     // 4. Make change to the vertices and adjacent triangles of the old triangle
     for (int i = 0; i < 3; ++i) {
@@ -531,8 +531,8 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
                 adjDT[i]->adjDT[j] = newDT[i];
                 break;
             }
-        if (DVT[i]->topology.incidentDT->front()->ptr == oldDT)
-            DVT[i]->topology.incidentDT->front()->ptr = newDT[i];
+        if (DVT[i]->topology.incidentDT.front()->ptr == oldDT)
+            DVT[i]->topology.incidentDT.front()->ptr = newDT[i];
     }
     // -------------------------------------------------------------------------
     // 5. Validate the new triangles
@@ -601,8 +601,8 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     newDT[3]->adjDT[2] = adjDT4;
     // -------------------------------------------------------------------------
     // 3. Link the newly inserted point to one of its incident triangles
-    point->topology.incidentDT->append();
-    point->topology.incidentDT->front()->ptr = newDT[0];
+    point->topology.incidentDT.append();
+    point->topology.incidentDT.front()->ptr = newDT[0];
     // -------------------------------------------------------------------------
     // 4. Make change to the vertices and adjacent triangles of the old 
     //    triangle
@@ -627,16 +627,16 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
             break;
         }
     // Notice the order of newDT!!!
-    if (DVT1->topology.incidentDT->front()->ptr == oldDT1)
-        DVT1->topology.incidentDT->front()->ptr = newDT[1];
-    if (DVT2->topology.incidentDT->front()->ptr == oldDT1 ||
-        DVT2->topology.incidentDT->front()->ptr == oldDT2)
-        DVT2->topology.incidentDT->front()->ptr = newDT[2];
-    if (DVT3->topology.incidentDT->front()->ptr == oldDT1 ||
-        DVT3->topology.incidentDT->front()->ptr == oldDT2)
-        DVT3->topology.incidentDT->front()->ptr = newDT[3];
-    if (DVT4->topology.incidentDT->front()->ptr == oldDT2)
-        DVT4->topology.incidentDT->front()->ptr = newDT[0];
+    if (DVT1->topology.incidentDT.front()->ptr == oldDT1)
+        DVT1->topology.incidentDT.front()->ptr = newDT[1];
+    if (DVT2->topology.incidentDT.front()->ptr == oldDT1 ||
+        DVT2->topology.incidentDT.front()->ptr == oldDT2)
+        DVT2->topology.incidentDT.front()->ptr = newDT[2];
+    if (DVT3->topology.incidentDT.front()->ptr == oldDT1 ||
+        DVT3->topology.incidentDT.front()->ptr == oldDT2)
+        DVT3->topology.incidentDT.front()->ptr = newDT[3];
+    if (DVT4->topology.incidentDT.front()->ptr == oldDT2)
+        DVT4->topology.incidentDT.front()->ptr = newDT[0];
     // -------------------------------------------------------------------------
     // 5. Validate the four triangles
     for (int i = 0; i < 4; ++i)
@@ -713,10 +713,10 @@ void DelaunayDriver::flip22(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
         DVT3->topology.addLinkDVT(DVT1, DVT2, DVT4);
         DVT4->topology.addLinkDVT(DVT2, DVT1, DVT3);
     } else {
-        DVT1->topology.incidentDT->front()->ptr = *newDT1;
-        DVT2->topology.incidentDT->front()->ptr = *newDT2;
-        DVT3->topology.incidentDT->front()->ptr = *newDT2;
-        DVT4->topology.incidentDT->front()->ptr = *newDT1;
+        DVT1->topology.incidentDT.front()->ptr = *newDT1;
+        DVT2->topology.incidentDT.front()->ptr = *newDT2;
+        DVT3->topology.incidentDT.front()->ptr = *newDT2;
+        DVT4->topology.incidentDT.front()->ptr = *newDT1;
     }
 }
 

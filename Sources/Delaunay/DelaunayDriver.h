@@ -15,9 +15,11 @@ public:
     DelaunayDriver();
     virtual ~DelaunayDriver();
 
-    void linkPoint(const PointManager &);
+    void init(const PointManager &);
 
-    void init();
+    void reinit();
+
+    void run();
 
     void calcCircumcenter();
 
@@ -145,8 +147,8 @@ protected:
     void extractTopology();
 
     FakeVertices fake;
-    List<DelaunayTrianglePointer> *obsoleteDT;
-    List<DelaunayTrianglePointer> *temporalDT;
+    List<DelaunayTrianglePointer> obsoleteDT;
+    List<DelaunayTrianglePointer> temporalDT;
 };
 
 #endif
