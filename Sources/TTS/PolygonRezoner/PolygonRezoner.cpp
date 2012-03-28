@@ -2,7 +2,7 @@
 #include "MeshManager.h"
 #include "MeshAdaptor.h"
 #include "FlowManager.h"
-#include "PolygonManager.h"
+#include "TracerManager.h"
 #include "DelaunayDriver.h"
 #include "SCVT.h"
 #include "TimeManager.h"
@@ -11,10 +11,11 @@
 #include <netcdfcpp.h>
 
 void PolygonRezoner::rezone(MeshManager &meshManager,
-                            const MeshAdaptor &meshAdaptor,
+                            MeshAdaptor &meshAdaptor,
                             const FlowManager &flowManager,
-                            PolygonManager &polygonManager)
+                            TracerManager &tracerManager)
 {
+    PolygonManager &polygonManager = tracerManager.polygonManager;
     // -------------------------------------------------------------------------
     // 0. Initialize SCVT
     static bool isFirstCall = true;
@@ -26,6 +27,7 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     }
     // -------------------------------------------------------------------------
     // 1. Generate density function
+    double minRho = 0.05;
     // =========================================================================
     // 1.1. Use tracer density difference as a guide of density function setting
     double maxDiff = 0.0;
@@ -37,8 +39,8 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         for (int j = 0; j < polygon->edgePointers.size(); ++j) {
             if (prevPolygon != edgePointer->getPolygon(OrientRight)) {
                 prevPolygon = edgePointer->getPolygon(OrientRight);
-                double diff = fabs(polygon->tracers[1].getDensity()-
-                                   prevPolygon->tracers[1].getDensity());
+                double diff = fabs(polygon->tracers[0].getDensity()-
+                                   prevPolygon->tracers[0].getDensity());
                 polygon->tracerDiff = fmax(diff, polygon->tracerDiff);
                 maxDiff = fmax(diff, maxDiff);
             }
@@ -53,11 +55,12 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         for (int j = 0; j < overlapAreaList.extent(1); ++j) {
             list<OverlapArea>::const_iterator it;
             for (it = overlapAreaList(i, j, 0).begin();
-                 it != overlapAreaList(i, j, 0).end(); ++it) {
-                rho(i, j) = fmax(rho(i, j), (*it).polygon->tracerDiff)/maxDiff;
-            }
-            rho(i, j) = fmin(1.0, fmax(0.1, rho(i, j)));
+                 it != overlapAreaList(i, j, 0).end(); ++it)
+                rho(i, j) = fmax(rho(i, j), (*it).polygon->tracerDiff);
+            rho(i, j) /= maxDiff;
+            rho(i, j) = fmax(minRho, rho(i, j));
         }
+#ifdef TTS_REZONE_SMOOTH_DENSITY
     // =========================================================================
     // 1.2. Smooth the density function
     Array<double, 2> smoothedRho(rho.shape());
@@ -78,10 +81,13 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         smoothedRho(i, rho.extent(1)-1) = rho(i, rho.extent(1)-1);
     }
     rho = smoothedRho;
-    SCVT::outputDensityFunction("scvt_rho.nc");
+#endif
+    char fileName[30];
+    sprintf(fileName, "scvt_rho_%5.5d.nc", TimeManager::getSteps());
+    SCVT::outputDensityFunction(fileName);
     // -------------------------------------------------------------------------
     // 2. Generate SCVT according to the previous density function
-    int numPoint = 3000;
+    int numPoint = 20000;
     DelaunayDriver driver;
     SCVT::run(numPoint, driver);
     // -------------------------------------------------------------------------
@@ -103,10 +109,18 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         testPoint->setLocation(loc);
         edge = edge->next;
     }
-#ifdef TTS_CGA_SPLIT_POLYGONS
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
+#ifdef TTS_CGA_SPLIT_POLYGONS
     ApproachDetector::ApproachingVertices::vertices.clear();
-    ApproachDetector::reset(polygonManager);
 #endif
+    ApproachDetector::reset(polygonManager);
     CommonTasks::resetTasks();
+    // -------------------------------------------------------------------------
+#ifdef TTS_REMAP
+    meshAdaptor.adapt(tracerManager, meshManager);
+    for (int i = 0; i < tracerManager.getTracerNum(); ++i)
+        meshAdaptor.remap(tracerManager.getTracerName(i),
+                          tracerManager.getTracerDensityField(i),
+                          tracerManager);
+#endif
 }

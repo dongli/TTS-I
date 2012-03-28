@@ -55,7 +55,7 @@ double getDensity(double lon, double lat)
     // -------------------------------------------------------------------------
     isFound = false;
     for (j = 0; j < latBnd.size()-1; ++j) {
-        if (lat <= latBnd(j) && lat > latBnd(j+1)) {
+        if (lat <= latBnd(j) && lat >= latBnd(j+1)) {
             isFound = true;
             break;
         }

@@ -18,9 +18,7 @@ using namespace PotentialCrossDetector;
 
 void ApproachDetector::init()
 {
-#ifdef TTS_CGA_SPLIT_POLYGONS
     TrendThreshold::init();
-#endif
 }
 
 bool ApproachDetector::isNeedCheck(double distance)

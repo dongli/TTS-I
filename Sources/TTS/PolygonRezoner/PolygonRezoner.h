@@ -4,11 +4,10 @@
 class MeshManager;
 class MeshAdaptor;
 class FlowManager;
-class PolygonManager;
+class TracerManager;
 
 namespace PolygonRezoner {
-    void rezone(MeshManager &, const MeshAdaptor &,
-                const FlowManager &, PolygonManager &);
+    void rezone(MeshManager &, MeshAdaptor &, const FlowManager &, TracerManager &);
 }
 
 #endif

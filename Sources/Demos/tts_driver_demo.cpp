@@ -10,6 +10,7 @@
 #include "Deformation.h"
 #include "TTS.h"
 #include "MeshAdaptor.h"
+#include "PolygonRezoner.h"
 
 //#define MOVINGVORTICES_TESTCASE
 //#define TESTCASE_CALC_TRUE_SOLUTION
@@ -78,6 +79,9 @@ int main(int argc, char **argv)
     tts.init();
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
+#ifdef TTS_REZONE
+    PolygonRezoner::rezone(meshManager, meshAdaptor, flowManager, tracerManager);
+#endif
 #ifdef TESTCASE_CALC_TRUE_SOLUTION
     testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
 #endif
