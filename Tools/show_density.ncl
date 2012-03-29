@@ -63,8 +63,8 @@ begin
             file_names(l))+"_"+density_name+"_density")
 
         ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
-        ;gsn_define_colormap(wks, "BlueYellowRed")
-        gsn_define_colormap(wks, "WhBlGrYeRe")
+        gsn_define_colormap(wks, "BlueYellowRed")
+        ;gsn_define_colormap(wks, "WhBlGrYeRe")
         ;gsn_define_colormap(wks, "WhBlReWh")
 
         f = addfile(file_names(l), "r")
@@ -80,8 +80,8 @@ begin
 
         setup_map(projection, res)
         setup_contour(res)
-        ;set_contour_range(res, 0.0, 5.0, 0.25, "%4.2f")
-        set_contour_range(res, 0.0, 1.1, 0.1, "%4.2f")
+        set_contour_range(res, 0.0, 5.0, 0.25, "%4.2f")
+        ;set_contour_range(res, 0.0, 1.1, 0.1, "%4.2f")
         ;set_contour_range(res, 0.5, 1.5, 0.05, "%4.2f")
         ;set_contour_range(res, 0.0, 1000.0, 100.0, "%8.2f")
 

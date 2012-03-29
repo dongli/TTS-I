@@ -27,10 +27,9 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     }
     // -------------------------------------------------------------------------
     // 1. Generate density function
-    double minRho = 0.05;
+    double minRho = 0.1;
     // =========================================================================
     // 1.1. Use tracer density difference as a guide of density function setting
-    double maxDiff = 0.0;
     Polygon *polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
         polygon->tracerDiff = 0.0;
@@ -42,7 +41,6 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
                 double diff = fabs(polygon->tracers[0].getDensity()-
                                    prevPolygon->tracers[0].getDensity());
                 polygon->tracerDiff = fmax(diff, polygon->tracerDiff);
-                maxDiff = fmax(diff, maxDiff);
             }
             edgePointer = edgePointer->next;
         }
@@ -57,22 +55,20 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
             for (it = overlapAreaList(i, j, 0).begin();
                  it != overlapAreaList(i, j, 0).end(); ++it)
                 rho(i, j) = fmax(rho(i, j), (*it).polygon->tracerDiff);
-            rho(i, j) /= maxDiff;
-            rho(i, j) = fmax(minRho, rho(i, j));
         }
 #ifdef TTS_REZONE_SMOOTH_DENSITY
     // =========================================================================
     // 1.2. Smooth the density function
     Array<double, 2> smoothedRho(rho.shape());
-    double p = 0.5, q = 0.25;
+    double c1 = 0.5, c2 = 0.25;
     for (int i = 0; i < rho.extent(0); ++i) {
         for (int j = 1; j <= rho.extent(1)-2; ++j) {
             int im1 = i != 0 ? i-1 : rho.extent(0)-1;
             int ip1 = i != rho.extent(0)-1 ? i+1 : 0;
             int jm1 = j-1, jp1 = j+1;
-            smoothedRho(i, j) = (1-p-q)*rho(i, j)+
-            p*0.25*(rho(im1, j)+rho(i, jm1)+rho(ip1, j)+rho(i, jp1))+
-            q*0.25*(rho(im1, jm1)+rho(im1, jp1)+rho(ip1, jp1)+rho(ip1, jm1));
+            smoothedRho(i, j) = (1-c1-c2)*rho(i, j)+
+            c1*0.25*(rho(im1, j)+rho(i, jm1)+rho(ip1, j)+rho(i, jp1))+
+            c2*0.25*(rho(im1, jm1)+rho(im1, jp1)+rho(ip1, jp1)+rho(ip1, jm1));
         }
         // TODO: How to handle pole boundaries?
         // north pole
@@ -82,6 +78,9 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     }
     rho = smoothedRho;
 #endif
+//    rho /= max(rho);
+//    rho = where(rho < minRho, minRho, rho);
+//    assert(all(rho >= minRho && rho <= 1.0));
     char fileName[30];
     sprintf(fileName, "scvt_rho_%5.5d.nc", TimeManager::getSteps());
     SCVT::outputDensityFunction(fileName);
