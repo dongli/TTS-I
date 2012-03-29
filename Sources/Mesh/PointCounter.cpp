@@ -20,15 +20,14 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     this->numSubLon = numSubLon; this->numSubLat = numSubLat;
     // -------------------------------------------------------------------------
     // bounds of cells for counting points
-    // TODO: Clarify the size of longitude grids.
-    //       Why do we minus 2 here, not 1?
+    // Note: Why do we minus 2 here, not 1? (To limit lonBnds within 0~360)
     int numLon = (lon.size()-2)*numSubLon;
     int numLat = (lat.size()-1)*numSubLat+1+2;
     double lonBnds[numLon], latBnds[numLat];
-    for (int i = 0; i < lon.size()-2; ++i) {
+    for (int i = 1; i < lon.size()-1; ++i) {
         double dlon = (lon(i+1)-lon(i))/numSubLon;
         for (int k = 0; k < numSubLon; ++k)
-            lonBnds[i*numSubLon+k] = lon(i)+k*dlon;
+            lonBnds[(i-1)*numSubLon+k] = lon(i)+k*dlon;
     }
     // Note: Point counter mesh includes poles.
     latBnds[0] = PI05;
@@ -49,7 +48,7 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
 #endif
     // -------------------------------------------------------------------------
     // centers of cells
-    numLon = mesh[0].lon.size()-1, numLat = mesh[0].lat.size()-1;
+    numLon = mesh[0].lon.size()-2, numLat = mesh[0].lat.size()-1;
     double lonCnts[numLon], latCnts[numLat];
     for (int i = 0; i < numLon; ++i)
         lonCnts[i] = (mesh[0].lon(i)+mesh[0].lon(i+1))*0.5;
@@ -63,8 +62,8 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     mesh[1].output("point_counter_center_mesh.nc");
 #endif
     // -------------------------------------------------------------------------
-    //! \todo Add the vertical codes.
-    counters.resize(mesh[1].getNumLon()-1, mesh[1].getNumLat(), 1);
+    // TODO: Add the vertical codes.
+    counters.resize(mesh[1].getNumLon()-2, mesh[1].getNumLat(), 1);
     points.resize(counters.shape());
     for (int i = 0; i < points.extent(0); ++i)
         for (int j = 0; j < points.extent(1); ++j)

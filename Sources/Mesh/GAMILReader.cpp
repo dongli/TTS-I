@@ -77,7 +77,7 @@ void GAMILReader::getTracerField(TracerManager &tracerManager)
                 q0.values(i, j) = 1.0;
     }
     // -------------------------------------------------------------------------
-    tracerManager.registerTracer("moisture", "", meshManager);
+    tracerManager.registerTracer("test tracer 0", "", meshManager);
     // check the location polygon vertices
     Vertex *vertex = tracerManager.polygonManager.vertices.front();
     for (int i = 0; i < tracerManager.polygonManager.vertices.size(); ++i) {
@@ -89,8 +89,8 @@ void GAMILReader::getTracerField(TracerManager &tracerManager)
     // -------------------------------------------------------------------------
     // remap the air density onto the polygons
     meshAdaptor.adapt(tracerManager, meshManager);
-    meshAdaptor.remap("moisture", q0, tracerManager);
-    meshAdaptor.remap("moisture", tracerManager);
+    meshAdaptor.remap("test tracer 0", q0, tracerManager);
+    meshAdaptor.remap("test tracer 0", tracerManager);
 }
 
 void GAMILReader::getVelocityField()

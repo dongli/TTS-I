@@ -357,6 +357,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         vertex3 = crossVertices.front();
         crossVertices.remove(vertex3);
         handleCrossVertices = true;
+        polygon->dump("polygon");
         splitPolygon(meshManager, flowManager, polygonManager,
                      polygon, edgePointer3, edgePointer4, vertex3, 5);
         handleCrossVertices = false;

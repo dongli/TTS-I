@@ -40,18 +40,16 @@ void RLLMesh::init(MeshSpec spec, int numLon, int numLat,
 	//   1) The longitude grids are equidistance;
 	//   2) Input "lon" is not periodic;
 	dlon = lon[1]-lon[0];
+    this->lon.resize(numLon+2);
     if (spec.type == Full || spec.type == LatHalf) {
-		this->lon.resize(numLon+1);
-		for (int i = 0; i < this->lon.size()-1; ++i)
-			this->lon(i) = lon[i];
-        this->lon(this->lon.size()-1) = lon[numLon-1]+dlon;
+        for (int i = 0; i < numLon; ++i)
+            this->lon(i+1) = lon[i];
     } else if (spec.type == LonHalf || spec.type == BothHalf) {
-		this->lon.resize(numLon+2);
-		for (int i = 1; i < this->lon.size()-1; ++i)
-			this->lon(i) = lon[i-1]+dlon*0.5;
-        this->lon(0) = this->lon(1)-dlon;;
-		this->lon(this->lon.size()-1) = this->lon(this->lon.size()-2)+dlon;
+        for (int i = 0; i < numLon; ++i)
+            this->lon(i+1) = lon[i]+dlon*0.5;
     }
+    this->lon(0) = this->lon(1)-dlon;
+    this->lon(this->lon.size()-1) = this->lon(this->lon.size()-2)+dlon;
 	// -------------------------------------------------------------------------
 	// latitude grids:
 	// There are several assumptions as following:

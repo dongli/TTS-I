@@ -17,17 +17,18 @@ double eps;
 void SCVT::init(int numLon, int numLat, const double *lon, const double *lat)
 {
     // -------------------------------------------------------------------------
-    // Note: The input longitudes and latitudes are for the boundaries
-    rho.resize(numLon-1, numLat-1);
-    lonBnd.resize(numLon);
+    // Note: The input longitudes and latitudes are for the boundaries, and
+    //       there are no cyclic boundaries
+    rho.resize(numLon-2, numLat-1);
+    lonBnd.resize(numLon-1);
     latBnd.resize(numLat);
-    for (int i = 0; i < numLon; ++i)
+    for (int i = 0; i < numLon-1; ++i)
         lonBnd(i) = lon[i];
     for (int j = 0; j < numLat; ++j)
         latBnd(j) = lat[j];
     // -------------------------------------------------------------------------
     // Set running controls
-    maxIteration = 50;
+    maxIteration = 10;
     eps = 1.0e-6;
 }
 

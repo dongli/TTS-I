@@ -17,22 +17,13 @@ void Field::init(const RLLMesh &meshCnt)
 {
     mesh[Center] = &meshCnt;
     values.resize(meshCnt.getNumLon(), meshCnt.getNumLat(), 1);
-    if (meshCnt.spec.type == Full || meshCnt.spec.type == LatHalf) {
-        for (int i = 0; i < meshCnt.getNumLon()-1; ++i)
-            for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                values(i, j, 0).init();
-        // zonal periodic boundary condition
+    for (int i = 1; i < meshCnt.getNumLon()-1; ++i)
         for (int j = 0; j < meshCnt.getNumLat(); ++j)
-            values(meshCnt.getNumLon()-1, j, 0).mirror(values(0, j, 0));
-    } else if (meshCnt.spec.type == LonHalf) {
-        for (int i = 1; i < meshCnt.getNumLon()-1; ++i)
-            for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                values(i, j, 0).init();
-        // zonal periodic boundary conditions
-        for (int j = 0; j < meshCnt.getNumLat(); ++j) {
-            values(0, j, 0).mirror(values(meshCnt.getNumLon()-2, j, 0));
-            values(meshCnt.getNumLon()-1, j, 0).mirror(values(1, j, 0));
-        }
+            values(i, j, 0).init();
+    // zonal periodic boundary conditions
+    for (int j = 0; j < meshCnt.getNumLat(); ++j) {
+        values(0, j, 0).mirror(values(meshCnt.getNumLon()-2, j, 0));
+        values(meshCnt.getNumLon()-1, j, 0).mirror(values(1, j, 0));
     }
 }
 
@@ -41,25 +32,14 @@ void Field::init(const RLLMesh &meshCnt, const Layers &layers)
     mesh[Center] = &meshCnt;
     this->layers = &layers;
     values.resize(meshCnt.getNumLon(), meshCnt.getNumLat(), layers.getNumLev());
-    if (meshCnt.spec.type == Full || meshCnt.spec.type == LatHalf) {
-        for (int k = 0; k < layers.getNumLev(); ++k) {
-            for (int i = 0; i < meshCnt.getNumLon()-1; ++i)
-                for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                    values(i, j, k).init();
-            // zonal periodic boundary condition
+    for (int k = 0; k < layers.getNumLev(); ++k) {
+        for (int i = 1; i < meshCnt.getNumLon()-1; ++i)
             for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                values(meshCnt.getNumLon()-1, j, k).mirror(values(0, j, k));
-        }
-    } else if (meshCnt.spec.type == LonHalf) {
-        for (int k = 0; k < layers.getNumLev(); ++k) {
-            for (int i = 1; i < meshCnt.getNumLon()-1; ++i)
-                for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                    values(i, j, k).init();
-            // zonal periodic boundary conditions
-            for (int j = 0; j < meshCnt.getNumLat(); ++j) {
-                values(0, j, k).mirror(values(meshCnt.getNumLon()-2, j, k));
-                values(meshCnt.getNumLon()-1, j, k).mirror(values(1, j, k));
-            }
+                values(i, j, k).init();
+        // zonal periodic boundary conditions
+        for (int j = 0; j < meshCnt.getNumLat(); ++j) {
+            values(0, j, k).mirror(values(meshCnt.getNumLon()-2, j, k));
+            values(meshCnt.getNumLon()-1, j, k).mirror(values(1, j, k));
         }
     }
 }

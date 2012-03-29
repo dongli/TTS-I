@@ -49,12 +49,9 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
     // -------------------------------------------------------------------------
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
-#ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
-#ifdef DEBUG
-    DebugTools::dump_watchers();
-#endif
+#ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
     if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
 #endif

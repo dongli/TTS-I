@@ -92,7 +92,7 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
     ratio = x.getLon()/mesh[Full].dlon;
     // Note: This is really buggy! Add the up limit on the zonal index of full
     //       Mesh to handle the occasion that the longitude is 360 degree.
-    loc.i[Full] = min(int(floor(ratio)), mesh[Full].getNumLon()-2);
+    loc.i[Full] = min(int(floor(ratio))+1, mesh[Full].getNumLon()-2);
 #ifdef DEBUG
     if (loc.i[Full] == -1) {
         REPORT_ERROR("Location longitude index is -1!")
@@ -255,7 +255,7 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
     if (point != NULL) {
         double dlon = mesh[BothHalf].dlon/pointCounter.numSubLon;
         ratio = (x.getLon()-mesh[BothHalf].lon(loc.i[BothHalf]))/dlon;
-        if (loc.i[3] == mesh[BothHalf].getNumLon()-2)
+        if (loc.i[BothHalf] == mesh[BothHalf].getNumLon()-2)
             loc.i.back() = int(floor(ratio));
         else
             loc.i.back() = int(floor(ratio))+loc.i[BothHalf]*pointCounter.numSubLon;
@@ -278,7 +278,7 @@ void MeshManager::countPoint(Point *point)
     const Coordinate &x = point->getCoordinate();
     Location loc = point->getLocation();
     double ratio = (x.getLon()-mesh[BothHalf].lon(loc.i[BothHalf]))/dlon;
-    if (loc.i[3] == mesh[BothHalf].getNumLon()-2)
+    if (loc.i[BothHalf] == mesh[BothHalf].getNumLon()-2)
         loc.i.back() = int(floor(ratio));
     else
         loc.i.back() = int(floor(ratio))+loc.i[BothHalf]*pointCounter.numSubLon;

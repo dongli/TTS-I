@@ -375,7 +375,7 @@ bool CoverMask::isCovered(Polygon *polygon, int i0, int j0, int i, int j,
     // -------------------------------------------------------------------------
     if (isFirstCoveredCell) {
         // use "ray casting algorithm" to ensure the cell is truely covered
-        Coordinate X0(mesh->lon(idxI(i)), mesh->lat(idxJ(j)));
+        Coordinate X0(mesh->lon(idxI(i)+1), mesh->lat(idxJ(j)));
         bool isCovered = false;
         EdgePointer *edgePointer = polygon->edgePointers.front();
         for (int k = 0; k < polygon->edgePointers.size(); ++k) {

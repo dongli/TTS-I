@@ -17,6 +17,7 @@ begin
     is_plot_point_counters = False
     projection = "CE"
     projection@min_lat = 70.0
+    projection@max_lat = -70.0
     projection@angle = 10.0
     line_width = 1.0
     point_size = 0.001

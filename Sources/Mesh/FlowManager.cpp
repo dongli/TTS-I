@@ -67,7 +67,7 @@ void FlowManager::update(double *u, double *v)
                     this->u.values(i, j, k).save();
                 }
         l = -1;
-        for (int i = 0; i < this->v.getMesh().getNumLon()-1; ++i)
+        for (int i = 1; i < this->v.getMesh().getNumLon()-1; ++i)
             for (int j = 0; j < this->v.getMesh().getNumLat(); ++j)
                 for (int k = 0; k < numLev; ++k) {
                     this->v.values(i, j, k).setNew(v[++l]);
@@ -83,7 +83,7 @@ void FlowManager::update(double *u, double *v)
                     this->u.values(i, j, k).setNew(u[++l]);
                 }
         l = -1;
-        for (int i = 0; i < this->v.getMesh().getNumLon()-1; ++i)
+        for (int i = 1; i < this->v.getMesh().getNumLon()-1; ++i)
             for (int j = 0; j < this->v.getMesh().getNumLat(); ++j)
                 for (int k = 0; k < numLev; ++k) {
                     this->v.values(i, j, k).save();

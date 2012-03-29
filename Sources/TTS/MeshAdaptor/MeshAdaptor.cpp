@@ -683,7 +683,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
 {
     NOTICE("MeshAdaptor::adapt", "running ...");
     const RLLMesh &mesh = meshManager.getMesh(PointCounter::Bound);
-    int numLon = mesh.getNumLon()-1;
+    int numLon = mesh.getNumLon()-2;
     int numLat = mesh.getNumLat()-1;
     const double areaDiffThreshold = 1.0e-2;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
@@ -702,7 +702,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
 #ifdef DEBUG
         bool debug = false;
         int counter = 0;
-//        if (TimeManager::getSteps() == 159 && polygon->getID() == 136) {
+//        if (TimeManager::getSteps() == 2 && polygon->getID() == 17285) {
 //            polygon->dump("polygon");
 //            REPORT_DEBUG;
 //            debug = true;
