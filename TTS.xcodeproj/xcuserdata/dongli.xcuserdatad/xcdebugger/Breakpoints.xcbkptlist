@@ -344,9 +344,33 @@
                shouldBeEnabled = "Yes"
                ignoreCount = "0"
                continueAfterRunningActions = "No"
+               symbolName = "List&lt;DelaunayTrianglePointer&gt;::remove(DelaunayTrianglePointer*)"
+               urlString = "file://localhost/List.cpp"
+               timestampString = "354766929.752394"
+               startingColumnNumber = "9223372036854775807"
+               endingColumnNumber = "9223372036854775807"
+               startingLineNumber = "238"
+               endingLineNumber = "238">
+            </Location>
+            <Location
+               shouldBeEnabled = "Yes"
+               ignoreCount = "0"
+               continueAfterRunningActions = "No"
+               symbolName = "List&lt;DelaunayVertexPointer&gt;::remove(DelaunayVertexPointer*)"
+               urlString = "file://localhost/List.cpp"
+               timestampString = "354766929.752709"
+               startingColumnNumber = "9223372036854775807"
+               endingColumnNumber = "9223372036854775807"
+               startingLineNumber = "238"
+               endingLineNumber = "238">
+            </Location>
+            <Location
+               shouldBeEnabled = "Yes"
+               ignoreCount = "0"
+               continueAfterRunningActions = "No"
                symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "354688976.912775"
+               timestampString = "354766929.752939"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -358,7 +382,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Edge&gt;::remove(Edge*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "354688976.913087"
+               timestampString = "354766929.753165"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -370,7 +394,31 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "354688976.913331"
+               timestampString = "354766929.753392"
+               startingColumnNumber = "9223372036854775807"
+               endingColumnNumber = "9223372036854775807"
+               startingLineNumber = "238"
+               endingLineNumber = "238">
+            </Location>
+            <Location
+               shouldBeEnabled = "Yes"
+               ignoreCount = "0"
+               continueAfterRunningActions = "No"
+               symbolName = "List&lt;Polygon&gt;::remove(Polygon*)"
+               urlString = "file://localhost/List.cpp"
+               timestampString = "354766929.753625"
+               startingColumnNumber = "9223372036854775807"
+               endingColumnNumber = "9223372036854775807"
+               startingLineNumber = "238"
+               endingLineNumber = "238">
+            </Location>
+            <Location
+               shouldBeEnabled = "Yes"
+               ignoreCount = "0"
+               continueAfterRunningActions = "No"
+               symbolName = "List&lt;DelaunayTriangle&gt;::remove(DelaunayTriangle*)"
+               urlString = "file://localhost/List.cpp"
+               timestampString = "354766929.753851"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -609,15 +657,15 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Sources/TTS/PolygonRezoner/PolygonRezoner.cpp"
-         timestampString = "354727932.679491"
+         timestampString = "354766515.406495"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "91"
-         endingLineNumber = "91"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
          landmarkName = "PolygonRezoner::rezone(MeshManager &amp;meshManager, MeshAdaptor &amp;meshAdaptor, const FlowManager &amp;flowManager, TracerManager &amp;tracerManager)"
          landmarkType = "5">
       </FileBreakpoint>

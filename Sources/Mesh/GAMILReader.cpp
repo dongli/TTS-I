@@ -54,7 +54,7 @@ void GAMILReader::getTracerField(TracerManager &tracerManager)
     Field q0; q0.init(meshCnt, meshBnd);
     // -------------------------------------------------------------------------
     // read in moisture
-    if (false) {
+    if (true) {
         NcFile file("gamil_data/q.nc", NcFile::ReadOnly);
         if (!file.is_valid()) {
             ostringstream message;

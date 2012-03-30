@@ -150,13 +150,13 @@
                value = "vertices[0]-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "polygon2-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "projection.orient">
+               value = "vertices[1]-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "projection2-&gt;orient">
+            </PersistentString>
+            <PersistentString
+               value = "projection.orient">
             </PersistentString>
             <PersistentString
                value = "projection1-&gt;orient">
@@ -183,7 +183,7 @@
                value = "projection3-&gt;getDistance(NewTimeLevel)">
             </PersistentString>
             <PersistentString
-               value = "vertices[1]-&gt;ID">
+               value = "polygon2-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -341,13 +341,13 @@
          contextName = "handleDisorderedPolygons(PolygonManager&amp;):splitPolygon.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "edgePointer-&gt;next-&gt;angle.getNew()*Rad2Deg">
+               value = "markEdgePointer-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
                value = "edgePointer-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
-               value = "markEdgePointer-&gt;angle.getNew()*Rad2Deg">
+               value = "edgePointer-&gt;next-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -409,7 +409,7 @@
          contextName = "removeShortEdges(PolygonManager&amp;, Edge*, Vertex*):PolygonManager.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "vertex2-&gt;ID">
+               value = "keepVertex-&gt;linkedEdges.size()">
             </PersistentString>
             <PersistentString
                value = "vertex1-&gt;ID">
@@ -421,10 +421,10 @@
                value = "linkedEdge-&gt;edge-&gt;endPoints[1]-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "linkedEdge-&gt;edge-&gt;endPoints[0]-&gt;ID">
+               value = "vertex2-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "keepVertex-&gt;linkedEdges.size()">
+               value = "linkedEdge-&gt;edge-&gt;endPoints[0]-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -464,7 +464,7 @@
          contextName = "PotentialCrossDetector::detectInsertVertexOnEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, bool, Edge*, Vertex*, Vertex*, Edge**, Vertex*, Vertex*, Vertex*):PotentialCrossDetector.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "oldVertex-&gt;ID">
+               value = "projection-&gt;vertex-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "vertex3-&gt;ID">
@@ -473,13 +473,13 @@
                value = "vertex1-&gt;ID">
             </PersistentString>
             <PersistentString
+               value = "oldVertex-&gt;ID">
+            </PersistentString>
+            <PersistentString
                value = "vertex4-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "vertex2-&gt;ID">
-            </PersistentString>
-            <PersistentString
-               value = "projection-&gt;vertex-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -632,13 +632,13 @@
          contextName = "DelaunayDriver::validate(DelaunayTriangle*):DelaunayDriver.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "DT-&gt;ID">
+               value = "oppositeDVT-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "oppositeDT-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "oppositeDVT-&gt;ID">
+               value = "DT-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -678,13 +678,13 @@
          contextName = "Vertex::handoverEdges(Vertex*, MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;):Vertex.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "linkedEdge-&gt;edge-&gt;endPoints[1]-&gt;ID">
+               value = "linkedEdge-&gt;edge-&gt;endPoints[0]-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "linkedEdge-&gt;edge-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "linkedEdge-&gt;edge-&gt;endPoints[0]-&gt;ID">
+               value = "linkedEdge-&gt;edge-&gt;endPoints[1]-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -916,13 +916,13 @@
                value = "edgePointer1-&gt;edge-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "edgePointer1-&gt;prev-&gt;angle.getNew()*Rad2Deg">
+               value = "edgePointer1-&gt;edge-&gt;length*Rad2Deg/Sphere::radius">
             </PersistentString>
             <PersistentString
                value = "polygon-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "edgePointer1-&gt;edge-&gt;length*Rad2Deg/Sphere::radius">
+               value = "edgePointer1-&gt;prev-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1057,10 +1057,10 @@
          contextName = "PotentialCrossDetector::detectMergeEdges(EdgePointer*, Vertex*, Polygon*):PotentialCrossDetector.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "projection-&gt;orient">
+               value = "projection-&gt;vertex-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "projection-&gt;vertex-&gt;ID">
+               value = "projection-&gt;orient">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1105,7 +1105,7 @@
          contextName = "CurvatureGuard::splitEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Edge*, bool, bool):splitEdge.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "edge-&gt;length*Rad2Deg/Sphere::radius">
+               value = "projection-&gt;changeRate">
             </PersistentString>
             <PersistentString
                value = "testPoint-&gt;getAngle()*Rad2Deg">
@@ -1129,15 +1129,18 @@
                value = "projection-&gt;distance.getNew()">
             </PersistentString>
             <PersistentString
-               value = "edge-&gt;ID">
+               value = "edge-&gt;length*Rad2Deg/Sphere::radius">
             </PersistentString>
             <PersistentString
-               value = "projection-&gt;changeRate">
+               value = "edge-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "TestPoint::calcAngle():TestPoint.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "MeshManager::checkLocation(Coordinate const&amp;, Location&amp;, Point*):MeshManager.cpp">
       </ContextState>
       <ContextState
          contextName = "ApproachDetector::Projection::getDistance(TimeLevel) const:Projection.cpp">
@@ -1169,10 +1172,10 @@
                value = "edge1-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "edgePointer-&gt;next-&gt;angle.getNew()*Rad2Deg">
+               value = "polygon-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "edgePointer-&gt;getEndPoint(SecondPoint)-&gt;ID">
+               value = "edgePointer-&gt;prev-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
                value = "edge1-&gt;length*Rad2Deg/Sphere::radius">
@@ -1193,10 +1196,10 @@
                value = "a0*Rad2Deg">
             </PersistentString>
             <PersistentString
-               value = "polygon-&gt;ID">
+               value = "edgePointer-&gt;next-&gt;angle.getNew()*Rad2Deg">
             </PersistentString>
             <PersistentString
-               value = "edgePointer-&gt;prev-&gt;angle.getNew()*Rad2Deg">
+               value = "edgePointer-&gt;getEndPoint(SecondPoint)-&gt;ID">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -1241,19 +1244,19 @@
          contextName = "DelaunayDriver::flip22(DelaunayTriangle*, DelaunayTriangle*, DelaunayTriangle**, DelaunayTriangle**, int*):DelaunayDriver.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "DVT3-&gt;ID">
-            </PersistentString>
-            <PersistentString
                value = "adjDT2-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "adjDT4-&gt;ID">
+               value = "oldDT2-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "DVT3-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "DVT1-&gt;ID">
             </PersistentString>
             <PersistentString
-               value = "oldDT2-&gt;ID">
+               value = "adjDT4-&gt;ID">
             </PersistentString>
             <PersistentString
                value = "DVT4-&gt;ID">
@@ -1298,6 +1301,14 @@
             </PersistentString>
             <PersistentString
                value = "DVT[0]-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SCVT::run(int, DelaunayDriver&amp;):SCVT.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "rhoDVT[i]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
