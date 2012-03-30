@@ -27,9 +27,10 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     }
     // -------------------------------------------------------------------------
     // 1. Generate density function
-    double minRho = 0.1;
+    double minRho = 0.05;
     // =========================================================================
     // 1.1. Use tracer density difference as a guide of density function setting
+    int idx = tracerManager.getTracerId("test tracer 0");
     Polygon *polygon = polygonManager.polygons.front();
     for (int i = 0; i < polygonManager.polygons.size(); ++i) {
         polygon->tracerDiff = 0.0;
@@ -38,8 +39,8 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         for (int j = 0; j < polygon->edgePointers.size(); ++j) {
             if (prevPolygon != edgePointer->getPolygon(OrientRight)) {
                 prevPolygon = edgePointer->getPolygon(OrientRight);
-                double diff = fabs(polygon->tracers[0].getDensity()-
-                                   prevPolygon->tracers[0].getDensity());
+                double diff = fabs(polygon->tracers[idx].getDensity()-
+                                   prevPolygon->tracers[idx].getDensity());
                 polygon->tracerDiff = fmax(diff, polygon->tracerDiff);
             }
             edgePointer = edgePointer->next;
@@ -78,15 +79,15 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     }
     rho = smoothedRho;
 #endif
-//    rho /= max(rho);
-//    rho = where(rho < minRho, minRho, rho);
-//    assert(all(rho >= minRho && rho <= 1.0));
+    rho /= max(rho);
+    rho = where(rho < minRho, minRho, rho);
+    assert(all(rho >= minRho && rho <= 1.0));
     char fileName[30];
     sprintf(fileName, "scvt_rho_%5.5d.nc", TimeManager::getSteps());
     SCVT::outputDensityFunction(fileName);
     // -------------------------------------------------------------------------
     // 2. Generate SCVT according to the previous density function
-    int numPoint = 20000;
+    int numPoint = 10000;
     DelaunayDriver driver;
     SCVT::run(numPoint, driver);
     // -------------------------------------------------------------------------

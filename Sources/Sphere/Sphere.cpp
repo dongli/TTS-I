@@ -25,6 +25,24 @@ double Sphere::calcDistance(const Coordinate &x1, const Coordinate &x2)
     return radius*acos(tmp3);
 }
 
+void Sphere::convertCAR(double x, double y, double z,
+                        double &lon, double &lat)
+{
+    lon = atan2(y, x);
+    lat = asin(z);
+    if (lon < 0.0) lon += PI2;
+    if (lon > PI2) lon -= PI2;
+}
+
+void Sphere::convertSPH(double lon, double lat,
+                        double &x, double &y, double &z)
+{
+    double cosLat = cos(lat);
+    x = cosLat*cos(lon);
+    y = cosLat*sin(lon);
+    z = sin(lat);
+}
+
 double Sphere::calcAngle(const Vector &vector1, const Vector &vector2)
 {
     double tmp = dot(vector1, vector2);

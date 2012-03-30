@@ -20,6 +20,11 @@ public:
 
     static void setRadius(double radius);
 
+    static void convertCAR(double x, double y, double z,
+                           double &lon, double &lat);
+    static void convertSPH(double lon, double lat,
+                           double &x, double &y, double &z);
+
     static double calcDistance(const Coordinate &x1, const Coordinate &x2);
 
     static double calcAngle(const Vector &vector1, const Vector &vector2);

@@ -28,7 +28,7 @@ void SCVT::init(int numLon, int numLat, const double *lon, const double *lat)
         latBnd(j) = lat[j];
     // -------------------------------------------------------------------------
     // Set running controls
-    maxIteration = 10;
+    maxIteration = 50;
     eps = 1.0e-6;
 }
 
@@ -86,9 +86,21 @@ void SCVT::run(int numPoint, DelaunayDriver &driver)
     RandomNumber::setRandomSeed();
     for (int i = 0; i < numPoint; ++i) {
         while (true) {
-            lon[i] = RandomNumber::getRandomNumber(0.0, PI2);
-            lat[i] = RandomNumber::getRandomNumber(-PI05, PI05);
+        get_random_car:
+            double x = RandomNumber::getRandomNumber(-1.0, 1.0);
+            double y = RandomNumber::getRandomNumber(-1.0, 1.0);
+            double z = RandomNumber::getRandomNumber(-1.0, 1.0);
+            double r = x*x+y*y+z*z;
+            if (r <= 1.0) {
+                r = sqrt(r);
+                x /= r;
+                y /= r;
+                z /= r;
+            } else {
+                goto get_random_car;
+            }
             ratio = RandomNumber::getRandomNumber(0.0, 1.0);
+            Sphere::convertCAR(x, y, z, lon[i], lat[i]);
             if (ratio <= getDensity(lon[i], lat[i])/maxRho)
                 break;
         }
@@ -111,6 +123,12 @@ void SCVT::run(int numPoint, DelaunayDriver &driver)
         // Run Delaunay triangulation and infer Voronoi diagram
         driver.reinit();
         driver.run();
+#if defined (DEBUG) || defined (VERBOSE)
+        if (k == 0) {
+            cout << "[Notice]: SCVT::run: Check initial generators in scvt_mc.nc" << endl;
+            driver.output("scvt_mc");
+        }
+#endif
         driver.calcCircumcenter();
 #ifdef SCVT_OUTPUT_ITERATION
         PolygonManager pm;
