@@ -11,6 +11,7 @@ bool TimeManager::isClockSet = false;
 Clock TimeManager::clock;
 int TimeManager::startStep;
 int TimeManager::endStep;
+vector<Alarm> TimeManager::alarms;
 
 TimeManager::TimeManager()
 {
@@ -38,6 +39,23 @@ void TimeManager::setClock(Second dt, Second seconds, int steps)
     startStep = steps;
     clock.steps = steps;
     isClockSet = true;
+}
+
+void TimeManager::setAlarm(const string &name, int freq)
+{
+    Alarm alarm;
+    alarm.name = name;
+    alarm.freq = freq;
+    alarms.push_back(alarm);
+}
+
+bool TimeManager::isAlarmed(const string &name)
+{
+    for (int i = 0; i < alarms.size(); ++i)
+        if (alarms[i].name == name &&
+            getSteps()%alarms[i].freq == alarms[i].freq-1)
+            return true;
+    return false;
 }
 
 void TimeManager::setEndStep(int step)

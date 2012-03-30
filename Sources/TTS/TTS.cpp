@@ -24,6 +24,7 @@ void TTS::init()
 {
     CurvatureGuard::init();
     ApproachDetector::init();
+    PolygonRezoner::init();
 }
 
 #define CHECK_AREA_BIAS
@@ -106,7 +107,7 @@ void TTS::advect(MeshManager &meshManager,
         meshAdaptor.remap(tracerManager.getTracerName(i), tracerManager);
 #endif
 #ifdef TTS_REZONE
-    if (TimeManager::getSteps()%3 == 2) {
+    if (TimeManager::isAlarmed("polygon rezoning")) {
         PolygonRezoner::rezone(meshManager, meshAdaptor,
                                flowManager, tracerManager);
     }

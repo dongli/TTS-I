@@ -6,15 +6,19 @@
 
 #include "PolygonManager.h"
 
-// density function
-Array<double, 2> rho;
-Array<double, 1> lonBnd, latBnd;
+namespace SCVT {
+    // density function
+    Array<double, 2> rho;
+    Array<double, 1> lonBnd, latBnd;
+    // running controls
+    int maxIteration;
+    double eps;
 
-// running controls
-int maxIteration;
-double eps;
+    double getDensity(double lon, double lat);
+}
 
-void SCVT::init(int numLon, int numLat, const double *lon, const double *lat)
+void SCVT::init(int numLon, int numLat, const double *lon, const double *lat,
+                int maxIteration_)
 {
     // -------------------------------------------------------------------------
     // Note: The input longitudes and latitudes are for the boundaries, and
@@ -28,7 +32,7 @@ void SCVT::init(int numLon, int numLat, const double *lon, const double *lat)
         latBnd(j) = lat[j];
     // -------------------------------------------------------------------------
     // Set running controls
-    maxIteration = 50;
+    maxIteration = maxIteration_;
     eps = 1.0e-6;
 }
 
@@ -39,7 +43,7 @@ void SCVT::init(int numLon, int numLat, const double *lon, const double *lat)
  *   Get the density value at given location (lon,lat) by using piecewise
  *   constant approximation.
  */
-double getDensity(double lon, double lat)
+double SCVT::getDensity(double lon, double lat)
 {
     int i, j;
     bool isFound;

@@ -7,6 +7,8 @@ class FlowManager;
 class TracerManager;
 
 namespace PolygonRezoner {
+    void init();
+
     void rezone(MeshManager &, MeshAdaptor &, const FlowManager &, TracerManager &);
 }
 

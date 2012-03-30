@@ -1,6 +1,12 @@
 #ifndef _TimeManager_h_
 #define _TimeManager_h_
 
+#include <vector>
+#include <string>
+
+using std::vector;
+using std::string;
+
 typedef double Second;
 
 typedef struct {
@@ -8,6 +14,11 @@ typedef struct {
     Second seconds; // Seconds since simulation begins
     int steps; // Steps since simulation begins
 } Clock;
+
+typedef struct {
+    string name;
+    int freq;
+} Alarm;
 
 class TimeManager
 {
@@ -18,6 +29,8 @@ public:
     static bool onLine() { return isOnLine; }
     static void reset() { isClockSet = false; }
     static void setClock(Second dt, Second seconds = 0.0, int steps = 0);
+    static void setAlarm(const string &name, int freq);
+    static bool isAlarmed(const string &name);
     static bool isFirstStep() { return clock.steps == startStep; }
     static bool isFinished() { return clock.steps >= endStep; }
     static Second getSeconds() { return clock.seconds; }
@@ -32,6 +45,7 @@ protected:
     static Clock clock;
     static int startStep;
     static int endStep;
+    static vector<Alarm> alarms;
 };
 
 #endif

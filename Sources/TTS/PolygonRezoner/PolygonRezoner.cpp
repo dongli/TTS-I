@@ -8,7 +8,26 @@
 #include "TimeManager.h"
 #include "ApproachDetector.h"
 #include "CommonTasks.h"
+#include "ConfigTools.h"
 #include <netcdfcpp.h>
+
+namespace PolygonRezoner {
+    // running controls
+    int frequency;
+    // SCVT controls
+    int numGenerator;
+    int maxIteration;
+    double minRho;
+}
+
+void PolygonRezoner::init()
+{
+    ConfigTools::read("rezone_num_generator", numGenerator);
+    ConfigTools::read("rezone_frequency", frequency);
+    ConfigTools::read("rezone_min_rho", minRho);
+    ConfigTools::read("rezone_max_iteration", maxIteration);
+    TimeManager::setAlarm("polygon rezoning", frequency);
+}
 
 void PolygonRezoner::rezone(MeshManager &meshManager,
                             MeshAdaptor &meshAdaptor,
@@ -22,12 +41,12 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     if (isFirstCall) {
         const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
         SCVT::init(meshBnd.getNumLon(), meshBnd.getNumLat(),
-                   meshBnd.lon.data(),  meshBnd.lat.data());
+                   meshBnd.lon.data(),  meshBnd.lat.data(),
+                   maxIteration);
         isFirstCall = false;
     }
     // -------------------------------------------------------------------------
     // 1. Generate density function
-    double minRho = 0.05;
     // =========================================================================
     // 1.1. Use tracer density difference as a guide of density function setting
     int idx = tracerManager.getTracerId("test tracer 0");
@@ -87,9 +106,8 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     SCVT::outputDensityFunction(fileName);
     // -------------------------------------------------------------------------
     // 2. Generate SCVT according to the previous density function
-    int numPoint = 10000;
     DelaunayDriver driver;
-    SCVT::run(numPoint, driver);
+    SCVT::run(numGenerator, driver);
     // -------------------------------------------------------------------------
     // 3. Replace the polygons with SCVT
     polygonManager.reinit();

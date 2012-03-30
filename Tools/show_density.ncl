@@ -63,8 +63,8 @@ begin
             file_names(l))+"_"+density_name+"_density")
 
         ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
-        gsn_define_colormap(wks, "BlueYellowRed")
-        ;gsn_define_colormap(wks, "WhBlGrYeRe")
+        ;gsn_define_colormap(wks, "BlueYellowRed")
+        gsn_define_colormap(wks, "WhBlGrYeRe")
         ;gsn_define_colormap(wks, "WhBlReWh")
 
         f = addfile(file_names(l), "r")
@@ -80,8 +80,17 @@ begin
 
         setup_map(projection, res)
         setup_contour(res)
-        set_contour_range(res, 0.0, 5.0, 0.25, "%4.2f")
-        ;set_contour_range(res, 0.0, 1.1, 0.1, "%4.2f")
+        res@gsnMaximize = True
+
+        ; for GAMIL test
+        ;ranges = fspan(1.0e-6, 5.0e-5, 15)
+        ;set_contour_range(res, ranges, "%7.5g")
+        ;res@lbLabelAngleF = 45.0
+        ;res@pmLabelBarOrthogonalPosF = 0.15
+
+        ; for deformation flow test
+        set_contour_range(res, (/0.0,1.1,0.1/), "%4.2f")
+
         ;set_contour_range(res, 0.5, 1.5, 0.05, "%4.2f")
         ;set_contour_range(res, 0.0, 1000.0, 100.0, "%8.2f")
 

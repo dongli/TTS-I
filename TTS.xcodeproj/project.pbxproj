@@ -264,7 +264,7 @@
 		554F970614A8AEF6000052E2 /* ConfigTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigTools.h; sourceTree = "<group>"; };
 		554F970714A8B437000052E2 /* ConfigTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigTools.cpp; sourceTree = "<group>"; };
 		5566C5EB13EC0D010044E352 /* generate_RLLMesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_RLLMesh; sourceTree = BUILT_PRODUCTS_DIR; };
-		5566C5ED13EC0D010044E352 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
+		5566C5ED13EC0D010044E352 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = generate_square; path = /Users/dongli/Works/TTS/build/Release/generate_square; sourceTree = "<absolute>"; };
 		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PointCounter.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		556E49BF13D54DCF00AE4150 /* PointCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCounter.h; sourceTree = "<group>"; };
 		557EF504148C9079004D6E85 /* ThresholdFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThresholdFunction.h; sourceTree = "<group>"; };
@@ -467,7 +467,6 @@
 				55A4D1CA13D52ECF00DCC5AB /* unit_test_main */,
 				5581143213EA470B004AF124 /* tts_gamil_demo */,
 				5566C5EB13EC0D010044E352 /* generate_RLLMesh */,
-				5566C5ED13EC0D010044E352 /* generate_square */,
 			);
 			name = Executables;
 			sourceTree = "<group>";

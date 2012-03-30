@@ -9,7 +9,8 @@ class DelaunayDriver;
 
 namespace SCVT
 {
-    void init(int numLon, int numLat, const double *lon, const double *lat);
+    void init(int numLon, int numLat, const double *lon, const double *lat,
+              int maxIteration = 10);
 
     Array<double, 2> &getDensityFunction();
     void outputDensityFunction(const char *fileName);
