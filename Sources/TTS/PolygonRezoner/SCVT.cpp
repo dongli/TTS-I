@@ -142,34 +142,34 @@ void SCVT::run(int numPoint, DelaunayDriver &driver)
         DelaunayVertex *DVT;
         // Evaluate the density on the generators (DVT)
         assert(numPoint == driver.DVT->size());
-        double rhoDVT[numPoint];
-        DVT = driver.DVT->front();
-        for (int i = 0; i < driver.DVT->size(); ++i) {
-            rhoDVT[i] = getDensity(DVT->point->getCoordinate().getLon(),
-                                   DVT->point->getCoordinate().getLat());
-            DVT = DVT->next;
+        double rho0[driver.DT->size()];
+        DelaunayTriangle *DT = driver.DT->front();
+        for (int i = 0; i < driver.DT->size(); ++i) {
+            rho0[i] = getDensity(DT->circumcenter.getCoordinate().getLon(),
+                                 DT->circumcenter.getCoordinate().getLat());
+            DT = DT->next;
         }
         DVT = driver.DVT->front();
         for (int i = 0; i < driver.DVT->size(); ++i) {
             Vector car = 0.0;
             double W = 0.0;
             const Coordinate &x0 = DVT->point->getCoordinate();
-            DelaunayVertexPointer *linkDVT = DVT->topology.linkDVT.front();
-            for (int j = 0; j < DVT->topology.linkDVT.size(); ++j) {
-                int i1 = linkDVT->ptr->getID()-1;
-                int i2 = linkDVT->next->ptr->getID()-1;
-                const Coordinate &x1 = linkDVT->ptr->point->getCoordinate();
-                const Coordinate &x2 = linkDVT->next->ptr->point->getCoordinate();
+            DelaunayTrianglePointer *incidentDT = DVT->topology.incidentDT.front();
+            for (int j = 0; j < DVT->topology.incidentDT.size(); ++j) {
+                int i1 = incidentDT->ptr->getID()-1;
+                int i2 = incidentDT->next->ptr->getID()-1;
+                const Coordinate &x1 = incidentDT->ptr->circumcenter.getCoordinate();
+                const Coordinate &x2 = incidentDT->next->ptr->circumcenter.getCoordinate();
                 double w0, w1, w2;
-                w0 = x0.getX()*rhoDVT[i]+x1.getX()*rhoDVT[i1]+x2.getX()*rhoDVT[i2];
-                w1 = x0.getY()*rhoDVT[i]+x1.getY()*rhoDVT[i1]+x2.getY()*rhoDVT[i2];
-                w2 = x0.getZ()*rhoDVT[i]+x1.getZ()*rhoDVT[i1]+x2.getZ()*rhoDVT[i2];
+                w0 = x0.getX()*rho0[i]+x1.getX()*rho0[i1]+x2.getX()*rho0[i2];
+                w1 = x0.getY()*rho0[i]+x1.getY()*rho0[i1]+x2.getY()*rho0[i2];
+                w2 = x0.getZ()*rho0[i]+x1.getZ()*rho0[i1]+x2.getZ()*rho0[i2];
                 double area = Sphere::calcArea(x0, x1, x2);
                 car(0) += area*w0;
                 car(1) += area*w1;
                 car(2) += area*w2;
-                W += area*(rhoDVT[i]+rhoDVT[i1]+rhoDVT[i2]);
-                linkDVT = linkDVT->next;
+                W += area*(rho0[i]+rho0[i1]+rho0[i2]);
+                incidentDT = incidentDT->next;
             }
             car /= W;
             car /= norm(car);
