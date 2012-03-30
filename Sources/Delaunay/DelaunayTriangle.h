@@ -25,7 +25,7 @@ public:
     virtual ~DelaunayTriangle();
     
     void reinit();
-    
+
     void calcCircumcenter();
     
     void dump();

@@ -164,13 +164,14 @@ void TracerManager::output(const string &fileName)
     }
     // -------------------------------------------------------------------------
     // output tracer densities on the mesh
-    int numLon = tracerDensities[0].values.extent(0);
-    int numLat = tracerDensities[0].values.extent(1);
+    const RLLMesh &mesh = tracerDensities[0].getMesh();
+    int numLon = mesh.getNumLon()-2;
+    int numLat = mesh.getNumLat();
     double lon[numLon], lat[numLat];
     for (int i = 0; i < numLon; ++i)
-        lon[i] = tracerDensities[0].getMesh().lon(i)*Rad2Deg;
+        lon[i] = mesh.lon(i+1)*Rad2Deg;
     for (int j = 0; j < numLat; ++j)
-        lat[j] = tracerDensities[0].getMesh().lat(j)*Rad2Deg;
+        lat[j] = mesh.lat(j)*Rad2Deg;
     NcDim *lonDim = file.add_dim("lon", numLon);
     NcDim *latDim = file.add_dim("lat", numLat);
     NcVar *lonVar = file.add_var("lon", ncDouble, lonDim);
@@ -197,7 +198,7 @@ void TracerManager::output(const string &fileName)
         qVar->add_att("long_name", tracerNames[l].c_str());
         for (int i = 0; i < numLon; ++i)
             for (int j = 0; j < numLat; ++j)
-                q[j][i] = tracerDensities[l].values(i, j, 0).getNew();
+                q[j][i] = tracerDensities[l].values(i+1, j, 0).getNew();
         qVar->put(&q[0][0], numLat, numLon);
     }
     // -------------------------------------------------------------------------
