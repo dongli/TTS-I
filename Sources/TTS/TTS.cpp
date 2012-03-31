@@ -24,7 +24,9 @@ void TTS::init()
 {
     CurvatureGuard::init();
     ApproachDetector::init();
+#ifdef TTS_REZONE
     PolygonRezoner::init();
+#endif
 }
 
 #define CHECK_AREA_BIAS

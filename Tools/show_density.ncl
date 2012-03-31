@@ -52,10 +52,6 @@ begin
         end do
     end if
 
-    f = addfile(file_names(0), "r")
-    idx_j = ispan(0, dimsizes(f->lat)-1, 1)
-    idx_i = ispan(0, dimsizes(f->lon)-2, 1)
-
     do l = 0, dimsizes(file_names)-1
         notice("Plotting "+file_names(l)+" ...")
 
@@ -63,14 +59,11 @@ begin
             file_names(l))+"_"+density_name+"_density")
 
         ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
-        ;gsn_define_colormap(wks, "BlueYellowRed")
-        gsn_define_colormap(wks, "WhBlGrYeRe")
+        gsn_define_colormap(wks, "BlueYellowRed")
+        ;gsn_define_colormap(wks, "WhBlGrYeRe")
         ;gsn_define_colormap(wks, "WhBlReWh")
 
         f = addfile(file_names(l), "r")
-
-        total_mass = sum(f->area_mesh(idx_j,idx_i)*f->$density_name$(idx_j,idx_i))
-        notice("Total mass is "+sprintf("%30.20f", total_mass))
 
         res = True
         res@lbLabelAngleF = 45.0
@@ -83,13 +76,13 @@ begin
         res@gsnMaximize = True
 
         ; for GAMIL test
-        ;ranges = fspan(1.0e-6, 5.0e-5, 15)
-        ;set_contour_range(res, ranges, "%7.5g")
-        ;res@lbLabelAngleF = 45.0
-        ;res@pmLabelBarOrthogonalPosF = 0.15
+        ranges = fspan(1.0e-6, 5.0e-5, 15)
+        set_contour_range(res, ranges, "%7.5g")
+        res@lbLabelAngleF = 45.0
+        res@pmLabelBarOrthogonalPosF = 0.15
 
         ; for deformation flow test
-        set_contour_range(res, (/0.0,1.1,0.1/), "%4.2f")
+        ;set_contour_range(res, (/0.0,1.1,0.1/), "%4.2f")
 
         ;set_contour_range(res, 0.5, 1.5, 0.05, "%4.2f")
         ;set_contour_range(res, 0.0, 1000.0, 100.0, "%8.2f")

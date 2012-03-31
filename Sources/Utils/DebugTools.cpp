@@ -111,7 +111,7 @@ void DebugTools::assert_polygon_mass_constant(const PolygonManager &polygonManag
             totalMass += polygon->tracers[0].getMass();
         polygon = polygon->next;
     }
-    double errorMass = totalMass-510112349120850.625;
+    double errorMass = totalMass-9075812060.2873535156;
     assert(fabs(errorMass) < 10.0);
 }
 

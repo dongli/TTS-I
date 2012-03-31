@@ -291,7 +291,7 @@ begin
 
     res                     = True
     res@gsLineThicknessF    = line_width
-    res@gsLineColor         = "blue"
+    res@gsLineColor         = "black"
 
     num_edge = dimsizes(testpoint_lon)
 

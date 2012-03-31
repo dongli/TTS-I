@@ -21,9 +21,8 @@ begin
     res@gsnMaximize = True
     res@cnFillMode = "RasterFill"
     res@gsnAddCyclic = False
-    ;res@mpOutlineOn = False
     setup_contour(res)
-    set_contour_range(res, 0.1, 1.0, 0.1, "%3.1f")
+    set_contour_range(res, (/0.1,1.0,0.1/), "%3.1f")
 
     plot = gsn_csm_contour_map_ce(wks, f->rho, res)
 
