@@ -50,54 +50,22 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     // =========================================================================
     // 1.1. Use tracer density difference as a guide of density function setting
     int idx = tracerManager.getTracerId("test tracer 0");
-    Polygon *polygon = polygonManager.polygons.front();
-    for (int i = 0; i < polygonManager.polygons.size(); ++i) {
-        polygon->tracerDiff = 0.0;
-        Polygon *prevPolygon = NULL;
-        EdgePointer *edgePointer = polygon->edgePointers.front();
-        for (int j = 0; j < polygon->edgePointers.size(); ++j) {
-            if (prevPolygon != edgePointer->getPolygon(OrientRight)) {
-                prevPolygon = edgePointer->getPolygon(OrientRight);
-                double diff = fabs(polygon->tracers[idx].getDensity()-
-                                   prevPolygon->tracers[idx].getDensity());
-                polygon->tracerDiff = fmax(diff, polygon->tracerDiff);
-            }
-            edgePointer = edgePointer->next;
-        }
-        polygon = polygon->next;
-    }
     Array<double, 2> &rho = SCVT::getDensityFunction();
-    const Array<list<OverlapArea>, 3> &overlapAreaList = meshAdaptor.getOverlapAreaList();
     rho = 0.0;
-    for (int i = 0; i < overlapAreaList.extent(0); ++i)
-        for (int j = 0; j < overlapAreaList.extent(1); ++j) {
-            list<OverlapArea>::const_iterator it;
-            for (it = overlapAreaList(i, j, 0).begin();
-                 it != overlapAreaList(i, j, 0).end(); ++it)
-                rho(i, j) = fmax(rho(i, j), (*it).polygon->tracerDiff);
+    const Field &q = tracerManager.getTracerDensityField(idx);
+    const RLLMesh &mesh = q.getMesh();
+    for (int i = 1; i < mesh.getNumLon()-1; ++i)
+        for (int j = 1; j < mesh.getNumLat()-1; ++j) {
+            int im1 = i-1;
+            rho(im1, j) = fabs(q.values(i, j).getNew()-q.values(i-1, j-1).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i-1, j).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i-1, j+1).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i, j-1).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i, j+1).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i+1, j-1).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i+1, j).getNew());
+            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i+1, j+1).getNew());
         }
-#ifdef TTS_REZONE_SMOOTH_DENSITY
-    // =========================================================================
-    // 1.2. Smooth the density function
-    Array<double, 2> smoothedRho(rho.shape());
-    double c1 = 0.5, c2 = 0.25;
-    for (int i = 0; i < rho.extent(0); ++i) {
-        for (int j = 1; j <= rho.extent(1)-2; ++j) {
-            int im1 = i != 0 ? i-1 : rho.extent(0)-1;
-            int ip1 = i != rho.extent(0)-1 ? i+1 : 0;
-            int jm1 = j-1, jp1 = j+1;
-            smoothedRho(i, j) = (1-c1-c2)*rho(i, j)+
-            c1*0.25*(rho(im1, j)+rho(i, jm1)+rho(ip1, j)+rho(i, jp1))+
-            c2*0.25*(rho(im1, jm1)+rho(im1, jp1)+rho(ip1, jp1)+rho(ip1, jm1));
-        }
-        // TODO: How to handle pole boundaries?
-        // north pole
-        smoothedRho(i, 0) = rho(i, 0);
-        // south pole
-        smoothedRho(i, rho.extent(1)-1) = rho(i, rho.extent(1)-1);
-    }
-    rho = smoothedRho;
-#endif
     rho /= max(rho);
     rho = where(rho < minRho, minRho, rho);
     assert(all(rho >= minRho && rho <= 1.0));
