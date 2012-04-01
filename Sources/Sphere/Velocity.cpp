@@ -59,6 +59,8 @@ void Velocity::transform(const Coordinate &x, Location::Pole pole, Velocity &vel
         sign = 1.0;
     } else if (pole == Location::SouthPole) {
         sign = -1.0;
+    } else {
+        REPORT_ERROR("Velocity::transform is not called at pole!");
     }
     double sinLon = sin(x.getLon());
     double cosLon = cos(x.getLon());

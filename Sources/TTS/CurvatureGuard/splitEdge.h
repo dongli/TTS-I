@@ -19,15 +19,17 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
                                PolygonManager &polygonManager,
                                Edge *edge, bool isChecked, bool isMustSplit)
 {
-    Polygon *polygon1;
-    Polygon *polygon2;
+    Vertex *vertex1, *vertex2;    // two end points of the old edge
+    Vertex *newVertex;
+    TestPoint *testPoint;
+    Polygon *polygon1, *polygon2; // two incident polygons of the old edge
+    Edge *newEdge1, *newEdge2;
     EdgePointer *edgePointer1;
     EdgePointer *edgePointer2;
-    EdgePointer *newEdgePointer1, *newEdgePointer2, *newEdgePointer;
+    EdgePointer *newEdgePointer1, *newEdgePointer2;
     bool isUpdateAngles;
     Location loc;
     double a0;
-    Edge *newEdge;
 
 #ifdef DEBUG
     assert(edge->getLength() != 0.0);
@@ -36,9 +38,9 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
     if (edge->tags.isSet(SplitChecked))
         return false;
 
-    Vertex *vertex1 = edge->getEndPoint(FirstPoint);
-    TestPoint *testPoint = edge->getTestPoint();
-    Vertex *vertex2 = edge->getEndPoint(SecondPoint);
+    vertex1 = edge->getEndPoint(FirstPoint);
+    testPoint = edge->getTestPoint();
+    vertex2 = edge->getEndPoint(SecondPoint);
 
     if (!isMustSplit) {
         testPoint->calcAngle();
@@ -69,83 +71,54 @@ bool CurvatureGuard::splitEdge(MeshManager &meshManager,
                 goto return_no_split;
             }
         // ---------------------------------------------------------------------
-        // add test point into the main data structure
-        Vertex *newVertex;
+        // add the new vertex
         polygonManager.vertices.append(&newVertex);
-        *newVertex = *testPoint;
+        *newVertex = *testPoint; // test point becomes real vertex
         // count the new vertex
         meshManager.checkLocation(newVertex->getCoordinate(), loc, newVertex);
         newVertex->setLocation(loc);
         // ---------------------------------------------------------------------
-        Edge edge1, edge2; // temporary edges
-        // ---------------------------------------------------------------------
-        // link end points
-        edge1.linkEndPoint(FirstPoint, vertex1);
-        edge1.linkEndPoint(SecondPoint, newVertex);
-        edge2.linkEndPoint(FirstPoint, newVertex);
-        edge2.linkEndPoint(SecondPoint, vertex2);
-        // ---------------------------------------------------------------------
-        // advect new test points
-        Vertex *testPoint1 = edge1.getTestPoint();
-        Vertex *testPoint2 = edge2.getTestPoint();
-        meshManager.checkLocation(testPoint1->getCoordinate(), loc);
-        testPoint1->setLocation(loc);
-        meshManager.checkLocation(testPoint2->getCoordinate(), loc);
-        testPoint2->setLocation(loc);
-        TTS::track(meshManager, flowManager, testPoint1);
-        TTS::track(meshManager, flowManager, testPoint2);
-        // ---------------------------------------------------------------------
-        // edge1
-        // the edge has not been splitted, add the edge into the main
-        // data structure
-        polygonManager.edges.append(&newEdge);
-        *newEdge = edge1;
-        vertex1->linkEdge(newEdge);
-        newVertex->linkEdge(newEdge);
-        newEdge->calcNormVector();
-        newEdge->calcLength();
-        // left polygon:
+        // add the first new edge
+        polygonManager.edges.append(&newEdge1);
+        newEdge1->linkEndPoint(FirstPoint, vertex1);
+        newEdge1->linkEndPoint(SecondPoint, newVertex);
+        newEdge1->calcNormVector();
+        newEdge1->calcLength();
         if (polygon1 != NULL) {
-            polygon1->edgePointers.insert(edgePointer1, &newEdgePointer);
-            polygon1->edgePointers.remove(edgePointer1);
-            edgePointer1 = NULL;
-            newEdge->setPolygon(OrientLeft, polygon1);
-            newEdge->setEdgePointer(OrientLeft, newEdgePointer);
-            newEdgePointer1 = newEdgePointer;
+            newEdge1->setPolygon(OrientLeft, polygon1);
+            newEdge1->setEdgePointer(OrientLeft, edgePointer1);
         }
-        // right polygon:
         if (polygon2 != NULL) {
-            polygon2->edgePointers.insert(&newEdgePointer, edgePointer2);
-            polygon2->edgePointers.remove(edgePointer2);
-            edgePointer2 = NULL;
-            newEdge->setPolygon(OrientRight, polygon2);
-            newEdge->setEdgePointer(OrientRight, newEdgePointer);
-            newEdgePointer2 = newEdgePointer;
+            newEdge1->setPolygon(OrientRight, polygon2);
+            newEdge1->setEdgePointer(OrientRight, edgePointer2);
         }
-        edge->detectAgent.handoverVertices(newEdge);
+        edge->detectAgent.handoverVertices(newEdge1);
+        testPoint = newEdge1->getTestPoint();
+        meshManager.checkLocation(testPoint->getCoordinate(), loc);
+        testPoint->setLocation(loc);
+        TTS::track(meshManager, flowManager, testPoint);
         // ---------------------------------------------------------------------
-        // edge2
-        // the edge has not been splitted, add the edge into the main
-        // data structure
-        polygonManager.edges.append(&newEdge);
-        *newEdge = edge2;
-        vertex2->linkEdge(newEdge);
-        newVertex->linkEdge(newEdge);
-        newEdge->calcNormVector();
-        newEdge->calcLength();
-        // left polygon:
+        // add the second new edge
+        polygonManager.edges.append(&newEdge2);
+        newEdge2->linkEndPoint(FirstPoint, newVertex);
+        newEdge2->linkEndPoint(SecondPoint, vertex2);
+        newEdge2->calcNormVector();
+        newEdge2->calcLength();
         if (polygon1 != NULL) {
-            polygon1->edgePointers.insert(newEdgePointer1, &newEdgePointer);
-            newEdge->setPolygon(OrientLeft, polygon1);
-            newEdge->setEdgePointer(OrientLeft, newEdgePointer);
+            polygon1->edgePointers.insert(edgePointer1, &newEdgePointer1);
+            newEdge2->setPolygon(OrientLeft, polygon1);
+            newEdge2->setEdgePointer(OrientLeft, newEdgePointer1);
         }
-        // right polygon:
         if (polygon2 != NULL) {
-            polygon2->edgePointers.insert(&newEdgePointer, newEdgePointer2);
-            newEdge->setPolygon(OrientRight, polygon2);
-            newEdge->setEdgePointer(OrientRight, newEdgePointer);
+            polygon2->edgePointers.insert(&newEdgePointer2, edgePointer2);
+            newEdge2->setPolygon(OrientRight, polygon2);
+            newEdge2->setEdgePointer(OrientRight, newEdgePointer2);
         }
-        edge->detectAgent.handoverVertices(newEdge);
+        edge->detectAgent.handoverVertices(newEdge2);
+        testPoint = newEdge2->getTestPoint();
+        meshManager.checkLocation(testPoint->getCoordinate(), loc);
+        testPoint->setLocation(loc);
+        TTS::track(meshManager, flowManager, testPoint);
         // ---------------------------------------------------------------------
         polygonManager.edges.remove(edge);
         if (isUpdateAngles)

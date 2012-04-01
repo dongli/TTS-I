@@ -20,6 +20,9 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
     bool isMerged = false;
     EdgePointer *edgePointer;
     Edge *edge1, *edge2;
+    Vertex *vertex1, *vertex2, *vertex3;  // vertex2 is to be deleted
+    Polygon *polygon1, *polygon2;
+    EdgePointer *edgePointer1, *edgePointer2;
     double a0;
 
 #ifdef DEBUG
@@ -44,23 +47,18 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             fabs(edgePointer->getAngle(NewTimeLevel)-PI) < a0) {
             isMerged = true;
             // -----------------------------------------------------------------
-            Polygon *polygon1 = polygon;
-            Polygon *polygon2 = edgePointer->getPolygon(OrientRight);
-            Vertex *vertex1, *vertex2, *vertex3;  // vertex2 is to be deleted
             vertex1 = edgePointer->prev->getEndPoint(FirstPoint);
             vertex2 = edgePointer->getEndPoint(FirstPoint);
             vertex3 = edgePointer->getEndPoint(SecondPoint);
-            EdgePointer *oldEdgePointer1, *oldEdgePointer2;
-            if (vertex2 == edge2->getEndPoint(FirstPoint)) {
-                oldEdgePointer1 = edge2->getEdgePointer(OrientLeft);
-                oldEdgePointer2 = edge2->getEdgePointer(OrientRight);
+            polygon1 = polygon;
+            polygon2 = edgePointer->getPolygon(OrientRight);
+            if (vertex1 == edge1->getEndPoint(FirstPoint)) {
+                edgePointer1 = edge1->getEdgePointer(OrientLeft);
+                edgePointer2 = edge1->getEdgePointer(OrientRight);
             } else {
-                oldEdgePointer1 = edge2->getEdgePointer(OrientRight);
-                oldEdgePointer2 = edge2->getEdgePointer(OrientLeft);
-            }            
-#ifdef DEBUG
-            assert(oldEdgePointer1 == edgePointer);
-#endif
+                edgePointer1 = edge1->getEdgePointer(OrientRight);
+                edgePointer2 = edge1->getEdgePointer(OrientLeft);
+            }
             // -----------------------------------------------------------------
             // Note: If the vertex is connected by more than two edges, that is
             //       a joint, then do not merge the edges.
@@ -88,33 +86,19 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
                                           &testPoint, polygon) != NoCross)
                 goto next_edge;
             // -----------------------------------------------------------------
-            EdgePointer *newEdgePointer1, *newEdgePointer2;
-            polygon1->edgePointers.insert(oldEdgePointer1, &newEdgePointer1);
-            polygon1->edgePointers.remove(oldEdgePointer1->prev);
-            polygon1->edgePointers.remove(oldEdgePointer1);
-            if (polygon2 != NULL) {
-                polygon2->edgePointers.insert(&newEdgePointer2, oldEdgePointer2);
-                polygon2->edgePointers.remove(oldEdgePointer2->next);
-                polygon2->edgePointers.remove(oldEdgePointer2);
-            } else {
-                newEdgePointer2 = NULL;
-            }
+            // remove one edge pointer in each incident polygon
+            polygon1->edgePointers.remove(edgePointer1->next);
+            if (polygon2 != NULL)
+                polygon2->edgePointers.remove(edgePointer2->prev);
             // -----------------------------------------------------------------
-            // adjust vertices
+            // remove the shared vertex of the two old edges
             polygonManager.vertices.remove(vertex2);
             // -----------------------------------------------------------------
             // adjust edges
-            if (vertex1 == edge1->getEndPoint(FirstPoint)) {
-                edge1->setEdgePointer(OrientLeft, newEdgePointer1);
+            if (vertex1 == edge1->getEndPoint(FirstPoint))
                 edge1->changeEndPoint(SecondPoint, vertex3, &testPoint);
-                if (newEdgePointer2 != NULL)
-                    edge1->setEdgePointer(OrientRight, newEdgePointer2);
-            } else {
-                edge1->setEdgePointer(OrientRight, newEdgePointer1);
+            else
                 edge1->changeEndPoint(FirstPoint, vertex3, &testPoint);
-                if (newEdgePointer2 != NULL)
-                    edge1->setEdgePointer(OrientLeft, newEdgePointer2);
-            }
             edge1->detectAgent.updateVertexProjections(meshManager);
             edge2->detectAgent.handoverVertices(edge1);
             polygonManager.edges.remove(edge2);

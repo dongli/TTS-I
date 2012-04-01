@@ -385,10 +385,6 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
     DT1 = DTptr->ptr;
     DT2 = DTptr->next->ptr;
     DT3 = DTptr->next->next->ptr;
-    DVTptr = DVT->topology.linkDVT.front();
-    DVT1 = DVTptr->ptr;
-    DVT2 = DVTptr->next->ptr;
-    DVT3 = DVTptr->next->next->ptr;
     for (i = 0; i < 3; ++i)
         if (DT1->DVT[i] == DVT)
             break;

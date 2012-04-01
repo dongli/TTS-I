@@ -56,19 +56,18 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     const RLLMesh &mesh = q.getMesh();
     for (int i = 1; i < mesh.getNumLon()-1; ++i)
         for (int j = 1; j < mesh.getNumLat()-1; ++j) {
-            int im1 = i-1;
-            rho(im1, j) = fabs(q.values(i, j).getNew()-q.values(i-1, j-1).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i-1, j).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i-1, j+1).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i, j-1).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i, j+1).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i+1, j-1).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i+1, j).getNew());
-            rho(im1, j) = fmax(rho(im1, j), q.values(i, j).getNew()-q.values(i+1, j+1).getNew());
+            int k = i-1;
+            rho(k, j) = fabs(q.values(i, j).getNew()-q.values(i-1, j-1).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i-1, j).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i-1, j+1).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i, j-1).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i, j+1).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i+1, j-1).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i+1, j).getNew());
+            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i+1, j+1).getNew());
         }
     rho /= max(rho);
     rho = where(rho < minRho, minRho, rho);
-    assert(all(rho >= minRho && rho <= 1.0));
     char fileName[30];
     sprintf(fileName, "scvt_rho_%5.5d.nc", TimeManager::getSteps());
     SCVT::outputDensityFunction(fileName);

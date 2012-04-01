@@ -227,7 +227,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     Edge *edge1;
     Vertex *vertex1, *vertex3;
     EdgePointer *edgePointer1, *edgePointer2;
-    EdgePointer *prevEdgePointer1, *nextEdgePointer2;
+    EdgePointer *nextEdgePointer2;
     EdgePointer *edgePointer3 = NULL, *edgePointer4 = NULL;
     Projection *projection;
     static bool handleCrossVertices = false;
@@ -241,7 +241,6 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
     polygon->edgePointers.startLoop(edgePointer1);
     assert(edgePointer1 == polygon->edgePointers.front());
     do {
-        prevEdgePointer1 = edgePointer1->prev;
         edge1 = edgePointer1->edge;
         vertex1 = edgePointer1->getEndPoint(FirstPoint);
         edgePointer2 = edgePointer1->next;
@@ -298,7 +297,6 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                     DebugTools::assert_polygon_mass_constant(polygonManager);
 #endif
                     CommonTasks::doTask(CommonTasks::UpdateAngle);
-                    edgePointer1 = prevEdgePointer1;
                     break;
                 }
                 // -------------------------------------------------------------
@@ -347,6 +345,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         return;
     if (crossVertices.size() != 0) {
 #ifdef DEBUG
+        polygon->dump("polygon");
         cout << "Bad polygon " << polygon->getID() << endl;
         cout << "Crossing vertex number: " << crossVertices.size() << endl;
         std::list<Vertex *>::const_iterator it;
@@ -355,13 +354,21 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         }
 #endif
         vertex3 = crossVertices.front();
+#ifdef DEBUG
+        // TODO: Handle the case where the orientation of the crossing vertex
+        //       relative to the crossed edge is not the same as the edge
+        //       point's orientation.
+        assert(vertex3->detectAgent.getProjection(edgePointer3->edge)->getOrient()
+               == edgePointer3->orient);
+#endif
         crossVertices.remove(vertex3);
         handleCrossVertices = true;
-        polygon->dump("polygon");
         splitPolygon(meshManager, flowManager, polygonManager,
                      polygon, edgePointer3, edgePointer4, vertex3, 5);
         handleCrossVertices = false;
 #ifdef DEBUG
+        if (polygon->endTag != ListElement<Polygon>::Null)
+            polygon->dump("split_polygon");
         DebugTools::assert_polygon_mass_constant(polygonManager);
         if (crossVertices.size() != 0) {
             cout << "Skipped vertices:" << endl;
