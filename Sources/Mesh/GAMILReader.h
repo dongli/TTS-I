@@ -25,6 +25,7 @@ public:
     FlowManager flowManager;
 
 private:
+    string dataRoot;
     vector<string> fileNames;
 };
 

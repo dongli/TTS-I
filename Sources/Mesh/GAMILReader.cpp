@@ -8,6 +8,8 @@
 using blitz::Array;
 using blitz::Range;
 
+#define GAMIL_LEVEL 23
+
 GAMILReader::GAMILReader()
 {
     REPORT_ONLINE("GAMILReader")
@@ -20,6 +22,7 @@ GAMILReader::~GAMILReader()
 
 void GAMILReader::init(const string &dir, const string &filePattern)
 {
+    dataRoot = dir;
     // -------------------------------------------------------------------------
     // get all the file names
     SystemCalls::getFiles(dir, filePattern, fileNames);
@@ -55,7 +58,8 @@ void GAMILReader::getTracerField(TracerManager &tracerManager)
     // -------------------------------------------------------------------------
     // read in moisture
     if (true) {
-        NcFile file("gamil_data/q.nc", NcFile::ReadOnly);
+        string fileName = dataRoot+"/q.nc";
+        NcFile file(fileName.c_str(), NcFile::ReadOnly);
         if (!file.is_valid()) {
             ostringstream message;
             message << "Failed to open file q.nc";
@@ -70,7 +74,7 @@ void GAMILReader::getTracerField(TracerManager &tracerManager)
         // Note: Reverse the order in latitudes.
         for (int i = 0; i < meshCnt.getNumLon()-2; ++i)
             for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                q0(i, meshCnt.getNumLat()-1-j) = q(j, 12, i);
+                q0(i, meshCnt.getNumLat()-1-j) = q(j, GAMIL_LEVEL, i);
     } else {
         // ideal unity field
         for (int i = 0; i < meshCnt.getNumLon()-2; ++i)
@@ -121,10 +125,10 @@ void GAMILReader::getVelocityField()
     double u[numLonHalf][numLat], v[numLon][numLatHalf];
     for (int i = 0; i < numLonHalf; ++i)
         for (int j = 0; j < numLat; ++j)
-            u[i][numLat-1-j] = a(12, j, i);
+            u[i][numLat-1-j] = a(GAMIL_LEVEL, j, i);
     for (int i = 0; i < numLon; ++i)
         for (int j = 0; j < numLatHalf; ++j)
-            v[i][numLatHalf-1-j] = -b(12, j, i);
+            v[i][numLatHalf-1-j] = -b(GAMIL_LEVEL, j, i);
 
     flowManager.update(&u[0][0], &v[0][0]);
 }

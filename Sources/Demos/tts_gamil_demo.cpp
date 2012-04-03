@@ -2,6 +2,7 @@
 #include "Sphere.h"
 #include "TimeManager.h"
 #include "GAMILReader.h"
+#include "PolygonRezoner.h"
 #include "TTS.h"
 
 int main(int argc, char **argv)
@@ -18,8 +19,12 @@ int main(int argc, char **argv)
     tracerManager.init(argv[1]);
     tts.init();
     // -------------------------------------------------------------------------
-    gamilReader.init("gamil_data", "tts.gamil.suv.*.nc");
+    gamilReader.init(argv[2], "tts.gamil.suv.*.nc");
     gamilReader.getTracerField(tracerManager);
+#ifdef TTS_REZONE
+    PolygonRezoner::rezone(gamilReader.meshManager, gamilReader.meshAdaptor,
+                           gamilReader.flowManager, tracerManager);
+#endif
     gamilReader.getVelocityField();
 #ifdef TTS_OUTPUT
     sprintf(fileName, filePattern, timeManager.getSteps());
