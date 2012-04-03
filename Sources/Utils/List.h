@@ -1,5 +1,5 @@
-#ifndef _List_h_
-#define _List_h_
+#ifndef List_h
+#define List_h
 
 #include "ReportMacros.h"
 #include <algorithm>

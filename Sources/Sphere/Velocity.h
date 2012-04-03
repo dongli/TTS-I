@@ -1,5 +1,5 @@
-#ifndef _Velocity_h_
-#define _Velocity_h_
+#ifndef Velocity_h
+#define Velocity_h
 
 #include "Coordinate.h"
 #include "Location.h"

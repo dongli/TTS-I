@@ -1,5 +1,5 @@
-#ifndef _MeshManager_h_
-#define _MeshManager_h_
+#ifndef MeshManager_h
+#define MeshManager_h
 
 #include "Velocity.h"
 #include "RLLMesh.h"

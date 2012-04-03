@@ -1,5 +1,5 @@
-#ifndef _TTS_h_
-#define _TTS_h_
+#ifndef TTS_h
+#define TTS_h
 
 #include "MeshManager.h"
 #include "MeshAdaptor.h"

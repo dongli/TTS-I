@@ -1,5 +1,5 @@
-#ifndef _FlowManager_h_
-#define _FlowManager_h_
+#ifndef FlowManager_h
+#define FlowManager_h
 
 #include "MeshManager.h"
 #include "Field.h"

@@ -1,5 +1,5 @@
-#ifndef _RandomNumber_h_
-#define _RandomNumber_h_
+#ifndef RandomNumber_h
+#define RandomNumber_h
 
 namespace RandomNumber
 {

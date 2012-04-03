@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef _PointTriangle_h_
-#define _PointTriangle_h_
+#ifndef PointTriangle_h
+#define PointTriangle_h
 
 #include "List.h"
 

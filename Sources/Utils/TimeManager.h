@@ -1,5 +1,5 @@
-#ifndef _TimeManager_h_
-#define _TimeManager_h_
+#ifndef TimeManager_h
+#define TimeManager_h
 
 #include <vector>
 #include <string>

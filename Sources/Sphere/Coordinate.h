@@ -1,5 +1,5 @@
-#ifndef _Coordinate_h_
-#define _Coordinate_h_
+#ifndef Coordinate_h
+#define Coordinate_h
 
 #include "ReportMacros.h"
 #include "Vector.h"

@@ -254,7 +254,6 @@
 		552EEE301421C0F6001E8352 /* CurvatureGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurvatureGuard.h; sourceTree = "<group>"; };
 		5534794C1429CF6800FCC94C /* unit_test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unit_test_main.cpp; sourceTree = "<group>"; };
 		55397931150459C800FC3EC2 /* CommonTasks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonTasks.cpp; sourceTree = "<group>"; };
-		553979341504805C00FC3EC2 /* unit_test_cga.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unit_test_cga.h; sourceTree = "<group>"; };
 		553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PotentialCrossDetector.cpp; sourceTree = "<group>"; };
 		553FED96141767F500B1C14F /* PotentialCrossDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PotentialCrossDetector.h; sourceTree = "<group>"; };
 		5541C97C14A9937E0052D2A2 /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -272,6 +271,7 @@
 		5581142A13EA4631004AF124 /* SystemCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCalls.cpp; sourceTree = "<group>"; };
 		5581142B13EA4631004AF124 /* SystemCalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemCalls.h; sourceTree = "<group>"; };
 		5581143213EA470B004AF124 /* tts_gamil_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_gamil_demo; sourceTree = BUILT_PRODUCTS_DIR; };
+		55855051152AD127009D7BD5 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = generate_square; path = /Users/dongli/Works/TTS/build/Release/generate_square; sourceTree = "<absolute>"; };
 		558803A81435A675008F4C84 /* MeshAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshAdaptor.h; sourceTree = "<group>"; };
 		558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = MeshAdaptor.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		558A48CD14093757000B7E48 /* AgentPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AgentPair.cpp; sourceTree = "<group>"; };
@@ -384,7 +384,6 @@
 		55EA5AF91521A55400B05ADB /* SCVT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCVT.cpp; sourceTree = "<group>"; };
 		55EA5AFA1521A55400B05ADB /* SCVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVT.h; sourceTree = "<group>"; };
 		55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomNumber.cpp; sourceTree = "<group>"; };
-		55F2A4FF15271AFF00631685 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = generate_square; path = /Users/dongli/Works/TTS/build/Release/generate_square; sourceTree = "<absolute>"; };
 		55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CurvatureGuard.cpp; sourceTree = "<group>"; };
 		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_sphere.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_mesh.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -660,7 +659,6 @@
 				55F9DD9E144313EE0071E70B /* unit_test_mesh.h */,
 				5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */,
 				55C1E3CA142C557D00D83018 /* unit_test_tracers.h */,
-				553979341504805C00FC3EC2 /* unit_test_cga.h */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -776,7 +774,7 @@
 			);
 			name = generate_square;
 			productName = generate_square;
-			productReference = 55F2A4FF15271AFF00631685 /* generate_square */;
+			productReference = 55855051152AD127009D7BD5 /* generate_square */;
 			productType = "com.apple.product-type.tool";
 		};
 		5581143113EA470B004AF124 /* tts_gamil_demo */ = {

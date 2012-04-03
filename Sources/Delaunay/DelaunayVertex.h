@@ -6,8 +6,8 @@
  * \date 2011-01-27
  */
 
-#ifndef _DelaunayVertex_h_
-#define _DelaunayVertex_h_
+#ifndef DelaunayVertex_h
+#define DelaunayVertex_h
 
 #include "List.h"
 #include "Point.h"

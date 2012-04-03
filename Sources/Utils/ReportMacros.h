@@ -1,5 +1,5 @@
-#ifndef _ReportMacros_h_
-#define _ReportMacros_h_
+#ifndef ReportMacros_h
+#define ReportMacros_h
 
 #include <iostream>
 #include <sstream>

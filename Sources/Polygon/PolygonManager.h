@@ -1,5 +1,5 @@
-#ifndef _PolygonManager_h_
-#define _PolygonManager_h_
+#ifndef PolygonManager_h
+#define PolygonManager_h
 
 #include "Vertex.h"
 #include "Edge.h"

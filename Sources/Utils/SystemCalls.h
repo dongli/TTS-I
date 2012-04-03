@@ -1,5 +1,5 @@
-#ifndef _SystemCalls_h_
-#define _SystemCalls_h_
+#ifndef SystemCalls_h
+#define SystemCalls_h
 
 #include <string>
 #include <vector>
