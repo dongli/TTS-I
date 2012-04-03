@@ -413,6 +413,10 @@ numerical_tolerance_label:
     // numerical tolerance
     static const double smallAngle = 1.0/Rad2Deg;
     if (PI2-angles(numEdge-1) < smallAngle) {
+#ifdef DEBUG
+        cout << "[Debug]: MeshAdaptor::calcOverlapArea: Wrong angle is ";
+        cout << angles(numEdge-1)*Rad2Deg << endl;
+#endif
         numPolygonEdge--;
         // set the virtual intersection
         if (from == NorthBnd || from == SouthBnd)
@@ -445,6 +449,10 @@ numerical_tolerance_label:
         }
         goto numerical_tolerance_label;
     } else if (PI2-angles(numPolygonEdge-1) < smallAngle) {
+#ifdef DEBUG
+        cout << "[Debug]: MeshAdaptor::calcOverlapArea: Wrong angle is ";
+        cout << angles(numPolygonEdge-1)*Rad2Deg << endl;
+#endif
         numPolygonEdge--;
         if (to == NorthBnd || to == SouthBnd)
             x1.setSPH(edgePointer1->getEndPoint(FirstPoint)

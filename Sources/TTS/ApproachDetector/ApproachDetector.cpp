@@ -354,30 +354,30 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         }
 #endif
         vertex3 = crossVertices.front();
-#ifdef DEBUG
         // TODO: Handle the case where the orientation of the crossing vertex
         //       relative to the crossed edge is not the same as the edge
         //       point's orientation.
-        assert(vertex3->detectAgent.getProjection(edgePointer3->edge)->getOrient()
-               == edgePointer3->orient);
-#endif
-        crossVertices.remove(vertex3);
-        handleCrossVertices = true;
-        splitPolygon(meshManager, flowManager, polygonManager,
-                     polygon, edgePointer3, edgePointer4, vertex3, 5);
-        handleCrossVertices = false;
+        if (vertex3->detectAgent.getProjection(edgePointer3->edge)->getOrient()
+            != edgePointer3->orient) {
+            crossVertices.remove(vertex3);
+            handleCrossVertices = true;
+            splitPolygon(meshManager, flowManager, polygonManager,
+                         polygon, edgePointer3, edgePointer4, vertex3, 5);
+            handleCrossVertices = false;
 #ifdef DEBUG
-        if (polygon->endTag != ListElement<Polygon>::Null)
-            polygon->dump("split_polygon");
-        DebugTools::assert_polygon_mass_constant(polygonManager);
-        if (crossVertices.size() != 0) {
-            cout << "Skipped vertices:" << endl;
-            std::list<Vertex *>::const_iterator it;
-            for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {
-                cout << "  * " << (*it)->getID() << endl;
+            if (polygon != NULL && polygon->endTag != ListElement<Polygon>::Null)
+                polygon->dump("split_polygon");
+            DebugTools::assert_polygon_mass_constant(polygonManager);
+            if (crossVertices.size() != 0) {
+                cout << "Skipped vertices:" << endl;
+                std::list<Vertex *>::const_iterator it;
+                for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {
+                    cout << "  * " << (*it)->getID() << endl;
+                }
             }
-        }
 #endif
+        } else
+            assert(crossVertices.size() == 1);
         crossVertices.clear();
     }
 }

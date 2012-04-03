@@ -121,10 +121,10 @@ void GAMILReader::getVelocityField()
     double u[numLonHalf][numLat], v[numLon][numLatHalf];
     for (int i = 0; i < numLonHalf; ++i)
         for (int j = 0; j < numLat; ++j)
-                u[i][j] = a(12, j, i);
+            u[i][numLat-1-j] = a(12, j, i);
     for (int i = 0; i < numLon; ++i)
         for (int j = 0; j < numLatHalf; ++j)
-                v[i][j] = b(12, j, i);
+            v[i][numLatHalf-1-j] = -b(12, j, i);
 
     flowManager.update(&u[0][0], &v[0][0]);
 }

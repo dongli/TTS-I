@@ -318,6 +318,8 @@ Status PotentialCrossDetector::detectRemoveVertexOnEdges(MeshManager &meshManage
     else if (edgePointer->prev->orient == OrientRight &&
              edgePointer->orient == OrientRight)
         mode = 4;
+    else
+        REPORT_ERROR("Unhandled branch!");
     // -------------------------------------------------------------------------
     // branch-1:
     // check the new edge will not be crossed by the paired vertices of edge 1/2
