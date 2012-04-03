@@ -30,6 +30,20 @@ public:
 
     double interp(const Coordinate &, const Location &, TimeLevel) const;
 
+    /*
+     * Operator:
+     *   ()
+     * Purpose:
+     *   These function operators are used to hide the error-prone zonal
+     *   boundary conditions. There are two meridinal ghost columns with
+     *   internal index 0 and Nlon-1, but with these operators, users can
+     *   normally access the real elements with longitude index [0,Nlon-2].
+     *
+     *   * Nlon = mesh[Center].getNumLon().
+     */
+    MultiTimeLevel<double, 2> &operator()(int i, int j, int k = 0);
+    const MultiTimeLevel<double, 2> &operator()(int i, int j, int k = 0) const;
+
     const RLLMesh *mesh[2];
     const Layers *layers;
     Array<MultiTimeLevel<double, 2>, 3> values;

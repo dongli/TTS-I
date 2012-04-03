@@ -67,12 +67,13 @@ void GAMILReader::getTracerField(TracerManager &tracerManager)
         Array<double, 3> q(numLat, numLev, numLon);
         file.get_var("q")->get(q.data(), 1, numLat, numLev, numLon);
         file.close();
-        for (int i = 0; i < meshCnt.getNumLon(); ++i)
+        // Note: Reverse the order in latitudes.
+        for (int i = 0; i < meshCnt.getNumLon()-2; ++i)
             for (int j = 0; j < meshCnt.getNumLat(); ++j)
-                q0.values(i, j) = q(j, 12, i);
+                q0(i, meshCnt.getNumLat()-1-j) = q(j, 12, i);
     } else {
         // ideal unity field
-        for (int i = 0; i < meshCnt.getNumLon(); ++i)
+        for (int i = 0; i < meshCnt.getNumLon()-2; ++i)
             for (int j = 0; j < meshCnt.getNumLat(); ++j)
                 q0.values(i, j) = 1.0;
     }

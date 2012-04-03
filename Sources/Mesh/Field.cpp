@@ -92,3 +92,19 @@ double Field::interp(const Coordinate &x, const Location &loc,
 #endif
     return res;
 }
+
+MultiTimeLevel<double, 2> &Field::operator()(int i, int j, int k)
+{
+#ifdef DEBUG
+    assert(i >= 0 && i < mesh[Center]->getNumLon()-2);
+#endif
+    return values(i+1, j, k);
+}
+
+const MultiTimeLevel<double, 2> &Field::operator()(int i, int j, int k) const
+{
+#ifdef DEBUG
+    assert(i >= 0 && i < mesh[Center]->getNumLon()-2);
+#endif
+    return values(i+1, j, k);
+}

@@ -943,7 +943,7 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
         for (int j = 0; j < overlapAreaList.extent(1); ++j) {
             double totalArea = 0.0;
-            double cellMass = q.values(i, j).getNew()*mesh.area(i, j);
+            double cellMass = q(i, j).getNew()*mesh.area(i, j);
             totalCellMass += cellMass;
             list<OverlapArea>::const_iterator itOa;
             // accumulate overlap area
@@ -985,15 +985,15 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
     double totalCellMass = 0.0, totalPolygonMass = 0.0;
     for (int i = 0; i < overlapAreaList.extent(0); ++i)
         for (int j = 0; j < overlapAreaList.extent(1); ++j) {
-            q.values(i, j, 0) = 0.0;
+            q(i, j) = 0.0;
             list<OverlapArea>::const_iterator itOa;
             for (itOa = overlapAreaList(i, j, 0).begin();
                  itOa != overlapAreaList(i, j, 0).end(); ++itOa) {
                 double weight = (*itOa).area/(*itOa).totalArea;
-                q.values(i, j, 0) += (*itOa).polygon->tracers[tracerId].getMass()*weight;
+                q(i, j) += (*itOa).polygon->tracers[tracerId].getMass()*weight;
             }
-            totalCellMass += q.values(i, j, 0).getNew();
-            q.values(i, j, 0) /= mesh.area(i, j);
+            totalCellMass += q(i, j).getNew();
+            q(i, j) /= mesh.area(i, j);
         }
     // -------------------------------------------------------------------------
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
