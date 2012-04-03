@@ -321,11 +321,16 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                             edgePointer1, edgePointer2, projection);
                 if (projection != NULL && projection->tags.isSet(Crossing) &&
                     !handleCrossVertices) {
-                    if (edgePointer3 == NULL) {
-                        edgePointer3 = edgePointer1;
-                        edgePointer4 = edgePointer2;
+                    if (projection->getOrient() != edgePointer1->orient) {
+                        if (edgePointer3 == NULL) {
+                            edgePointer3 = edgePointer1;
+                            edgePointer4 = edgePointer2;
+                        }
+                        crossVertices.push_back(vertex3);
+                    } else {
+                        cout << "[Debug]: ApproachDetector::detectPolygon: ";
+                        cout << "Skip the crossing vertex from right side of the edge." << endl;
                     }
-                    crossVertices.push_back(vertex3);
                 }
                 checkApproachValid(meshManager, flowManager, polygonManager,
                                    edgePointer1, edgePointer2, vertex3);
@@ -345,7 +350,8 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         return;
     if (crossVertices.size() != 0) {
 #ifdef DEBUG
-        polygon->dump("polygon");
+        polygon->dump("old_polygon", OldTimeLevel);
+        polygon->dump("new_polygon", NewTimeLevel);
         cout << "Bad polygon " << polygon->getID() << endl;
         cout << "Crossing vertex number: " << crossVertices.size() << endl;
         std::list<Vertex *>::const_iterator it;

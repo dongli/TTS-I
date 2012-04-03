@@ -168,10 +168,10 @@ void Polygon::handoverTracers(Polygon *polygon, double percent)
 }
 #endif
 
-void Polygon::dump(const char *fileName) const
+void Polygon::dump(const char *fileName, TimeLevel timeLevel) const
 {
     std::ostream *output = new std::ofstream(fileName);
-    dump(output);
+    dump(output, timeLevel);
     delete output;
 }
 
@@ -180,12 +180,13 @@ void Polygon::dump() const
     dump(&std::cout);
 }
 
-void Polygon::dump(std::ostream *output) const
+void Polygon::dump(std::ostream *output, TimeLevel timeLevel) const
 {
     // vertices
     EdgePointer *edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
-        const Coordinate &x = edgePointer->getEndPoint(FirstPoint)->getCoordinate();
+        const Coordinate &x = edgePointer->getEndPoint(FirstPoint)
+        ->getCoordinate(timeLevel);
         *output << setw(5) << 0;
         *output << setw(30) << setprecision(20) << x.getLon();
         *output << setw(30) << setprecision(20) << x.getLat();
@@ -196,7 +197,8 @@ void Polygon::dump(std::ostream *output) const
     // test points
     edgePointer = edgePointers.front();
     for (int i = 0; i < edgePointers.size(); ++i) {
-        const Coordinate &x = edgePointer->edge->getTestPoint()->getCoordinate();
+        const Coordinate &x = edgePointer->edge->getTestPoint()
+        ->getCoordinate(timeLevel);
         *output << setw(5) << 1;
         *output << setw(30) << setprecision(20) << x.getLon();
         *output << setw(30) << setprecision(20) << x.getLat();

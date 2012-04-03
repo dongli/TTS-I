@@ -35,9 +35,9 @@ public:
         return centroid;
     }
 
-    void dump(const char *fileName) const;
+    void dump(const char *fileName, TimeLevel timeLevel = NewTimeLevel) const;
     void dump() const;
-    void dump(std::ostream *output) const;
+    void dump(std::ostream *output, TimeLevel timeLevel = NewTimeLevel) const;
 
 #ifdef TTS_ONLINE
     void updateTracer(int tracerId);
