@@ -5,10 +5,21 @@ Description:
 
   TTS stands for Trajectory-Tracking Scheme, which is trying to be designed as
   a practical fully Lagrangian linear advection scheme for atmospheric modeling.
-  The continuous air or tracer field is discretized as parcel polygons with
-  finite number. The parcels are advected passively by the background wind field
-  provided by other components of an atmospheric model (i.e., dynamical core).
-  During the advection, the shape of a parcel polygon will be deformed
+  The major focus of TTS is to preserve the large gradient or discontinuity
+  existed in the tracer field (e.g., moisture) well.
+
+  In TTS, the continuous air or tracer field is discretized as parcel polygons
+  with finite number. The parcels are advected passively by the background wind
+  field provided by other components of an atmospheric model (i.e., dynamical
+  core).  During the advection, the shape of a parcel polygon will be deformed
   (severely) according to the wind. A curvature guard algorithm has been devised
   to keep good approximation to the continuous curved interface of the parcel by
-  discrete straight lines.
+  discrete straight lines. Also a polygon rezoning procedure is incoporated to
+  constrain the computational complexity.
+
+--------------------------------------------------------------------------------
+Authors:
+
+  Li Dong - dongli@lasg.iap.ac.cn
+
+--------------------------------------------------------------------------------
