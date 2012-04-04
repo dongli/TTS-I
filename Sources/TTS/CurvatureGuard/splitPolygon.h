@@ -396,6 +396,8 @@ bool handleApproachEvents(MeshManager &meshManager,
 #endif
         // ---------------------------------------------------------------------
 #ifdef DEBUG
+        polygon1->dump("old_polygon");
+        polygon1->dump("new_polygon");
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
 #endif
