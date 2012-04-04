@@ -1,5 +1,5 @@
-#ifndef _Constants_h_
-#define _Constants_h_
+#ifndef Constants_h
+#define Constants_h
 
 #include <cmath>
 

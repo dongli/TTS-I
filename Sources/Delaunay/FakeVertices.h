@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef _FakeVertices_h_
-#define _FakeVertices_h_
+#ifndef FakeVertices_h
+#define FakeVertices_h
 
 #include "DelaunayVertex.h"
 

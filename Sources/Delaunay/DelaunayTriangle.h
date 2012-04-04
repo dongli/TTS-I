@@ -6,8 +6,8 @@
  * \date 2011-01-27
  */
 
-#ifndef _DelaunayTriangle_h_
-#define _DelaunayTriangle_h_
+#ifndef DelaunayTriangle_h
+#define DelaunayTriangle_h
 
 #include "List.h"
 #include "Point.h"

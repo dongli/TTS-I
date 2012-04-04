@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef _Topology_h_
-#define _Topology_h_
+#ifndef Topology_h
+#define Topology_h
 
 #include "List.h"
 

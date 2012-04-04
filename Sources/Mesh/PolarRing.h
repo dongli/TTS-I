@@ -1,5 +1,5 @@
-#ifndef _PolarRing_h_
-#define _PolarRing_h_
+#ifndef PolarRing_h
+#define PolarRing_h
 
 #include "Field.h"
 #include "Velocity.h"

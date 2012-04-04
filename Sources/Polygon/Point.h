@@ -1,5 +1,5 @@
-#ifndef _Point_h_
-#define _Point_h_
+#ifndef Point_h
+#define Point_h
 
 #include "Coordinate.h"
 #include "Location.h"

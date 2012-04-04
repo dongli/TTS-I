@@ -1,5 +1,5 @@
-#ifndef _MultiTimeLevel_h_
-#define _MultiTimeLevel_h_
+#ifndef MultiTimeLevel_h
+#define MultiTimeLevel_h
 
 enum TimeLevel {
     NewTimeLevel = 0, OldTimeLevel = 1, HalfTimeLevel

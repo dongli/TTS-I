@@ -1,5 +1,5 @@
-#ifndef _Sphere_h_
-#define _Sphere_h_
+#ifndef Sphere_h
+#define Sphere_h
 
 #include "Point.h"
 class Polygon;

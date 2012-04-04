@@ -1,5 +1,5 @@
-#ifndef _DebugTools_h_
-#define _DebugTools_h_
+#ifndef DebugTools_h
+#define DebugTools_h
 
 #include "TimeManager.h"
 #include "PolygonManager.h"

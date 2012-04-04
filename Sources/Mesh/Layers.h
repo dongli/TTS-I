@@ -1,5 +1,5 @@
-#ifndef _Layers_h_
-#define _Layers_h_
+#ifndef Layers_h
+#define Layers_h
 
 #include <vector>
 

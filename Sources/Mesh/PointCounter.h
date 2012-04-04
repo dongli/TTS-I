@@ -1,5 +1,5 @@
-#ifndef _PointCounter_h_
-#define _PointCounter_h_
+#ifndef PointCounter_h
+#define PointCounter_h
 
 #include <blitz/array.h>
 #include <string>

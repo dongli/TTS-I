@@ -1,5 +1,5 @@
-#ifndef _DelaunayDriver_h_
-#define _DelaunayDriver_h_
+#ifndef DelaunayDriver_h
+#define DelaunayDriver_h
 
 #include "DelaunayVertex.h"
 #include "DelaunayTriangle.h"

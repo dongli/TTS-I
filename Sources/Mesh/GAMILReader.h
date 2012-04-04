@@ -1,5 +1,5 @@
-#ifndef _GAMILReader_h_
-#define _GAMILReader_h_
+#ifndef GAMILReader_h
+#define GAMILReader_h
 
 #include "MeshManager.h"
 #include "MeshAdaptor.h"

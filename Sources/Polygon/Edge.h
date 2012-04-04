@@ -1,5 +1,5 @@
-#ifndef _Edge_h_
-#define _Edge_h_
+#ifndef Edge_h
+#define Edge_h
 
 #include "List.h"
 #include "Vertex.h"

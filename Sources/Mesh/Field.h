@@ -1,5 +1,5 @@
-#ifndef _Field_h_
-#define _Field_h_
+#ifndef Field_h
+#define Field_h
 
 #include "RLLMesh.h"
 #include "Layers.h"

@@ -1,5 +1,5 @@
-#ifndef _PointManager_h_
-#define _PointManager_h_
+#ifndef PointManager_h
+#define PointManager_h
 
 #include "Point.h"
 

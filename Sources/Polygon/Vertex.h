@@ -1,5 +1,5 @@
-#ifndef _Vertex_h_
-#define _Vertex_h_
+#ifndef Vertex_h
+#define Vertex_h
 
 #include "Point.h"
 #include "List.h"
