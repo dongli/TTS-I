@@ -86,8 +86,10 @@ void Polygon::calcArea()
         excess -= (edgePointers.size()-2)*PI;
         area = excess*Sphere::radius2;
 #ifdef DEBUG
-        if (fabs(excess) > 1.0 || excess <= 0.0)
+        if (fabs(excess) > 1.0 || excess <= 0.0) {
+            dump("wrong_area_polygon");
             REPORT_DEBUG;
+        }
 #endif
     } else
         area = 0.0;

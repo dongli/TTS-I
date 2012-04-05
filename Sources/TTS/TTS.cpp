@@ -36,6 +36,8 @@ void TTS::advect(MeshManager &meshManager,
                  const FlowManager &flowManager,
                  TracerManager &tracerManager)
 {
+    clock_t start, end;
+    start = clock();
     // -------------------------------------------------------------------------
     // for short hand
     PolygonManager &polygonManager = tracerManager.polygonManager;
@@ -80,6 +82,9 @@ void TTS::advect(MeshManager &meshManager,
         }
         polygon = polygon->next;
     }
+    end = clock();
+    cout << "[Timing]: TTS::advect: Before CurvatureGuard::guard: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
     // -------------------------------------------------------------------------
     // guard the curvature of each parcel (polygon)
     CurvatureGuard::guard(meshManager, flowManager, polygonManager);
@@ -114,6 +119,9 @@ void TTS::advect(MeshManager &meshManager,
                                flowManager, tracerManager);
     }
 #endif
+    end = clock();
+    cout << "[Timing]: TTS::advect: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
 }
 
 void TTS::track(MeshManager &meshManager, const FlowManager &flowManager,

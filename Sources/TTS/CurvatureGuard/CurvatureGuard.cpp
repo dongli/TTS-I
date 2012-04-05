@@ -15,6 +15,8 @@
 #include "mergeEdge.h"
 #include "splitPolygon.h"
 
+#include <ctime>
+
 void CurvatureGuard::init()
 {
     AngleThreshold::init();
@@ -25,6 +27,7 @@ void CurvatureGuard::guard(MeshManager &meshManager,
                            PolygonManager &polygonManager)
 {
     bool flag = false;
+    clock_t start, end;
     // -------------------------------------------------------------------------
     // some operations at the first step
     if (TimeManager::isFirstStep()) {
@@ -46,14 +49,30 @@ void CurvatureGuard::guard(MeshManager &meshManager,
         edge = edge->next;
     }
     // -------------------------------------------------------------------------
+    start = clock();
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
+    end = clock();
+    cout << "[Timing]: CurvatureGuard::splitEdges: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
     // -------------------------------------------------------------------------
+    start = clock();
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
+    end = clock();
+    cout << "[Timing]: CurvatureGuard::mergeEdges: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
     // -------------------------------------------------------------------------
+    start = clock();
     ApproachDetector::detectPolygons(meshManager, flowManager, polygonManager);
+    end = clock();
+    cout << "[Timing]: CurvatureGuard::detectPolygons: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
 #ifdef TTS_CGA_SPLIT_POLYGONS
     // -------------------------------------------------------------------------
+    start = clock();
     if (splitPolygons(meshManager, flowManager, polygonManager)) flag = true;
+    end = clock();
+    cout << "[Timing]: CurvatureGuard::splitPolygons: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
 #endif
     // -------------------------------------------------------------------------
     ApproachDetector::reset(polygonManager);

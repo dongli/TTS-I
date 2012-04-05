@@ -12,10 +12,10 @@ class EdgePointer;
 class MeshManager;
 class FlowManager;
 #include "ApproachDetector.h"
-#include "EdgeTags.h"
 #endif
 #if defined TTS_ONLINE || PREPROCESS
 #include "TestPoint.h"
+#include "EdgeTags.h"
 #endif
 
 // -----------------------------------------------------------------------------
