@@ -59,19 +59,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "polygons_2562.nc"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "polygons_10242.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "polygons_40962.nc"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "/Users/dongli/EXP-2/gamil_data"
+            argument = "tts_gamil_config"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

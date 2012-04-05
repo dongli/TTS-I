@@ -271,7 +271,6 @@
 		5581142A13EA4631004AF124 /* SystemCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCalls.cpp; sourceTree = "<group>"; };
 		5581142B13EA4631004AF124 /* SystemCalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemCalls.h; sourceTree = "<group>"; };
 		5581143213EA470B004AF124 /* tts_gamil_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_gamil_demo; sourceTree = BUILT_PRODUCTS_DIR; };
-		55855051152AD127009D7BD5 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = generate_square; path = /Users/dongli/Works/TTS/build/Release/generate_square; sourceTree = "<absolute>"; };
 		558803A81435A675008F4C84 /* MeshAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshAdaptor.h; sourceTree = "<group>"; };
 		558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = MeshAdaptor.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		558A48CD14093757000B7E48 /* AgentPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AgentPair.cpp; sourceTree = "<group>"; };
@@ -375,6 +374,7 @@
 		55C9C1431497173A0063230B /* EdgeTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeTags.h; sourceTree = "<group>"; };
 		55C9C1441497173A0063230B /* VertexTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexTags.h; sourceTree = "<group>"; };
 		55C9C1481497174F0063230B /* CommonTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CommonTasks.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		55C9CB24152BCE8E0056D0FE /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
 		55D2647A146E118600753BC0 /* SpecialPolygons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialPolygons.h; sourceTree = "<group>"; };
 		55D2647B146E121300753BC0 /* SpecialPolygons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = SpecialPolygons.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		55D5B1F71491E80B008B43B8 /* TestPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestPoint.h; sourceTree = "<group>"; };
@@ -466,6 +466,7 @@
 				55A4D1CA13D52ECF00DCC5AB /* unit_test_main */,
 				5581143213EA470B004AF124 /* tts_gamil_demo */,
 				5566C5EB13EC0D010044E352 /* generate_RLLMesh */,
+				55C9CB24152BCE8E0056D0FE /* generate_square */,
 			);
 			name = Executables;
 			sourceTree = "<group>";
@@ -774,7 +775,7 @@
 			);
 			name = generate_square;
 			productName = generate_square;
-			productReference = 55855051152AD127009D7BD5 /* generate_square */;
+			productReference = 55C9CB24152BCE8E0056D0FE /* generate_square */;
 			productType = "com.apple.product-type.tool";
 		};
 		5581143113EA470B004AF124 /* tts_gamil_demo */ = {
@@ -1176,8 +1177,9 @@
 					TTS_ONLINE,
 					DEBUG,
 					TTS_CGA_SPLIT_POLYGONS,
-					TTS_OUTPUT,
 					TTS_REMAP,
+					TTS_OUTPUT,
+					GAMIL_SMOOTH_POLE_WIND,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;

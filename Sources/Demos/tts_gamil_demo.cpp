@@ -11,21 +11,26 @@ int main(int argc, char **argv)
     GAMILReader gamilReader;
     TracerManager tracerManager;
     TTS tts;
-    char fileName[30], filePattern[50] = "gamil_2562_%5.5d.nc";
     // -------------------------------------------------------------------------
-    ConfigTools::parse("tts_gamil_config");
+    char fileName[225], dirName[225], filePattern[50] = "gamil_2562_%5.5d.nc";
+    // -------------------------------------------------------------------------
+    ConfigTools::parse(argv[1]);
     Sphere::setRadius(6371.299e3);
     // -------------------------------------------------------------------------
-    tracerManager.init(argv[1]);
+    ConfigTools::read("parcel_polygon_file", fileName);
+    tracerManager.init(fileName);
     tts.init();
     // -------------------------------------------------------------------------
-    gamilReader.init(argv[2], "tts.gamil.suv.*.nc");
+    ConfigTools::read("gamil_data_root", dirName);
+    ConfigTools::read("gamil_data_pattern", fileName);
+    gamilReader.init(dirName, fileName);
     gamilReader.getTracerField(tracerManager);
 #ifdef TTS_REZONE
     PolygonRezoner::rezone(gamilReader.meshManager, gamilReader.meshAdaptor,
                            gamilReader.flowManager, tracerManager);
 #endif
     gamilReader.getVelocityField();
+    gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
     sprintf(fileName, filePattern, timeManager.getSteps());
     tracerManager.output(fileName);
@@ -36,6 +41,7 @@ int main(int argc, char **argv)
                    gamilReader.flowManager, tracerManager);
         timeManager.advance();
         gamilReader.getVelocityField();
+        gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
         sprintf(fileName, filePattern, timeManager.getSteps());
         tracerManager.output(fileName);
