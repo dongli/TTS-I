@@ -57,10 +57,14 @@ void EdgeAgent::updateVertexProjections(MeshManager &meshManager)
 {
     Vertex *vertex1 = host->getEndPoint(FirstPoint);
     Vertex *vertex2 = host->getEndPoint(SecondPoint);
+    Vertex *vertex3;
+    Projection *projection;
+    ProjectionStatus status;
+    bool isAlreadyApproaching;
     std::list<Vertex *>::iterator it = vertices.begin();
     for (; it != vertices.end();) {
-        Vertex *vertex3 = *it;
-        Projection *projection = vertex3->detectAgent.getProjection(host);
+        vertex3 = *it;
+        projection = vertex3->detectAgent.getProjection(host);
         if (vertex3 == vertex1 || vertex3 == vertex2 ||
             vertex3->getHostEdge() == host ||
             // Note: To avoid line polygons.
@@ -74,33 +78,33 @@ void EdgeAgent::updateVertexProjections(MeshManager &meshManager)
                 vertex3->detectAgent.getActiveProjection() == NULL)
                 ApproachingVertices::removeVertex(vertex3);
         } else {
-            bool isAlreadyApproaching = projection->tags.isSet(Approaching);
-            ProjectionStatus status = projection->project(NewTimeLevel);
-            if (status == HasProjection) {
-                projection->project(OldTimeLevel);
-                projection->checkApproaching();
-                if (projection->tags.isSet(Approaching)) {
-                    if (!isAlreadyApproaching)
-                        ApproachingVertices::recordVertex(vertex3);
-                } else
-                    if (isAlreadyApproaching &&
-                        vertex3->detectAgent.getActiveProjection() == NULL)
-                        ApproachingVertices::removeVertex(vertex3);
-                ++it;
-            } else if (status == HasNoProjection) {
+            isAlreadyApproaching = projection->tags.isSet(Approaching);
+            status = projection->project(NewTimeLevel);
+            if (status == HasNoProjection) {
                 AgentPair::unpair(it, projection);
-            } else if (status == CrossEdge) {
-                if (vertex3->getID() == -1) {
-                    // Note: When the test point cross the paired edge, we can
-                    //       only to reset it to avoid potential problems.
-                    ++it;
-                    static_cast<TestPoint *>(vertex3)->reset(meshManager);
+            } else {
+                projection->project(OldTimeLevel);
+                if (status == CrossEdge) {
+                    if (vertex3->getID() == -1) {
+                        static_cast<TestPoint *>(vertex3)->reset(meshManager);
+                    } else {
+                        projection->tags.set(Crossing);
+                        Message message;
+                        message << "Vertex " << vertex3->getID() << " crosses ";
+                        message << "edge " << host->getID() << "!";
+                        REPORT_WARNING(message.str());
+                    }
                 } else {
-                    Message message;
-                    message << "Vertex " << vertex3->getID() << " crosses ";
-                    message << "edge " << host->getID() << "!";
-                    REPORT_ERROR(message.str());
+                    projection->checkApproaching();
+                    if (projection->tags.isSet(Approaching)) {
+                        if (!isAlreadyApproaching)
+                            ApproachingVertices::recordVertex(vertex3);
+                    } else
+                        if (isAlreadyApproaching &&
+                            vertex3->detectAgent.getActiveProjection() == NULL)
+                            ApproachingVertices::removeVertex(vertex3);
                 }
+                ++it;
             }
         }
     }
