@@ -132,16 +132,8 @@ void EdgeAgent::handoverVertices(Edge *edge)
                 if (vertex3->detectAgent.getProjection(host)->tags.isSet(Crossing)) {
                     REPORT_WARNING("Vertex is crossing old edge! "
                                    "Am I called when split problematic polygon?");
-                    OrientStatus referOrient = OrientOn;
-                    if (host->getEndPoint(FirstPoint) == edge->getEndPoint(FirstPoint) ||
-                        host->getEndPoint(SecondPoint) == edge->getEndPoint(SecondPoint)) {
-                        // the direction of host and edge is opposite
-                        if (projection->getOrient() == OrientLeft)
-                            referOrient = OrientRight;
-                        else
-                            referOrient = OrientLeft;
-                    }
-                    if (detectVertex(vertex3, edge, true, referOrient) == Cross) {
+                    if (detectVertex(vertex3, edge, true,
+                                     projection->getOrient()) == Cross) {
                         projection->tags.set(Crossing);
                     }
                 }
