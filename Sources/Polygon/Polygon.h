@@ -30,11 +30,6 @@ public:
     }
     bool isAreaSet() { return areaSet; }
 
-    void calcCentroid();
-    Coordinate &getCentroid() {
-        return centroid;
-    }
-
     void dump(const char *fileName, TimeLevel timeLevel = NewTimeLevel) const;
     void dump() const;
     void dump(std::ostream *output, TimeLevel timeLevel = NewTimeLevel) const;
@@ -52,7 +47,6 @@ public:
 private:
     bool areaSet;
     MultiTimeLevel<double, 2> area;
-    Coordinate centroid;
 };
 
 #endif

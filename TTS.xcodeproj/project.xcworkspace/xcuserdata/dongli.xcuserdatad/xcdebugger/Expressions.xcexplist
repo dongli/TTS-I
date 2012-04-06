@@ -72,6 +72,20 @@
          contextName = "TTS::splitPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*):splitPolygon.h">
       </ContextState>
       <ContextState
+         contextName = "mergeEdge(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, Polygon*):mergeEdge.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "vertex1-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex2-&gt;ID">
+            </PersistentString>
+            <PersistentString
+               value = "vertex3-&gt;ID">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "CurvatureGuard::splitPolygon(MeshManager&amp;, FlowManager const&amp;, PolygonManager&amp;, EdgePointer*, EdgePointer*, Vertex*, int):splitPolygon.cpp">
          <PersistentStrings>
             <PersistentString

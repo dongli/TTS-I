@@ -12,7 +12,9 @@ int main(int argc, char **argv)
     TracerManager tracerManager;
     TTS tts;
     // -------------------------------------------------------------------------
-    char fileName[225], dirName[225], filePattern[50] = "gamil_2562_%5.5d.nc";
+    char fileName[225], dirName[225], filePattern[50];
+    clock_t start, end;
+    start = clock();
     // -------------------------------------------------------------------------
     ConfigTools::parse(argv[1]);
     Sphere::setRadius(6371.299e3);
@@ -32,6 +34,7 @@ int main(int argc, char **argv)
     gamilReader.getVelocityField();
     gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
+    ConfigTools::read("output_file_pattern", filePattern);
     sprintf(fileName, filePattern, timeManager.getSteps());
     tracerManager.output(fileName);
 #endif
@@ -47,4 +50,7 @@ int main(int argc, char **argv)
         tracerManager.output(fileName);
 #endif
     }
+    end = clock();
+    cout << "[Timing]: tts_gamil_demo: ";
+    cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC/60.0 << " minutes." << endl;
 }

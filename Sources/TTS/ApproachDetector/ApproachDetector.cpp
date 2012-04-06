@@ -24,7 +24,7 @@ void ApproachDetector::init()
 bool ApproachDetector::isNeedCheck(double distance)
 {
     // TODO: Put this parameter into config file.
-    static const double distanceThreshold = 5.0/Rad2Deg*Sphere::radius;
+    static const double distanceThreshold = 1.0/Rad2Deg*Sphere::radius;
     if (distance < distanceThreshold)
         return true;
     else
