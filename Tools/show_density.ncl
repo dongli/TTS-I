@@ -76,7 +76,7 @@ begin
         res@gsnMaximize = True
 
         ; for GAMIL test
-        ranges = fspan(1.0e-6, 5.0e-5, 15)
+        ranges = fspan(1.0e-6, 2.0e-2, 21)
         set_contour_range(res, ranges, "%7.5g")
         res@lbLabelAngleF = 45.0
         res@pmLabelBarOrthogonalPosF = 0.15

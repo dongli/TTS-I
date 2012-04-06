@@ -24,7 +24,6 @@ public:
 	Pole pole;
 	bool onPole;
 	bool inPolarCap;
-    bool inDangerousZone;
 };
 
 #endif

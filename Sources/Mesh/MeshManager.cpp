@@ -235,12 +235,6 @@ void MeshManager::checkLocation(const Coordinate &x, Location &loc,
         loc.pole = Location::Null;
     }
     // -------------------------------------------------------------------------
-    // check whether in the dangerous zone, where the model flow is highly chaos
-    if (loc.j[Full] == 0 || loc.j[Full] == mesh[Full].getNumLat()-2)
-        loc.inDangerousZone = true;
-    else
-        loc.inDangerousZone = false;
-    // -------------------------------------------------------------------------
     // check whether on the pole
     double R = PI05-fabs(x.getLat());
     if (R < PoleR) {

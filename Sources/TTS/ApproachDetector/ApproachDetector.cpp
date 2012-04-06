@@ -223,7 +223,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
 //        REPORT_DEBUG;
 //    }
     // -------------------------------------------------------------------------
-    static std::set<Vertex *> crossVertices;
+    static std::list<Vertex *> crossVertices;
     Edge *edge1;
     Vertex *vertex1, *vertex3;
     EdgePointer *edgePointer1, *edgePointer2;
@@ -307,7 +307,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                     crossVertices.end()) {
                     projection = vertex3->detectAgent.getProjection(edge1);
                     if (projection != NULL && projection->tags.isSet(Crossing)) {
-                        crossVertices.erase(vertex3);
+                        crossVertices.remove(vertex3);
                         if (edgePointer3 == NULL) {
                             edgePointer3 = edgePointer1;
                             edgePointer4 = edgePointer2;
@@ -332,7 +332,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                                      badPolygon, edgePointer3, edgePointer4, vertex3, 5);
                         return;
                     } else if (!vertex3->detectAgent.isCrossing())
-                        crossVertices.erase(vertex3);
+                        crossVertices.remove(vertex3);
                 }
                 detectPoint(meshManager, flowManager, polygonManager, vertex3,
                             edgePointer1, edgePointer2, projection);
@@ -342,7 +342,9 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                         edgePointer3 = edgePointer1;
                         edgePointer4 = edgePointer2;
                     }
-                    crossVertices.insert(vertex3);
+                    if (find(crossVertices.begin(), crossVertices.end(), vertex3)
+                        == crossVertices.end())
+                        crossVertices.push_back(vertex3);
                 }
                 checkApproachValid(meshManager, flowManager, polygonManager,
                                    edgePointer1, edgePointer2, vertex3);
@@ -366,20 +368,17 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
         polygon->dump("new_polygon", NewTimeLevel);
         cout << "Bad polygon " << polygon->getID() << endl;
         cout << "Crossing vertex number: " << crossVertices.size() << endl;
-        std::set<Vertex *>::const_iterator it;
+        std::list<Vertex *>::const_iterator it;
         for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {
             cout << "  * " << (*it)->getID() << endl;
         }
 #endif
-        vertex3 = *crossVertices.begin();
+        vertex3 = crossVertices.front();
         // TODO: Handle the case where the orientation of the crossing vertex
         //       relative to the crossed edge is not the same as the edge
         //       point's orientation.
-        crossVertices.erase(vertex3);
+        crossVertices.remove(vertex3);
         handleCrossVertices = true;
-#ifdef DEBUG
-        assert(vertex3->detectAgent.getProjection(edgePointer3->edge) != NULL);
-#endif
         if (vertex3->detectAgent.getProjection(edgePointer3->edge)->getOrient()
             != edgePointer3->orient)
             badPolygon = polygon;
@@ -402,13 +401,12 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
                      badPolygon, edgePointer3, edgePointer4, vertex3, 5);
         handleCrossVertices = false;
 #ifdef DEBUG
-        REPORT_DEBUG;
         if (badPolygon != NULL && badPolygon->endTag != ListElement<Polygon>::Null)
             badPolygon->dump("split_polygon");
         DebugTools::assert_polygon_mass_constant(polygonManager);
         if (crossVertices.size() != 0) {
             cout << "Skipped vertices:" << endl;
-            std::set<Vertex *>::const_iterator it;
+            std::list<Vertex *>::const_iterator it;
             for (it = crossVertices.begin(); it != crossVertices.end(); ++it) {
                 cout << "  * " << (*it)->getID() << endl;
             }

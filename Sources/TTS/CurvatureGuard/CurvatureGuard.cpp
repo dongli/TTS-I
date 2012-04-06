@@ -51,10 +51,10 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     start = clock();
     if (splitEdges(meshManager, flowManager, polygonManager)) flag = true;
+    // -------------------------------------------------------------------------
     end = clock();
     cout << "[Timing]: CurvatureGuard::splitEdges: ";
     cout << setprecision(5) << (double)(end-start)/CLOCKS_PER_SEC << " seconds." << endl;
-    // -------------------------------------------------------------------------
     start = clock();
     if (mergeEdges(meshManager, flowManager, polygonManager)) flag = true;
     end = clock();

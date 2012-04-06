@@ -28,13 +28,6 @@ void AngleThreshold::calc(Edge *edge, double &a)
 {
     double l = edge->getLength();
     a = ThresholdFunction::piecewiseCubic(A.size(), L.data(), A.data(), l);
-    // TEST: The motion of point at high latitudes is sometimes not that
-    //       consistent. So some wild small spurious edges will be generated.
-    //       Here we filte them out!
-    if (edge->getEndPoint(FirstPoint)->getLocation().inDangerousZone ||
-        edge->getEndPoint(SecondPoint)->getLocation().inDangerousZone) {
-        a *= 5.0;
-    }
 }
 
 void AngleThreshold::calc(Edge *edge1, Edge *edge2, double &a)
@@ -48,15 +41,5 @@ void AngleThreshold::calc(Edge *edge1, Edge *edge2, double &a)
 void AngleThreshold::relax(Edge *edge1, Edge *edge2, double &a)
 {
     double l = fmax(edge1->getLength(), edge2->getLength());
-    double r = ThresholdFunction::piecewiseCubic(R.size(), L.data(), R.data(), l);
-    // TEST: The motion of point at high latitudes is sometimes not that
-    //       consistent. So some wild small spurious edges will be generated.
-    //       Here we filte them out!
-    if (edge1->getEndPoint(FirstPoint)->getLocation().inDangerousZone ||
-        edge1->getEndPoint(SecondPoint)->getLocation().inDangerousZone ||
-        edge2->getEndPoint(FirstPoint)->getLocation().inDangerousZone ||
-        edge2->getEndPoint(SecondPoint)->getLocation().inDangerousZone) {
-        r += 2.0;
-    }
-    a *= r;
+    a *= ThresholdFunction::piecewiseCubic(R.size(), L.data(), R.data(), l);
 }

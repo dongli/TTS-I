@@ -11,7 +11,6 @@ int main(int argc, char **argv)
     GAMILReader gamilReader;
     TracerManager tracerManager;
     TTS tts;
-    // -------------------------------------------------------------------------
     char fileName[225], dirName[225], filePattern[50];
     clock_t start, end;
     start = clock();
@@ -32,7 +31,6 @@ int main(int argc, char **argv)
                            gamilReader.flowManager, tracerManager);
 #endif
     gamilReader.getVelocityField();
-    gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
     ConfigTools::read("output_file_pattern", filePattern);
     sprintf(fileName, filePattern, timeManager.getSteps());
@@ -44,7 +42,6 @@ int main(int argc, char **argv)
                    gamilReader.flowManager, tracerManager);
         timeManager.advance();
         gamilReader.getVelocityField();
-        gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
         sprintf(fileName, filePattern, timeManager.getSteps());
         tracerManager.output(fileName);

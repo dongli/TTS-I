@@ -693,7 +693,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     const RLLMesh &mesh = meshManager.getMesh(PointCounter::Bound);
     int numLon = mesh.getNumLon()-2;
     int numLat = mesh.getNumLat()-1;
-    const double areaDiffThreshold = 5.0e-2;
+    const double areaDiffThreshold = 1.0e-2;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;
@@ -920,12 +920,6 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
             message << polygon->getID() << "!" << endl;
             polygon->dump("polygon");
             REPORT_ERROR(message.str());
-        } else if (diffArea > 0.01) {
-            Message message;
-            message << "Area difference for polygon " << polygon->getID();
-            message << " is " << diffArea*100.0 << "%!" << endl;
-            polygon->dump("polygon");
-            REPORT_WARNING(message.str());
         }
         maxDiffArea = fmax(maxDiffArea, diffArea);
         polygon = polygon->next;

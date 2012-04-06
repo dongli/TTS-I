@@ -33,7 +33,6 @@ void Location::set(const Location &loc)
     this->onPole = loc.onPole;
     this->pole = loc.pole;
     this->inPolarCap = loc.inPolarCap;
-    this->inDangerousZone = loc.inDangerousZone;
 }
 
 void Location::dump() const

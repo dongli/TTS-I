@@ -239,29 +239,20 @@ void CurvatureGuard::splitPolygon
 #endif
     // -------------------------------------------------------------------------
     // detect the new vertex for approaching
-    linkedEdge = newVertex->linkedEdges.front();
-    while (linkedEdge != NULL) {
-        Edge *edge = linkedEdge->edge;
-        if (edge->getEndPoint(FirstPoint) == newVertex)
-            orient = OrientLeft;
-        else if (edge->getEndPoint(SecondPoint) == newVertex)
-            orient = OrientRight;
-        else
-            REPORT_ERROR("New vertex has been removed!");
-#ifndef DEBUG
-        cout << "Detecting polygon ";
-        cout << edge->getPolygon(orient)->getID() << endl;
-#endif
-        detectPolygon(meshManager, flowManager, polygonManager,
-                      edge->getPolygon(orient));
-        linkedEdge = linkedEdge->next;
-    }
-    if (mode > 2) {
-#ifndef DEBUG
-        cout << "New vertex " << newVertex->getID() << " is linked to ";
-        cout << newVertex->linkedEdges.size() << " edges." << endl;
-        REPORT_DEBUG
-#endif
+    if (newVertex != NULL && newVertex->endTag != ListElement<Vertex>::Null) {
+        linkedEdge = newVertex->linkedEdges.front();
+        while (linkedEdge != NULL) {
+            Edge *edge = linkedEdge->edge;
+            if (edge->getEndPoint(FirstPoint) == newVertex)
+                orient = OrientLeft;
+            else if (edge->getEndPoint(SecondPoint) == newVertex)
+                orient = OrientRight;
+            else
+                REPORT_ERROR("New vertex has been removed!");
+            detectPolygon(meshManager, flowManager, polygonManager,
+                          edge->getPolygon(orient));
+            linkedEdge = linkedEdge->next;
+        }
     }
     // -------------------------------------------------------------------------
     projection = newVertex->detectAgent.getProjection(crossedEdge);
@@ -396,8 +387,6 @@ bool handleApproachEvents(MeshManager &meshManager,
 #endif
         // ---------------------------------------------------------------------
 #ifdef DEBUG
-        polygon1->dump("old_polygon");
-        polygon1->dump("new_polygon");
         DebugTools::assert_consistent_projection(projection);
         assert(edgePointer2->getEndPoint(SecondPoint) == vertex3);
 #endif
