@@ -430,11 +430,13 @@ begin
 
     res                     = True
     res@gsnMaximize         = True
-    res@tiMainString        = "Total Number of Polygon Vertices"
-    res@tiXAxisString       = "time step"
+    ;res@tiMainString        = "Total Number of Polygon Vertices"
+    ;res@tiXAxisString       = "time step"
     ;res@trYMaxF             = 2000
+    ;res@vpWidthF = 0.8
+    ;res@vpHeightF = 0.4
 
-    plot = gsn_csm_xy(wks, ispan(0, num_time-1, 1), num_total_vertex, res)
+    plot = gsn_csm_xy(wks, ispan(0, num_time*1-1, 1), num_total_vertex, res)
 
 end
 

@@ -32,14 +32,18 @@ void GAMILReader::init(const string &dir, const string &filePattern)
     int numLon = static_cast<int>(file.get_dim("lon_full")->size());
     int numLat = static_cast<int>(file.get_dim("lat_full")->size());
     Array<double, 1> lon(numLon), lat(numLat);
+    double tmp[numLat];
     file.get_var("lon")->get(lon.data(), numLon);
-    file.get_var("lat")->get(lat.data(), numLat);
+    file.get_var("lat")->get(tmp, numLat);
+    for (int j = 0; j < numLat; ++j) {
+        lat(j) = tmp[numLat-1-j];
+    }
     lon /= Rad2Deg;
     lat /= Rad2Deg;
     // get the time information
     double time;
     file.get_var("time")->get(&time);
-    TimeManager::setClock(1200, time*86400.0);
+    TimeManager::setClock(240, time*86400.0);
     TimeManager::setEndStep(static_cast<int>(fileNames.size())-1);
     file.close();
     // -------------------------------------------------------------------------
@@ -123,12 +127,13 @@ void GAMILReader::getVelocityField()
     Range all = Range::all();
     Array<double, 2> u(numLonHalf, numLat), v(numLon, numLatHalf);
     for (int j = 0; j < numLat; ++j)
-        u(all, numLat-1-j) = a(GAMIL_LEVEL, j, all);
+        u(all, j) = a(GAMIL_LEVEL, j, all);
     for (int j = 0; j < numLatHalf; ++j)
-        v(all, numLatHalf-1-j) = -b(GAMIL_LEVEL, j, all);
+        v(all, j) = -b(GAMIL_LEVEL, j, all);
 #ifdef GAMIL_SMOOTH_POLE_WIND
     // -------------------------------------------------------------------------
     // Smooth the wind flow near poles
+    NOTICE("GAMILReader::getVelocityField", "Smooth pole wind.");
     const int numSmoothLoop = 3;
     const int numLatBelt = 2;
     Array<double, 2> us(numLonHalf+2, numLatBelt+1);

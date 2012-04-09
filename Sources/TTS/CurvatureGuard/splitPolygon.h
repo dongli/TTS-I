@@ -301,48 +301,8 @@ bool handleApproachEvents(MeshManager &meshManager,
         // collect information
         projection = vertex3->detectAgent.getActiveProjection();
         edge1 = projection->getEdge();
-        // ---------------------------------------------------------------------
-        // check if there is another edge that blocks the approaching path of
-        // vertex3 and will be crossed if we handle this approaching event
-        bool hasAnotherEdge = false;
-        list<Projection>::iterator itPrj;
-        for (itPrj = vertex3->detectAgent.getProjections().begin();
-             itPrj != vertex3->detectAgent.getProjections().end(); ++itPrj) {
-            Edge *edge2 = (*itPrj).getEdge();
-            if (edge1 == edge2) continue;
-            Vertex *vertex1, *vertex2;
-            vertex1 = edge2->getEndPoint(FirstPoint);
-            vertex2 = edge2->getEndPoint(SecondPoint);
-            Projection *projection1, *projection2;
-            projection1 = vertex1->detectAgent.getProjection(edge1);
-            projection2 = vertex2->detectAgent.getProjection(edge1);
-            if ((projection1 != NULL &&
-                 projection1->getOrient() == projection->getOrient()) ||
-                (projection2 != NULL &&
-                 projection2->getOrient() == projection->getOrient()))
-                if (Sphere::isIntersect(vertex1->getCoordinate(),
-                                        vertex2->getCoordinate(),
-                                        vertex3->getCoordinate(),
-                                        projection->getCoordinate())) {
-                    cout << "[Debug]: Branch 3: " << vertex3->getID() << endl;
-                    assert((*itPrj).getDistance() < projection->getDistance());
-                    if ((*itPrj).tags.isSet(CannotSplitPolygon)) {
-                        projection->tags.unset(Approaching);
-                        if (vertex3->detectAgent.getActiveProjection() == NULL)
-                            ApproachingVertices::removeVertex(vertex3);
-                    } else {
-                        (*itPrj).tags.set(Approaching);
-                        vertex3->tags.set(MayCrossEdge);
-                    }
-                    hasAnotherEdge = true;
-                    break;
-                }
-        }
-        if (hasAnotherEdge)
-            continue;
-        // ---------------------------------------------------------------------
-        edgePointer2 = NULL;
         edgePointer1 = edge1->getEdgePointer(projection->getOrient());
+        edgePointer2 = NULL;
         polygon1 = edge1->getPolygon(projection->getOrient());
         linkedEdge = vertex3->linkedEdges.front();
         for (i = 0; i < vertex3->linkedEdges.size(); ++i) {
@@ -385,6 +345,45 @@ bool handleApproachEvents(MeshManager &meshManager,
             REPORT_ERROR(message.str());
         }
 #endif
+        // ---------------------------------------------------------------------
+        // check if there is another edge that blocks the approaching path of
+        // vertex3 and will be crossed if we handle this approaching event
+        bool hasAnotherEdge = false;
+        list<Projection>::iterator itPrj;
+        for (itPrj = vertex3->detectAgent.getProjections().begin();
+             itPrj != vertex3->detectAgent.getProjections().end(); ++itPrj) {
+            Edge *edge2 = (*itPrj).getEdge();
+            if (edge1 == edge2) continue;
+            Vertex *vertex1, *vertex2;
+            vertex1 = edge2->getEndPoint(FirstPoint);
+            vertex2 = edge2->getEndPoint(SecondPoint);
+            Projection *projection1, *projection2;
+            projection1 = vertex1->detectAgent.getProjection(edge1);
+            projection2 = vertex2->detectAgent.getProjection(edge1);
+            if ((projection1 != NULL &&
+                 projection1->getOrient() == projection->getOrient()) ||
+                (projection2 != NULL &&
+                 projection2->getOrient() == projection->getOrient()))
+                if (Sphere::isIntersect(vertex1->getCoordinate(),
+                                        vertex2->getCoordinate(),
+                                        vertex3->getCoordinate(),
+                                        projection->getCoordinate())) {
+                    cout << "[Debug]: Branch 3: " << vertex3->getID() << endl;
+                    assert((*itPrj).getDistance() < projection->getDistance());
+                    if ((*itPrj).tags.isSet(CannotSplitPolygon)) {
+                        projection->tags.unset(Approaching);
+                        if (vertex3->detectAgent.getActiveProjection() == NULL)
+                            ApproachingVertices::removeVertex(vertex3);
+                    } else {
+                        (*itPrj).tags.set(Approaching);
+                        vertex3->tags.set(MayCrossEdge);
+                    }
+                    hasAnotherEdge = true;
+                    break;
+                }
+        }
+        if (hasAnotherEdge)
+            continue;
         // ---------------------------------------------------------------------
 #ifdef DEBUG
         DebugTools::assert_consistent_projection(projection);

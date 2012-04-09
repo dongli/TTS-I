@@ -6,10 +6,6 @@ load "$GEODIAG_UTILS/geodiag_plot_utils.ncl"
 
 begin
 
-    projection = "CE"
-    projection@min_lat = 70.0
-    projection@max_lat = -70.0
-
     notice("Input file name pattern:")
     file_name_pattern = get_answer()
     file_names = systemfunc("ls "+file_name_pattern)
@@ -51,50 +47,34 @@ begin
         end do
     end if
 
+    total_mass = new(dimsizes(file_names), double)
+    total_mass = 0.0d0
+
+    f = addfile(file_names(0), "r")
+    idx_j = ispan(0, dimsizes(f->lat)-1, 1)
+    idx_i = ispan(0, dimsizes(f->lon)-1, 1)
+
     do l = 0, dimsizes(file_names)-1
-        notice("Plotting "+file_names(l)+" ...")
-
-        wks = gsn_open_wks("pdf", systemfunc("basename -s .nc "+ \
-            file_names(l))+"_"+projection+"_"+density_name+"_density")
-
-        ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
-        gsn_define_colormap(wks, "BlueYellowRed")
-        ;gsn_define_colormap(wks, "WhBlGrYeRe")
-        ;gsn_define_colormap(wks, "WhBlReWh")
-
         f = addfile(file_names(l), "r")
 
-        res = True
-        res@lbLabelAngleF = 45.0
-        res@gsnAddCyclic = False
-        res@pmLabelBarOrthogonalPosF = 0.1
-        res@gsnMaximize = True
-        res@gsnAddCyclic = True
-
-        setup_map(projection, res)
-        setup_contour(res)
-        ;res@cnFillMode = "RasterFill"
-
-        ; for GAMIL test
-        ranges = fspan(1.0e0, 2.0e+3, 21)
-        set_contour_range(res, ranges, "%5.2g")
-        res@lbLabelAngleF = 45.0
-        res@pmLabelBarOrthogonalPosF = 0.15
-
-        ; for deformation flow test
-        ;set_contour_range(res, (/0.0,1.1,0.1/), "%4.2f")
-
-        ;set_contour_range(res, 0.5, 1.5, 0.05, "%4.2f")
-        ;set_contour_range(res, 0.0, 1000.0, 100.0, "%8.2f")
-
-        ;res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \
-        ;                     "max: "+sprintf("%4.2f", max(f->$density_name$))
-        res@gsnLeftString = ""
-        plot = gsn_csm_contour_map(wks, f->$density_name$, res)
-
-        draw(plot)
-        frame(wks)
-        delete(wks)
+        total_mass(l) = sum(f->area_mesh(idx_j,idx_i)* \
+                            f->$density_name$(idx_j,idx_i))
+        notice("time step "+l+" total mass "+sprintf("%20.16f", total_mass(l)))
     end do
+
+    time_steps = ispan(0, dimsizes(file_names)-1, 1)
+
+    wks = gsn_open_wks("pdf", "total_mass")
+
+    total_mass = total_mass/1.0e17
+
+    res = True
+    setup_xy(res, "Time Step", (/0, 2100, 300/), \
+                  "Total Mass", (/3.8528,3.8530,1.e-4/))
+
+    plot = gsn_csm_xy(wks, time_steps, total_mass, res)
+
+    draw(plot)
+    frame(wks)
 
 end

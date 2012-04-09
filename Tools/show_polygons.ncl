@@ -81,14 +81,16 @@ begin
 
             if (is_plot_quantities) then
                 ;gsn_define_colormap(wks, "WhBlGrYeRe")
-                gsn_define_colormap(wks, "WhBlReWh")
+                ;gsn_define_colormap(wks, "WhBlReWh")
+                gsn_define_colormap(wks, "BlueYellowRed")
                 cmap = gsn_retrieve_colormap(wks)
                 ;num_level = 13
                 num_level = 21
                 stride = (dimsizes(cmap(:,0))-3.0)/num_level
                 levels = new(num_level, float)
                 ;levels = fspan(-0.05, 1.15, num_level)
-                levels = fspan(0.5, 1.5, num_level)
+                ;levels = fspan(0.5, 1.5, num_level)
+                levels = fspan(1.0e+0, 2.0e+3, num_level)
                 colors = new((/num_level+3,3/), float)
                 colorlabels = new(num_level, string)
                 colors(0:1,:) = cmap(0:1,:)

@@ -111,8 +111,12 @@ void DebugTools::assert_polygon_mass_constant(const PolygonManager &polygonManag
             totalMass += polygon->tracers[0].getMass();
         polygon = polygon->next;
     }
-    double errorMass = totalMass-3853161410522.6523438;
-    assert(fabs(errorMass) < 10.0);
+    double errorMass = (totalMass-385289464684828224.0)/totalMass;
+    if (fabs(errorMass) > 1.0e-12) {
+        Message message;
+        message << "Relative mass error (" << errorMass << ") is too large!";
+        REPORT_ERROR(message.str());
+    }
 }
 
 void DebugTools::assert_polygon_area_constant(const PolygonManager &polygonManager)

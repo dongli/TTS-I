@@ -35,7 +35,7 @@ int SystemCalls::getNumFile(const std::string &dir)
 int SystemCalls::getNumFile(const std::string &dir,
                             const std::string &filePattern)
 {
-    std::string cmd = "ls "+dir+"/"+filePattern;
+    std::string cmd = "find "+dir+" -name \""+filePattern+"\"";
 
     FILE *pipe = popen(cmd.c_str(), "r");
 
@@ -67,7 +67,7 @@ void SystemCalls::getFiles(const std::string &dir,
                            const std::string &filePattern,
                            std::vector<std::string> &fileNames)
 {
-    std::string cmd = "ls "+dir+"/"+filePattern;
+    std::string cmd = "find "+dir+" -name \""+filePattern+"\"";
 
     FILE *pipe = popen(cmd.c_str(), "r");
 

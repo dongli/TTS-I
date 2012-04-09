@@ -113,7 +113,7 @@ inline double MeshAdaptor::calcCorrectArea(const Coordinate &x1,
 }
 
 double MeshAdaptor::calcOverlapArea(int I, int J, Bnd from, Bnd to,
-                                    int &bndDiff,
+                                    int &bndDiff, bool &isTolerated,
                                     double lonBnd1, double lonBnd2,
                                     double latBnd1, double latBnd2,
                                     Coordinate x0, EdgePointer *edgePointer0,
@@ -417,6 +417,7 @@ numerical_tolerance_label:
         cout << "[Debug]: MeshAdaptor::calcOverlapArea: Wrong angle is ";
         cout << angles(numEdge-1)*Rad2Deg << endl;
 #endif
+        isTolerated = true;
         numPolygonEdge--;
         // set the virtual intersection
         if (from == NorthBnd || from == SouthBnd)
@@ -453,6 +454,7 @@ numerical_tolerance_label:
         cout << "[Debug]: MeshAdaptor::calcOverlapArea: Wrong angle is ";
         cout << angles(numPolygonEdge-1)*Rad2Deg << endl;
 #endif
+        isTolerated = true;
         numPolygonEdge--;
         if (to == NorthBnd || to == SouthBnd)
             x1.setSPH(edgePointer1->getEndPoint(FirstPoint)
@@ -707,6 +709,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     // calculate the overlap area between polygon and mesh
     Polygon *polygon = tracerManager.polygonManager.polygons.front();
     for (int m = 0; m < tracerManager.polygonManager.polygons.size(); ++m) {
+        bool isTolerated = false;
 #ifdef DEBUG
         bool debug = false;
         int counter = 0;
@@ -822,7 +825,8 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
                 goto calculate_use_mpfr;
             calc_overlap_area:
                 if (edgePointer0 != NULL) {
-                    double area = calcOverlapArea(I0, J0, from0, to0, bndDiff,
+                    double area = calcOverlapArea(I0, J0, from0, to0,
+                                                  bndDiff, isTolerated,
                                                   lonBnd1, lonBnd2,
                                                   latBnd1, latBnd2,
                                                   x0, edgePointer0,
@@ -844,7 +848,7 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
             edgePointer = edgePointer->next;
         }
         if (edgePointer00 != NULL) {
-            double area = calcOverlapArea(I, J, from, to00, bndDiff,
+            double area = calcOverlapArea(I,J, from, to00, bndDiff, isTolerated,
                                           lonBnd1, lonBnd2, latBnd1, latBnd2,
                                           x0, edgePointer0, x00, edgePointer00);
             recordOverlapArea(mesh.area(I, J), I, J, from, to00, bndDiff,
@@ -914,11 +918,15 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
         for (; itOaPtr != overlapAreas.end(); ++itOaPtr)
             (*itOaPtr)->totalArea = totalArea;
         // ---------------------------------------------------------------------
-        if (diffArea > areaDiffThreshold) {
+        // Note: If numerical tolerance has been applied when calculating
+        //       overlap area, then we should relax the threshold.
+        if ((isTolerated && diffArea > areaDiffThreshold*5.0) ||
+            (!isTolerated && diffArea > areaDiffThreshold)) {
             Message message;
             message << "Failed to calculate overlap area for polygon ";
             message << polygon->getID() << "!" << endl;
             polygon->dump("polygon");
+            cout << "[Debug]: Area relative difference is " << diffArea << endl;
             REPORT_ERROR(message.str());
         }
         maxDiffArea = fmax(maxDiffArea, diffArea);
@@ -975,8 +983,8 @@ void MeshAdaptor::remap(const string &tracerName, const Field &q,
         polygon = polygon->next;
     }
     // -------------------------------------------------------------------------
-    cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
-    cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
+    cout << "Total cell mass is    " << setprecision(30) << totalCellMass << endl;
+    cout << "Total polygon mass is " << setprecision(30) << totalPolygonMass << endl;
     double massError = (totalCellMass-totalPolygonMass)/totalPolygonMass;
     cout << "Mass error is " << massError << "%" << endl;
     if (fabs(massError) > 1.0e-10)
@@ -1010,8 +1018,8 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
         polygon = polygon->next;
     }
     // -------------------------------------------------------------------------
-    cout << "Total cell mass is    " << setprecision(20) << totalCellMass << endl;
-    cout << "Total polygon mass is " << setprecision(20) << totalPolygonMass << endl;
+    cout << "Total cell mass is    " << setprecision(30) << totalCellMass << endl;
+    cout << "Total polygon mass is " << setprecision(30) << totalPolygonMass << endl;
     double massError = (totalPolygonMass-totalCellMass)/totalCellMass;
     cout << "Mass error is " << massError << "%" << endl;
     if (fabs(massError) > 1.0e-10)

@@ -70,7 +70,8 @@ private:
 
     static double calcCorrectArea(const Coordinate &x1, const Coordinate &x2,
                                   const Vector &normVector, int signFlag);
-    double calcOverlapArea(int I, int J, Bnd from, Bnd to, int &bndDiff,
+    double calcOverlapArea(int I, int J, Bnd from, Bnd to,
+                           int &bndDiff, bool &isTolerated,
                            double lonBnd1, double lonBnd2,
                            double latBnd1, double latBnd2,
                            Coordinate x0, EdgePointer *edgePointer0,

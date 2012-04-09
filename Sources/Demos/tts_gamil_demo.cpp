@@ -31,6 +31,7 @@ int main(int argc, char **argv)
                            gamilReader.flowManager, tracerManager);
 #endif
     gamilReader.getVelocityField();
+    gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
     ConfigTools::read("output_file_pattern", filePattern);
     sprintf(fileName, filePattern, timeManager.getSteps());
