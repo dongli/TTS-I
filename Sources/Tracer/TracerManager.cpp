@@ -13,9 +13,9 @@ TracerManager::~TracerManager()
     REPORT_OFFLINE("TracerManager");
 }
 
-void TracerManager::init(const string &fileName)
+void TracerManager::init()
 {
-    polygonManager.init(fileName);
+    polygonManager.init();
 }
 
 void TracerManager::registerTracer(const string &tracerName,

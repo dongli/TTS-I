@@ -3,6 +3,7 @@
 #include "TimeManager.h"
 #include "DelaunayDriver.h"
 #include "ReportMacros.h"
+#include "ConfigTools.h"
 #include <netcdfcpp.h>
 
 PolygonManager::PolygonManager()
@@ -155,8 +156,10 @@ void PolygonManager::init(const DelaunayDriver &driver)
 }
 
 #ifdef TTS_ONLINE
-void PolygonManager::init(const string &fileName)
+void PolygonManager::init()
 {
+    string fileName;
+    ConfigTools::read("parcel_polygon_file", fileName);
     NOTICE("PolygonManager::init", "Reading polygons from \""+fileName+"\" ...");
     NcFile file(fileName.c_str(), NcFile::ReadOnly);
     if (!file.is_valid()) {

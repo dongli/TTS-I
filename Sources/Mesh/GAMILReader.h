@@ -12,7 +12,7 @@ public:
     GAMILReader();
     virtual ~GAMILReader();
 
-    void init(const string &dir, const string &filePattern);
+    void init();
     void getTracerField(TracerManager &);
     void getVelocityField();
 

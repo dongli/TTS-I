@@ -19,7 +19,7 @@ public:
     void reinit();
     void init(const DelaunayDriver &);
 #ifdef TTS_ONLINE
-    void init(const string &fileName);
+    void init();
 #endif
 
     void output(const string &fileName);

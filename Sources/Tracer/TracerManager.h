@@ -11,7 +11,7 @@ public:
 	TracerManager();
 	virtual ~TracerManager();
 
-    void init(const string &fileName);
+    void init();
 
     void registerTracer(const string &tracerName, const string &units,
                         const MeshManager &meshManager);

@@ -11,20 +11,17 @@ int main(int argc, char **argv)
     GAMILReader gamilReader;
     TracerManager tracerManager;
     TTS tts;
-    char fileName[225], dirName[225], filePattern[50];
+    char fileName[225], filePattern[50];
     clock_t start, end;
     start = clock();
     // -------------------------------------------------------------------------
     ConfigTools::parse(argv[1]);
     Sphere::setRadius(6371.299e3);
     // -------------------------------------------------------------------------
-    ConfigTools::read("parcel_polygon_file", fileName);
-    tracerManager.init(fileName);
+    tracerManager.init();
     tts.init();
     // -------------------------------------------------------------------------
-    ConfigTools::read("gamil_data_root", dirName);
-    ConfigTools::read("gamil_data_pattern", fileName);
-    gamilReader.init(dirName, fileName);
+    gamilReader.init();
     gamilReader.getTracerField(tracerManager);
 #ifdef TTS_REZONE
     PolygonRezoner::rezone(gamilReader.meshManager, gamilReader.meshAdaptor,

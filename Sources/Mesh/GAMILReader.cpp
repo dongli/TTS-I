@@ -1,6 +1,7 @@
 #include "GAMILReader.h"
 #include "SystemCalls.h"
 #include "TimeManager.h"
+#include "ConfigTools.h"
 #include <netcdfcpp.h>
 #include <sys/stat.h>
 #include <blitz/array.h>
@@ -20,12 +21,14 @@ GAMILReader::~GAMILReader()
     REPORT_OFFLINE("GAMILReader")
 }
 
-void GAMILReader::init(const string &dir, const string &filePattern)
+void GAMILReader::init()
 {
-    dataRoot = dir;
     // -------------------------------------------------------------------------
     // get all the file names
-    SystemCalls::getFiles(dir, filePattern, fileNames);
+    string filePattern;
+    ConfigTools::read("gamil_data_root", dataRoot);
+    ConfigTools::read("gamil_data_pattern", filePattern);
+    SystemCalls::getFiles(dataRoot, filePattern, fileNames);
     // -------------------------------------------------------------------------
     NcFile file(fileNames[0].c_str(), NcFile::ReadOnly);
     // get the mesh information
@@ -41,9 +44,10 @@ void GAMILReader::init(const string &dir, const string &filePattern)
     lon /= Rad2Deg;
     lat /= Rad2Deg;
     // get the time information
-    double time;
+    double time, timeStep;
     file.get_var("time")->get(&time);
-    TimeManager::setClock(240, time*86400.0);
+    ConfigTools::read("time_step", timeStep);
+    TimeManager::setClock(timeStep, time*86400.0);
     TimeManager::setEndStep(static_cast<int>(fileNames.size())-1);
     file.close();
     // -------------------------------------------------------------------------
