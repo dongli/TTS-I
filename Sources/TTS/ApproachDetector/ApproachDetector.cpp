@@ -359,7 +359,7 @@ void ApproachDetector::detectPolygon(MeshManager &meshManager,
             edgePointer2 = nextEdgePointer2;
         }
         edgePointer1 = polygon->edgePointers.getNextElem();
-    } while (!polygon->edgePointers.isLoopEnd());
+    } while (!polygon->edgePointers.isLoopEnd(edgePointer1));
     if (handleCrossVertices)
         return;
     if (crossVertices.size() != 0) {

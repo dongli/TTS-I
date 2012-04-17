@@ -432,18 +432,18 @@ void List<T>::startLoop(T *&iterator)
 }
 
 template <class T>
-bool List<T>::isLoopEnd()
+bool List<T>::isLoopEnd(T *iterator)
 {
     if (isRinged) {
-        if (isHeadPassed && nextElem->prev == head) {
+        if (isHeadPassed && iterator == head) {
             nextElem = NULL;
             return true;
         }
-        if (!isHeadPassed && nextElem->prev != head) {
+        if (!isHeadPassed && iterator != head) {
             isHeadPassed = true;
         }
     } else {
-        if (nextElem == NULL)
+        if (iterator == NULL)
             return true;
     }
     return false;

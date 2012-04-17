@@ -72,7 +72,7 @@ public:
     T *at(int) const;
 
     void startLoop(T *&);
-    bool isLoopEnd();
+    bool isLoopEnd(T *);
     void endLoop();
     T *getNextElem();
 

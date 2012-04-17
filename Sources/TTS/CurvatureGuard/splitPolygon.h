@@ -240,8 +240,8 @@ void CurvatureGuard::splitPolygon
     // -------------------------------------------------------------------------
     // detect the new vertex for approaching
     if (newVertex != NULL && newVertex->endTag != ListElement<Vertex>::Null) {
-        linkedEdge = newVertex->linkedEdges.front();
-        while (linkedEdge != NULL) {
+        newVertex->linkedEdges.startLoop(linkedEdge);
+        do {
             Edge *edge = linkedEdge->edge;
             if (edge->getEndPoint(FirstPoint) == newVertex)
                 orient = OrientLeft;
@@ -251,8 +251,8 @@ void CurvatureGuard::splitPolygon
                 REPORT_ERROR("New vertex has been removed!");
             detectPolygon(meshManager, flowManager, polygonManager,
                           edge->getPolygon(orient));
-            linkedEdge = linkedEdge->next;
-        }
+            linkedEdge = newVertex->linkedEdges.getNextElem();
+        } while (!newVertex->linkedEdges.isLoopEnd(linkedEdge));
     }
     // -------------------------------------------------------------------------
     projection = newVertex->detectAgent.getProjection(crossedEdge);

@@ -22,6 +22,7 @@ void AgentPair::pair(Vertex *vertex, Edge *edge, Projection *projection)
         message << "with edge " << edge->getID();
         REPORT_ERROR(message.str())
     }
+    assert(edge->endTag != ListElement<Edge>::Null);
 #endif
 #ifdef TRACK_PAIRS
 #ifdef PAIR_EDGE_ID

@@ -106,7 +106,7 @@ inline bool mergeEdge(MeshManager &meshManager, const FlowManager &flowManager,
             CommonTasks::doTask(CommonTasks::UpdateAngle);
         }
     next_edge: edgePointer = polygon->edgePointers.getNextElem();
-    } while (!polygon->edgePointers.isLoopEnd());
+    } while (!polygon->edgePointers.isLoopEnd(edgePointer));
     return isMerged;
 }
 

@@ -11,7 +11,6 @@ int main(int argc, char **argv)
     GAMILReader gamilReader;
     TracerManager tracerManager;
     TTS tts;
-    char fileName[225], filePattern[50];
     clock_t start, end;
     start = clock();
     // -------------------------------------------------------------------------

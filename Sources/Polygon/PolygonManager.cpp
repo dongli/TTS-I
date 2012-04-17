@@ -130,7 +130,7 @@ void PolygonManager::init(const DelaunayDriver &driver)
                     polygon->removeEdge(edgePointer, *this);
                 }
                 edgePointer = polygon->edgePointers.getNextElem();
-            } while (!polygon->edgePointers.isLoopEnd());
+            } while (!polygon->edgePointers.isLoopEnd(edgePointer));
         }
         polygon = polygon->next;
     }

@@ -224,6 +224,9 @@ Status PotentialCrossDetector::detectInsertVertexOnEdge
         itPrj = vertices[i]->detectAgent.getProjections().begin();
         while (itPrj != vertices[i]->detectAgent.getProjections().end()) {
             edge3 = (*itPrj).getEdge();
+#ifdef DEBUG
+            assert(edge3->endTag != ListElement<Edge>::Null);
+#endif
             if (find(checkedEdges.begin(), checkedEdges.end(), edge3)
                 != checkedEdges.end()) {
                 itPrj++;
