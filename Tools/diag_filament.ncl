@@ -2,12 +2,14 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
-load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
+load "$GEODIAG_UTILS/geodiag_plot_utils.ncl"
 
 begin
 
-    file_name0 = ask("Input the reference data file name:")
-    file_name1 = ask("Input the data file name:")
+    notice("Input the reference data file name:")
+    file_name0 = get_answer()
+    notice("Input the data file name:")
+    file_name1 = get_answer()
 
     f0 = addfile(file_name0, "r")
     f1 = addfile(file_name1, "r")
@@ -21,9 +23,9 @@ begin
     area1 = new(dimsizes(tau), double)
     L_f = new(dimsizes(tau), double)
 
-    q1_0 = f0->q1_mesh(:,:num_lon-1)/f0->q0_mesh(:,:num_lon-1)
-    q1_1 = f1->q1_mesh(:,:num_lon-1)/f1->q0_mesh(:,:num_lon-1)
-    area = f0->area_mesh(:,:num_lon-1)
+    q1_0 = f0->q1_mesh/f0->q0_mesh
+    q1_1 = f1->q1_mesh/f1->q0_mesh
+    area = f0->area_mesh
 
     area0 = 0.0
     area1 = 0.0

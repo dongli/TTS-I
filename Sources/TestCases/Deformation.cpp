@@ -8,6 +8,29 @@ Deformation::Deformation(SubCaseID subCaseID, InitCondID initCondID)
     T = 5.0;
 }
 
+Deformation::Deformation(const string &subCaseID, const string &initCondID)
+{
+    if (subCaseID == "Case1")
+        this->subCaseID = Case1;
+    else if (subCaseID == "Case2")
+        this->subCaseID = Case2;
+    else if (subCaseID == "Case3")
+        this->subCaseID = Case3;
+    else if (subCaseID == "Case4")
+        this->subCaseID = Case4;
+    else
+        REPORT_ERROR("Unknown case ID!");
+    if (initCondID == "CosineHills")
+        this->initCondID = CosineHills;
+    else if (initCondID == "GaussianHills")
+        this->initCondID = GaussianHills;
+    else if (initCondID == "SlottedCylinders")
+        this->initCondID = SlottedCylinders;
+    else
+        REPORT_ERROR("Unknown initial condition ID!");
+    T = 5.0;
+}
+
 Deformation::~Deformation()
 {
 }

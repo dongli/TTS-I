@@ -2,12 +2,14 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_csm.ncl"
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
-load "/Users/dongli/Works/TTS/Tools/tts_plot_utils.ncl"
+load "$GEODIAG_UTILS/geodiag_plot_utils.ncl"
 
 begin
 
-    file_name0 = ask("Input the initial condition file name:")
-    file_name1 = ask("Input the final result file name:")
+    notice("Input the initial condition file name:")
+    file_name0 = get_answer()
+    notice("Input the final result file name:")
+    file_name1 = get_answer()
 
     f0 = addfile(file_name0, "r")
     f1 = addfile(file_name1, "r")

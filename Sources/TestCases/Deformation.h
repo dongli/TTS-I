@@ -14,6 +14,7 @@ public:
     };
 
     Deformation(SubCaseID subCaseID = Case1, InitCondID initCondID = CosineHills);
+    Deformation(const string &subCaseID, const string &initCondID);
     virtual ~Deformation();
 
     void calcVelocityField(FlowManager &);

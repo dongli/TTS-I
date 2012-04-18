@@ -1010,6 +1010,9 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
             }
             totalCellMass += q(i, j).getNew();
             q(i, j) /= mesh.area(i, j);
+#ifdef DEBUG
+            assert(q(i, j).getNew() != 0.0);
+#endif
         }
     // -------------------------------------------------------------------------
     Polygon *polygon = tracerManager.polygonManager.polygons.front();

@@ -28,27 +28,23 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
 #ifdef MOVINGVORTICES_TESTCASE
     MovingVortices testCase;
-#ifdef TESTCASE_CALC_TRUE_SOLUTION
-    char fileName[30], filePattern[50] = "mv_true_360x180_40962_576_%3.3d.nc";
-#else
-    char fileName[30], filePattern[50] = "mv_360x180_2562_576_%3.3d.nc";
-#endif
     ConfigTools::parse("tts_mv_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(576);
 #endif
     // -------------------------------------------------------------------------
 #ifdef DEFORMATION_TESTCASE
-    Deformation testCase(Deformation::Case4, Deformation::SlottedCylinders);
-    char fileName[30], filePattern[50] = "sc_360x180_2562_600_%3.3d.nc";
-    ConfigTools::parse("tts_df_config");
+    ConfigTools::parse("tts_config");
+    string caseID, initCondID;
+    ConfigTools::read("case_id", caseID);
+    ConfigTools::read("init_cond_id", initCondID);
+    Deformation testCase(caseID, initCondID);
     TimeManager::setClock(5.0/600.0);
     TimeManager::setEndStep(600);
 #endif
     // -------------------------------------------------------------------------
 #ifdef STATICVORTICES_TESTCASE
     StaticVortices testCase;
-    char fileName[30], filePattern[50] = "square_%4.4d.nc";
     ConfigTools::parse("tts_sv_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(1152);
@@ -56,11 +52,11 @@ int main(int argc, char **argv)
     // -------------------------------------------------------------------------
 #ifdef SOLIDROTATION_TESTCASE
     SolidRotation testCase;
-    char fileName[30], filePattern[50] = "sr_360x180_360x180_%4.4d.nc";
     ConfigTools::parse("tts_sr_config");
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(100);
 #endif
+    char fileName[30], filePattern[50];
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;
@@ -75,7 +71,7 @@ int main(int argc, char **argv)
     flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
     // -------------------------------------------------------------------------
-    tracerManager.init(argv[1]);
+    tracerManager.init();
     tts.init();
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
@@ -85,8 +81,9 @@ int main(int argc, char **argv)
 #ifdef TESTCASE_CALC_TRUE_SOLUTION
     testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
 #endif
-    sprintf(fileName, filePattern, TimeManager::getSteps());
 #ifdef TTS_OUTPUT
+    ConfigTools::read("output_file_pattern", filePattern);
+    sprintf(fileName, filePattern, TimeManager::getSteps());
     tracerManager.output(fileName);
 #endif
     // -------------------------------------------------------------------------
