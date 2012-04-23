@@ -35,12 +35,8 @@ void GAMILReader::init()
     int numLon = static_cast<int>(file.get_dim("lon_full")->size());
     int numLat = static_cast<int>(file.get_dim("lat_full")->size());
     Array<double, 1> lon(numLon), lat(numLat);
-    double tmp[numLat];
     file.get_var("lon")->get(lon.data(), numLon);
-    file.get_var("lat")->get(tmp, numLat);
-    for (int j = 0; j < numLat; ++j) {
-        lat(j) = tmp[numLat-1-j];
-    }
+    file.get_var("lat")->get(lat.data(), numLat);
     lon /= Rad2Deg;
     lat /= Rad2Deg;
     // get the time information
@@ -133,7 +129,7 @@ void GAMILReader::getVelocityField()
     for (int j = 0; j < numLat; ++j)
         u(all, j) = a(GAMIL_LEVEL, j, all);
     for (int j = 0; j < numLatHalf; ++j)
-        v(all, j) = -b(GAMIL_LEVEL, j, all);
+        v(all, j) = b(GAMIL_LEVEL, j, all);
 #ifdef GAMIL_SMOOTH_POLE_WIND
     // -------------------------------------------------------------------------
     // Smooth the wind flow near poles
