@@ -23,6 +23,9 @@ public:
                      TimeLevel, Velocity &, Velocity::Type) const;
 
     void output(const string &fileName) const;
+#ifdef DEBUG
+    void checkVelocityField(MeshManager &meshManager);
+#endif
 
 	Field u, v, w;
     PolarRingVelocity prv;

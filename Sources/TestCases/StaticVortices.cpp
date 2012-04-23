@@ -23,7 +23,7 @@ void StaticVortices::calcVelocityField(FlowManager &flowManager)
     const RLLMesh &umesh = flowManager.u.getMesh();
     const RLLMesh &vmesh = flowManager.v.getMesh();
     double u[umesh.getNumLon()-2][umesh.getNumLat()][1];
-    double v[vmesh.getNumLon()-1][vmesh.getNumLat()][1];
+    double v[vmesh.getNumLon()-2][vmesh.getNumLat()][1];
     double timeRatio = cos(PI*TimeManager::getSeconds()/(2*T0));
 
     // -------------------------------------------------------------------------
@@ -42,7 +42,7 @@ void StaticVortices::calcVelocityField(FlowManager &flowManager)
             u[i-1][j][0] = deformPart*timeRatio;
         }
 
-    for (int i = 0; i < vmesh.getNumLon()-1; ++i)
+    for (int i = 1; i < vmesh.getNumLon()-1; ++i)
         for (int j = 0; j < vmesh.getNumLat(); ++j) {
             Coordinate x, xr;
             x.setSPH(vmesh.lon(i), vmesh.lat(j));
@@ -50,7 +50,7 @@ void StaticVortices::calcVelocityField(FlowManager &flowManager)
             double ReOmega = Sphere::radius*omega(xr.getLat());
             double dlon = x.getLon()-vortexPos.getLon();
             double deformPart = ReOmega*cos(vortexPos.getLat())*sin(dlon);
-            v[i][j][0] = deformPart*timeRatio;
+            v[i-1][j][0] = deformPart*timeRatio;
         }
     // -------------------------------------------------------------------------
     flowManager.update(&u[0][0][0], &v[0][0][0]);

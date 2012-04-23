@@ -40,8 +40,7 @@ void Deformation::calcVelocityField(FlowManager &flowManager)
     const RLLMesh &umesh = flowManager.u.getMesh();
     const RLLMesh &vmesh = flowManager.v.getMesh();
     double u[umesh.getNumLon()-2][umesh.getNumLat()][1];
-    double v[vmesh.getNumLon()-1][vmesh.getNumLat()][1];
-    //                          ^ Note the dimension size!
+    double v[vmesh.getNumLon()-2][vmesh.getNumLat()][1];
     double cosT = cos(PI*TimeManager::getSeconds()/T);
     double k;
     Coordinate x;
@@ -57,10 +56,10 @@ void Deformation::calcVelocityField(FlowManager &flowManager)
                     u[i-1][j][0] = k*pow(sin(x.getLon()*0.5), 2.0)*
                     sin(x.getLat()*2.0)*cosT;
                 }
-            for (int i = 0; i < vmesh.getNumLon()-1; ++i)
+            for (int i = 1; i < vmesh.getNumLon()-1; ++i)
                 for (int j = 0; j < vmesh.getNumLat(); ++j) {
                     x.setSPH(vmesh.lon(i), vmesh.lat(j));
-                    v[i][j][0] = k*0.5*sin(x.getLon())*cos(x.getLat())*cosT;
+                    v[i-1][j][0] = k*0.5*sin(x.getLon())*cos(x.getLat())*cosT;
                 }
             break;
         case Case2:
@@ -71,10 +70,10 @@ void Deformation::calcVelocityField(FlowManager &flowManager)
                     u[i-1][j][0] = k*pow(sin(x.getLon()), 2.0)*
                     sin(x.getLat()*2.0)*cosT;
                 }
-            for (int i = 0; i < vmesh.getNumLon()-1; ++i)
+            for (int i = 1; i < vmesh.getNumLon()-1; ++i)
                 for (int j = 0; j < vmesh.getNumLat(); ++j) {
                     x.setSPH(vmesh.lon(i), vmesh.lat(j));
-                    v[i][j][0] = k*sin(x.getLon()*2.0)*cos(x.getLat())*cosT;
+                    v[i-1][j][0] = k*sin(x.getLon()*2.0)*cos(x.getLat())*cosT;
                 }
             break;
         case Case3:
@@ -85,10 +84,10 @@ void Deformation::calcVelocityField(FlowManager &flowManager)
                     u[i-1][j][0] = -k*pow(sin(x.getLon()*0.5), 2.0)*
                     sin(x.getLat()*2.0)*pow(cos(x.getLat()), 2.0)*cosT;
                 }
-            for (int i = 0; i < vmesh.getNumLon()-1; ++i)
+            for (int i = 1; i < vmesh.getNumLon()-1; ++i)
                 for (int j = 0; j < vmesh.getNumLat(); ++j) {
                     x.setSPH(vmesh.lon(i), vmesh.lat(j));
-                    v[i][j][0] = k*0.5*sin(x.getLon())*
+                    v[i-1][j][0] = k*0.5*sin(x.getLon())*
                     pow(cos(x.getLat()), 3.0)*cosT;
                 }
             break;
@@ -102,10 +101,10 @@ void Deformation::calcVelocityField(FlowManager &flowManager)
                     u[i-1][j][0] = k*pow(sin(x.getLon()), 2.0)*
                     sin(x.getLat()*2.0)*cosT+c2*cos(x.getLat());
                 }
-            for (int i = 0; i < vmesh.getNumLon()-1; ++i)
+            for (int i = 1; i < vmesh.getNumLon()-1; ++i)
                 for (int j = 0; j < vmesh.getNumLat(); ++j) {
                     x.setSPH(vmesh.lon(i)-c1, vmesh.lat(j));
-                    v[i][j][0] = k*sin(x.getLon()*2.0)*cos(x.getLat())*cosT;
+                    v[i-1][j][0] = k*sin(x.getLon()*2.0)*cos(x.getLat())*cosT;
                 }
             break;
     }

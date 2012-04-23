@@ -18,7 +18,7 @@ void PolarRingVelocity::linkVelocityField(const Field &u, const Field &v)
     this->uField = &u;
     this->vField = &v;
     int numLon, numLev;
-    numLon = v.getMesh().getNumLon()-1;
+    numLon = v.getMesh().getNumLon()-2;
     if (v.layers != NULL) {
         numLev = v.layers->getNumLev();
     } else {
@@ -28,7 +28,7 @@ void PolarRingVelocity::linkVelocityField(const Field &u, const Field &v)
     sinLon.resize(numLon);
     cosLon.resize(numLon);
     for (int i = 0; i < numLon; ++i) {
-        lon[i] = v.getMesh().lon(i);
+        lon[i] = v.getMesh().lon(i+1);
         sinLon[i] = sin(lon[i]);
         cosLon[i] = cos(lon[i]);
     }
@@ -59,7 +59,7 @@ void PolarRingVelocity::update()
             for (int i = 0; i < u[j].extent(0); ++i)
                 for (int k = 0; k < u[j].extent(1); ++k) {
                     u[j](i, k).setNew((uField->values(i, l, k).getNew()+
-                        uField->values(i+1, l, k).getNew())*0.5);
+                                       uField->values(i+1, l, k).getNew())*0.5);
                     u[j](i, k).save();
                 }
         }
@@ -67,8 +67,8 @@ void PolarRingVelocity::update()
             int l = j == 0 ? 0 : vField->getMesh().getNumLat()-2;
             for (int i = 0; i < v[j].extent(0); ++i)
                 for (int k = 0; k < v[j].extent(1); ++k) {
-                    v[j](i, k).setNew((vField->values(i, l, k).getNew()+
-                        vField->values(i, l+1, k).getNew())*0.5);
+                    v[j](i, k).setNew((vField->values(i+1, l, k).getNew()+
+                                       vField->values(i+1, l+1, k).getNew())*0.5);
                     v[j](i, k).save();
                 }
         }
@@ -96,7 +96,7 @@ void PolarRingVelocity::update()
                 for (int k = 0; k < u[j].extent(1); ++k) {
                     u[j](i, k).save();
                     u[j](i, k).setNew((uField->values(i, l, k).getNew()+
-                        uField->values(i+1, l, k).getNew())*0.5);
+                                       uField->values(i+1, l, k).getNew())*0.5);
                 }
         }
         for (int j = 0; j < 2; ++j) {
@@ -104,8 +104,8 @@ void PolarRingVelocity::update()
             for (int i = 0; i < v[j].extent(0); ++i)
                 for (int k = 0; k < v[j].extent(1); ++k) {
                     v[j](i, k).save();
-                    v[j](i, k).setNew((vField->values(i, l, k).getNew()+
-                        vField->values(i, l+1, k).getNew())*0.5);
+                    v[j](i, k).setNew((vField->values(i+1, l, k).getNew()+
+                                       vField->values(i+1, l+1, k).getNew())*0.5);
                 }
         }
         // transform velocity

@@ -42,7 +42,7 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
     const RLLMesh &umesh = flowManager.u.getMesh();
     const RLLMesh &vmesh = flowManager.v.getMesh();
     double u[umesh.getNumLon()-2][umesh.getNumLat()][1];
-    double v[vmesh.getNumLon()-1][vmesh.getNumLat()][1];
+    double v[vmesh.getNumLon()-2][vmesh.getNumLat()][1];
 
     // -------------------------------------------------------------------------
     // normal regions
@@ -63,7 +63,7 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
             u[i-1][j][0] = rotatePart+deformPart;
         }
 
-    for (int i = 0; i < vmesh.getNumLon()-1; ++i)
+    for (int i = 1; i < vmesh.getNumLon()-1; ++i)
         for (int j = 0; j < vmesh.getNumLat(); ++j) {
             Coordinate x, xr;
             x.setSPH(vmesh.lon(i), vmesh.lat(j));
@@ -72,7 +72,7 @@ void MovingVortices::calcVelocityField(FlowManager &flowManager, double time)
             double dlon = x.getLon()-xv.getLon();
             double rotatePart = -U0*sin(x.getLon())*sin(alpha);
             double deformPart = ReOmega*cos(xv.getLat())*sin(dlon);
-            v[i][j][0] = rotatePart+deformPart;
+            v[i-1][j][0] = rotatePart+deformPart;
         }
 
     // -------------------------------------------------------------------------
@@ -109,7 +109,7 @@ void MovingVortices::calcInitCond(MeshManager &meshManager,
     const RLLMesh &meshBnd = meshManager.getMesh(PointCounter::Bound);
     // -------------------------------------------------------------------------
     // evaluate the initial condition on the RLL mesh of point counter
-    tracerManager.registerTracer("test tracer", "test unit", meshManager);
+    tracerManager.registerTracer("test tracer 0", "test unit", meshManager);
     Field qt;
     qt.init(meshCnt, meshBnd);
     Array<double, 2> qtmp(meshCnt.getNumLon(), meshCnt.getNumLat());
@@ -136,7 +136,7 @@ void MovingVortices::calcInitCond(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     meshAdaptor.adapt(tracerManager, meshManager);
     // -------------------------------------------------------------------------
-    meshAdaptor.remap("test tracer", qt, tracerManager);
+    meshAdaptor.remap("test tracer 0", qt, tracerManager);
     // -------------------------------------------------------------------------
 #ifdef DEBUG
     double totalPolygonMass = 0.0;
@@ -150,7 +150,7 @@ void MovingVortices::calcInitCond(MeshManager &meshManager,
     cout << "Mass error is " << totalCellMass-totalPolygonMass << endl;
 #endif
     // -------------------------------------------------------------------------
-    meshAdaptor.remap("test tracer", tracerManager);
+    meshAdaptor.remap("test tracer 0", tracerManager);
 }
 #endif
 

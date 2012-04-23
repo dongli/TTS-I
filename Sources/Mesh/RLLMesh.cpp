@@ -133,7 +133,7 @@ void RLLMesh::init(MeshSpec spec, int numLon, int numLat,
 
 void RLLMesh::dump() const
 {
-    cout << "Longitude grids:" << endl;
+    cout << "Longitude grids (" << lon.size() << "):" << endl;
     for (int i = 0; i < lon.size(); ++i) {
         cout << setw(10) << setprecision(4) << lon(i)*Rad2Deg;
         if (fmod(i, 8) == 7) {
@@ -141,7 +141,7 @@ void RLLMesh::dump() const
         }
     }
     cout << endl;
-    cout << "Latitude grids:" << endl;
+    cout << "Latitude grids (" << lat.size() << "):" << endl;
     for (int j = 0; j < lat.size(); ++j) {
         cout << setw(10) << setprecision(4) << lat(j)*Rad2Deg;
         if (fmod(j, 8) == 7) {
