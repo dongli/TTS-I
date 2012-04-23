@@ -45,7 +45,7 @@
       displayScale = "1.00"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/dongli/Desktop/ADV-CMP/4.3"
+      customWorkingDirectory = "/Users/dongli/Works/TTS/Run"
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"

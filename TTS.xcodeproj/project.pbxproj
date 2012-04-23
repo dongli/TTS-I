@@ -25,6 +25,13 @@
 		553FED98141767F500B1C14F /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		5541C98214A99F710052D2A2 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
 		5541C98314A99F790052D2A2 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
+		554426871544DDCF00AEEE93 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
+		554426881544DDCF00AEEE93 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
+		554426891544DDDA00AEEE93 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
+		5544268A1544DDDA00AEEE93 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
+		5544268B1544DDE200AEEE93 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
+		5544268C1544DDFB00AEEE93 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
+		5544268D1544DDFB00AEEE93 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		554F970414A84C4F000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
 		554F970514A84C4F000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
 		5555E8F914F7CE990066DBB6 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
@@ -99,15 +106,6 @@
 		5598FAED13D3DB1900BC1AC4 /* MeshManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */; };
 		5598FAEF13D3DB1900BC1AC4 /* PolarRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */; };
 		5598FAF113D3DB1900BC1AC4 /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
-		5598FAF313D3DB5700BC1AC4 /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */; };
-		5598FAF413D3DB5700BC1AC4 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9013D3DA9F00BC1AC4 /* Point.cpp */; };
-		5598FAF513D3DB5700BC1AC4 /* Polygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */; };
-		5598FAF613D3DB5700BC1AC4 /* PolygonManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */; };
-		5598FAF713D3DB5700BC1AC4 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */; };
-		5598FAF813D3DB5700BC1AC4 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
-		5598FAF913D3DB5700BC1AC4 /* MovingVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */; };
-		5598FAFA13D3DB5700BC1AC4 /* SolidRotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */; };
-		5598FAFB13D3DB5700BC1AC4 /* StaticVortices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */; };
 		5598FAFD13D3DB5700BC1AC4 /* TimeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */; };
 		5598FAFE13D3DB7D00BC1AC4 /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
 		5598FAFF13D3DC0F00BC1AC4 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
@@ -140,8 +138,6 @@
 		55A048C614F61CA40030C0FB /* PolygonRezoner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */; };
 		55A1C13B14C40A33000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
 		55A1C13E14C40A33000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
-		55A1C13F14C40B9C000962C4 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
-		55A1C14114C40B9C000962C4 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
 		55C1E3D6142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55C1E3D7142C5EE400D83018 /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55D2647C146E121300753BC0 /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
@@ -248,6 +244,7 @@
 /* Begin PBXFileReference section */
 		550A94A214271B4500D97A06 /* Deformation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Deformation.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		550A94A314271B4500D97A06 /* Deformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deformation.h; sourceTree = "<group>"; };
+		550F3114153F6517007544EA /* CppHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppHelper.h; sourceTree = "<group>"; };
 		552EEE2D1421C0DB001E8352 /* mergeEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mergeEdge.h; sourceTree = "<group>"; };
 		552EEE2E1421C0DB001E8352 /* splitEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = splitEdge.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		552EEE2F1421C0DB001E8352 /* splitPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = splitPolygon.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -348,8 +345,6 @@
 		5598FAAD13D3DA9F00BC1AC4 /* TestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCase.h; sourceTree = "<group>"; };
 		5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = TTS.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5598FAB013D3DA9F00BC1AC4 /* TTS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TTS.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5598FAB313D3DA9F00BC1AC4 /* unit_test_fixtures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_fixtures.h; sourceTree = "<group>"; };
-		5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_testcase.h; sourceTree = "<group>"; };
 		5598FABB13D3DA9F00BC1AC4 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		5598FABC13D3DA9F00BC1AC4 /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = List.cpp; sourceTree = "<group>"; };
 		5598FABD13D3DA9F00BC1AC4 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
@@ -367,7 +362,6 @@
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		55C1E3CA142C557D00D83018 /* unit_test_tracers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_tracers.h; sourceTree = "<group>"; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
 		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
 		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
@@ -385,7 +379,6 @@
 		55EA5AFA1521A55400B05ADB /* SCVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVT.h; sourceTree = "<group>"; };
 		55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomNumber.cpp; sourceTree = "<group>"; };
 		55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CurvatureGuard.cpp; sourceTree = "<group>"; };
-		55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_sphere.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_mesh.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 /* End PBXFileReference section */
 
@@ -655,11 +648,7 @@
 			isa = PBXGroup;
 			children = (
 				5534794C1429CF6800FCC94C /* unit_test_main.cpp */,
-				5598FAB313D3DA9F00BC1AC4 /* unit_test_fixtures.h */,
-				55F9DD9C1442B28A0071E70B /* unit_test_sphere.h */,
 				55F9DD9E144313EE0071E70B /* unit_test_mesh.h */,
-				5598FAB913D3DA9F00BC1AC4 /* unit_test_testcase.h */,
-				55C1E3CA142C557D00D83018 /* unit_test_tracers.h */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -685,6 +674,7 @@
 				55971A4D14DF6DED00DB293B /* ThresholdFunction.cpp */,
 				554F970614A8AEF6000052E2 /* ConfigTools.h */,
 				554F970714A8B437000052E2 /* ConfigTools.cpp */,
+				550F3114153F6517007544EA /* CppHelper.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1090,19 +1080,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55A1C13F14C40B9C000962C4 /* dlmalloc.c in Sources */,
-				55A1C14114C40B9C000962C4 /* mpreal.cpp in Sources */,
+				5544268C1544DDFB00AEEE93 /* dlmalloc.c in Sources */,
+				5544268D1544DDFB00AEEE93 /* mpreal.cpp in Sources */,
+				5544268B1544DDE200AEEE93 /* Sphere.cpp in Sources */,
+				554426891544DDDA00AEEE93 /* Edge.cpp in Sources */,
+				5544268A1544DDDA00AEEE93 /* Polygon.cpp in Sources */,
+				554426871544DDCF00AEEE93 /* Point.cpp in Sources */,
+				554426881544DDCF00AEEE93 /* Vertex.cpp in Sources */,
 				556E49C213D558EB00AE4150 /* PointCounter.cpp in Sources */,
 				5598FAFE13D3DB7D00BC1AC4 /* Velocity.cpp in Sources */,
-				5598FAF313D3DB5700BC1AC4 /* Edge.cpp in Sources */,
-				5598FAF413D3DB5700BC1AC4 /* Point.cpp in Sources */,
-				5598FAF513D3DB5700BC1AC4 /* Polygon.cpp in Sources */,
-				5598FAF613D3DB5700BC1AC4 /* PolygonManager.cpp in Sources */,
-				5598FAF713D3DB5700BC1AC4 /* Vertex.cpp in Sources */,
-				5598FAF813D3DB5700BC1AC4 /* Sphere.cpp in Sources */,
-				5598FAF913D3DB5700BC1AC4 /* MovingVortices.cpp in Sources */,
-				5598FAFA13D3DB5700BC1AC4 /* SolidRotation.cpp in Sources */,
-				5598FAFB13D3DB5700BC1AC4 /* StaticVortices.cpp in Sources */,
 				5598FAFD13D3DB5700BC1AC4 /* TimeManager.cpp in Sources */,
 				5598FAE513D3DB1900BC1AC4 /* Field.cpp in Sources */,
 				5598FAE713D3DB1900BC1AC4 /* FlowManager.cpp in Sources */,
@@ -1177,10 +1163,10 @@
 					TTS_ONLINE,
 					DEBUG,
 					TTS_CGA_SPLIT_POLYGONS,
-					TTS_OUTPUT,
 					TTS_REMAP,
 					TTS_REZONE,
 					GAMIL_SMOOTH_POLE_WIND,
+					TTS_OUTPUT,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1346,8 +1332,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TTS_ONLINE,
 					DEBUG,
-					TTS_REZONE,
 					TTS_REMAP,
+					TTS_OUTPUT,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;

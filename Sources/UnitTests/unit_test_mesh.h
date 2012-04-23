@@ -19,12 +19,13 @@ void test_checkLocation()
     MeshManager meshManager;
 
     meshManager.init(numLon, numLat, lon, lat);
+    meshManager.getMesh(Full).dump();
 
     Point point;
     Coordinate x;
     Location loc;
 
-    x.setSPH(6.2826213232128572, 65.0/Rad2Deg);
+    x.setSPH(-1.4/Rad2Deg, -73.0/Rad2Deg);
     point.setCoordinate(x);
 
     meshManager.checkLocation(point.getCoordinate(), loc, &point);

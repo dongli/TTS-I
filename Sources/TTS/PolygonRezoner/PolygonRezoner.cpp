@@ -9,6 +9,7 @@
 #include "ApproachDetector.h"
 #include "CommonTasks.h"
 #include "ConfigTools.h"
+#include "CppHelper.h"
 #include <netcdfcpp.h>
 
 namespace PolygonRezoner {
@@ -34,6 +35,7 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
                             const FlowManager &flowManager,
                             TracerManager &tracerManager)
 {
+    string ID = to_string(TimeManager::getSteps(), "%5.5d");
     PolygonManager &polygonManager = tracerManager.polygonManager;
     // -------------------------------------------------------------------------
     // 0. Initialize SCVT
@@ -68,13 +70,11 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
         }
     rho /= max(rho);
     rho = where(rho < minRho, minRho, rho);
-    char fileName[30];
-    sprintf(fileName, "scvt_rho_%5.5d.nc", TimeManager::getSteps());
-    SCVT::outputDensityFunction(fileName);
+    SCVT::outputDensityFunction(ID);
     // -------------------------------------------------------------------------
     // 2. Generate SCVT according to the previous density function
     DelaunayDriver driver;
-    SCVT::run(numGenerator, driver);
+    SCVT::run(numGenerator, driver, ID);
     // -------------------------------------------------------------------------
     // 3. Replace the polygons with SCVT
     polygonManager.reinit();

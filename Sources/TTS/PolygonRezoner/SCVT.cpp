@@ -2,9 +2,8 @@
 #include "DelaunayDriver.h"
 #include "RandomNumber.h"
 #include "Sphere.h"
-#include <netcdfcpp.h>
-
 #include "PolygonManager.h"
+#include <netcdfcpp.h>
 
 namespace SCVT {
     // density function
@@ -75,9 +74,7 @@ double SCVT::getDensity(double lon, double lat)
     return rho(i, j);
 }
 
-//#define SCVT_OUTPUT_ITERATION
-
-void SCVT::run(int numPoint, DelaunayDriver &driver)
+void SCVT::run(int numPoint, DelaunayDriver &driver, const string &ID)
 {
     // -------------------------------------------------------------------------
     // 1. Initialize Voronoi generators using Monte Carlo method
@@ -130,17 +127,10 @@ void SCVT::run(int numPoint, DelaunayDriver &driver)
 #if defined (DEBUG) || defined (VERBOSE)
         if (k == 0) {
             cout << "[Notice]: SCVT::run: Check initial generators in scvt_mc.nc" << endl;
-            driver.output("scvt_mc");
+            driver.output("scvt_mc_"+ID);
         }
 #endif
         driver.calcCircumcenter();
-#ifdef SCVT_OUTPUT_ITERATION
-        PolygonManager pm;
-        char fileName[30];
-        sprintf(fileName, "scvt_it%4.4d.nc", k);
-        pm.init(driver);
-        pm.output(fileName);
-#endif
         // =====================================================================
         // Calculate centroids of Voronoi cells (approximated)
         DelaunayVertex *DVT;
@@ -211,9 +201,10 @@ Array<double, 2> &SCVT::getDensityFunction()
     return rho;
 }
 
-void SCVT::outputDensityFunction(const char *fileName)
+void SCVT::outputDensityFunction(const string &ID)
 {
-    NcFile file(fileName, NcFile::Replace);
+    string fileName = "scvt_rho_"+ID+".nc";
+    NcFile file(fileName.c_str(), NcFile::Replace);
     NcDim *lonDim = file.add_dim("lon", rho.extent(0));
     NcDim *latDim = file.add_dim("lat", rho.extent(1));
     NcDim *bndDim = file.add_dim("bnd", 2);

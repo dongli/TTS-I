@@ -13,10 +13,10 @@ namespace SCVT
               int maxIteration = 10);
 
     Array<double, 2> &getDensityFunction();
-    void outputDensityFunction(const char *fileName);
+    void outputDensityFunction(const std::string &ID);
 
     void run(int numPoint, double *lon, double *lat);
-    void run(int numPoint, DelaunayDriver &driver);
+    void run(int numPoint, DelaunayDriver &driver, const std::string &ID);
 }
 
 #endif

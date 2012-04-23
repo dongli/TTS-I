@@ -4,10 +4,10 @@
 #include "GAMILReader.h"
 #include "PolygonRezoner.h"
 #include "TTS.h"
+#include "CppHelper.h"
 
 int main(int argc, char **argv)
 {
-    TimeManager timeManager;
     GAMILReader gamilReader;
     TracerManager tracerManager;
     TTS tts;
@@ -29,19 +29,18 @@ int main(int argc, char **argv)
     gamilReader.getVelocityField();
     gamilReader.checkVelocityField();
 #ifdef TTS_OUTPUT
+    char filePattern[50];
     ConfigTools::read("output_file_pattern", filePattern);
-    sprintf(fileName, filePattern, timeManager.getSteps());
-    tracerManager.output(fileName);
+    tracerManager.output(to_string(TimeManager::getSteps(), filePattern));
 #endif
     // -------------------------------------------------------------------------
-    while (!timeManager.isFinished()) {
+    while (!TimeManager::isFinished()) {
         tts.advect(gamilReader.meshManager, gamilReader.meshAdaptor,
                    gamilReader.flowManager, tracerManager);
-        timeManager.advance();
+        TimeManager::advance();
         gamilReader.getVelocityField();
 #ifdef TTS_OUTPUT
-        sprintf(fileName, filePattern, timeManager.getSteps());
-        tracerManager.output(fileName);
+        tracerManager.output(to_string(TimeManager::getSteps(), filePattern));
 #endif
     }
     end = clock();

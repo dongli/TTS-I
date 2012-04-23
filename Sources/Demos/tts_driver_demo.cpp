@@ -11,10 +11,11 @@
 #include "TTS.h"
 #include "MeshAdaptor.h"
 #include "PolygonRezoner.h"
+#include "CppHelper.h"
 
-//#define MOVINGVORTICES_TESTCASE
+#define MOVINGVORTICES_TESTCASE
 //#define TESTCASE_CALC_TRUE_SOLUTION
-#define DEFORMATION_TESTCASE
+//#define DEFORMATION_TESTCASE
 //#define STATICVORTICES_TESTCASE
 //#define SOLIDROTATION_TESTCASE
 
@@ -56,7 +57,6 @@ int main(int argc, char **argv)
     TimeManager::setClock(1800.0);
     TimeManager::setEndStep(100);
 #endif
-    char fileName[30], filePattern[50];
     // -------------------------------------------------------------------------
     int numLon = 360, numLat = 180;
     double dlon = PI2/numLon;
@@ -82,9 +82,9 @@ int main(int argc, char **argv)
     testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
 #endif
 #ifdef TTS_OUTPUT
+    char filePattern[50];
     ConfigTools::read("output_file_pattern", filePattern);
-    sprintf(fileName, filePattern, TimeManager::getSteps());
-    tracerManager.output(fileName);
+    tracerManager.output(to_string(TimeManager::getSteps(), filePattern));
 #endif
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
@@ -95,8 +95,7 @@ int main(int argc, char **argv)
         TimeManager::advance();
         testCase.calcVelocityField(flowManager);
 #ifdef TTS_OUTPUT
-        sprintf(fileName, filePattern, TimeManager::getSteps());
-        tracerManager.output(fileName);
+        tracerManager.output(to_string(TimeManager::getSteps(), filePattern));
 #endif
     }
 }
