@@ -14,6 +14,9 @@ begin
     file_name_pattern = get_answer()
     file_names = systemfunc("ls "+file_name_pattern)
 
+    notice("Input test case:")
+    test_case = get_answer()
+
     ; --------------------------------------------------------------------------
     ; get tracer density variable names
     f = addfile(file_names(0), "r")
@@ -58,9 +61,13 @@ begin
             file_names(l))+"_"+projection+"_"+density_name+"_density")
 
         ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
-        ;gsn_define_colormap(wks, "BlueYellowRed")
+        if (test_case .eq. "gamil") then
+            gsn_define_colormap(wks, "BlueYellowRed")
+        end if
         ;gsn_define_colormap(wks, "WhBlGrYeRe")
-        gsn_define_colormap(wks, "WhBlReWh")
+        if (test_case .eq. "mv") then
+            gsn_define_colormap(wks, "WhBlReWh")
+        end if
 
         f = addfile(file_names(l), "r")
 
@@ -76,15 +83,22 @@ begin
         ;res@cnFillMode = "RasterFill"
 
         ; for GAMIL test
-        ;ranges = fspan(1.0e0, 2.0e+3, 21)
-        ;set_contour_range(res, ranges, "%5.2g")
-        ;res@lbLabelAngleF = 45.0
-        ;res@pmLabelBarOrthogonalPosF = 0.15
+        if (test_case .eq. "gamil") then
+            ranges = fspan(1.0e0, 2.0e+3, 21)
+            set_contour_range(res, ranges, "%5.2g")
+            res@lbLabelAngleF = 45.0
+            res@pmLabelBarOrthogonalPosF = 0.15
+        end if
 
         ; for deformation flow test
         ;set_contour_range(res, (/0.0,1.1,0.1/), "%4.2f")
 
-        set_contour_range(res, (/0.5,1.5,0.05/), "%4.2f")
+        ; for moving vortices test
+        if (test_case .eq. "mv") then
+            set_contour_range(res, (/0.5,1.5,0.05/), "%4.2f")
+        end if
+
+        ; for solid rotation test
         ;set_contour_range(res, 0.0, 1000.0, 100.0, "%8.2f")
 
         ;res@gsnRightString = "min: "+sprintf("%4.2f", min(f->$density_name$))+", "+ \

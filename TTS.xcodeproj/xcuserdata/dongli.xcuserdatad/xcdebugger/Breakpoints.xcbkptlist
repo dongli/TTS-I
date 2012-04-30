@@ -332,7 +332,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "356848590.291712"
+               timestampString = "357019252.625249"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -344,7 +344,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Edge&gt;::remove(Edge*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "356848590.292197"
+               timestampString = "357019252.625495"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -356,7 +356,7 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "356848590.292665"
+               timestampString = "357019252.625713"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
                startingLineNumber = "238"
@@ -678,19 +678,6 @@
          startingLineNumber = "184"
          endingLineNumber = "184"
          landmarkName = "DebugTools::dump_watched_polygon()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Sources/TTS/PolygonRezoner/PolygonRezoner.cpp"
-         timestampString = "356798305.355685"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
-         landmarkName = "PolygonRezoner::rezone(MeshManager &amp;meshManager, MeshAdaptor &amp;meshAdaptor, const FlowManager &amp;flowManager, TracerManager &amp;tracerManager)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
