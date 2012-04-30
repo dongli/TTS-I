@@ -91,7 +91,7 @@ begin
     res_point                       = True
     res_point@gsMarkerSizeF         = point_size
 
-    res_line@gsLineColor            = "blue"
+    res_line@gsLineColor            = "black"
     gsn_polyline(wks, map, vertex_lon, vertex_lat, res_line)
 
     res_point@gsMarkerIndex         = 1

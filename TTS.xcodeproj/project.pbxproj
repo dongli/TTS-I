@@ -157,6 +157,14 @@
 		55EA5AFF1521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
 		55EA5B001521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
 		55EA5B011521F82000B05ADB /* RandomNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */; };
+		55F2798D1548365B00E55B95 /* CommonTasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55397931150459C800FC3EC2 /* CommonTasks.cpp */; };
+		55F2798E1548367500E55B95 /* TrendThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55971A4A14DF686500DB293B /* TrendThreshold.cpp */; };
+		55F2798F1548369300E55B95 /* CurvatureGuard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */; };
+		55F279901548369300E55B95 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
+		55F279911548369300E55B95 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
+		55F279921548369300E55B95 /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
+		55F27993154836AD00E55B95 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
+		55F27994154836AD00E55B95 /* ThresholdFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55971A4D14DF6DED00DB293B /* ThresholdFunction.cpp */; };
 		55F30BE114A775370057BBBE /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		55F30BE314A775750057BBBE /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
 		55F30BE414A775750057BBBE /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
@@ -885,6 +893,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F27993154836AD00E55B95 /* AngleThreshold.cpp in Sources */,
+				55F27994154836AD00E55B95 /* ThresholdFunction.cpp in Sources */,
+				55F2798F1548369300E55B95 /* CurvatureGuard.cpp in Sources */,
+				55F279901548369300E55B95 /* dlmalloc.c in Sources */,
+				55F279911548369300E55B95 /* mpreal.cpp in Sources */,
+				55F279921548369300E55B95 /* ConfigTools.cpp in Sources */,
+				55F2798E1548367500E55B95 /* TrendThreshold.cpp in Sources */,
+				55F2798D1548365B00E55B95 /* CommonTasks.cpp in Sources */,
 				55F30BFB14A775E70057BBBE /* TracerManager.cpp in Sources */,
 				55F30BFA14A775DB0057BBBE /* DebugTools.cpp in Sources */,
 				55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */,
