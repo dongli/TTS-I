@@ -1,7 +1,7 @@
-#include "PointCounter.h"
-#include "ReportMacros.h"
-#include "Constants.h"
-#include "Sphere.h"
+#include "PointCounter.hpp"
+#include "ReportMacros.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
 #include <netcdfcpp.h>
 
 PointCounter::PointCounter()

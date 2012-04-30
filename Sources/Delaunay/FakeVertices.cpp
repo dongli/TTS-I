@@ -6,7 +6,7 @@
  *
  */
 
-#include "FakeVertices.h"
+#include "FakeVertices.hpp"
 
 FakeVertices::FakeVertices()
 {

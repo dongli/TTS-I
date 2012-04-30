@@ -1,11 +1,11 @@
-#include "Vertex.h"
-#include "Edge.h"
-#include "Polygon.h"
+#include "Vertex.hpp"
+#include "Edge.hpp"
+#include "Polygon.hpp"
 #ifdef TTS_ONLINE
-#include "MeshManager.h"
-#include "FlowManager.h"
-#include "PolygonManager.h"
-#include "TimeManager.h"
+#include "MeshManager.hpp"
+#include "FlowManager.hpp"
+#include "PolygonManager.hpp"
+#include "TimeManager.hpp"
 #endif
 
 Vertex::Vertex()

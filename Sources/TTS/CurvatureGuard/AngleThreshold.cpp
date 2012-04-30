@@ -1,8 +1,8 @@
-#include "AngleThreshold.h"
-#include "Edge.h"
-#include "ThresholdFunction.h"
-#include "ConfigTools.h"
-#include "Sphere.h"
+#include "AngleThreshold.hpp"
+#include "Edge.hpp"
+#include "ThresholdFunction.hpp"
+#include "ConfigTools.hpp"
+#include "Sphere.hpp"
 
 using namespace CurvatureGuard;
 

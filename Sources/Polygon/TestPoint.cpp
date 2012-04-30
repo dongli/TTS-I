@@ -1,9 +1,9 @@
-#include "TestPoint.h"
-#include "Vector.h"
-#include "Edge.h"
-#include "MeshManager.h"
-#include "ApproachDetector.h"
-#include "TTS.h"
+#include "TestPoint.hpp"
+#include "Vector.hpp"
+#include "Edge.hpp"
+#include "MeshManager.hpp"
+#include "ApproachDetector.hpp"
+#include "TTS.hpp"
 
 using namespace ApproachDetector;
 

@@ -32,6 +32,7 @@
 		5544268B1544DDE200AEEE93 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */; };
 		5544268C1544DDFB00AEEE93 /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
 		5544268D1544DDFB00AEEE93 /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
+		554BDF47154EDCB100E82697 /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 		554F970414A84C4F000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
 		554F970514A84C4F000052E2 /* AngleThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970314A84C4F000052E2 /* AngleThreshold.cpp */; };
 		5555E8F914F7CE990066DBB6 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
@@ -166,9 +167,6 @@
 		55F30BE914A775750057BBBE /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
 		55F30BEA14A775890057BBBE /* Velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */; };
 		55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D2647B146E121300753BC0 /* SpecialPolygons.cpp */; };
-		55F30BED14A775B30057BBBE /* splitEdge.h in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2E1421C0DB001E8352 /* splitEdge.h */; };
-		55F30BEE14A775B30057BBBE /* mergeEdge.h in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2D1421C0DB001E8352 /* mergeEdge.h */; };
-		55F30BEF14A775B30057BBBE /* splitPolygon.h in Sources */ = {isa = PBXBuildFile; fileRef = 552EEE2F1421C0DB001E8352 /* splitPolygon.h */; };
 		55F30BF114A775B30057BBBE /* PotentialCrossDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */; };
 		55F30BF214A775B30057BBBE /* Projection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D514093757000B7E48 /* Projection.cpp */; };
 		55F30BF314A775B30057BBBE /* VertexAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558A48D714093757000B7E48 /* VertexAgent.cpp */; };
@@ -181,7 +179,6 @@
 		55F30BFB14A775E70057BBBE /* TracerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55C1E3D0142C5EE400D83018 /* TracerManager.cpp */; };
 		55F39F0814CA863D00CF3310 /* CurvatureGuard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */; };
 		55F39F0914CA863D00CF3310 /* CurvatureGuard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */; };
-		55F8350914C1721E00B7AD5C /* TestPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -243,143 +240,143 @@
 
 /* Begin PBXFileReference section */
 		550A94A214271B4500D97A06 /* Deformation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Deformation.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		550A94A314271B4500D97A06 /* Deformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deformation.h; sourceTree = "<group>"; };
-		550F3114153F6517007544EA /* CppHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppHelper.h; sourceTree = "<group>"; };
-		552EEE2D1421C0DB001E8352 /* mergeEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mergeEdge.h; sourceTree = "<group>"; };
-		552EEE2E1421C0DB001E8352 /* splitEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = splitEdge.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		552EEE2F1421C0DB001E8352 /* splitPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = splitPolygon.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		552EEE301421C0F6001E8352 /* CurvatureGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurvatureGuard.h; sourceTree = "<group>"; };
 		5534794C1429CF6800FCC94C /* unit_test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unit_test_main.cpp; sourceTree = "<group>"; };
 		55397931150459C800FC3EC2 /* CommonTasks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonTasks.cpp; sourceTree = "<group>"; };
 		553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PotentialCrossDetector.cpp; sourceTree = "<group>"; };
-		553FED96141767F500B1C14F /* PotentialCrossDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PotentialCrossDetector.h; sourceTree = "<group>"; };
 		5541C97C14A9937E0052D2A2 /* preprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = preprocess; sourceTree = BUILT_PRODUCTS_DIR; };
-		5541E1CF14506D1400279AED /* Tracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracer.h; sourceTree = "<group>"; };
-		554F96FF14A8495F000052E2 /* AngleThreshold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AngleThreshold.h; sourceTree = "<group>"; };
-		554F970314A84C4F000052E2 /* AngleThreshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AngleThreshold.cpp; sourceTree = "<group>"; };
-		554F970614A8AEF6000052E2 /* ConfigTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigTools.h; sourceTree = "<group>"; };
+		554BDEFF154EDA8B00E82697 /* DelaunayDriver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = DelaunayDriver.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		554BDF00154EDA8B00E82697 /* DelaunayTriangle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = DelaunayTriangle.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		554BDF01154EDA8B00E82697 /* DelaunayVertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DelaunayVertex.hpp; sourceTree = "<group>"; };
+		554BDF02154EDA8B00E82697 /* FakeVertices.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FakeVertices.hpp; sourceTree = "<group>"; };
+		554BDF03154EDA8B00E82697 /* PointManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PointManager.hpp; sourceTree = "<group>"; };
+		554BDF04154EDA8B00E82697 /* PointTriangle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PointTriangle.hpp; sourceTree = "<group>"; };
+		554BDF05154EDA8B00E82697 /* Topology.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Topology.hpp; sourceTree = "<group>"; };
+		554BDF06154EDAAA00E82697 /* Field.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Field.hpp; sourceTree = "<group>"; };
+		554BDF07154EDAAA00E82697 /* FlowManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FlowManager.hpp; sourceTree = "<group>"; };
+		554BDF08154EDAAA00E82697 /* GAMILReader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GAMILReader.hpp; sourceTree = "<group>"; };
+		554BDF09154EDAAA00E82697 /* Layers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Layers.hpp; sourceTree = "<group>"; };
+		554BDF0A154EDAAA00E82697 /* Location.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Location.hpp; sourceTree = "<group>"; };
+		554BDF0B154EDAAA00E82697 /* MeshManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MeshManager.hpp; sourceTree = "<group>"; };
+		554BDF0C154EDAAA00E82697 /* PointCounter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PointCounter.hpp; sourceTree = "<group>"; };
+		554BDF0D154EDAAA00E82697 /* PolarRing.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolarRing.hpp; sourceTree = "<group>"; };
+		554BDF0E154EDAAA00E82697 /* RLLMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RLLMesh.hpp; sourceTree = "<group>"; };
+		554BDF0F154EDAC800E82697 /* Coordinate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Coordinate.hpp; sourceTree = "<group>"; };
+		554BDF10154EDAC800E82697 /* Sphere.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Sphere.hpp; sourceTree = "<group>"; };
+		554BDF11154EDAC800E82697 /* Vector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector.hpp; sourceTree = "<group>"; };
+		554BDF12154EDAC800E82697 /* Velocity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Velocity.hpp; sourceTree = "<group>"; };
+		554BDF14154EDB0800E82697 /* Deformation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Deformation.hpp; sourceTree = "<group>"; };
+		554BDF15154EDB0800E82697 /* MovingVortices.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MovingVortices.hpp; sourceTree = "<group>"; };
+		554BDF16154EDB0800E82697 /* SolidRotation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SolidRotation.hpp; sourceTree = "<group>"; };
+		554BDF17154EDB0800E82697 /* StaticVortices.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StaticVortices.hpp; sourceTree = "<group>"; };
+		554BDF18154EDB0800E82697 /* TestCase.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestCase.hpp; sourceTree = "<group>"; };
+		554BDF19154EDB1C00E82697 /* Edge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Edge.hpp; sourceTree = "<group>"; };
+		554BDF1A154EDB1C00E82697 /* Point.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Point.hpp; sourceTree = "<group>"; };
+		554BDF1B154EDB1C00E82697 /* Polygon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Polygon.hpp; sourceTree = "<group>"; };
+		554BDF1C154EDB1C00E82697 /* PolygonManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PolygonManager.hpp; sourceTree = "<group>"; };
+		554BDF1D154EDB1C00E82697 /* TestPoint.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestPoint.hpp; sourceTree = "<group>"; };
+		554BDF1E154EDB1C00E82697 /* Vertex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vertex.hpp; sourceTree = "<group>"; };
+		554BDF1F154EDB2A00E82697 /* Tracer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tracer.hpp; sourceTree = "<group>"; };
+		554BDF20154EDB2A00E82697 /* TracerManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TracerManager.hpp; sourceTree = "<group>"; };
+		554BDF21154EDB3900E82697 /* PolygonRezoner.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonRezoner.hpp; sourceTree = "<group>"; };
+		554BDF22154EDB3900E82697 /* SCVT.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SCVT.hpp; sourceTree = "<group>"; };
+		554BDF23154EDB4100E82697 /* CommonTasks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CommonTasks.hpp; sourceTree = "<group>"; };
+		554BDF24154EDB4C00E82697 /* EdgeTags.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeTags.hpp; sourceTree = "<group>"; };
+		554BDF25154EDB4C00E82697 /* ProjectionTags.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ProjectionTags.hpp; sourceTree = "<group>"; };
+		554BDF26154EDB4C00E82697 /* Tags.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tags.hpp; sourceTree = "<group>"; };
+		554BDF27154EDB4C00E82697 /* VertexTags.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexTags.hpp; sourceTree = "<group>"; };
+		554BDF28154EDB5400E82697 /* SpecialPolygons.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpecialPolygons.hpp; sourceTree = "<group>"; };
+		554BDF29154EDB5D00E82697 /* CoverMask.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CoverMask.hpp; sourceTree = "<group>"; };
+		554BDF2A154EDB5D00E82697 /* MeshAdaptor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MeshAdaptor.hpp; sourceTree = "<group>"; };
+		554BDF2B154EDB6700E82697 /* AngleThreshold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AngleThreshold.hpp; sourceTree = "<group>"; };
+		554BDF2C154EDB6700E82697 /* CurvatureGuard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CurvatureGuard.hpp; sourceTree = "<group>"; };
+		554BDF2D154EDB6700E82697 /* mergeEdge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mergeEdge.hpp; sourceTree = "<group>"; };
+		554BDF2E154EDB6700E82697 /* splitEdge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = splitEdge.hpp; sourceTree = "<group>"; };
+		554BDF2F154EDB6700E82697 /* splitPolygon.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = splitPolygon.hpp; sourceTree = "<group>"; };
+		554BDF30154EDB6F00E82697 /* PotentialCrossDetector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PotentialCrossDetector.hpp; sourceTree = "<group>"; };
+		554BDF31154EDB7A00E82697 /* AgentPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = AgentPair.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		554BDF32154EDB7A00E82697 /* ApproachDetector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ApproachDetector.hpp; sourceTree = "<group>"; };
+		554BDF33154EDB7A00E82697 /* ApproachingVertices.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ApproachingVertices.hpp; sourceTree = "<group>"; };
+		554BDF34154EDB7A00E82697 /* EdgeAgent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAgent.hpp; sourceTree = "<group>"; };
+		554BDF35154EDB7A00E82697 /* Projection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Projection.hpp; sourceTree = "<group>"; };
+		554BDF36154EDB7A00E82697 /* TrendThreshold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrendThreshold.hpp; sourceTree = "<group>"; };
+		554BDF37154EDB7A00E82697 /* VertexAgent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexAgent.hpp; sourceTree = "<group>"; };
+		554BDF38154EDB8700E82697 /* unit_test_mesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = unit_test_mesh.hpp; sourceTree = "<group>"; };
+		554BDF39154EDB9600E82697 /* ConfigTools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConfigTools.hpp; sourceTree = "<group>"; };
+		554BDF3A154EDB9600E82697 /* Constants.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Constants.hpp; sourceTree = "<group>"; };
+		554BDF3B154EDB9600E82697 /* CppHelper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CppHelper.hpp; sourceTree = "<group>"; };
+		554BDF3C154EDB9600E82697 /* DebugTools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DebugTools.hpp; sourceTree = "<group>"; };
+		554BDF3D154EDB9600E82697 /* List.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = List.hpp; sourceTree = "<group>"; };
+		554BDF3E154EDB9600E82697 /* MultiTimeLevel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MultiTimeLevel.hpp; sourceTree = "<group>"; };
+		554BDF3F154EDB9600E82697 /* RandomNumber.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RandomNumber.hpp; sourceTree = "<group>"; };
+		554BDF40154EDB9600E82697 /* ReportMacros.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ReportMacros.hpp; sourceTree = "<group>"; };
+		554BDF41154EDB9600E82697 /* SystemCalls.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SystemCalls.hpp; sourceTree = "<group>"; };
+		554BDF42154EDB9600E82697 /* ThresholdFunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ThresholdFunction.hpp; sourceTree = "<group>"; };
+		554BDF43154EDB9600E82697 /* TimeManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TimeManager.hpp; sourceTree = "<group>"; };
+		554BDF44154EDBA400E82697 /* dlmalloc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dlmalloc.hpp; sourceTree = "<group>"; };
+		554BDF45154EDBA400E82697 /* mpreal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mpreal.hpp; sourceTree = "<group>"; };
+		554BDF46154EDC6900E82697 /* TTS.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TTS.hpp; sourceTree = "<group>"; };
+		554F970314A84C4F000052E2 /* AngleThreshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = AngleThreshold.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		554F970714A8B437000052E2 /* ConfigTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigTools.cpp; sourceTree = "<group>"; };
 		5566C5EB13EC0D010044E352 /* generate_RLLMesh */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_RLLMesh; sourceTree = BUILT_PRODUCTS_DIR; };
 		556E49BE13D54DCF00AE4150 /* PointCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PointCounter.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		556E49BF13D54DCF00AE4150 /* PointCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointCounter.h; sourceTree = "<group>"; };
-		557EF504148C9079004D6E85 /* ThresholdFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThresholdFunction.h; sourceTree = "<group>"; };
 		5581140413EA4432004AF124 /* tts_gamil_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tts_gamil_demo.cpp; sourceTree = "<group>"; };
 		5581140713EA4463004AF124 /* GAMILReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = GAMILReader.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5581142A13EA4631004AF124 /* SystemCalls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemCalls.cpp; sourceTree = "<group>"; };
-		5581142B13EA4631004AF124 /* SystemCalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemCalls.h; sourceTree = "<group>"; };
 		5581143213EA470B004AF124 /* tts_gamil_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_gamil_demo; sourceTree = BUILT_PRODUCTS_DIR; };
-		558803A81435A675008F4C84 /* MeshAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshAdaptor.h; sourceTree = "<group>"; };
 		558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = MeshAdaptor.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		558A48CD14093757000B7E48 /* AgentPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AgentPair.cpp; sourceTree = "<group>"; };
-		558A48CE14093757000B7E48 /* AgentPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentPair.h; sourceTree = "<group>"; };
 		558A48CF14093757000B7E48 /* ApproachDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = ApproachDetector.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		558A48D014093757000B7E48 /* ApproachDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproachDetector.h; sourceTree = "<group>"; };
 		558A48D114093757000B7E48 /* ApproachingVertices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ApproachingVertices.cpp; sourceTree = "<group>"; };
-		558A48D214093757000B7E48 /* ApproachingVertices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApproachingVertices.h; sourceTree = "<group>"; };
 		558A48D314093757000B7E48 /* EdgeAgent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = EdgeAgent.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		558A48D414093757000B7E48 /* EdgeAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeAgent.h; sourceTree = "<group>"; };
 		558A48D514093757000B7E48 /* Projection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Projection.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		558A48D614093757000B7E48 /* Projection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projection.h; sourceTree = "<group>"; };
 		558A48D714093757000B7E48 /* VertexAgent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexAgent.cpp; sourceTree = "<group>"; };
-		558A48D814093757000B7E48 /* VertexAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexAgent.h; sourceTree = "<group>"; };
 		55943B7F14C6C6040084B8BB /* CoverMask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = CoverMask.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		55943B8014C6C6040084B8BB /* CoverMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverMask.h; sourceTree = "<group>"; };
-		5595604E14A4919400EA93D5 /* Tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Tags.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		55971A4914DF67A300DB293B /* TrendThreshold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendThreshold.h; sourceTree = "<group>"; };
 		55971A4A14DF686500DB293B /* TrendThreshold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrendThreshold.cpp; sourceTree = "<group>"; };
 		55971A4D14DF6DED00DB293B /* ThresholdFunction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThresholdFunction.cpp; sourceTree = "<group>"; };
 		5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DelaunayDriver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DelaunayDriver.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelaunayTriangle.cpp; sourceTree = "<group>"; };
-		5598FA6D13D3DA9F00BC1AC4 /* DelaunayTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelaunayTriangle.h; sourceTree = "<group>"; };
-		5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DelaunayVertex.cpp; sourceTree = "<group>"; };
-		5598FA6F13D3DA9F00BC1AC4 /* DelaunayVertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelaunayVertex.h; sourceTree = "<group>"; };
+		5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DelaunayTriangle.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = DelaunayVertex.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FakeVertices.cpp; sourceTree = "<group>"; };
-		5598FA7113D3DA9F00BC1AC4 /* FakeVertices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeVertices.h; sourceTree = "<group>"; };
 		5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointManager.cpp; sourceTree = "<group>"; };
-		5598FA7313D3DA9F00BC1AC4 /* PointManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointManager.h; sourceTree = "<group>"; };
 		5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointTriangle.cpp; sourceTree = "<group>"; };
-		5598FA7513D3DA9F00BC1AC4 /* PointTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointTriangle.h; sourceTree = "<group>"; };
 		5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Topology.cpp; sourceTree = "<group>"; };
-		5598FA7713D3DA9F00BC1AC4 /* Topology.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Topology.h; sourceTree = "<group>"; };
 		5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tts_driver_demo.cpp; sourceTree = "<group>"; };
 		5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Field.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA7C13D3DA9F00BC1AC4 /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Field.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = FlowManager.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA7E13D3DA9F00BC1AC4 /* FlowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FlowManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Layers.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA8013D3DA9F00BC1AC4 /* Layers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Layers.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5598FA8113D3DA9F00BC1AC4 /* Location.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Location.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA8213D3DA9F00BC1AC4 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = MeshManager.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA8413D3DA9F00BC1AC4 /* MeshManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshManager.h; sourceTree = "<group>"; };
 		5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PolarRing.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA8613D3DA9F00BC1AC4 /* PolarRing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolarRing.h; sourceTree = "<group>"; };
 		5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RLLMesh.cpp; sourceTree = "<group>"; };
-		5598FA8813D3DA9F00BC1AC4 /* RLLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLLMesh.h; sourceTree = "<group>"; };
 		5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Edge.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA8F13D3DA9F00BC1AC4 /* Edge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Edge.h; sourceTree = "<group>"; };
 		5598FA9013D3DA9F00BC1AC4 /* Point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Point.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FA9113D3DA9F00BC1AC4 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Polygon.cpp; sourceTree = "<group>"; };
-		5598FA9313D3DA9F00BC1AC4 /* Polygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Polygon.h; sourceTree = "<group>"; };
 		5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonManager.cpp; sourceTree = "<group>"; };
-		5598FA9513D3DA9F00BC1AC4 /* PolygonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonManager.h; sourceTree = "<group>"; };
 		5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vertex.cpp; sourceTree = "<group>"; };
-		5598FA9713D3DA9F00BC1AC4 /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
 		5598FA9B13D3DA9F00BC1AC4 /* generate_RLLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate_RLLMesh.cpp; sourceTree = "<group>"; };
 		5598FA9C13D3DA9F00BC1AC4 /* generate_square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate_square.cpp; sourceTree = "<group>"; };
 		5598FA9D13D3DA9F00BC1AC4 /* preprocess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = preprocess.cpp; sourceTree = "<group>"; };
-		5598FAA013D3DA9F00BC1AC4 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Coordinate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Sphere.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FAA213D3DA9F00BC1AC4 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
-		5598FAA313D3DA9F00BC1AC4 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
-		5598FAA513D3DA9F00BC1AC4 /* Velocity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Velocity.h; sourceTree = "<group>"; };
 		5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = MovingVortices.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FAA813D3DA9F00BC1AC4 /* MovingVortices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovingVortices.h; sourceTree = "<group>"; };
 		5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = SolidRotation.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FAAA13D3DA9F00BC1AC4 /* SolidRotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolidRotation.h; sourceTree = "<group>"; };
 		5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = StaticVortices.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FAAC13D3DA9F00BC1AC4 /* StaticVortices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticVortices.h; sourceTree = "<group>"; };
-		5598FAAD13D3DA9F00BC1AC4 /* TestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCase.h; sourceTree = "<group>"; };
 		5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = TTS.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		5598FAB013D3DA9F00BC1AC4 /* TTS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TTS.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5598FABB13D3DA9F00BC1AC4 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		5598FABC13D3DA9F00BC1AC4 /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = List.cpp; sourceTree = "<group>"; };
-		5598FABD13D3DA9F00BC1AC4 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
-		5598FABE13D3DA9F00BC1AC4 /* MultiTimeLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MultiTimeLevel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5598FABF13D3DA9F00BC1AC4 /* RandomNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomNumber.h; sourceTree = "<group>"; };
-		5598FAC013D3DA9F00BC1AC4 /* ReportMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportMacros.h; sourceTree = "<group>"; };
 		5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeManager.cpp; sourceTree = "<group>"; };
-		5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeManager.h; sourceTree = "<group>"; };
-		55A048C314F61BC20030C0FB /* PolygonRezoner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonRezoner.h; sourceTree = "<group>"; };
 		55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonRezoner.cpp; sourceTree = "<group>"; };
 		55A1C13414C40A33000962C4 /* dlmalloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = dlmalloc.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		55A1C13514C40A33000962C4 /* dlmalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dlmalloc.h; sourceTree = "<group>"; };
 		55A1C13914C40A33000962C4 /* mpreal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mpreal.cpp; sourceTree = "<group>"; };
-		55A1C13A14C40A33000962C4 /* mpreal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mpreal.h; sourceTree = "<group>"; };
 		55A4D1C813D52ECF00DCC5AB /* tts_driver_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tts_driver_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A4D1CA13D52ECF00DCC5AB /* unit_test_main */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_test_main; sourceTree = BUILT_PRODUCTS_DIR; };
-		55A85D4613E8343F00D9451D /* GAMILReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GAMILReader.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55C1E3D0142C5EE400D83018 /* TracerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracerManager.cpp; sourceTree = "<group>"; };
-		55C1E3D1142C5EE400D83018 /* TracerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracerManager.h; sourceTree = "<group>"; };
-		55C4AF4513F2BF5A00B2C331 /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugTools.h; sourceTree = "<group>"; };
-		55C9C1431497173A0063230B /* EdgeTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeTags.h; sourceTree = "<group>"; };
-		55C9C1441497173A0063230B /* VertexTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexTags.h; sourceTree = "<group>"; };
-		55C9C1481497174F0063230B /* CommonTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CommonTasks.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		55D2647A146E118600753BC0 /* SpecialPolygons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialPolygons.h; sourceTree = "<group>"; };
 		55D2647B146E121300753BC0 /* SpecialPolygons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = SpecialPolygons.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		55D5B1F71491E80B008B43B8 /* TestPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestPoint.h; sourceTree = "<group>"; };
 		55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPoint.cpp; sourceTree = "<group>"; };
 		55DA3E2913F6A34800C565F7 /* DebugTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugTools.cpp; sourceTree = "<group>"; };
 		55E1C06B152EED43008A8EB3 /* generate_square */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = generate_square; sourceTree = BUILT_PRODUCTS_DIR; };
-		55E5981A14F3DDF300F8C358 /* ProjectionTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectionTags.h; sourceTree = "<group>"; };
 		55EA5AF91521A55400B05ADB /* SCVT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SCVT.cpp; sourceTree = "<group>"; };
-		55EA5AFA1521A55400B05ADB /* SCVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVT.h; sourceTree = "<group>"; };
 		55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomNumber.cpp; sourceTree = "<group>"; };
 		55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CurvatureGuard.cpp; sourceTree = "<group>"; };
-		55F9DD9E144313EE0071E70B /* unit_test_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = unit_test_mesh.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -431,13 +428,13 @@
 		552EEE2C1421C0DB001E8352 /* CurvatureGuard */ = {
 			isa = PBXGroup;
 			children = (
-				554F96FF14A8495F000052E2 /* AngleThreshold.h */,
 				554F970314A84C4F000052E2 /* AngleThreshold.cpp */,
-				552EEE2E1421C0DB001E8352 /* splitEdge.h */,
-				552EEE2D1421C0DB001E8352 /* mergeEdge.h */,
-				552EEE2F1421C0DB001E8352 /* splitPolygon.h */,
-				552EEE301421C0F6001E8352 /* CurvatureGuard.h */,
+				554BDF2B154EDB6700E82697 /* AngleThreshold.hpp */,
 				55F39F0714CA863D00CF3310 /* CurvatureGuard.cpp */,
+				554BDF2C154EDB6700E82697 /* CurvatureGuard.hpp */,
+				554BDF2D154EDB6700E82697 /* mergeEdge.hpp */,
+				554BDF2E154EDB6700E82697 /* splitEdge.hpp */,
+				554BDF2F154EDB6700E82697 /* splitPolygon.hpp */,
 			);
 			path = CurvatureGuard;
 			sourceTree = "<group>";
@@ -445,8 +442,8 @@
 		553FED94141767F500B1C14F /* PotentialCrossDetector */ = {
 			isa = PBXGroup;
 			children = (
-				553FED96141767F500B1C14F /* PotentialCrossDetector.h */,
 				553FED95141767F500B1C14F /* PotentialCrossDetector.cpp */,
+				554BDF30154EDB6F00E82697 /* PotentialCrossDetector.hpp */,
 			);
 			path = PotentialCrossDetector;
 			sourceTree = "<group>";
@@ -467,10 +464,10 @@
 		558803A61435A645008F4C84 /* MeshAdaptor */ = {
 			isa = PBXGroup;
 			children = (
-				55943B8014C6C6040084B8BB /* CoverMask.h */,
 				55943B7F14C6C6040084B8BB /* CoverMask.cpp */,
-				558803A81435A675008F4C84 /* MeshAdaptor.h */,
+				554BDF29154EDB5D00E82697 /* CoverMask.hpp */,
 				558803A91435AA4E008F4C84 /* MeshAdaptor.cpp */,
+				554BDF2A154EDB5D00E82697 /* MeshAdaptor.hpp */,
 			);
 			path = MeshAdaptor;
 			sourceTree = "<group>";
@@ -478,20 +475,20 @@
 		558A48CC14093757000B7E48 /* ApproachDetector */ = {
 			isa = PBXGroup;
 			children = (
-				55971A4914DF67A300DB293B /* TrendThreshold.h */,
-				55971A4A14DF686500DB293B /* TrendThreshold.cpp */,
-				558A48D614093757000B7E48 /* Projection.h */,
-				558A48D514093757000B7E48 /* Projection.cpp */,
-				558A48D814093757000B7E48 /* VertexAgent.h */,
-				558A48D714093757000B7E48 /* VertexAgent.cpp */,
-				558A48D414093757000B7E48 /* EdgeAgent.h */,
-				558A48D314093757000B7E48 /* EdgeAgent.cpp */,
-				558A48CE14093757000B7E48 /* AgentPair.h */,
 				558A48CD14093757000B7E48 /* AgentPair.cpp */,
-				558A48D214093757000B7E48 /* ApproachingVertices.h */,
-				558A48D114093757000B7E48 /* ApproachingVertices.cpp */,
-				558A48D014093757000B7E48 /* ApproachDetector.h */,
+				554BDF31154EDB7A00E82697 /* AgentPair.hpp */,
 				558A48CF14093757000B7E48 /* ApproachDetector.cpp */,
+				554BDF32154EDB7A00E82697 /* ApproachDetector.hpp */,
+				558A48D114093757000B7E48 /* ApproachingVertices.cpp */,
+				554BDF33154EDB7A00E82697 /* ApproachingVertices.hpp */,
+				558A48D314093757000B7E48 /* EdgeAgent.cpp */,
+				554BDF34154EDB7A00E82697 /* EdgeAgent.hpp */,
+				558A48D514093757000B7E48 /* Projection.cpp */,
+				554BDF35154EDB7A00E82697 /* Projection.hpp */,
+				55971A4A14DF686500DB293B /* TrendThreshold.cpp */,
+				554BDF36154EDB7A00E82697 /* TrendThreshold.hpp */,
+				558A48D714093757000B7E48 /* VertexAgent.cpp */,
+				554BDF37154EDB7A00E82697 /* VertexAgent.hpp */,
 			);
 			path = ApproachDetector;
 			sourceTree = "<group>";
@@ -502,10 +499,10 @@
 				5598FA6913D3DA9F00BC1AC4 /* Delaunay */,
 				5598FA7813D3DA9F00BC1AC4 /* Demos */,
 				5598FA7A13D3DA9F00BC1AC4 /* Mesh */,
+				5598FA8D13D3DA9F00BC1AC4 /* Polygon */,
 				5598FA9813D3DA9F00BC1AC4 /* Preprocess */,
 				5598FA9F13D3DA9F00BC1AC4 /* Sphere */,
 				5598FAA613D3DA9F00BC1AC4 /* TestCases */,
-				5598FA8D13D3DA9F00BC1AC4 /* Polygon */,
 				55C1E3CB142C5EE400D83018 /* Tracer */,
 				5598FAAE13D3DA9F00BC1AC4 /* TTS */,
 				5598FAB113D3DA9F00BC1AC4 /* UnitTests */,
@@ -517,20 +514,20 @@
 		5598FA6913D3DA9F00BC1AC4 /* Delaunay */ = {
 			isa = PBXGroup;
 			children = (
-				5598FA6B13D3DA9F00BC1AC4 /* DelaunayDriver.h */,
 				5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */,
+				554BDEFF154EDA8B00E82697 /* DelaunayDriver.hpp */,
 				5598FA6C13D3DA9F00BC1AC4 /* DelaunayTriangle.cpp */,
-				5598FA6D13D3DA9F00BC1AC4 /* DelaunayTriangle.h */,
+				554BDF00154EDA8B00E82697 /* DelaunayTriangle.hpp */,
 				5598FA6E13D3DA9F00BC1AC4 /* DelaunayVertex.cpp */,
-				5598FA6F13D3DA9F00BC1AC4 /* DelaunayVertex.h */,
+				554BDF01154EDA8B00E82697 /* DelaunayVertex.hpp */,
 				5598FA7013D3DA9F00BC1AC4 /* FakeVertices.cpp */,
-				5598FA7113D3DA9F00BC1AC4 /* FakeVertices.h */,
+				554BDF02154EDA8B00E82697 /* FakeVertices.hpp */,
 				5598FA7213D3DA9F00BC1AC4 /* PointManager.cpp */,
-				5598FA7313D3DA9F00BC1AC4 /* PointManager.h */,
+				554BDF03154EDA8B00E82697 /* PointManager.hpp */,
 				5598FA7413D3DA9F00BC1AC4 /* PointTriangle.cpp */,
-				5598FA7513D3DA9F00BC1AC4 /* PointTriangle.h */,
+				554BDF04154EDA8B00E82697 /* PointTriangle.hpp */,
 				5598FA7613D3DA9F00BC1AC4 /* Topology.cpp */,
-				5598FA7713D3DA9F00BC1AC4 /* Topology.h */,
+				554BDF05154EDA8B00E82697 /* Topology.hpp */,
 			);
 			path = Delaunay;
 			sourceTree = "<group>";
@@ -538,8 +535,8 @@
 		5598FA7813D3DA9F00BC1AC4 /* Demos */ = {
 			isa = PBXGroup;
 			children = (
-				5581140413EA4432004AF124 /* tts_gamil_demo.cpp */,
 				5598FA7913D3DA9F00BC1AC4 /* tts_driver_demo.cpp */,
+				5581140413EA4432004AF124 /* tts_gamil_demo.cpp */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -547,24 +544,24 @@
 		5598FA7A13D3DA9F00BC1AC4 /* Mesh */ = {
 			isa = PBXGroup;
 			children = (
-				5598FA8813D3DA9F00BC1AC4 /* RLLMesh.h */,
-				5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */,
-				5598FA8013D3DA9F00BC1AC4 /* Layers.h */,
-				5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */,
-				5598FA8413D3DA9F00BC1AC4 /* MeshManager.h */,
-				5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */,
-				5598FA8213D3DA9F00BC1AC4 /* Location.h */,
-				5598FA8113D3DA9F00BC1AC4 /* Location.cpp */,
-				5598FA8613D3DA9F00BC1AC4 /* PolarRing.h */,
-				5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */,
-				5598FA7C13D3DA9F00BC1AC4 /* Field.h */,
 				5598FA7B13D3DA9F00BC1AC4 /* Field.cpp */,
-				5598FA7E13D3DA9F00BC1AC4 /* FlowManager.h */,
+				554BDF06154EDAAA00E82697 /* Field.hpp */,
 				5598FA7D13D3DA9F00BC1AC4 /* FlowManager.cpp */,
-				556E49BF13D54DCF00AE4150 /* PointCounter.h */,
-				556E49BE13D54DCF00AE4150 /* PointCounter.cpp */,
-				55A85D4613E8343F00D9451D /* GAMILReader.h */,
+				554BDF07154EDAAA00E82697 /* FlowManager.hpp */,
 				5581140713EA4463004AF124 /* GAMILReader.cpp */,
+				554BDF08154EDAAA00E82697 /* GAMILReader.hpp */,
+				5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */,
+				554BDF09154EDAAA00E82697 /* Layers.hpp */,
+				5598FA8113D3DA9F00BC1AC4 /* Location.cpp */,
+				554BDF0A154EDAAA00E82697 /* Location.hpp */,
+				5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */,
+				554BDF0B154EDAAA00E82697 /* MeshManager.hpp */,
+				556E49BE13D54DCF00AE4150 /* PointCounter.cpp */,
+				554BDF0C154EDAAA00E82697 /* PointCounter.hpp */,
+				5598FA8513D3DA9F00BC1AC4 /* PolarRing.cpp */,
+				554BDF0D154EDAAA00E82697 /* PolarRing.hpp */,
+				5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */,
+				554BDF0E154EDAAA00E82697 /* RLLMesh.hpp */,
 			);
 			path = Mesh;
 			sourceTree = "<group>";
@@ -572,18 +569,18 @@
 		5598FA8D13D3DA9F00BC1AC4 /* Polygon */ = {
 			isa = PBXGroup;
 			children = (
-				5598FA9113D3DA9F00BC1AC4 /* Point.h */,
-				5598FA9013D3DA9F00BC1AC4 /* Point.cpp */,
-				5598FA9713D3DA9F00BC1AC4 /* Vertex.h */,
-				5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */,
-				55D5B1F71491E80B008B43B8 /* TestPoint.h */,
-				55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */,
-				5598FA8F13D3DA9F00BC1AC4 /* Edge.h */,
 				5598FA8E13D3DA9F00BC1AC4 /* Edge.cpp */,
-				5598FA9313D3DA9F00BC1AC4 /* Polygon.h */,
+				554BDF19154EDB1C00E82697 /* Edge.hpp */,
+				5598FA9013D3DA9F00BC1AC4 /* Point.cpp */,
+				554BDF1A154EDB1C00E82697 /* Point.hpp */,
 				5598FA9213D3DA9F00BC1AC4 /* Polygon.cpp */,
-				5598FA9513D3DA9F00BC1AC4 /* PolygonManager.h */,
+				554BDF1B154EDB1C00E82697 /* Polygon.hpp */,
 				5598FA9413D3DA9F00BC1AC4 /* PolygonManager.cpp */,
+				554BDF1C154EDB1C00E82697 /* PolygonManager.hpp */,
+				55D5B1F81491E9E7008B43B8 /* TestPoint.cpp */,
+				554BDF1D154EDB1C00E82697 /* TestPoint.hpp */,
+				5598FA9613D3DA9F00BC1AC4 /* Vertex.cpp */,
+				554BDF1E154EDB1C00E82697 /* Vertex.hpp */,
 			);
 			path = Polygon;
 			sourceTree = "<group>";
@@ -601,12 +598,12 @@
 		5598FA9F13D3DA9F00BC1AC4 /* Sphere */ = {
 			isa = PBXGroup;
 			children = (
-				5598FAA013D3DA9F00BC1AC4 /* Coordinate.h */,
-				5598FAA213D3DA9F00BC1AC4 /* Sphere.h */,
+				554BDF0F154EDAC800E82697 /* Coordinate.hpp */,
 				5598FAA113D3DA9F00BC1AC4 /* Sphere.cpp */,
-				5598FAA313D3DA9F00BC1AC4 /* Vector.h */,
+				554BDF10154EDAC800E82697 /* Sphere.hpp */,
+				554BDF11154EDAC800E82697 /* Vector.hpp */,
 				5598FAA413D3DA9F00BC1AC4 /* Velocity.cpp */,
-				5598FAA513D3DA9F00BC1AC4 /* Velocity.h */,
+				554BDF12154EDAC800E82697 /* Velocity.hpp */,
 			);
 			path = Sphere;
 			sourceTree = "<group>";
@@ -614,15 +611,15 @@
 		5598FAA613D3DA9F00BC1AC4 /* TestCases */ = {
 			isa = PBXGroup;
 			children = (
-				5598FAAD13D3DA9F00BC1AC4 /* TestCase.h */,
-				5598FAAA13D3DA9F00BC1AC4 /* SolidRotation.h */,
-				5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */,
-				5598FAAC13D3DA9F00BC1AC4 /* StaticVortices.h */,
-				5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */,
-				5598FAA813D3DA9F00BC1AC4 /* MovingVortices.h */,
-				5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */,
-				550A94A314271B4500D97A06 /* Deformation.h */,
 				550A94A214271B4500D97A06 /* Deformation.cpp */,
+				554BDF14154EDB0800E82697 /* Deformation.hpp */,
+				5598FAA713D3DA9F00BC1AC4 /* MovingVortices.cpp */,
+				554BDF15154EDB0800E82697 /* MovingVortices.hpp */,
+				5598FAA913D3DA9F00BC1AC4 /* SolidRotation.cpp */,
+				554BDF16154EDB0800E82697 /* SolidRotation.hpp */,
+				5598FAAB13D3DA9F00BC1AC4 /* StaticVortices.cpp */,
+				554BDF17154EDB0800E82697 /* StaticVortices.hpp */,
+				554BDF18154EDB0800E82697 /* TestCase.hpp */,
 			);
 			path = TestCases;
 			sourceTree = "<group>";
@@ -630,16 +627,16 @@
 		5598FAAE13D3DA9F00BC1AC4 /* TTS */ = {
 			isa = PBXGroup;
 			children = (
-				55A048C114F61BA80030C0FB /* PolygonRezoner */,
-				55C9C1461497174F0063230B /* CommonTasks */,
-				55C9C1421497173A0063230B /* Tags */,
-				55D26478146E116200753BC0 /* SpecialPolygons */,
-				558803A61435A645008F4C84 /* MeshAdaptor */,
-				552EEE2C1421C0DB001E8352 /* CurvatureGuard */,
-				553FED94141767F500B1C14F /* PotentialCrossDetector */,
 				558A48CC14093757000B7E48 /* ApproachDetector */,
-				5598FAB013D3DA9F00BC1AC4 /* TTS.h */,
+				55C9C1461497174F0063230B /* CommonTasks */,
+				552EEE2C1421C0DB001E8352 /* CurvatureGuard */,
+				558803A61435A645008F4C84 /* MeshAdaptor */,
+				55A048C114F61BA80030C0FB /* PolygonRezoner */,
+				553FED94141767F500B1C14F /* PotentialCrossDetector */,
+				55D26478146E116200753BC0 /* SpecialPolygons */,
+				55C9C1421497173A0063230B /* Tags */,
 				5598FAAF13D3DA9F00BC1AC4 /* TTS.cpp */,
+				554BDF46154EDC6900E82697 /* TTS.hpp */,
 			);
 			path = TTS;
 			sourceTree = "<group>";
@@ -648,7 +645,7 @@
 			isa = PBXGroup;
 			children = (
 				5534794C1429CF6800FCC94C /* unit_test_main.cpp */,
-				55F9DD9E144313EE0071E70B /* unit_test_mesh.h */,
+				554BDF38154EDB8700E82697 /* unit_test_mesh.hpp */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -656,25 +653,25 @@
 		5598FABA13D3DA9F00BC1AC4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				55A1C13114C40A33000962C4 /* mpfrc++ */,
-				5598FABD13D3DA9F00BC1AC4 /* List.h */,
-				5598FABC13D3DA9F00BC1AC4 /* List.cpp */,
-				5598FABB13D3DA9F00BC1AC4 /* Constants.h */,
-				5598FAC013D3DA9F00BC1AC4 /* ReportMacros.h */,
-				5598FAC213D3DA9F00BC1AC4 /* TimeManager.h */,
-				5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */,
-				5598FABE13D3DA9F00BC1AC4 /* MultiTimeLevel.h */,
-				5598FABF13D3DA9F00BC1AC4 /* RandomNumber.h */,
-				55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */,
-				5581142B13EA4631004AF124 /* SystemCalls.h */,
-				5581142A13EA4631004AF124 /* SystemCalls.cpp */,
-				55C4AF4513F2BF5A00B2C331 /* DebugTools.h */,
-				55DA3E2913F6A34800C565F7 /* DebugTools.cpp */,
-				557EF504148C9079004D6E85 /* ThresholdFunction.h */,
-				55971A4D14DF6DED00DB293B /* ThresholdFunction.cpp */,
-				554F970614A8AEF6000052E2 /* ConfigTools.h */,
 				554F970714A8B437000052E2 /* ConfigTools.cpp */,
-				550F3114153F6517007544EA /* CppHelper.h */,
+				554BDF39154EDB9600E82697 /* ConfigTools.hpp */,
+				554BDF3A154EDB9600E82697 /* Constants.hpp */,
+				554BDF3B154EDB9600E82697 /* CppHelper.hpp */,
+				55DA3E2913F6A34800C565F7 /* DebugTools.cpp */,
+				554BDF3C154EDB9600E82697 /* DebugTools.hpp */,
+				5598FABC13D3DA9F00BC1AC4 /* List.cpp */,
+				554BDF3D154EDB9600E82697 /* List.hpp */,
+				55A1C13114C40A33000962C4 /* mpfrc++ */,
+				554BDF3E154EDB9600E82697 /* MultiTimeLevel.hpp */,
+				55EA5AFE1521F82000B05ADB /* RandomNumber.cpp */,
+				554BDF3F154EDB9600E82697 /* RandomNumber.hpp */,
+				554BDF40154EDB9600E82697 /* ReportMacros.hpp */,
+				5581142A13EA4631004AF124 /* SystemCalls.cpp */,
+				554BDF41154EDB9600E82697 /* SystemCalls.hpp */,
+				55971A4D14DF6DED00DB293B /* ThresholdFunction.cpp */,
+				554BDF42154EDB9600E82697 /* ThresholdFunction.hpp */,
+				5598FAC113D3DA9F00BC1AC4 /* TimeManager.cpp */,
+				554BDF43154EDB9600E82697 /* TimeManager.hpp */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -682,10 +679,10 @@
 		55A048C114F61BA80030C0FB /* PolygonRezoner */ = {
 			isa = PBXGroup;
 			children = (
-				55EA5AFA1521A55400B05ADB /* SCVT.h */,
-				55EA5AF91521A55400B05ADB /* SCVT.cpp */,
-				55A048C314F61BC20030C0FB /* PolygonRezoner.h */,
 				55A048C414F61CA40030C0FB /* PolygonRezoner.cpp */,
+				554BDF21154EDB3900E82697 /* PolygonRezoner.hpp */,
+				55EA5AF91521A55400B05ADB /* SCVT.cpp */,
+				554BDF22154EDB3900E82697 /* SCVT.hpp */,
 			);
 			path = PolygonRezoner;
 			sourceTree = "<group>";
@@ -694,9 +691,9 @@
 			isa = PBXGroup;
 			children = (
 				55A1C13414C40A33000962C4 /* dlmalloc.c */,
-				55A1C13514C40A33000962C4 /* dlmalloc.h */,
+				554BDF44154EDBA400E82697 /* dlmalloc.hpp */,
 				55A1C13914C40A33000962C4 /* mpreal.cpp */,
-				55A1C13A14C40A33000962C4 /* mpreal.h */,
+				554BDF45154EDBA400E82697 /* mpreal.hpp */,
 			);
 			path = "mpfrc++";
 			sourceTree = "<group>";
@@ -712,9 +709,9 @@
 		55C1E3CB142C5EE400D83018 /* Tracer */ = {
 			isa = PBXGroup;
 			children = (
-				5541E1CF14506D1400279AED /* Tracer.h */,
-				55C1E3D1142C5EE400D83018 /* TracerManager.h */,
+				554BDF1F154EDB2A00E82697 /* Tracer.hpp */,
 				55C1E3D0142C5EE400D83018 /* TracerManager.cpp */,
+				554BDF20154EDB2A00E82697 /* TracerManager.hpp */,
 			);
 			path = Tracer;
 			sourceTree = "<group>";
@@ -722,10 +719,10 @@
 		55C9C1421497173A0063230B /* Tags */ = {
 			isa = PBXGroup;
 			children = (
-				5595604E14A4919400EA93D5 /* Tags.h */,
-				55C9C1431497173A0063230B /* EdgeTags.h */,
-				55C9C1441497173A0063230B /* VertexTags.h */,
-				55E5981A14F3DDF300F8C358 /* ProjectionTags.h */,
+				554BDF24154EDB4C00E82697 /* EdgeTags.hpp */,
+				554BDF25154EDB4C00E82697 /* ProjectionTags.hpp */,
+				554BDF26154EDB4C00E82697 /* Tags.hpp */,
+				554BDF27154EDB4C00E82697 /* VertexTags.hpp */,
 			);
 			path = Tags;
 			sourceTree = "<group>";
@@ -733,8 +730,8 @@
 		55C9C1461497174F0063230B /* CommonTasks */ = {
 			isa = PBXGroup;
 			children = (
-				55C9C1481497174F0063230B /* CommonTasks.h */,
 				55397931150459C800FC3EC2 /* CommonTasks.cpp */,
+				554BDF23154EDB4100E82697 /* CommonTasks.hpp */,
 			);
 			path = CommonTasks;
 			sourceTree = "<group>";
@@ -742,8 +739,8 @@
 		55D26478146E116200753BC0 /* SpecialPolygons */ = {
 			isa = PBXGroup;
 			children = (
-				55D2647A146E118600753BC0 /* SpecialPolygons.h */,
 				55D2647B146E121300753BC0 /* SpecialPolygons.cpp */,
+				554BDF28154EDB5400E82697 /* SpecialPolygons.hpp */,
 			);
 			path = SpecialPolygons;
 			sourceTree = "<group>";
@@ -891,9 +888,6 @@
 				55F30BFB14A775E70057BBBE /* TracerManager.cpp in Sources */,
 				55F30BFA14A775DB0057BBBE /* DebugTools.cpp in Sources */,
 				55F30BEB14A775B30057BBBE /* SpecialPolygons.cpp in Sources */,
-				55F30BED14A775B30057BBBE /* splitEdge.h in Sources */,
-				55F30BEE14A775B30057BBBE /* mergeEdge.h in Sources */,
-				55F30BEF14A775B30057BBBE /* splitPolygon.h in Sources */,
 				55F30BF114A775B30057BBBE /* PotentialCrossDetector.cpp in Sources */,
 				55F30BF214A775B30057BBBE /* Projection.cpp in Sources */,
 				55F30BF314A775B30057BBBE /* VertexAgent.cpp in Sources */,
@@ -985,9 +979,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				554BDF47154EDCB100E82697 /* TestPoint.cpp in Sources */,
 				55020B5E14F3AB9B006E35FB /* dlmalloc.c in Sources */,
 				55020B5F14F3AB9B006E35FB /* mpreal.cpp in Sources */,
-				55F8350914C1721E00B7AD5C /* TestPoint.cpp in Sources */,
 				5598FB0F13D3DC4F00BC1AC4 /* Location.cpp in Sources */,
 				5598FB0E13D3DC4300BC1AC4 /* TimeManager.cpp in Sources */,
 				5598FB0A13D3DC3600BC1AC4 /* Edge.cpp in Sources */,

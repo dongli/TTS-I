@@ -1,7 +1,7 @@
-#include "TrendThreshold.h"
-#include "ThresholdFunction.h"
-#include "ConfigTools.h"
-#include "Sphere.h"
+#include "TrendThreshold.hpp"
+#include "ThresholdFunction.hpp"
+#include "ConfigTools.hpp"
+#include "Sphere.hpp"
 
 using namespace ApproachDetector;
 

@@ -1,8 +1,8 @@
-#include "CoverMask.h"
-#include "Polygon.h"
-#include "RLLMesh.h"
-#include "Sphere.h"
-#include "ReportMacros.h"
+#include "CoverMask.hpp"
+#include "Polygon.hpp"
+#include "RLLMesh.hpp"
+#include "Sphere.hpp"
+#include "ReportMacros.hpp"
 
 CoverMask::CoverMask(const RLLMesh &mesh)
 {

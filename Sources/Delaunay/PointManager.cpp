@@ -1,4 +1,4 @@
-#include "PointManager.h"
+#include "PointManager.hpp"
 
 PointManager::PointManager()
 {

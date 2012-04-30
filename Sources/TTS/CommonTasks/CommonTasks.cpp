@@ -1,8 +1,8 @@
-#include "CommonTasks.h"
-#include "ReportMacros.h"
-#include "Edge.h"
-#include "ApproachDetector.h"
-#include "PolygonManager.h"
+#include "CommonTasks.hpp"
+#include "ReportMacros.hpp"
+#include "Edge.hpp"
+#include "ApproachDetector.hpp"
+#include "PolygonManager.hpp"
 
 using namespace ApproachDetector;
 

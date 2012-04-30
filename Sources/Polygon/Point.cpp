@@ -1,5 +1,5 @@
-#include "Point.h"
-#include "ReportMacros.h"
+#include "Point.hpp"
+#include "ReportMacros.hpp"
 
 Point::Point()
 {

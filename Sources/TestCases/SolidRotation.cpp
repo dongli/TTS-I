@@ -1,8 +1,8 @@
-#include "SolidRotation.h"
-#include "TimeManager.h"
-#include "Constants.h"
-#include "ReportMacros.h"
-#include "Sphere.h"
+#include "SolidRotation.hpp"
+#include "TimeManager.hpp"
+#include "Constants.hpp"
+#include "ReportMacros.hpp"
+#include "Sphere.hpp"
 
 SolidRotation::SolidRotation()
 {

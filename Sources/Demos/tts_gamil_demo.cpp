@@ -1,10 +1,10 @@
-#include "ConfigTools.h"
-#include "Sphere.h"
-#include "TimeManager.h"
-#include "GAMILReader.h"
-#include "PolygonRezoner.h"
-#include "TTS.h"
-#include "CppHelper.h"
+#include "ConfigTools.hpp"
+#include "Sphere.hpp"
+#include "TimeManager.hpp"
+#include "GAMILReader.hpp"
+#include "PolygonRezoner.hpp"
+#include "TTS.hpp"
+#include "CppHelper.hpp"
 
 int main(int argc, char **argv)
 {

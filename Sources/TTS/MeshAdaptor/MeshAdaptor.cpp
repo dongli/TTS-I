@@ -1,7 +1,7 @@
-#include "MeshAdaptor.h"
-#include "ReportMacros.h"
-#include "Sphere.h"
-#include "CoverMask.h"
+#include "MeshAdaptor.hpp"
+#include "ReportMacros.hpp"
+#include "Sphere.hpp"
+#include "CoverMask.hpp"
 
 #include <map>
 #include <list>

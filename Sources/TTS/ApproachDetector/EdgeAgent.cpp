@@ -1,10 +1,10 @@
-#include "EdgeAgent.h"
-#include "Vertex.h"
-#include "Edge.h"
-#include "PolygonManager.h"
-#include "CurvatureGuard.h"
-#include "PotentialCrossDetector.h"
-#include "ReportMacros.h"
+#include "EdgeAgent.hpp"
+#include "Vertex.hpp"
+#include "Edge.hpp"
+#include "PolygonManager.hpp"
+#include "CurvatureGuard.hpp"
+#include "PotentialCrossDetector.hpp"
+#include "ReportMacros.hpp"
 
 using namespace ApproachDetector;
 using namespace CurvatureGuard;

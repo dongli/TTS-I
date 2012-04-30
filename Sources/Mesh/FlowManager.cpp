@@ -1,8 +1,8 @@
-#include "FlowManager.h"
-#include "TimeManager.h"
-#include "ReportMacros.h"
-#include "Sphere.h"
-#include "Constants.h"
+#include "FlowManager.hpp"
+#include "TimeManager.hpp"
+#include "ReportMacros.hpp"
+#include "Sphere.hpp"
+#include "Constants.hpp"
 #include <netcdfcpp.h>
 #include <sys/stat.h>
 

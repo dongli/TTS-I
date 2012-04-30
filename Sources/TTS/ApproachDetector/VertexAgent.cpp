@@ -1,6 +1,6 @@
-#include "VertexAgent.h"
-#include "Vertex.h"
-#include "Edge.h"
+#include "VertexAgent.hpp"
+#include "Vertex.hpp"
+#include "Edge.hpp"
 
 using namespace ApproachDetector;
 

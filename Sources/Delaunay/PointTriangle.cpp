@@ -6,10 +6,10 @@
  *
  */
 
-#include "PointTriangle.h"
-#include "DelaunayVertex.h"
-#include "DelaunayTriangle.h"
-#include "Sphere.h"
+#include "PointTriangle.hpp"
+#include "DelaunayVertex.hpp"
+#include "DelaunayTriangle.hpp"
+#include "Sphere.hpp"
 
 // *****************************************************************************
 

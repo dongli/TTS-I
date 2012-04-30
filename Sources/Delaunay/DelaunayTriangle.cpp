@@ -1,7 +1,7 @@
-#include "DelaunayTriangle.h"
-#include "Sphere.h"
-#include "DelaunayVertex.h"
-#include "Constants.h"
+#include "DelaunayTriangle.hpp"
+#include "Sphere.hpp"
+#include "DelaunayVertex.hpp"
+#include "Constants.hpp"
 #include <cmath>
 #include <iomanip>
 

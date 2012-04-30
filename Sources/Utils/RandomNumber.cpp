@@ -1,4 +1,4 @@
-#include "RandomNumber.h"
+#include "RandomNumber.hpp"
 #include <cstdlib>
 #include <ctime>
 

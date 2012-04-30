@@ -1,8 +1,8 @@
-#include "AgentPair.h"
-#include "Vertex.h"
-#include "Edge.h"
+#include "AgentPair.hpp"
+#include "Vertex.hpp"
+#include "Edge.hpp"
 #ifdef DEBUG
-#include "DebugTools.h"
+#include "DebugTools.hpp"
 #endif
 
 using namespace ApproachDetector;

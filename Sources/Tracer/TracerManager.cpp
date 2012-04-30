@@ -1,7 +1,7 @@
 #include <netcdfcpp.h>
 
-#include "TracerManager.h"
-#include "Tracer.h"
+#include "TracerManager.hpp"
+#include "Tracer.hpp"
 
 TracerManager::TracerManager()
 {

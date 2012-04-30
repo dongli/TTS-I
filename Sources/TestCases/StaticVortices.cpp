@@ -1,7 +1,7 @@
-#include "StaticVortices.h"
-#include "Constants.h"
-#include "ReportMacros.h"
-#include "Sphere.h"
+#include "StaticVortices.hpp"
+#include "Constants.hpp"
+#include "ReportMacros.hpp"
+#include "Sphere.hpp"
 
 StaticVortices::StaticVortices()
 {

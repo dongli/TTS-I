@@ -1,7 +1,7 @@
-#include "GAMILReader.h"
-#include "SystemCalls.h"
-#include "TimeManager.h"
-#include "ConfigTools.h"
+#include "GAMILReader.hpp"
+#include "SystemCalls.hpp"
+#include "TimeManager.hpp"
+#include "ConfigTools.hpp"
 #include <netcdfcpp.h>
 #include <sys/stat.h>
 #include <blitz/array.h>

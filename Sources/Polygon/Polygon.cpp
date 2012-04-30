@@ -1,13 +1,13 @@
-#include "Polygon.h"
-#include "Constants.h"
-#include "Sphere.h"
-#include "TimeManager.h"
-#include "PolygonManager.h"
+#include "Polygon.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
+#include "TimeManager.hpp"
+#include "PolygonManager.hpp"
 #ifdef TTS_ONLINE
-#include "TTS.h"
-#include "CommonTasks.h"
+#include "TTS.hpp"
+#include "CommonTasks.hpp"
 #ifdef DEBUG
-#include "DebugTools.h"
+#include "DebugTools.hpp"
 #endif
 #endif
 #include <fstream>

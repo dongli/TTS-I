@@ -1,8 +1,8 @@
-#include "SCVT.h"
-#include "DelaunayDriver.h"
-#include "RandomNumber.h"
-#include "Sphere.h"
-#include "PolygonManager.h"
+#include "SCVT.hpp"
+#include "DelaunayDriver.hpp"
+#include "RandomNumber.hpp"
+#include "Sphere.hpp"
+#include "PolygonManager.hpp"
 #include <netcdfcpp.h>
 
 namespace SCVT {

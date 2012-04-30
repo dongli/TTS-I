@@ -1,9 +1,9 @@
-#include "PolygonManager.h"
-#include "Constants.h"
-#include "TimeManager.h"
-#include "DelaunayDriver.h"
-#include "ReportMacros.h"
-#include "ConfigTools.h"
+#include "PolygonManager.hpp"
+#include "Constants.hpp"
+#include "TimeManager.hpp"
+#include "DelaunayDriver.hpp"
+#include "ReportMacros.hpp"
+#include "ConfigTools.hpp"
 #include <netcdfcpp.h>
 
 PolygonManager::PolygonManager()

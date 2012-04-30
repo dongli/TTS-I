@@ -1,14 +1,14 @@
-#include "Edge.h"
-#include "Polygon.h"
-#include "Constants.h"
-#include "Sphere.h"
+#include "Edge.hpp"
+#include "Polygon.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
 #ifdef TTS_ONLINE
-#include "MeshManager.h"
-#include "FlowManager.h"
-#include "ApproachDetector.h"
-#include "PotentialCrossDetector.h"
-#include "TTS.h"
-#include "CommonTasks.h"
+#include "MeshManager.hpp"
+#include "FlowManager.hpp"
+#include "ApproachDetector.hpp"
+#include "PotentialCrossDetector.hpp"
+#include "TTS.hpp"
+#include "CommonTasks.hpp"
 
 using namespace PotentialCrossDetector;
 #endif

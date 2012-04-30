@@ -1,4 +1,4 @@
-#include "ConfigTools.h"
+#include "ConfigTools.hpp"
 
 string ConfigTools::fileName;
 map<string, string> ConfigTools::content;

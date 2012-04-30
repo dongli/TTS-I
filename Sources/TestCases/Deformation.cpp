@@ -1,5 +1,5 @@
-#include "Deformation.h"
-#include "Sphere.h"
+#include "Deformation.hpp"
+#include "Sphere.hpp"
 
 Deformation::Deformation(SubCaseID subCaseID, InitCondID initCondID)
 {

@@ -6,10 +6,10 @@
  *
  */
 
-#include "Topology.h"
-#include "DelaunayVertex.h"
-#include "DelaunayTriangle.h"
-#include "ReportMacros.h"
+#include "Topology.hpp"
+#include "DelaunayVertex.hpp"
+#include "DelaunayTriangle.hpp"
+#include "ReportMacros.hpp"
 #include <iomanip>
 
 using std::setw;

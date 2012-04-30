@@ -1,6 +1,6 @@
-#include "DelaunayDriver.h"
-#include "PointManager.h"
-#include "PolygonManager.h"
+#include "DelaunayDriver.hpp"
+#include "PointManager.hpp"
+#include "PolygonManager.hpp"
 #include <netcdfcpp.h>
 #include <string>
 #include <iostream>

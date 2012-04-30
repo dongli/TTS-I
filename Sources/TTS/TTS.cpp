@@ -1,13 +1,13 @@
-#include "TTS.h"
-#include "Velocity.h"
-#include "Point.h"
-#include "TimeManager.h"
-#include "Constants.h"
-#include "Sphere.h"
-#include "CurvatureGuard.h"
-#include "PolygonRezoner.h"
+#include "TTS.hpp"
+#include "Velocity.hpp"
+#include "Point.hpp"
+#include "TimeManager.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
+#include "CurvatureGuard.hpp"
+#include "PolygonRezoner.hpp"
 #ifdef DEBUG
-#include "DebugTools.h"
+#include "DebugTools.hpp"
 #endif
 
 TTS::TTS()

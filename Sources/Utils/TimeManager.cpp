@@ -1,5 +1,5 @@
-#include "TimeManager.h"
-#include "ReportMacros.h"
+#include "TimeManager.hpp"
+#include "ReportMacros.hpp"
 #include <iostream>
 #include <iomanip>
 

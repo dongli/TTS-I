@@ -1,14 +1,14 @@
-#include "ApproachDetector.h"
-#include "MeshManager.h"
-#include "FlowManager.h"
-#include "PolygonManager.h"
-#include "SpecialPolygons.h"
-#include "CurvatureGuard.h"
-#include "PotentialCrossDetector.h"
-#include "TTS.h"
-#include "CommonTasks.h"
+#include "ApproachDetector.hpp"
+#include "MeshManager.hpp"
+#include "FlowManager.hpp"
+#include "PolygonManager.hpp"
+#include "SpecialPolygons.hpp"
+#include "CurvatureGuard.hpp"
+#include "PotentialCrossDetector.hpp"
+#include "TTS.hpp"
+#include "CommonTasks.hpp"
 #ifdef DEBUG
-#include "DebugTools.h"
+#include "DebugTools.hpp"
 #endif
 
 using namespace ApproachDetector;

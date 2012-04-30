@@ -1,7 +1,7 @@
-#include "RLLMesh.h"
-#include "Constants.h"
-#include "Sphere.h"
-#include "ReportMacros.h"
+#include "RLLMesh.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
+#include "ReportMacros.hpp"
 #include <iostream>
 #include <iomanip>
 #include <netcdfcpp.h>

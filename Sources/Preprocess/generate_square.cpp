@@ -1,5 +1,5 @@
-#include "Constants.h"
-#include "PolygonManager.h"
+#include "Constants.hpp"
+#include "PolygonManager.hpp"
 #include <netcdfcpp.h>
 
 int main(void)

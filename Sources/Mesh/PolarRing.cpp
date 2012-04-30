@@ -1,8 +1,8 @@
-#include "Sphere.h"
-#include "Constants.h"
-#include "ReportMacros.h"
-#include "TimeManager.h"
-#include "PolarRing.h"
+#include "Sphere.hpp"
+#include "Constants.hpp"
+#include "ReportMacros.hpp"
+#include "TimeManager.hpp"
+#include "PolarRing.hpp"
 
 PolarRingVelocity::PolarRingVelocity()
 {

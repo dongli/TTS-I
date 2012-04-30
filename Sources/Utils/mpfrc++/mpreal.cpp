@@ -57,10 +57,10 @@
 	SUCH DAMAGE.
 */
 #include <cstring>
-#include "mpreal.h"
+#include "mpreal.hpp"
 
 #if defined (MPREAL_HAVE_CUSTOM_MPFR_MALLOC)
-#include "dlmalloc.h"
+#include "dlmalloc.hpp"
 #endif
 
 using std::ws;

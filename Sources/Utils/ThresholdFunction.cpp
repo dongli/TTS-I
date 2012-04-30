@@ -1,5 +1,5 @@
 #include <cmath>
-#include "ThresholdFunction.h"
+#include "ThresholdFunction.hpp"
 
 double ThresholdFunction::piecewiseLinear(int n, const double *X,
                                           const double *Y, double x)

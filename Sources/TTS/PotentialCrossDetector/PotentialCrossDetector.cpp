@@ -1,9 +1,9 @@
-#include "PotentialCrossDetector.h"
-#include "ApproachDetector.h"
-#include "CurvatureGuard.h"
-#include "Vertex.h"
-#include "Edge.h"
-#include "MeshManager.h"
+#include "PotentialCrossDetector.hpp"
+#include "ApproachDetector.hpp"
+#include "CurvatureGuard.hpp"
+#include "Vertex.hpp"
+#include "Edge.hpp"
+#include "MeshManager.hpp"
 
 using namespace PotentialCrossDetector;
 using namespace ApproachDetector;

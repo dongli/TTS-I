@@ -1,6 +1,6 @@
-#include "ApproachingVertices.h"
-#include "Vertex.h"
-#include "Edge.h"
+#include "ApproachingVertices.hpp"
+#include "Vertex.hpp"
+#include "Edge.hpp"
 
 using namespace ApproachDetector;
 

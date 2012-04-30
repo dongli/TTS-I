@@ -2,9 +2,9 @@
 #include <iomanip>
 #include <netcdfcpp.h>
 
-#include "ReportMacros.h"
-#include "Constants.h"
-#include "unit_test_mesh.h"
+#include "ReportMacros.hpp"
+#include "Constants.hpp"
+#include "unit_test_mesh.hpp"
 
 using namespace std;
 

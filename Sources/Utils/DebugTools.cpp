@@ -1,5 +1,5 @@
-#include "DebugTools.h"
-#include "Sphere.h"
+#include "DebugTools.hpp"
+#include "Sphere.hpp"
 
 Vertex *DebugTools::watchedVertex;
 Edge *DebugTools::watchedEdge;

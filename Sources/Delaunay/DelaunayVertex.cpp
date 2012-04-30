@@ -1,4 +1,4 @@
-#include "DelaunayVertex.h"
+#include "DelaunayVertex.hpp"
 
 DelaunayVertex::DelaunayVertex()
 {

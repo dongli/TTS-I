@@ -1,9 +1,9 @@
-#include "Sphere.h"
-#include "ReportMacros.h"
-#include "Constants.h"
-#include "Polygon.h"
+#include "Sphere.hpp"
+#include "ReportMacros.hpp"
+#include "Constants.hpp"
+#include "Polygon.hpp"
 #include <cmath>
-#include "mpreal.h"
+#include "mpreal.hpp"
 
 using namespace mpfr;
 

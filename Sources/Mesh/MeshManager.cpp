@@ -1,7 +1,7 @@
-#include "MeshManager.h"
-#include "ReportMacros.h"
-#include "Constants.h"
-#include "Sphere.h"
+#include "MeshManager.hpp"
+#include "ReportMacros.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
 #include <iostream>
 
 using std::cout;

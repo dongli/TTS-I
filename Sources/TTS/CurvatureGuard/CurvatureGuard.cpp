@@ -1,19 +1,19 @@
-#include "CurvatureGuard.h"
-#include "MeshManager.h"
-#include "FlowManager.h"
-#include "PolygonManager.h"
-#include "TimeManager.h"
-#include "ApproachDetector.h"
-#include "TTS.h"
-#include "CommonTasks.h"
+#include "CurvatureGuard.hpp"
+#include "MeshManager.hpp"
+#include "FlowManager.hpp"
+#include "PolygonManager.hpp"
+#include "TimeManager.hpp"
+#include "ApproachDetector.hpp"
+#include "TTS.hpp"
+#include "CommonTasks.hpp"
 #ifdef DEBUG
-#include "DebugTools.h"
+#include "DebugTools.hpp"
 #endif
 
-#include "AngleThreshold.h"
-#include "splitEdge.h"
-#include "mergeEdge.h"
-#include "splitPolygon.h"
+#include "AngleThreshold.hpp"
+#include "splitEdge.hpp"
+#include "mergeEdge.hpp"
+#include "splitPolygon.hpp"
 
 #include <ctime>
 

@@ -1,12 +1,12 @@
-#include "SpecialPolygons.h"
-#include "PolygonManager.h"
-#include "MeshManager.h"
-#include "FlowManager.h"
-#include "ApproachDetector.h"
-#include "PotentialCrossDetector.h"
-#include "CurvatureGuard.h"
-#include "TTS.h"
-#include "CommonTasks.h"
+#include "SpecialPolygons.hpp"
+#include "PolygonManager.hpp"
+#include "MeshManager.hpp"
+#include "FlowManager.hpp"
+#include "ApproachDetector.hpp"
+#include "PotentialCrossDetector.hpp"
+#include "CurvatureGuard.hpp"
+#include "TTS.hpp"
+#include "CommonTasks.hpp"
 #include <set>
 
 using namespace SpecialPolygons;

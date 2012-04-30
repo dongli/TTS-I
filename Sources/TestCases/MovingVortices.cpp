@@ -1,8 +1,8 @@
-#include "MovingVortices.h"
-#include "TimeManager.h"
-#include "Constants.h"
-#include "ReportMacros.h"
-#include "Sphere.h"
+#include "MovingVortices.hpp"
+#include "TimeManager.hpp"
+#include "Constants.hpp"
+#include "ReportMacros.hpp"
+#include "Sphere.hpp"
 
 MovingVortices::MovingVortices()
 {

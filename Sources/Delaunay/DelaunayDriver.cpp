@@ -1,9 +1,9 @@
-#include "DelaunayDriver.h"
-#include "RandomNumber.h"
-#include "Constants.h"
-#include "Sphere.h"
-#include "PointTriangle.h"
-#include "ReportMacros.h"
+#include "DelaunayDriver.hpp"
+#include "RandomNumber.hpp"
+#include "Constants.hpp"
+#include "Sphere.hpp"
+#include "PointTriangle.hpp"
+#include "ReportMacros.hpp"
 #include <netcdfcpp.h>
 #include <fstream>
 #include <iomanip>

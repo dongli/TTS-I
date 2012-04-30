@@ -1,5 +1,5 @@
-#include "SystemCalls.h"
-#include "ReportMacros.h"
+#include "SystemCalls.hpp"
+#include "ReportMacros.hpp"
 #include <cstdlib>
 
 int SystemCalls::getNumFile(const std::string &dir)
