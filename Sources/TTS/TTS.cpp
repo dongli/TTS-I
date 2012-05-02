@@ -5,7 +5,9 @@
 #include "Constants.hpp"
 #include "Sphere.hpp"
 #include "CurvatureGuard.hpp"
+#ifdef TTS_REZONE
 #include "PolygonRezoner.hpp"
+#endif
 #ifdef DEBUG
 #include "DebugTools.hpp"
 #endif

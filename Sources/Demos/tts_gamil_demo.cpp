@@ -2,7 +2,9 @@
 #include "Sphere.hpp"
 #include "TimeManager.hpp"
 #include "GAMILReader.hpp"
+#ifdef TTS_REZONE
 #include "PolygonRezoner.hpp"
+#endif
 #include "TTS.hpp"
 #include "CppHelper.hpp"
 
