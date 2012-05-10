@@ -27,8 +27,8 @@ public:
     
     void getCircumcenter(double [], double []);
 
-    List<DelaunayVertex> *DVT;
-    List<DelaunayTriangle> *DT;
+    List<DelaunayVertex> DVT;
+    List<DelaunayTriangle> DT;
 
 protected:
     void getThreeRandomIndices(int []);
@@ -94,17 +94,6 @@ protected:
      *   No return value
      */
     void validate(DelaunayTriangle *);
-
-    /*
-     * Function:
-     *   output*
-     * Purpose:
-     *   Output the data in several form.
-     * Return value:
-     *   No return value
-     */
-    void outputAscii(const string &);
-    void outputNetCDF(const string &);
     
     /*
      * Function:

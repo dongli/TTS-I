@@ -127,7 +127,7 @@ void SCVT::run(int numPoint, DelaunayDriver &driver, const string &ID)
 #if defined (DEBUG) || defined (VERBOSE)
         if (k == 0) {
             cout << "[Notice]: SCVT::run: Check initial generators in scvt_mc.nc" << endl;
-            driver.output("scvt_mc_"+ID);
+            driver.output("scvt_mc_"+ID+".nc");
         }
 #endif
         driver.calcCircumcenter();
@@ -135,16 +135,16 @@ void SCVT::run(int numPoint, DelaunayDriver &driver, const string &ID)
         // Calculate centroids of Voronoi cells (approximated)
         DelaunayVertex *DVT;
         // Evaluate the density on the generators (DVT)
-        assert(numPoint == driver.DVT->size());
-        double rho0[driver.DT->size()];
-        DelaunayTriangle *DT = driver.DT->front();
-        for (int i = 0; i < driver.DT->size(); ++i) {
+        assert(numPoint == driver.DVT.size());
+        double rho0[driver.DT.size()];
+        DelaunayTriangle *DT = driver.DT.front();
+        for (int i = 0; i < driver.DT.size(); ++i) {
             rho0[i] = getDensity(DT->circumcenter.getCoordinate().getLon(),
                                  DT->circumcenter.getCoordinate().getLat());
             DT = DT->next;
         }
-        DVT = driver.DVT->front();
-        for (int i = 0; i < driver.DVT->size(); ++i) {
+        DVT = driver.DVT.front();
+        for (int i = 0; i < driver.DVT.size(); ++i) {
             Vector car = 0.0;
             double W = 0.0;
             const Coordinate &x0 = DVT->point->getCoordinate();
@@ -180,8 +180,8 @@ void SCVT::run(int numPoint, DelaunayDriver &driver, const string &ID)
         if (L2 < eps) {
             isCriteriaMeet = true;
         } else {
-            DVT = driver.DVT->front();
-            for (int i = 0; i < driver.DVT->size(); ++i) {
+            DVT = driver.DVT.front();
+            for (int i = 0; i < driver.DVT.size(); ++i) {
                 DVT->point->setCoordinate(lon[i], lat[i]);
                 DVT = DVT->next;
             }

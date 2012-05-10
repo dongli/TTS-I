@@ -87,7 +87,8 @@ void List<T>::create(int size)
     if (isDestroyed == true) {
         reinit(size, incrementSize);
     }
-    for (int i = 0; i < size; ++i)
+    int numExistElem = this->size();
+    for (int i = 0; i < size-numExistElem; ++i)
         append();
 }
 

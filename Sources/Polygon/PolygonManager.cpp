@@ -41,8 +41,8 @@ void PolygonManager::init(const DelaunayDriver &driver)
     Polygon *polygon;
     // -------------------------------------------------------------------------
     // convert the Voronoi diagram into polygon representation
-    polygons.create(driver.DVT->size());
-    vertices.create(driver.DT->size());
+    polygons.create(driver.DVT.size());
+    vertices.create(driver.DT.size());
     Polygon *polygonMap[polygons.size()];
     polygon = polygons.front();
     for (int i = 0; i < polygons.size(); ++i) {
@@ -55,11 +55,11 @@ void PolygonManager::init(const DelaunayDriver &driver)
         vertexMap[i] = vertex;
         vertex = vertex->next;
     }
-    bool checked[driver.DVT->size()];
+    bool checked[driver.DVT.size()];
     memset(checked, 0, polygons.size()*sizeof(bool));
-    DelaunayVertex *DVT = driver.DVT->front();
+    DelaunayVertex *DVT = driver.DVT.front();
     polygon = polygons.front();
-    for (int i = 0; i < driver.DVT->size(); ++i) {
+    for (int i = 0; i < driver.DVT.size(); ++i) {
         DelaunayVertexPointer *linkDVT = DVT->topology.linkDVT.front();
         DelaunayTrianglePointer *incidentDT = DVT->topology.incidentDT.front();
         for (int j = 0; j < DVT->topology.linkDVT.size(); ++j) {

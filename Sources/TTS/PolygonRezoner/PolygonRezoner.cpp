@@ -19,6 +19,8 @@ namespace PolygonRezoner {
     int numGenerator;
     int maxIteration;
     double minRho;
+    //
+    DelaunayDriver driver;
 }
 
 void PolygonRezoner::init()
@@ -59,21 +61,20 @@ void PolygonRezoner::rezone(MeshManager &meshManager,
     for (int i = 1; i < mesh.getNumLon()-1; ++i)
         for (int j = 1; j < mesh.getNumLat()-1; ++j) {
             int k = i-1;
-            rho(k, j) = fabs(q.values(i, j).getNew()-q.values(i-1, j-1).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i-1, j).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i-1, j+1).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i, j-1).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i, j+1).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i+1, j-1).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i+1, j).getNew());
-            rho(k, j) = fmax(rho(k, j), q.values(i, j).getNew()-q.values(i+1, j+1).getNew());
+            rho(k, j) =                 fabs(q.values(i, j).getNew()-q.values(i-1, j-1).getNew());
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i-1, j  ).getNew()));
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i-1, j+1).getNew()));
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i,   j-1).getNew()));
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i,   j+1).getNew()));
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i+1, j-1).getNew()));
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i+1, j  ).getNew()));
+            rho(k, j) = fmax(rho(k, j), fabs(q.values(i, j).getNew()-q.values(i+1, j+1).getNew()));
         }
     rho /= max(rho);
     rho = where(rho < minRho, minRho, rho);
     SCVT::outputDensityFunction(ID);
     // -------------------------------------------------------------------------
     // 2. Generate SCVT according to the previous density function
-    DelaunayDriver driver;
     SCVT::run(numGenerator, driver, ID);
     // -------------------------------------------------------------------------
     // 3. Replace the polygons with SCVT

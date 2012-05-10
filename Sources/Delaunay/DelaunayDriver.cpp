@@ -16,8 +16,8 @@ static int im1[3] = {2,0,1};
 
 DelaunayDriver::DelaunayDriver()
 {
-    DVT = NULL;
-    DT = NULL;
+    DVT.setName("Delaunay vertices");
+    DT.setName("Delaunay triangles");
     obsoleteDT.setName("Obsolete Delaunay triangles");
     temporalDT.setName("Temporal Delaunay triangles");
     REPORT_ONLINE("DelaunayDriver")
@@ -25,30 +25,26 @@ DelaunayDriver::DelaunayDriver()
 
 DelaunayDriver::~DelaunayDriver()
 {
-    if (DVT != NULL) DVT->destroy(), delete DVT;
-    if (DT != NULL) DT->destroy(), delete DT;
     REPORT_OFFLINE("DelaunayDriver")
 }
 
 void DelaunayDriver::init(const PointManager &pointManager)
 {
-    DVT = new List<DelaunayVertex>(pointManager.points.size());
-    DVT->setName("Delaunay vertices");
+    DVT.create(pointManager.points.size());
     PointPointer *point = pointManager.points.front();
+    DelaunayVertex *DVT = this->DVT.front();
     for (int i = 0; i < pointManager.points.size(); ++i) {
-        DVT->append();
-        DVT->back()->point = point->ptr;
+        DVT->point = point->ptr;
         point = point->next;
+        DVT = DVT->next;
     }
-    DT = new List<DelaunayTriangle>(1000, 100);
-    DT->setName("Delaunay triangles");
 }
 
 void DelaunayDriver::reinit()
 {
-    DT->recycle();
-    DelaunayVertex *DVT = this->DVT->front();
-    for (int i = 0; i < this->DVT->size(); ++i) {
+    DT.recycle();
+    DelaunayVertex *DVT = this->DVT.front();
+    for (int i = 0; i < this->DVT.size(); ++i) {
         DVT->reinit();
         DVT = DVT->next;
     }
@@ -60,20 +56,20 @@ void DelaunayDriver::reinit()
 void DelaunayDriver::run()
 {
     int idx[3];
-    
+
     getThreeRandomIndices(idx);
     initDelaunayTriangle(idx);
     initPIT();
     insertRestPoints();
     extractTopology();
     deleteFake();
-    DT->reindex();
+    DT.reindex();
 }
 
 void DelaunayDriver::calcCircumcenter()
 {
-    DelaunayTriangle *DT = this->DT->front();
-    for (int i = 0; i < this->DT->size(); ++i) {
+    DelaunayTriangle *DT = this->DT.front();
+    for (int i = 0; i < this->DT.size(); ++i) {
         DT->calcCircumcenter();
         DT = DT->next;
     }
@@ -81,8 +77,8 @@ void DelaunayDriver::calcCircumcenter()
 
 void DelaunayDriver::getCircumcenter(double lon[], double lat[])
 {
-    DelaunayTriangle *DT = this->DT->front();
-    for (int i = 0; i < this->DT->size(); ++i) {
+    DelaunayTriangle *DT = this->DT.front();
+    for (int i = 0; i < this->DT.size(); ++i) {
         lon[i] = DT->circumcenter.getCoordinate().getLon();
         lat[i] = DT->circumcenter.getCoordinate().getLat();
         DT = DT->next;
@@ -91,7 +87,7 @@ void DelaunayDriver::getCircumcenter(double lon[], double lat[])
 
 void DelaunayDriver::getThreeRandomIndices(int idx[])
 {
-    if (DVT->size() == 3) {
+    if (DVT.size() == 3) {
         idx[0] = 0; idx[1] = 1; idx[2] = 2;
         return;
     }
@@ -99,7 +95,7 @@ void DelaunayDriver::getThreeRandomIndices(int idx[])
     bool success = false;
     while (!success) {
         for (int i = 0; i < 3; ++i)
-            idx[i] = RandomNumber::getRandomNumber(0, DVT->size()-1);
+            idx[i] = RandomNumber::getRandomNumber(0, DVT.size()-1);
         if (idx[0] != idx[1] && idx[1] != idx[2] && idx[2] != idx[0])
             success = true;
     }
@@ -110,9 +106,9 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
     // -------------------------------------------------------------------------
     // 0. Use an array to uniformly access the three vertices
     DelaunayVertex *DVT[6];
-    DVT[0] = this->DVT->at(threeIdx[0]);
-    DVT[1] = this->DVT->at(threeIdx[1]);
-    DVT[2] = this->DVT->at(threeIdx[2]);
+    DVT[0] = this->DVT.at(threeIdx[0]);
+    DVT[1] = this->DVT.at(threeIdx[1]);
+    DVT[2] = this->DVT.at(threeIdx[2]);
     // -------------------------------------------------------------------------
     // 1. Set the three fake vertices that are antipodal to the corresponding
     //    vertices of the first three inserted ones
@@ -128,7 +124,7 @@ void DelaunayDriver::initDelaunayTriangle(int threeIdx[])
     //    to uniformly access them
     DelaunayTriangle *DT[8];
     for (int i = 0; i < 8; ++i)
-        this->DT->append(&DT[i]);
+        this->DT.append(&DT[i]);
     // -------------------------------------------------------------------------
     // 3. Link the triangles with their adjacent triangles
     static int idx1[24] = {4,1,3, 5,2,0, 6,3,1, 7,0,2, 0,7,5, 1,4,6, 2,5,7, 3,6,4};
@@ -188,15 +184,15 @@ void DelaunayDriver::initPIT()
     int i, j;
     // -------------------------------------------------------------------------
     // Loop for each point
-    DVT = this->DVT->front();
-    for (i = 0; i < this->DVT->size(); ++i) {
+    DVT = this->DVT.front();
+    for (i = 0; i < this->DVT.size(); ++i) {
         if (DVT->inserted) {
             DVT = DVT->next;
             continue;
         }
         // Loop for each triangle
-        DT = this->DT->front();
-        for (j = 0; j < this->DT->size(); ++j) {
+        DT = this->DT.front();
+        for (j = 0; j < this->DT.size(); ++j) {
             int ret = Sphere::inTriangle(DT->DVT[0]->point,
                                          DT->DVT[1]->point,
                                          DT->DVT[2]->point,
@@ -254,8 +250,8 @@ void DelaunayDriver::initPIT()
 
 void DelaunayDriver::insertRestPoints()
 {
-    DelaunayVertex *DVT = this->DVT->front();
-    for (int i = 0; i < this->DVT->size(); ++i) {
+    DelaunayVertex *DVT = this->DVT.front();
+    for (int i = 0; i < this->DVT.size(); ++i) {
         if (DVT->inserted) {
             DVT = DVT->next;
             continue;
@@ -304,7 +300,7 @@ void DelaunayDriver::deleteObsoleteDT()
 {
     DelaunayTrianglePointer *DT = obsoleteDT.front();
     for (int i = 0; i < obsoleteDT.size(); ++i) {
-        this->DT->remove(DT->ptr);
+        this->DT.remove(DT->ptr);
         DT = DT->next;
     }
     obsoleteDT.recycle();
@@ -314,7 +310,7 @@ void DelaunayDriver::deleteTemporalDT()
 {
     DelaunayTrianglePointer *DT = temporalDT.front();
     for (int i = 0; i < temporalDT.size(); ++i) {
-        this->DT->remove(DT->ptr);
+        this->DT.remove(DT->ptr);
         DT = DT->next;
     }
     temporalDT.recycle();
@@ -376,8 +372,8 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
         DelaunayTriangle *newDT1, *newDT2;
         int idxMap[4] = {im1[i],i,ip1[i],im1[j]};
         flip22(DT1, DT2, &newDT1, &newDT2, idxMap);
-        DT->remove(DT1);
-        DT->remove(DT2);
+        DT.remove(DT1);
+        DT.remove(DT2);
     }
     // -------------------------------------------------------------------------
     // Here, there are only three triangles
@@ -397,9 +393,9 @@ void DelaunayDriver::deleteDVT(DelaunayVertex *DVT)
     DelaunayTriangle *newDT;
     int idxMap[5] = {ip1[i],im1[i],i,j,k};
     flip31(DT1, DT2, DT3, &newDT, idxMap);
-    DT->remove(DT1);
-    DT->remove(DT2);
-    DT->remove(DT3);
+    DT.remove(DT1);
+    DT.remove(DT2);
+    DT.remove(DT3);
 }
 
 void DelaunayDriver::deleteFake()
@@ -413,8 +409,8 @@ void DelaunayDriver::deleteFake()
 
 void DelaunayDriver::extractTopology()
 {
-    DelaunayVertex *DVT = this->DVT->front();
-    for (int i = 0; i < this->DVT->size(); ++i) {
+    DelaunayVertex *DVT = this->DVT.front();
+    for (int i = 0; i < this->DVT.size(); ++i) {
         DVT->topology.extract();
         DVT = DVT->next;
     }
@@ -488,7 +484,7 @@ void DelaunayDriver::flip13(DelaunayTriangle *oldDT, DelaunayVertex *point)
     // 1. Subdivide the old triangle into three new ones
     DelaunayTriangle *newDT[3];
     for (int i = 0; i < 3; ++i)
-        this->DT->append(&newDT[i]);
+        this->DT.append(&newDT[i]);
     // -------------------------------------------------------------------------
     // 2. Set up the topology of the three triangles
     // =========================================================================
@@ -560,7 +556,7 @@ void DelaunayDriver::flip24(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     // 1. Subdivide the two triangles into four new ones
     DelaunayTriangle *newDT[4];
     for (int i = 0; i < 4; ++i)
-        this->DT->append(&newDT[i]);
+        this->DT.append(&newDT[i]);
     // -------------------------------------------------------------------------
     // 2. Set up the topology of the four triangles
     // =========================================================================
@@ -663,8 +659,8 @@ void DelaunayDriver::flip22(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     adjDT4 = oldDT2->adjDT[im1[idxMap[3]]];
     // -------------------------------------------------------------------------
     // 1. Create two new triangles and set up their topology
-    DT->append(newDT1);
-    DT->append(newDT2);
+    DT.append(newDT1);
+    DT.append(newDT2);
     (*newDT1)->DVT[0] = DVT1;
     (*newDT1)->DVT[1] = DVT4;
     (*newDT1)->DVT[2] = DVT3;
@@ -733,7 +729,7 @@ void DelaunayDriver::flip31(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
     adjDT3 = oldDT3->adjDT[idxMap[4]];
     // -------------------------------------------------------------------------
     // 1. Create one new triangles and set up their topology
-    DT->append(newDT);
+    DT.append(newDT);
     (*newDT)->DVT[0] = DVT1;
     (*newDT)->DVT[1] = DVT2;
     (*newDT)->DVT[2] = DVT4;
@@ -767,62 +763,21 @@ void DelaunayDriver::flip31(DelaunayTriangle *oldDT1, DelaunayTriangle *oldDT2,
 
 void DelaunayDriver::output(const string &fileName)
 {
-    outputNetCDF(fileName);
-}
-
-inline void DelaunayDriver::outputAscii(const string &fileName)
-{
-    ofstream file;
-    file.open(string(fileName+".txt").c_str());
-    file << "[Delaunay triangles]" << endl;
-    file << "Number: " << this->DT->size() << endl;
-    DelaunayTriangle *DT = this->DT->front();
-    for (int i = 0; i < this->DT->size(); ++i) {
-        file << "#" << setw(8) << DT->getID();
-        for (int j = 0; j < 3; ++j)
-            file << setw(10) << DT->DVT[j]->getID();
-        file << endl;
-        DT = DT->next;
-    }
-    file << "[Delaunay vertices]" << endl;
-    file << "Number: " << this->DVT->size() << endl;
-    DelaunayVertex *DVT = this->DVT->front();
-    for (int i = 0; i < this->DVT->size(); ++i) {
-        file << "#" << setw(8) << DVT->getID();
-        file << DVT->point << endl;
-        DVT = DVT->next;
-    }
-    int numFake = 0;
-    for (int i = 0; i < fake.num; ++i)
-        if (!fake.deleted[i]) ++numFake;
-    file << "[Fake vertices]" << endl;
-    file << "Number: " << numFake << endl;
-    for (int i = 0; i < fake.num; ++i) {
-        if (!fake.deleted[i]) {
-            file << "#" << setw(8) << fake.DVT[i].getID();
-            file << fake.DVT[i].point << endl;
-        }
-    }
-    file.close();
-}
-
-inline void DelaunayDriver::outputNetCDF(const string &fileName)
-{
-    NcFile *file = new NcFile(string(fileName+".nc").c_str(), NcFile::Replace);
+    NcFile *file = new NcFile(fileName.c_str(), NcFile::Replace);
     // -------------------------------------------------------------------------
     // Output Delaunay vertices
-    NcDim *numDVTDim = file->add_dim("numDVT", this->DVT->size());
+    NcDim *numDVTDim = file->add_dim("numDVT", this->DVT.size());
     NcVar *lonDVTVar = file->add_var("lonDVT", ncDouble, numDVTDim);
     NcVar *latDVTVar = file->add_var("latDVT", ncDouble, numDVTDim);
-    double lonDVT[this->DVT->size()], latDVT[this->DVT->size()];
-    DelaunayVertex *DVT = this->DVT->front();
-    for (int i = 0; i < this->DVT->size(); ++i) {
+    double lonDVT[this->DVT.size()], latDVT[this->DVT.size()];
+    DelaunayVertex *DVT = this->DVT.front();
+    for (int i = 0; i < this->DVT.size(); ++i) {
         lonDVT[i] = DVT->point->getCoordinate().getLon()*Rad2Deg;
         latDVT[i] = DVT->point->getCoordinate().getLat()*Rad2Deg;
         DVT = DVT->next;
     }
-    lonDVTVar->put(lonDVT, this->DVT->size());
-    latDVTVar->put(latDVT, this->DVT->size());
+    lonDVTVar->put(lonDVT, this->DVT.size());
+    latDVTVar->put(latDVT, this->DVT.size());
     // -------------------------------------------------------------------------
     // Output the remaining fake vertices
     bool hasFakeDVT = false;
@@ -848,17 +803,17 @@ inline void DelaunayDriver::outputNetCDF(const string &fileName)
         latFakeDVTVar->put(latFakeDVT, fake.num);
     }
     // -------------------------------------------------------------------------
-    NcDim *numDTDim = file->add_dim("numDT", this->DT->size());
+    NcDim *numDTDim = file->add_dim("numDT", this->DT.size());
     NcDim *threeDim = file->add_dim("three", 3);
     NcVar *idxDVTVar = file->add_var("idxDVT", ncInt, numDTDim, threeDim);
-    int idxDVT[this->DT->size()][3];
-    DelaunayTriangle *DT = this->DT->front();
-    for (int i = 0; i < this->DT->size(); ++i) {
+    int idxDVT[this->DT.size()][3];
+    DelaunayTriangle *DT = this->DT.front();
+    for (int i = 0; i < this->DT.size(); ++i) {
         for (int j = 0; j < 3; ++j)
             idxDVT[i][j] = DT->DVT[j]->getID();
         DT = DT->next;
     }
-    idxDVTVar->put(&idxDVT[0][0], this->DT->size(), 3);
+    idxDVTVar->put(&idxDVT[0][0], this->DT.size(), 3);
     
     file->close();
     delete file;
