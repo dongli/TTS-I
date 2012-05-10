@@ -37,10 +37,10 @@ int main(int argc, char **argv)
 #endif
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
-        tts.advect(gamilReader.meshManager, gamilReader.meshAdaptor,
-                   gamilReader.flowManager, tracerManager);
         TimeManager::advance();
         gamilReader.getVelocityField();
+        tts.advect(gamilReader.meshManager, gamilReader.meshAdaptor,
+                   gamilReader.flowManager, tracerManager);
 #ifdef TTS_OUTPUT
         tracerManager.output(to_string(TimeManager::getSteps(), filePattern));
 #endif

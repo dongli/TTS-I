@@ -88,12 +88,12 @@ int main(int argc, char **argv)
 #endif
     // -------------------------------------------------------------------------
     while (!TimeManager::isFinished()) {
+        TimeManager::advance();
+        testCase.calcVelocityField(flowManager);
         tts.advect(meshManager, meshAdaptor, flowManager, tracerManager);
 #ifdef TESTCASE_CALC_TRUE_SOLUTION
         testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
 #endif
-        TimeManager::advance();
-        testCase.calcVelocityField(flowManager);
 #ifdef TTS_OUTPUT
         tracerManager.output(to_string(TimeManager::getSteps(), filePattern));
 #endif
