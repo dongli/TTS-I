@@ -91,6 +91,7 @@ void RLLMesh::init(MeshSpec spec, int numLon, int numLat,
 	}
 	// -------------------------------------------------------------------------
     // area of full mesh cells:
+    // Note: Area does not contain zonal boundary. Sum(area) = sphere area.
 	if (spec.type == Full) {
         if (spec.isWithPoles) {
             area.resize(numLon, numLat-1);

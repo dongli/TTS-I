@@ -34,6 +34,8 @@ public:
               Second dt, const Location &loc) const;
 
     void resetPointCounter() { pointCounter.reset(); }
+    int getNumSubLon() { return pointCounter.numSubLon; }
+    int getNumSubLat() { return pointCounter.numSubLat; }
 
 private:
     friend class FlowManager;

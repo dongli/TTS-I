@@ -20,23 +20,35 @@ void PointCounter::init(const Array<double, 1> &lon, const Array<double, 1> &lat
     this->numSubLon = numSubLon; this->numSubLat = numSubLat;
     // -------------------------------------------------------------------------
     // bounds of cells for counting points
-    // Note: Why do we minus 2 here, not 1? (To limit lonBnds within 0~360)
     int numLon = (lon.size()-2)*numSubLon;
-    int numLat = (lat.size()-1)*numSubLat+1+2;
+    int numLat = lat.size()*numSubLat+1;
     double lonBnds[numLon], latBnds[numLat];
-    for (int i = 1; i < lon.size()-1; ++i) {
-        double dlon = (lon(i+1)-lon(i))/numSubLon;
-        for (int k = 0; k < numSubLon; ++k)
-            lonBnds[(i-1)*numSubLon+k] = lon(i)+k*dlon;
+    int I = 0;
+    for (int i = 1; i < lon.size(); ++i) {
+        double dlon = (lon(i)-lon(i-1))/numSubLon;
+        int k1, k2;
+        if (i == 1) {
+            k1 = ceil(numSubLon/2.0);
+            k2 = numSubLon;
+        } else if (i == lon.size()-1) {
+            k1 = 0;
+            k2 = ceil(numSubLon/2.0);
+        } else {
+            k1 = 0;
+            k2 = numSubLon;
+        }
+        for (int k = k1; k < k2; ++k)
+            lonBnds[I++] = lon(i-1)+k*dlon;
     }
     // Note: Point counter mesh includes poles.
     latBnds[0] = PI05;
+    I = 1;
     for (int j = 0; j < lat.size()-1; ++j) {
         double dlat = (lat(j)-lat(j+1))/numSubLat;
         for (int k = 0; k < numSubLat; ++k)
-            latBnds[1+j*numSubLat+k] = lat(j)-k*dlat;
+            latBnds[I++] = lat(j)-k*dlat;
     }
-    latBnds[numLat-2] = lat(lat.size()-1);
+    latBnds[I] = lat(lat.size()-1);
     latBnds[numLat-1] = -PI05;
     MeshSpec meshSpec;
     meshSpec.type = Full;

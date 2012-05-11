@@ -13,9 +13,9 @@
 #include "PolygonRezoner.hpp"
 #include "CppHelper.hpp"
 
-#define MOVINGVORTICES_TESTCASE
+//#define MOVINGVORTICES_TESTCASE
 //#define TESTCASE_CALC_TRUE_SOLUTION
-//#define DEFORMATION_TESTCASE
+#define DEFORMATION_TESTCASE
 //#define STATICVORTICES_TESTCASE
 //#define SOLIDROTATION_TESTCASE
 
@@ -35,13 +35,15 @@ int main(int argc, char **argv)
 #endif
     // -------------------------------------------------------------------------
 #ifdef DEFORMATION_TESTCASE
-    ConfigTools::parse("tts_config");
+    ConfigTools::parse("tts_df_config");
     string caseID, initCondID;
     ConfigTools::read("case_id", caseID);
     ConfigTools::read("init_cond_id", initCondID);
+    int numTimeStep;
+    ConfigTools::read("num_time_step", numTimeStep);
     Deformation testCase(caseID, initCondID);
-    TimeManager::setClock(5.0/600.0);
-    TimeManager::setEndStep(600);
+    TimeManager::setClock(5.0/numTimeStep);
+    TimeManager::setEndStep(numTimeStep);
 #endif
     // -------------------------------------------------------------------------
 #ifdef STATICVORTICES_TESTCASE
@@ -58,7 +60,9 @@ int main(int argc, char **argv)
     TimeManager::setEndStep(100);
 #endif
     // -------------------------------------------------------------------------
-    int numLon = 360, numLat = 180;
+    int numLon, numLat;
+    ConfigTools::read("backmesh_num_lon", numLon);
+    ConfigTools::read("backmesh_num_lat", numLat);
     double dlon = PI2/numLon;
     double dlat = PI/(numLat+1);
     double lon[numLon], lat[numLat];

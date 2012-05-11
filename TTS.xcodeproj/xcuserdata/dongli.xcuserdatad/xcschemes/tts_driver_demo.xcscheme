@@ -61,7 +61,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "tts_config"
+            argument = "tts_df_config"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

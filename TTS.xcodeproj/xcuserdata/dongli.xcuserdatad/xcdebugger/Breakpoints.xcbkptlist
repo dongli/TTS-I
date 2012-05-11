@@ -318,11 +318,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Sources/Utils/List.cpp"
-         timestampString = "356413746.372304"
+         timestampString = "357723694.283197"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "238"
-         endingLineNumber = "238"
+         startingLineNumber = "239"
+         endingLineNumber = "239"
          landmarkName = "remove(T *elem)"
          landmarkType = "7">
          <Locations>
@@ -332,11 +332,11 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;EdgePointer&gt;::remove(EdgePointer*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "357019252.625249"
+               timestampString = "358333423.89053"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "238"
-               endingLineNumber = "238">
+               startingLineNumber = "239"
+               endingLineNumber = "239">
             </Location>
             <Location
                shouldBeEnabled = "Yes"
@@ -344,11 +344,11 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Edge&gt;::remove(Edge*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "357019252.625495"
+               timestampString = "358333423.890783"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "238"
-               endingLineNumber = "238">
+               startingLineNumber = "239"
+               endingLineNumber = "239">
             </Location>
             <Location
                shouldBeEnabled = "Yes"
@@ -356,11 +356,11 @@
                continueAfterRunningActions = "No"
                symbolName = "List&lt;Vertex&gt;::remove(Vertex*)"
                urlString = "file://localhost/List.cpp"
-               timestampString = "357019252.625713"
+               timestampString = "358333423.890998"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "238"
-               endingLineNumber = "238">
+               startingLineNumber = "239"
+               endingLineNumber = "239">
             </Location>
          </Locations>
       </FileBreakpoint>
@@ -572,19 +572,6 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "355403827.547918"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "251"
-         endingLineNumber = "251"
-         landmarkName = "CurvatureGuard::splitPolygon (MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager, Polygon *&amp;polygon1, EdgePointer *edgePointer1, EdgePointer *edgePointer2, Vertex *vertex3, int mode)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Sources/TTS/ApproachDetector/EdgeAgent.cpp"
          timestampString = "356090468.49444"
          startingColumnNumber = "9223372036854775807"
@@ -614,32 +601,6 @@
                </ActionContent>
             </BreakpointActionProxy>
          </Actions>
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "356191169.5919"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "345"
-         endingLineNumber = "345"
-         landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Sources/TTS/CurvatureGuard/splitPolygon.h"
-         timestampString = "356191169.5919"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "402"
-         endingLineNumber = "402"
-         landmarkName = "handleApproachEvents(MeshManager &amp;meshManager, const FlowManager &amp;flowManager, PolygonManager &amp;polygonManager)"
-         landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -678,6 +639,19 @@
          startingLineNumber = "184"
          endingLineNumber = "184"
          landmarkName = "DebugTools::dump_watched_polygon()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Sources/Utils/DebugTools.cpp"
+         timestampString = "357665733.290834"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
+         landmarkName = "DebugTools::assert_polygon_mass_constant(const PolygonManager &amp;polygonManager)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -9,7 +9,7 @@ begin
     ; --------------------------------------------------------------------------
     ; user configurations
     is_plot_polygons = True
-    is_plot_quantities = True
+    is_plot_quantities = False
     is_plot_vertices = False
     is_plot_vertex_number = False
     is_plot_polygon_area = False
@@ -26,6 +26,9 @@ begin
     file_name_pattern = ask("Input the polygon file name pattern:")
     polygon_file_names = systemfunc("ls "+file_name_pattern)
     counter_file_names = systemfunc("ls debug_counters*.nc 2> /dev/null")
+    if (is_plot_quantities) then 
+        test_case = ask("Input the test case:")
+    end if
 
     ; --------------------------------------------------------------------------
     res_map = True
@@ -58,7 +61,7 @@ begin
                     get_viewpoint(res_map@mpCenterLonF, res_map@mpCenterLatF)
                 end if
             end if
-                
+
             map = gsn_csm_map(wks, res_map)
 
             f = addfile(polygon_file_names(k), "r")
@@ -80,17 +83,16 @@ begin
             end if
 
             if (is_plot_quantities) then
-                ;gsn_define_colormap(wks, "WhBlGrYeRe")
-                gsn_define_colormap(wks, "WhBlReWh")
-                ;gsn_define_colormap(wks, "BlueYellowRed")
+                if (test_case .eq. "gamil") then
+                    gsn_define_colormap(wks, "BlueYellowRed")
+                end if
                 cmap = gsn_retrieve_colormap(wks)
-                ;num_level = 13
                 num_level = 21
                 stride = (dimsizes(cmap(:,0))-3.0)/num_level
                 levels = new(num_level, float)
-                ;levels = fspan(-0.05, 1.15, num_level)
-                levels = fspan(0.5, 1.5, num_level)
-                ;levels = fspan(1.0e+0, 2.0e+3, num_level)
+                if (test_case .eq. "gamil") then
+                    levels = fspan(1.0e+0, 2.0e+3, num_level)
+                end if
                 colors = new((/num_level+3,3/), float)
                 colorlabels = new(num_level, string)
                 colors(0:1,:) = cmap(0:1,:)

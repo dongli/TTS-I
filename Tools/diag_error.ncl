@@ -14,21 +14,21 @@ begin
     f0 = addfile(file_name0, "r")
     f1 = addfile(file_name1, "r")
 
-    num_lon = dimsizes(f0->lon)-1
+    num_lon = dimsizes(f0->lon)
     num_lat = dimsizes(f0->lat)
 
-    q1_0 = f0->q1_mesh(:,:num_lon-1)/f0->q0_mesh(:,:num_lon-1)
-    q1_1 = f1->q1_mesh(:,:num_lon-1)/f1->q0_mesh(:,:num_lon-1)
-    area = f0->area_mesh(:,:num_lon-1)
+    q0 = f0->q1_mesh/f0->q0_mesh
+    q1 = f1->q1_mesh/f1->q0_mesh
+    area = f0->area_mesh
 
-    I1_1 = sum(fabs(q1_1-q1_0)*area)
-    I1_2 = sum(fabs(q1_0)*area)
-    I2_1 = sum((q1_1-q1_0)^2.0*area)
-    I2_2 = sum(q1_0^2.0*area)
+    I1_1 = sum(abs(q1-q0)*area)
+    I1_2 = sum(abs(q0)*area)
+    I2_1 = sum((q1-q0)^2.0*area)
+    I2_2 = sum(q0^2.0*area)
 
     L_1 = I1_1/I1_2
     L_2 = sqrt(I2_1/I2_2)
-    L_inf = max(fabs(q1_1-q1_0))/max(fabs(q1_0))
+    L_inf = max(abs(q1-q0))/max(abs(q0))
 
     notice("L_1 normalized error is "+sprintf("%5.4E", L_1))
     notice("L_2 normalized error is "+sprintf("%5.4E", L_2))

@@ -60,15 +60,6 @@ begin
         wks = gsn_open_wks("pdf", systemfunc("basename -s .nc "+ \
             file_names(l))+"_"+projection+"_"+density_name+"_density")
 
-        ;gsn_define_colormap(wks, "wh-bl-gr-ye-re")
-        if (test_case .eq. "gamil") then
-            gsn_define_colormap(wks, "BlueYellowRed")
-        end if
-        ;gsn_define_colormap(wks, "WhBlGrYeRe")
-        if (test_case .eq. "mv") then
-            gsn_define_colormap(wks, "WhBlReWh")
-        end if
-
         f = addfile(file_names(l), "r")
 
         res = True
@@ -84,6 +75,7 @@ begin
 
         ; for GAMIL test
         if (test_case .eq. "gamil") then
+            gsn_define_colormap(wks, "BlueYellowRed")
             ranges = fspan(1.0e0, 2.0e+3, 21)
             set_contour_range(res, ranges, "%5.2g")
             res@lbLabelAngleF = 45.0
@@ -91,10 +83,21 @@ begin
         end if
 
         ; for deformation flow test
-        ;set_contour_range(res, (/0.0,1.1,0.1/), "%4.2f")
+        if (test_case .eq. "df_sc") then
+            set_contour_range(res, (/0.0,0.9,0.4/), "%4.2f")
+            res@cnFillOn = False
+            res@cnLinesOn = True
+            res@cnLineThicknessF = 4.0
+            res@mpOutlineOn = False
+            res@mpMinLonF = 120.0
+            res@mpMaxLonF = 240.0
+            res@mpMinLatF = -40.0
+            res@mpMaxLatF = 40.0
+        end if
 
         ; for moving vortices test
         if (test_case .eq. "mv") then
+            gsn_define_colormap(wks, "WhBlReWh")
             set_contour_range(res, (/0.5,1.5,0.05/), "%4.2f")
         end if
 

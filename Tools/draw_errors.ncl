@@ -17,7 +17,7 @@ begin
 
     f1 = addfile(file_names1(0), "r")
 
-    num_lon = dimsizes(f1->lon)-1
+    num_lon = dimsizes(f1->lon)
     num_lat = dimsizes(f1->lat)
     num_time = dimsizes(file_names1)
 
@@ -25,24 +25,24 @@ begin
     errors = new((/3,num_time/), double)
 
     do i = 0, num_time-1
-        times(i) = i*1800.0
+        times(i) = i
 
         f1 = addfile(file_names1(i), "r")
         f2 = addfile(file_names2(i), "r")
 
-        q1 = f1->q0_mesh(:,:num_lon-1)
-        q2 = f2->q0_mesh(:,:num_lon-1)
-        area = f1->area_mesh(:,:num_lon-1)
+        q1 = f1->q0_mesh
+        q2 = f2->q0_mesh
+        area = f1->area_mesh
 
-        dq = fabs(q2-q1)
+        dq = abs(q2-q1)
         I1_1 = sum(dq*area)
-        I1_2 = sum(q1*area)
+        I1_2 = sum(abs(q1)*area)
         I2_1 = sum(dq^2.0*area)
         I2_2 = sum(q1^2.0*area)
 
         errors(0,i) = I1_1/I1_2
         errors(1,i) = sqrt(I2_1/I2_2)
-        errors(2,i) = max(dq)/max(q1)
+        errors(2,i) = max(abs(dq))/max(abs(q1))
 
     end do
 
@@ -65,6 +65,6 @@ begin
     res@xyExplicitLegendLabels = (/"L1","L2","LInf"/)
     res@xyLineThicknesses = (/3.,3.,3./)
 
-    plot = gsn_csm_xy(wks, times/86400.0, errors, res)
+    plot = gsn_csm_xy(wks, times, errors, res)
 
 end
