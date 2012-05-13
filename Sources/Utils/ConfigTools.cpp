@@ -46,3 +46,8 @@ void ConfigTools::parse(const string &fileName_)
     // -------------------------------------------------------------------------
     file.close();
 }
+
+bool ConfigTools::hasKey(const string &key)
+{
+    return content.find(key) != content.end() ? true : false;
+}

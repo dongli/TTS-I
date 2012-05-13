@@ -19,6 +19,8 @@ public:
 
     static void parse(const string &fileName);
 
+    static bool hasKey(const string &key);
+
     template <typename VALUETYPE>
     static void read(const string &key, VALUETYPE &value);
 
