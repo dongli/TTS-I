@@ -75,13 +75,10 @@ int main(int argc, char **argv)
     flowManager.init(meshManager);
     testCase.calcVelocityField(flowManager);
     // -------------------------------------------------------------------------
-    tracerManager.init();
+    tracerManager.init(meshManager);
     tts.init();
     // -------------------------------------------------------------------------
     testCase.calcInitCond(meshManager, meshAdaptor, tracerManager);
-#ifdef TTS_REZONE
-    PolygonRezoner::rezone(meshManager, meshAdaptor, flowManager, tracerManager);
-#endif
 #ifdef TESTCASE_CALC_TRUE_SOLUTION
     testCase.calcSolution(meshManager, meshAdaptor, tracerManager);
 #endif

@@ -29,19 +29,6 @@ void CurvatureGuard::guard(MeshManager &meshManager,
     bool flag = false;
     clock_t start, end;
     // -------------------------------------------------------------------------
-    // some operations at the first step
-    if (TimeManager::isFirstStep()) {
-        // check the location of each edge's test point
-        Edge *edge = polygonManager.edges.front();
-        for (int i = 0; i < polygonManager.edges.size(); ++i) {
-            Vertex *testPoint = edge->getTestPoint();
-            Location loc;
-            meshManager.checkLocation(testPoint->getCoordinate(), loc);
-            testPoint->setLocation(loc);
-            edge = edge->next;
-        }
-    }
-    // -------------------------------------------------------------------------
     // advect test points
     Edge *edge = polygonManager.edges.front();
     for (int i = 0; i < polygonManager.edges.size(); ++i) {

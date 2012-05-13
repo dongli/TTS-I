@@ -49,17 +49,6 @@ void TTS::advect(MeshManager &meshManager,
     // -------------------------------------------------------------------------
     meshManager.resetPointCounter();
     // -------------------------------------------------------------------------
-    // check the location of each vertex at the first step
-    if (TimeManager::isFirstStep()) {
-        vertex = polygonManager.vertices.front();
-        for (int i = 0; i < polygonManager.vertices.size(); ++i) {
-            Location loc;
-            meshManager.checkLocation(vertex->getCoordinate(), loc);
-            vertex->setLocation(loc);
-            vertex = vertex->next;
-        }
-    }
-    // -------------------------------------------------------------------------
     // advect vertices of each parcel (polygon)
     vertex = polygonManager.vertices.front();
     for (int i = 0; i < polygonManager.vertices.size(); ++i) {

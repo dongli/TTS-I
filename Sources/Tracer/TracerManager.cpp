@@ -13,9 +13,26 @@ TracerManager::~TracerManager()
     REPORT_OFFLINE("TracerManager");
 }
 
-void TracerManager::init()
+void TracerManager::init(MeshManager &meshManager)
 {
     polygonManager.init();
+    // check vertex location
+    Vertex *vertex = polygonManager.vertices.front();
+    for (int i = 0; i < polygonManager.vertices.size(); ++i) {
+        Location loc;
+        meshManager.checkLocation(vertex->getCoordinate(), loc);
+        vertex->setLocation(loc);
+        vertex = vertex->next;
+    }
+    // check the location of each edge's test point
+    Edge *edge = polygonManager.edges.front();
+    for (int i = 0; i < polygonManager.edges.size(); ++i) {
+        Vertex *testPoint = edge->getTestPoint();
+        Location loc;
+        meshManager.checkLocation(testPoint->getCoordinate(), loc);
+        testPoint->setLocation(loc);
+        edge = edge->next;
+    }
 }
 
 void TracerManager::registerTracer(const string &tracerName,

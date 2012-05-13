@@ -14,22 +14,24 @@
 
 namespace PolygonRezoner {
     // running controls
-    int frequency;
+    int frequency = -1;
     // SCVT controls
-    int numGenerator;
-    int maxIteration;
-    double minRho;
+    int numGenerator = -1;
+    int maxIteration = -1;
+    double minRho = 0.0;
     //
     DelaunayDriver driver;
 }
 
 void PolygonRezoner::init()
 {
-    ConfigTools::read("rezone_num_generator", numGenerator);
-    ConfigTools::read("rezone_frequency", frequency);
-    ConfigTools::read("rezone_min_rho", minRho);
-    ConfigTools::read("rezone_max_iteration", maxIteration);
-    TimeManager::setAlarm("polygon rezoning", frequency);
+    if (ConfigTools::hasKey("rezone_num_generator")) {
+        ConfigTools::read("rezone_num_generator", numGenerator);
+        ConfigTools::read("rezone_frequency", frequency);
+        ConfigTools::read("rezone_min_rho", minRho);
+        ConfigTools::read("rezone_max_iteration", maxIteration);
+        TimeManager::setAlarm("polygon rezoning", frequency);
+    }
 }
 
 void PolygonRezoner::rezone(MeshManager &meshManager,

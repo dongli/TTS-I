@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     ConfigTools::parse(argv[1]);
     Sphere::setRadius(6371.299e3);
     // -------------------------------------------------------------------------
-    tracerManager.init();
+    tracerManager.init(gamilReader.meshManager);
     tts.init();
     // -------------------------------------------------------------------------
     gamilReader.init();
