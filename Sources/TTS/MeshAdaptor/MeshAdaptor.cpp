@@ -695,7 +695,9 @@ void MeshAdaptor::adapt(const TracerManager &tracerManager,
     const RLLMesh &mesh = meshManager.getMesh(PointCounter::Bound);
     int numLon = mesh.getNumLon()-2;
     int numLat = mesh.getNumLat()-1;
-    const double areaDiffThreshold = 1.0e-2;
+    // TODO: With the increase of point counter mesh resolution, the threshold
+    //       should be changed to capture the fully covered cells.
+    const double areaDiffThreshold = 1.0e-3;
     double totalArea, realArea, diffArea, maxDiffArea = 0.0;
     map<int, list<int> > bndCellIdx;
     list<OverlapArea *> overlapAreas;
@@ -1011,7 +1013,12 @@ void MeshAdaptor::remap(const string &tracerName, TracerManager &tracerManager)
             totalCellMass += q(i, j).getNew();
             q(i, j) /= mesh.area(i, j);
 #ifdef DEBUG
-            assert(q(i, j).getNew() != 0.0);
+            if (q(i, j).getNew() == 0.0) {
+                Message message;
+                message << "Point counter cell (" << i << ", " << j << ") ";
+                message << "got no tracer mass!";
+                REPORT_ERROR(message.str());
+            }
 #endif
         }
     // -------------------------------------------------------------------------

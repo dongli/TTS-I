@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		55020B5E14F3AB9B006E35FB /* dlmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13414C40A33000962C4 /* dlmalloc.c */; };
 		55020B5F14F3AB9B006E35FB /* mpreal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55A1C13914C40A33000962C4 /* mpreal.cpp */; };
+		550995A5155F3FA2007E02BF /* MeshManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8313D3DA9F00BC1AC4 /* MeshManager.cpp */; };
+		550995A6155F3FA2007E02BF /* PointCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556E49BE13D54DCF00AE4150 /* PointCounter.cpp */; };
+		550995A7155F3FA2007E02BF /* RLLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA8713D3DA9F00BC1AC4 /* RLLMesh.cpp */; };
+		550995A8155F3FA2007E02BF /* ConfigTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554F970714A8B437000052E2 /* ConfigTools.cpp */; };
+		550995AA155F3FB7007E02BF /* Layers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA7F13D3DA9F00BC1AC4 /* Layers.cpp */; };
+		550995AB155F3FB7007E02BF /* SCVT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55EA5AF91521A55400B05ADB /* SCVT.cpp */; };
 		550A94A414271B4500D97A06 /* Deformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550A94A214271B4500D97A06 /* Deformation.cpp */; };
 		5534794D1429CF6800FCC94C /* unit_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5534794C1429CF6800FCC94C /* unit_test_main.cpp */; };
 		553979271502EA2D00FC3EC2 /* DelaunayDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5598FA6A13D3DA9F00BC1AC4 /* DelaunayDriver.cpp */; };
@@ -995,6 +1001,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				550995AA155F3FB7007E02BF /* Layers.cpp in Sources */,
+				550995AB155F3FB7007E02BF /* SCVT.cpp in Sources */,
+				550995A5155F3FA2007E02BF /* MeshManager.cpp in Sources */,
+				550995A6155F3FA2007E02BF /* PointCounter.cpp in Sources */,
+				550995A7155F3FA2007E02BF /* RLLMesh.cpp in Sources */,
+				550995A8155F3FA2007E02BF /* ConfigTools.cpp in Sources */,
 				554BDF47154EDCB100E82697 /* TestPoint.cpp in Sources */,
 				55020B5E14F3AB9B006E35FB /* dlmalloc.c in Sources */,
 				55020B5F14F3AB9B006E35FB /* mpreal.cpp in Sources */,
@@ -1342,9 +1354,9 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					TTS_ONLINE,
 					DEBUG,
-					TTS_REMAP,
 					TTS_OUTPUT,
 					TTS_REZONE,
+					TTS_REMAP,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
